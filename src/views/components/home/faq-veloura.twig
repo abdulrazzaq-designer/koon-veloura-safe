@@ -80,3 +80,79 @@
 </section>
 
 {% endif %}
+<script>
+/* VELOURA_FAQ_INLINE_FIX */
+(function () {
+  if (window.__velouraFaqInlineFix) return;
+  window.__velouraFaqInlineFix = true;
+
+  function prepareFaq() {
+    document.querySelectorAll('.veloura-faq__item').forEach(function (item) {
+      var button = item.querySelector('.veloura-faq__question');
+      var answer = item.querySelector('.veloura-faq__answer');
+
+      if (!button || !answer) return;
+
+      var opened = item.classList.contains('is-open');
+
+      button.setAttribute(
+        'aria-expanded',
+        opened ? 'true' : 'false'
+      );
+
+      if (!opened) {
+        answer.style.height = '0px';
+      }
+    });
+  }
+
+  document.addEventListener('click', function (event) {
+    var button = event.target.closest('.veloura-faq__question');
+
+    if (!button) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    var item = button.closest('.veloura-faq__item');
+
+    if (!item) return;
+
+    var answer = item.querySelector('.veloura-faq__answer');
+
+    if (!answer) return;
+
+    var opened = item.classList.contains('is-open');
+
+    if (opened) {
+      answer.style.height = answer.scrollHeight + 'px';
+
+      requestAnimationFrame(function () {
+        item.classList.remove('is-open');
+        button.setAttribute('aria-expanded', 'false');
+        answer.style.height = '0px';
+      });
+
+      return;
+    }
+
+    item.classList.add('is-open');
+    button.setAttribute('aria-expanded', 'true');
+    answer.style.height = answer.scrollHeight + 'px';
+
+    answer.addEventListener('transitionend', function done() {
+      if (item.classList.contains('is-open')) {
+        answer.style.height = 'auto';
+      }
+
+      answer.removeEventListener('transitionend', done);
+    });
+  }, true);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', prepareFaq);
+  } else {
+    prepareFaq();
+  }
+})();
+</script>
