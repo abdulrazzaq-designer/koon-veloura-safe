@@ -1,0 +1,50 @@
+﻿VELOURA FOOTER + PRODUCT AUDIT
+Generated: 07/19/2026 15:11:21
+
+========================================
+VELOURA FOOTER FILES
+========================================
+assets\styles\04-components\footer.scss | 145104 bytes
+views\components\footer\footer.twig | 55474 bytes
+
+========================================
+SAFE THEME FOOTER FILES
+========================================
+assets\styles\04-components\footer.scss | 145104 bytes
+views\components\footer\footer.twig | 2840 bytes
+
+========================================
+VELOURA PRODUCT FILES
+========================================
+assets\js\product.js | 13420 bytes
+assets\js\partials\add-product-toast.js | 9564 bytes
+assets\js\partials\product-card.js | 32440 bytes
+assets\js\partials\validate-product-options.js | 5637 bytes
+assets\styles\04-components\add-product-toast.scss | 3300 bytes
+assets\styles\04-components\product.scss | 81811 bytes
+views\pages\partials\product\options.twig | 10807 bytes
+views\pages\partials\product\reservations.twig | 727 bytes
+views\pages\product\index.twig | 45350 bytes
+views\pages\product\single.twig | 53761 bytes
+
+========================================
+SAFE THEME PRODUCT FILES
+========================================
+assets\js\product.js | 13420 bytes
+assets\js\partials\add-product-toast.js | 9564 bytes
+assets\js\partials\product-card.js | 32440 bytes
+assets\js\partials\validate-product-options.js | 5637 bytes
+assets\styles\04-components\add-product-toast.scss | 3300 bytes
+assets\styles\04-components\product.scss | 81811 bytes
+views\pages\partials\product\options.twig | 10807 bytes
+views\pages\partials\product\reservations.twig | 727 bytes
+views\pages\product\index.twig | 4872 bytes
+views\pages\product\single.twig | 33277 bytes
+
+========================================
+VELOURA FOOTER DEPENDENCIES
+========================================
+
+========================================
+VELOURA PRODUCT DEPENDENCIES
+========================================
