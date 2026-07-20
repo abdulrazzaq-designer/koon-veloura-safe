@@ -78,11 +78,11 @@
 
 {% set title_size_map = {'small':'16px','medium':'20px','large':'24px','xlarge':'30px'} %}
 {% set text_size_map = {'small':'13px','medium':'15px','large':'17px'} %}
-{% set logo_size_map = {'small':'64px','medium':'84px','large':'108px'} %}
+{% set logo_size_map = {'small':'150px','medium':'200px','large':'260px'} %}
 
 {% set footer_title_size = title_size_map[footer_title_size_key]|default('24px') %}
 {% set footer_text_size = text_size_map[footer_text_size_key]|default('15px') %}
-{% set footer_logo_size = logo_size_map[footer_logo_size_key]|default('84px') %}
+{% set footer_logo_size = logo_size_map[footer_logo_size_key]|default('200px') %}
 
 {% set footer_center_all_raw = theme.settings.get('veloura_footer_center_all_2026', false) %}
 {% if footer_center_all_raw.value is defined %}{% set footer_center_all_raw = footer_center_all_raw.value %}{% endif %}
@@ -132,7 +132,8 @@
 {% if footer_bg_image.url is defined %}{% set footer_bg_image = footer_bg_image.url %}{% endif %}
 
 <footer
-  data-veloura-footer-build="static-lines-v12"
+  id="veloura-footer"
+  data-veloura-footer-build="layout-final-20260720"
   data-veloura-footer-center-all="{{ footer_center_all ? 'true' : 'false' }}"
   dir="rtl"
   data-veloura-footer-layout="{{ footer_featured_layout ? 'featured' : 'normal' }}"
@@ -171,6 +172,411 @@
     {% endif %}
   "
 >
+
+  <style id="veloura-footer-layout-final">
+    /*
+     * Physical desktop order is controlled with direction:ltr on the grids.
+     * Every content block remains RTL.
+     */
+    #veloura-footer {
+      --vf-logo-width: var(--veloura-footer-logo-size);
+      --vf-logo-height: clamp(72px, calc(var(--vf-logo-width) * .46), 120px);
+      --vf-desktop-gap: clamp(32px, 4vw, 72px);
+    }
+
+    #veloura-footer .veloura-footer-container,
+    #veloura-footer .veloura-footer-sections-grid,
+    #veloura-footer .veloura-footer-hero,
+    #veloura-footer .veloura-footer-block {
+      box-sizing: border-box !important;
+      min-width: 0 !important;
+    }
+
+    #veloura-footer .veloura-footer-block {
+      direction: rtl !important;
+    }
+
+    #veloura-footer .veloura-footer-logo {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: min(var(--vf-logo-width), 100%) !important;
+      max-width: 100% !important;
+      height: var(--vf-logo-height) !important;
+      margin-inline: auto !important;
+      overflow: visible !important;
+    }
+
+    #veloura-footer .veloura-footer-logo__media {
+      display: block !important;
+      width: auto !important;
+      height: auto !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
+      object-fit: contain !important;
+      margin: auto !important;
+    }
+
+    #veloura-footer .veloura-footer-store-title,
+    #veloura-footer .veloura-footer-description {
+      max-width: 100% !important;
+      overflow-wrap: anywhere !important;
+      word-break: normal !important;
+    }
+
+    #veloura-footer .veloura-footer-apps[hidden],
+    #veloura-footer.veloura-footer-no-apps .veloura-footer-apps {
+      display: none !important;
+    }
+
+    /* Contacts: two balanced columns on desktop in every footer mode. */
+    @media (min-width: 992px) {
+      #veloura-footer .veloura-footer-contact-wrap {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 12px !important;
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      #veloura-footer .veloura-footer-contact-native,
+      #veloura-footer .veloura-footer-social,
+      #veloura-footer .veloura-footer-contact-native > *,
+      #veloura-footer .veloura-footer-social > *,
+      #veloura-footer .veloura-footer-contact-wrap salla-contacts,
+      #veloura-footer .veloura-footer-contact-wrap salla-social,
+      #veloura-footer .veloura-footer-contact-wrap ul,
+      #veloura-footer .veloura-footer-contact-wrap ol,
+      #veloura-footer .veloura-footer-contact-wrap nav {
+        display: contents !important;
+      }
+
+      #veloura-footer .veloura-footer-contact-card {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+      }
+    }
+
+    /*
+     * NORMAL, NO APPS
+     * Physical left -> right:
+     * contact | links | store
+     */
+    @media (min-width: 992px) {
+      #veloura-footer[data-veloura-footer-layout="normal"].veloura-footer-no-apps
+      .veloura-footer-sections-grid {
+        display: grid !important;
+        direction: ltr !important;
+        grid-template-columns:
+          minmax(290px, 1fr)
+          minmax(230px, .9fr)
+          minmax(290px, 1fr) !important;
+        column-gap: var(--vf-desktop-gap) !important;
+        row-gap: 32px !important;
+        align-items: start !important;
+        width: 100% !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="normal"].veloura-footer-no-apps
+      .veloura-footer-contact {
+        grid-column: 1 !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="normal"].veloura-footer-no-apps
+      .veloura-footer-links {
+        grid-column: 2 !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="normal"].veloura-footer-no-apps
+      .veloura-footer-store {
+        grid-column: 3 !important;
+      }
+    }
+
+    /*
+     * NORMAL, WITH APPS
+     * Physical left -> right:
+     * apps | contact | links | store
+     */
+    @media (min-width: 992px) {
+      #veloura-footer[data-veloura-footer-layout="normal"].veloura-footer-has-apps
+      .veloura-footer-sections-grid {
+        display: grid !important;
+        direction: ltr !important;
+        grid-template-columns:
+          minmax(250px, .9fr)
+          minmax(280px, 1fr)
+          minmax(220px, .82fr)
+          minmax(280px, 1fr) !important;
+        column-gap: clamp(24px, 3vw, 54px) !important;
+        row-gap: 32px !important;
+        align-items: start !important;
+        width: 100% !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="normal"].veloura-footer-has-apps
+      .veloura-footer-apps {
+        grid-column: 1 !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="normal"].veloura-footer-has-apps
+      .veloura-footer-contact {
+        grid-column: 2 !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="normal"].veloura-footer-has-apps
+      .veloura-footer-links {
+        grid-column: 3 !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="normal"].veloura-footer-has-apps
+      .veloura-footer-store {
+        grid-column: 4 !important;
+      }
+    }
+
+    /*
+     * FEATURED, NO APPS
+     * One physical row:
+     * contact | store | links
+     * Logo is above the store name.
+     * Store name aligns with both side titles.
+     */
+    @media (min-width: 992px) {
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-no-apps
+      .veloura-footer-container {
+        display: grid !important;
+        direction: ltr !important;
+        grid-template-columns:
+          minmax(290px, 1fr)
+          minmax(300px, 1fr)
+          minmax(290px, 1fr) !important;
+        column-gap: var(--vf-desktop-gap) !important;
+        align-items: start !important;
+        width: 100% !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-no-apps
+      .veloura-footer-hero {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-no-apps
+      .veloura-footer-sections-grid {
+        display: contents !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-no-apps
+      .veloura-footer-contact {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+        padding-top: calc(var(--vf-logo-height) + 18px) !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-no-apps
+      .veloura-footer-links {
+        grid-column: 3 !important;
+        grid-row: 1 !important;
+        padding-top: calc(var(--vf-logo-height) + 18px) !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-no-apps
+      .veloura-footer-store {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        text-align: center !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-no-apps
+      .veloura-footer-identity,
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-no-apps
+      .veloura-footer-trust {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        width: 100% !important;
+        text-align: center !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-no-apps
+      .veloura-footer-logo {
+        margin-bottom: 18px !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-no-apps
+      .veloura-footer-store-title {
+        width: 100% !important;
+        margin: 0 !important;
+        line-height: 1.35 !important;
+        text-align: center !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-no-apps
+      .veloura-footer-description {
+        width: 100% !important;
+        margin: 10px auto 0 !important;
+        text-align: center !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-no-apps
+      .veloura-footer-trust {
+        margin-top: 18px !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-no-apps
+      :is(.veloura-footer-contact, .veloura-footer-links)
+      .veloura-footer-section-title {
+        margin-top: 0 !important;
+      }
+    }
+
+    /*
+     * FEATURED, WITH APPS
+     * Hero is exactly centered over a symmetric lower row:
+     * apps | contact | links
+     */
+    @media (min-width: 992px) {
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
+      .veloura-footer-container {
+        display: block !important;
+        width: 100% !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
+      .veloura-footer-hero {
+        display: flex !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 auto 52px !important;
+        padding: 0 !important;
+        transform: none !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
+      .veloura-footer-hero > .veloura-footer-store {
+        width: min(680px, 100%) !important;
+        max-width: 680px !important;
+        margin: 0 auto !important;
+        text-align: center !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
+      .veloura-footer-identity,
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
+      .veloura-footer-trust {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        width: 100% !important;
+        text-align: center !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
+      .veloura-footer-sections-grid {
+        display: grid !important;
+        direction: ltr !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        column-gap: var(--vf-desktop-gap) !important;
+        row-gap: 32px !important;
+        align-items: start !important;
+        width: 100% !important;
+        margin-inline: auto !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
+      .veloura-footer-apps {
+        grid-column: 1 !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
+      .veloura-footer-contact {
+        grid-column: 2 !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
+      .veloura-footer-links {
+        grid-column: 3 !important;
+      }
+    }
+
+    /* App Store and Google Play stay next to each other. */
+    #veloura-footer .veloura-footer-apps,
+    #veloura-footer .veloura-footer-apps-icons,
+    #veloura-footer .veloura-footer-apps salla-apps-icons {
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+
+    #veloura-footer .veloura-footer-apps :is(
+      div,
+      ul,
+      ol,
+      nav,
+      section,
+      [class*="apps"],
+      [class*="wrapper"],
+      [class*="icons"]
+    ) {
+      max-width: 100% !important;
+    }
+
+    @media (max-width: 991px) {
+      #veloura-footer .veloura-footer-container {
+        display: block !important;
+      }
+
+      #veloura-footer .veloura-footer-hero {
+        width: 100% !important;
+        margin: 0 auto 30px !important;
+      }
+
+      #veloura-footer .veloura-footer-sections-grid {
+        display: grid !important;
+        direction: rtl !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 28px !important;
+        width: 100% !important;
+      }
+
+      #veloura-footer .veloura-footer-block {
+        grid-column: 1 !important;
+        width: 100% !important;
+      }
+
+      #veloura-footer .veloura-footer-store,
+      #veloura-footer .veloura-footer-identity,
+      #veloura-footer .veloura-footer-trust {
+        align-items: center !important;
+        text-align: center !important;
+      }
+
+      #veloura-footer .veloura-footer-logo {
+        width: min(var(--vf-logo-width), 76vw) !important;
+      }
+
+      #veloura-footer .veloura-footer-contact-wrap {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+      }
+    }
+  </style>
+
   <div aria-label="footer" class="store-footer__inner veloura-footer-main">
     <div class="veloura-footer-container">
       {% if footer_featured_layout %}
@@ -418,6 +824,7 @@
           'veloura-footer-contact-kind-' + kind
         );
         link.dataset.velouraFooterReady = '1';
+        link.dataset.velouraFooterKind = kind;
         link.setAttribute('aria-label', link.getAttribute('aria-label') || label);
 
         link.innerHTML =
@@ -435,16 +842,18 @@
         const seen = new Set();
 
         root.querySelectorAll('a[href], button').forEach(function (link) {
+          const kind = (link.dataset.velouraFooterKind || '').trim().toLowerCase();
           const href = (link.getAttribute('href') || '').trim().toLowerCase();
           const aria = (link.getAttribute('aria-label') || '').trim().toLowerCase();
           const text = cleanText(link).toLowerCase();
-          const key = href || aria || text;
+          const key = kind || href || aria || text;
 
           if (!key) return;
 
           if (seen.has(key)) {
             const holder = link.closest('li') || link;
             holder.hidden = true;
+            holder.style.setProperty('display', 'none', 'important');
             holder.dataset.velouraHiddenDuplicate = '1';
             return;
           }
@@ -469,11 +878,10 @@
             normalizeLink(link, 'social');
           });
 
-        footer
-          .querySelectorAll(
-            '[data-veloura-footer-contacts], [data-veloura-footer-social]'
-          )
-          .forEach(dedupeLinks);
+        const contactWrap = footer.querySelector('.veloura-footer-contact-wrap');
+        if (contactWrap) {
+          dedupeLinks(contactWrap);
+        }
       }
 
       function restoreImages(root) {
@@ -543,7 +951,7 @@
 
               setImportant(wrapper, 'display', 'flex');
               setImportant(wrapper, 'flex-direction', 'row');
-              setImportant(wrapper, 'flex-wrap', 'wrap');
+              setImportant(wrapper, 'flex-wrap', 'nowrap');
               setImportant(wrapper, 'align-items', 'center');
               setImportant(
                 wrapper,
@@ -559,6 +967,10 @@
             setImportant(link, 'display', 'inline-flex');
             setImportant(link, 'align-items', 'center');
             setImportant(link, 'justify-content', 'center');
+            setImportant(link, 'flex', '1 1 calc(50% - 6px)');
+            setImportant(link, 'width', 'calc(50% - 6px)');
+            setImportant(link, 'min-width', '0');
+            setImportant(link, 'max-width', '190px');
             setImportant(link, 'margin', '0');
           });
 
@@ -566,19 +978,28 @@
             setImportant(image, 'display', 'block');
             setImportant(image, 'visibility', 'visible');
             setImportant(image, 'opacity', '1');
-            setImportant(image, 'width', 'auto');
-            setImportant(image, 'height', '48px');
-            setImportant(image, 'max-width', '180px');
+            setImportant(image, 'width', '100%');
+            setImportant(image, 'height', 'auto');
+            setImportant(image, 'max-width', '190px');
+            setImportant(image, 'max-height', '56px');
             setImportant(image, 'object-fit', 'contain');
             setImportant(image, 'margin', '0');
           });
         });
 
-        const hasApps = Boolean(
-          appsBlock.querySelector(
+        const hasLightApps = appsBlock.querySelector(
+          'a[href], img[src]:not([src=""]), img[data-src]'
+        );
+
+        const hasShadowApps = Boolean(
+          component &&
+          component.shadowRoot &&
+          component.shadowRoot.querySelector(
             'a[href], img[src]:not([src=""]), img[data-src]'
           )
         );
+
+        const hasApps = Boolean(hasLightApps || hasShadowApps);
 
         appsBlock.hidden = !hasApps;
         appsBlock.setAttribute('aria-hidden', hasApps ? 'false' : 'true');
