@@ -461,7 +461,7 @@
         justify-content: center !important;
         width: 100% !important;
         max-width: none !important;
-        margin: 0 auto 52px !important;
+        margin: 0 auto 22px !important;
         padding: 0 !important;
         transform: none !important;
       }
@@ -511,7 +511,34 @@
       #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
       .veloura-footer-links {
         grid-column: 3 !important;
+  
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
+      .veloura-footer-hero,
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
+      .veloura-footer-hero > .veloura-footer-store,
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
+      .veloura-footer-identity,
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
+      .veloura-footer-description,
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
+      .veloura-footer-trust {
+        min-height: 0 !important;
+        padding-bottom: 0 !important;
       }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
+      .veloura-footer-description,
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
+      .veloura-footer-trust {
+        margin-bottom: 0 !important;
+      }
+
+      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
+      .veloura-footer-sections-grid {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+      }
+    }
     }
 
     /* App Store and Google Play stay next to each other. */
@@ -575,6 +602,107 @@
         gap: 10px !important;
       }
     }
+
+    /* Stable communication cards: one flat grid, equal size and alignment. */
+    #veloura-footer .veloura-footer-contact-wrap {
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+
+    #veloura-footer .veloura-footer-contact-cards {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 12px !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      direction: rtl !important;
+      align-items: stretch !important;
+    }
+
+    #veloura-footer .veloura-footer-contact-cards
+    .veloura-footer-contact-card {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 10px !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      height: 56px !important;
+      min-height: 56px !important;
+      padding: 0 16px !important;
+      margin: 0 !important;
+      border: 2px solid var(--veloura-footer-contact-border) !important;
+      border-radius: 999px !important;
+      background: var(--veloura-footer-icon-bg) !important;
+      color: var(--veloura-footer-icon-color) !important;
+      box-sizing: border-box !important;
+      text-decoration: none !important;
+      line-height: 1 !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+    }
+
+    #veloura-footer .veloura-footer-contact-cards
+    .veloura-footer-contact-card__icon {
+      display: inline-grid !important;
+      place-items: center !important;
+      width: 20px !important;
+      height: 20px !important;
+      min-width: 20px !important;
+      min-height: 20px !important;
+      flex: 0 0 20px !important;
+      line-height: 0 !important;
+    }
+
+    #veloura-footer .veloura-footer-contact-cards
+    .veloura-footer-contact-card__icon svg {
+      display: block !important;
+      width: 20px !important;
+      height: 20px !important;
+      min-width: 20px !important;
+      min-height: 20px !important;
+      max-width: 20px !important;
+      max-height: 20px !important;
+      margin: 0 !important;
+    }
+
+    #veloura-footer .veloura-footer-contact-cards
+    .veloura-footer-contact-card__text {
+      display: block !important;
+      min-width: 0 !important;
+      line-height: 1 !important;
+      text-align: center !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+    }
+
+    /* When the number is odd, center the final card at the same column width. */
+    #veloura-footer .veloura-footer-contact-cards
+    .veloura-footer-contact-card:last-child:nth-child(odd) {
+      grid-column: 1 / -1 !important;
+      width: calc(50% - 6px) !important;
+      justify-self: center !important;
+    }
+
+    #veloura-footer .veloura-footer-contact-wrap.veloura-footer-contact-ready
+    > :not(.veloura-footer-contact-cards) {
+      display: none !important;
+    }
+
+    @media (max-width: 480px) {
+      #veloura-footer .veloura-footer-contact-cards {
+        grid-template-columns: minmax(0, 1fr) !important;
+      }
+
+      #veloura-footer .veloura-footer-contact-cards
+      .veloura-footer-contact-card:last-child:nth-child(odd) {
+        grid-column: 1 !important;
+        width: 100% !important;
+      }
+    }
+
   </style>
 
   <div aria-label="footer" class="store-footer__inner veloura-footer-main">
@@ -863,25 +991,61 @@
       }
 
       function initContacts(footer) {
-        footer
-          .querySelectorAll('[data-veloura-footer-contacts] a[href]')
-          .forEach(function (link) {
-            normalizeLink(link, 'contact');
-          });
+        const contactWrap = footer.querySelector('.veloura-footer-contact-wrap');
+        if (!contactWrap) return;
 
-        footer
-          .querySelectorAll(
+        const sourceLinks = Array.from(
+          contactWrap.querySelectorAll(
+            '[data-veloura-footer-contacts] a[href], ' +
             '[data-veloura-footer-social] a[href], ' +
             '[data-veloura-footer-social] button'
           )
-          .forEach(function (link) {
-            normalizeLink(link, 'social');
-          });
+        );
 
-        const contactWrap = footer.querySelector('.veloura-footer-contact-wrap');
-        if (contactWrap) {
-          dedupeLinks(contactWrap);
+        if (!sourceLinks.length) return;
+
+        const seen = new Set();
+        const cards = [];
+
+        sourceLinks.forEach(function (link) {
+          const sourceType = link.closest('[data-veloura-footer-social]')
+            ? 'social'
+            : 'contact';
+
+          normalizeLink(link, sourceType);
+
+          const kind = (link.dataset.velouraFooterKind || '').trim().toLowerCase();
+          const href = (link.getAttribute('href') || '').trim().toLowerCase();
+          const aria = (link.getAttribute('aria-label') || '').trim().toLowerCase();
+          const key = kind || href || aria;
+
+          if (!key || seen.has(key)) return;
+          seen.add(key);
+
+          const card = link.cloneNode(true);
+          card.removeAttribute('id');
+          card.hidden = false;
+          card.style.removeProperty('display');
+          card.removeAttribute('data-veloura-hidden-duplicate');
+
+          cards.push(card);
+        });
+
+        if (!cards.length) return;
+
+        let grid = contactWrap.querySelector(
+          ':scope > .veloura-footer-contact-cards'
+        );
+
+        if (!grid) {
+          grid = document.createElement('div');
+          grid.className = 'veloura-footer-contact-cards';
+          grid.setAttribute('data-veloura-footer-contact-cards', '');
+          contactWrap.appendChild(grid);
         }
+
+        grid.replaceChildren.apply(grid, cards);
+        contactWrap.classList.add('veloura-footer-contact-ready');
       }
 
       function restoreImages(root) {
