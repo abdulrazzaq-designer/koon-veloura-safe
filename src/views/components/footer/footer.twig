@@ -78,11 +78,11 @@
 
 {% set title_size_map = {'small':'16px','medium':'20px','large':'24px','xlarge':'30px'} %}
 {% set text_size_map = {'small':'13px','medium':'15px','large':'17px'} %}
-{% set logo_size_map = {'small':'130px','medium':'180px','large':'250px'} %}
+{% set logo_size_map = {'small':'64px','medium':'84px','large':'108px'} %}
 
 {% set footer_title_size = title_size_map[footer_title_size_key]|default('24px') %}
 {% set footer_text_size = text_size_map[footer_text_size_key]|default('15px') %}
-{% set footer_logo_size = logo_size_map[footer_logo_size_key]|default('180px') %}
+{% set footer_logo_size = logo_size_map[footer_logo_size_key]|default('84px') %}
 
 {% set footer_center_all_raw = theme.settings.get('veloura_footer_center_all_2026', false) %}
 {% if footer_center_all_raw.value is defined %}{% set footer_center_all_raw = footer_center_all_raw.value %}{% endif %}
@@ -132,8 +132,7 @@
 {% if footer_bg_image.url is defined %}{% set footer_bg_image = footer_bg_image.url %}{% endif %}
 
 <footer
-  id="veloura-footer"
-  data-veloura-footer-build="layout-v4"
+  data-veloura-footer-build="static-lines-v12"
   data-veloura-footer-center-all="{{ footer_center_all ? 'true' : 'false' }}"
   dir="rtl"
   data-veloura-footer-layout="{{ footer_featured_layout ? 'featured' : 'normal' }}"
@@ -172,371 +171,129 @@
     {% endif %}
   "
 >
-  <style id="veloura-footer-layout-v4">
-    #veloura-footer {
-      --veloura-footer-logo-height:
-        clamp(70px, calc(var(--veloura-footer-logo-size) * .58), 145px);
-    }
-
-    #veloura-footer .veloura-footer-sections-grid {
-      width: 100% !important;
-      min-width: 0 !important;
-    }
-
-    #veloura-footer .veloura-footer-sections-grid > .veloura-footer-block {
-      min-width: 0 !important;
-      width: 100% !important;
-      max-width: none !important;
-      grid-column: auto !important;
-      grid-row: auto !important;
-      margin: 0 !important;
-      box-sizing: border-box !important;
-    }
-
-    #veloura-footer .veloura-footer-links {
-      grid-area: links !important;
-    }
-
-    #veloura-footer .veloura-footer-store {
-      grid-area: store !important;
-    }
-
-    #veloura-footer .veloura-footer-contact {
-      grid-area: contact !important;
-    }
-
-    #veloura-footer .veloura-footer-apps {
-      grid-area: apps !important;
-    }
-
-    #veloura-footer.veloura-footer-no-apps .veloura-footer-apps,
-    #veloura-footer .veloura-footer-apps[hidden] {
-      display: none !important;
-    }
-
-    #veloura-footer .veloura-footer-logo {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      width: clamp(160px, var(--veloura-footer-logo-size), 260px) !important;
-      height: var(--veloura-footer-logo-height) !important;
-      max-width: 100% !important;
-      margin-inline: auto !important;
-      overflow: visible !important;
-    }
-
-    #veloura-footer .veloura-footer-logo__media {
-      display: block !important;
-      width: auto !important;
-      height: auto !important;
-      max-width: 100% !important;
-      max-height: 100% !important;
-      object-fit: contain !important;
-      margin: auto !important;
-    }
-
-    #veloura-footer .veloura-footer-store-title,
-    #veloura-footer .veloura-footer-description {
-      max-width: 100% !important;
-      overflow-wrap: anywhere !important;
-      word-break: break-word !important;
-    }
-
-    #veloura-footer .veloura-footer-contact-wrap,
-    #veloura-footer .veloura-footer-contact-native,
-    #veloura-footer .veloura-footer-social,
-    #veloura-footer .veloura-footer-contact-native > *,
-    #veloura-footer .veloura-footer-social > * {
-      width: 100% !important;
-      min-width: 0 !important;
-      max-width: none !important;
-    }
-
-    #veloura-footer .veloura-footer-contact-card {
-      width: 100% !important;
-      min-width: 0 !important;
-      max-width: none !important;
-      margin: 0 !important;
-      box-sizing: border-box !important;
-    }
-
-    @media (min-width: 992px) {
-      /*
-       * Featured, no applications:
-       * left contact | center store | right links
-       */
-      #veloura-footer[data-veloura-footer-layout="featured"]:not(.veloura-footer-has-apps)
-      .veloura-footer-sections-grid,
-      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-no-apps
-      .veloura-footer-sections-grid {
-        display: grid !important;
-        grid-template-columns:
-          minmax(260px, 1fr)
-          minmax(280px, 1fr)
-          minmax(260px, 1fr) !important;
-        grid-template-areas: "links store contact" !important;
-        column-gap: clamp(32px, 5vw, 84px) !important;
-        row-gap: 30px !important;
-        align-items: start !important;
-      }
-
-      /*
-       * Featured, with applications:
-       * left apps | contact | store | right links
-       */
-      #veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-has-apps
-      .veloura-footer-sections-grid {
-        display: grid !important;
-        grid-template-columns:
-          minmax(190px, .82fr)
-          minmax(250px, 1fr)
-          minmax(270px, 1fr)
-          minmax(230px, .95fr) !important;
-        grid-template-areas: "links store contact apps" !important;
-        column-gap: clamp(24px, 3vw, 54px) !important;
-        row-gap: 30px !important;
-        align-items: start !important;
-      }
-
-      /*
-       * In featured mode, the logo remains above the store name.
-       * Store name and side headings start on the same visual row.
-       */
-      #veloura-footer[data-veloura-footer-layout="featured"]
-      .veloura-footer-store {
-        padding-top: 0 !important;
-        text-align: center !important;
-      }
-
-      #veloura-footer[data-veloura-footer-layout="featured"]
-      .veloura-footer-identity {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        width: 100% !important;
-        text-align: center !important;
-      }
-
-      #veloura-footer[data-veloura-footer-layout="featured"]
-      .veloura-footer-logo {
-        margin-bottom: 18px !important;
-      }
-
-      #veloura-footer[data-veloura-footer-layout="featured"]
-      .veloura-footer-store-title {
-        width: 100% !important;
-        margin: 0 !important;
-        line-height: 1.35 !important;
-        text-align: center !important;
-      }
-
-      #veloura-footer[data-veloura-footer-layout="featured"]
-      .veloura-footer-description {
-        width: 100% !important;
-        margin: 10px auto 0 !important;
-        text-align: center !important;
-      }
-
-      #veloura-footer[data-veloura-footer-layout="featured"]
-      .veloura-footer-trust {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        width: 100% !important;
-        margin-top: 18px !important;
-      }
-
-      #veloura-footer[data-veloura-footer-layout="featured"]
-      :is(.veloura-footer-links, .veloura-footer-contact, .veloura-footer-apps) {
-        padding-top:
-          calc(var(--veloura-footer-logo-height) + 18px) !important;
-      }
-
-      #veloura-footer[data-veloura-footer-layout="featured"]
-      :is(.veloura-footer-links, .veloura-footer-contact, .veloura-footer-apps)
-      .veloura-footer-section-title {
-        margin-top: 0 !important;
-      }
-
-      /*
-       * Normal, no applications:
-       * left contact | center links | right store
-       */
-      #veloura-footer[data-veloura-footer-layout="normal"]:not(.veloura-footer-has-apps)
-      .veloura-footer-sections-grid,
-      #veloura-footer[data-veloura-footer-layout="normal"].veloura-footer-no-apps
-      .veloura-footer-sections-grid {
-        display: grid !important;
-        grid-template-columns:
-          minmax(280px, 1fr)
-          minmax(240px, 1fr)
-          minmax(280px, 1fr) !important;
-        grid-template-areas: "store links contact" !important;
-        column-gap: clamp(34px, 5vw, 90px) !important;
-        row-gap: 30px !important;
-        align-items: start !important;
-      }
-
-      /*
-       * Normal, with applications:
-       * left apps | contact | links | right store
-       */
-      #veloura-footer[data-veloura-footer-layout="normal"].veloura-footer-has-apps
-      .veloura-footer-sections-grid {
-        display: grid !important;
-        grid-template-columns:
-          minmax(190px, .82fr)
-          minmax(250px, 1fr)
-          minmax(230px, .92fr)
-          minmax(270px, 1fr) !important;
-        grid-template-areas: "store links contact apps" !important;
-        column-gap: clamp(24px, 3vw, 54px) !important;
-        row-gap: 30px !important;
-        align-items: start !important;
-      }
-
-      #veloura-footer[data-veloura-footer-layout="normal"]
-      :is(.veloura-footer-links, .veloura-footer-contact, .veloura-footer-apps) {
-        padding-top: 0 !important;
-      }
-
-      #veloura-footer[data-veloura-footer-layout="normal"]
-      .veloura-footer-store {
-        text-align: start !important;
-      }
-
-      /*
-       * Contacts always use two balanced columns on desktop.
-       */
-      #veloura-footer .veloura-footer-contact-native
-      :is(ul, ol, nav, [class*="list"], [class*="wrapper"]),
-      #veloura-footer .veloura-footer-social
-      :is(ul, ol, nav, [class*="list"], [class*="wrapper"]) {
-        display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 12px !important;
-        align-items: stretch !important;
-        width: 100% !important;
-      }
-
-      #veloura-footer .veloura-footer-contact-native,
-      #veloura-footer .veloura-footer-social {
-        display: block !important;
-      }
-    }
-
-    @media (max-width: 991px) {
-      #veloura-footer .veloura-footer-sections-grid {
-        display: grid !important;
-        grid-template-columns: minmax(0, 1fr) !important;
-        grid-template-areas:
-          "store"
-          "links"
-          "contact"
-          "apps" !important;
-        gap: 28px !important;
-      }
-
-      #veloura-footer
-      :is(.veloura-footer-links, .veloura-footer-contact, .veloura-footer-apps) {
-        padding-top: 0 !important;
-      }
-
-      #veloura-footer .veloura-footer-store,
-      #veloura-footer .veloura-footer-identity,
-      #veloura-footer .veloura-footer-trust {
-        align-items: center !important;
-        text-align: center !important;
-      }
-
-      #veloura-footer .veloura-footer-logo {
-        width: min(var(--veloura-footer-logo-size), 78vw) !important;
-      }
-    }
-
-    @media (max-width: 560px) {
-      #veloura-footer .veloura-footer-contact-native
-      :is(ul, ol, nav, [class*="list"], [class*="wrapper"]),
-      #veloura-footer .veloura-footer-social
-      :is(ul, ol, nav, [class*="list"], [class*="wrapper"]) {
-        display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 10px !important;
-      }
-    }
-  </style>
-
   <div aria-label="footer" class="store-footer__inner veloura-footer-main">
     <div class="veloura-footer-container">
+      {% if footer_featured_layout %}
+      <div class="veloura-footer-hero">
+      <div class="veloura-footer-block veloura-footer-store">
+        <div class="veloura-footer-identity">
+          {% if not footer_hide_logo %}
+            <a href="{{ link('/') }}" class="veloura-footer-logo" aria-label="{{ store.name }}">
+              {% if footer_logo_is_video %}
+                <video class="veloura-footer-logo__media" src="{{ footer_logo }}" autoplay muted loop playsinline></video>
+              {% else %}
+                <img class="veloura-footer-logo__media" src="{{ footer_logo }}" loading="eager" decoding="async" alt="{{ store.name }}">
+              {% endif %}
+            </a>
+          {% endif %}
+
+          <h3 class="veloura-footer-title veloura-footer-store-title">{{ footer_store_title }}</h3>
+
+          {% if footer_store_description %}
+            <div class="veloura-footer-description">
+              {{ footer_store_description|raw }}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="veloura-footer-trust">
+          <salla-trust-badges {% if theme.settings.get('footer_is_dark') %} dark {% endif %}></salla-trust-badges>
+
+          {% if store.settings.tax.number %}
+            <div class="veloura-footer-tax">
+              {% if store.settings.tax.certificate %}
+                <a class="load-img-onclick" data-modal-id="modal-value-tax" href="#/" aria-label="{{ trans('common.elements.tax_number') }}">
+                  <img width="40" height="50" src="{{ 'images/tax.png' | cdn(70,70) }}" loading="lazy" alt="value added tax">
+                </a>
+              {% endif %}
+
+              <div>
+                <p>{{ trans('common.elements.tax_number') }}</p>
+                <b>{{ store.settings.tax.number }}</b>
+              </div>
+            </div>
+
+            {% if store.settings.tax.certificate %}
+              <salla-modal sub-title-first sub-title="{{ trans('common.elements.tax_number') }}" modal-title="{{ store.settings.tax.number }}" id="modal-value-tax">
+                <div class="flex justify-center max-w-full">
+                  <img class="w-full" loading="lazy" data-src="{{ store.settings.tax.certificate }}" alt="{{ store.settings.tax.number }}"/>
+                </div>
+              </salla-modal>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+      </div>
+      {% endif %}
+
       <div class="veloura-footer-grid veloura-footer-sections-grid">
+        {% if not footer_featured_layout %}
+      <div class="veloura-footer-block veloura-footer-store">
+        <div class="veloura-footer-identity">
+          {% if not footer_hide_logo %}
+            <a href="{{ link('/') }}" class="veloura-footer-logo" aria-label="{{ store.name }}">
+              {% if footer_logo_is_video %}
+                <video class="veloura-footer-logo__media" src="{{ footer_logo }}" autoplay muted loop playsinline></video>
+              {% else %}
+                <img class="veloura-footer-logo__media" src="{{ footer_logo }}" loading="eager" decoding="async" alt="{{ store.name }}">
+              {% endif %}
+            </a>
+          {% endif %}
+
+          <h3 class="veloura-footer-title veloura-footer-store-title">{{ footer_store_title }}</h3>
+
+          {% if footer_store_description %}
+            <div class="veloura-footer-description">
+              {{ footer_store_description|raw }}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="veloura-footer-trust">
+          <salla-trust-badges {% if theme.settings.get('footer_is_dark') %} dark {% endif %}></salla-trust-badges>
+
+          {% if store.settings.tax.number %}
+            <div class="veloura-footer-tax">
+              {% if store.settings.tax.certificate %}
+                <a class="load-img-onclick" data-modal-id="modal-value-tax" href="#/" aria-label="{{ trans('common.elements.tax_number') }}">
+                  <img width="40" height="50" src="{{ 'images/tax.png' | cdn(70,70) }}" loading="lazy" alt="value added tax">
+                </a>
+              {% endif %}
+
+              <div>
+                <p>{{ trans('common.elements.tax_number') }}</p>
+                <b>{{ store.settings.tax.number }}</b>
+              </div>
+            </div>
+
+            {% if store.settings.tax.certificate %}
+              <salla-modal sub-title-first sub-title="{{ trans('common.elements.tax_number') }}" modal-title="{{ store.settings.tax.number }}" id="modal-value-tax">
+                <div class="flex justify-center max-w-full">
+                  <img class="w-full" loading="lazy" data-src="{{ store.settings.tax.certificate }}" alt="{{ store.settings.tax.number }}"/>
+                </div>
+              </salla-modal>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+        {% endif %}
         {% if not footer_hide_links %}
           <div class="veloura-footer-block veloura-footer-links">
             <h3 class="veloura-footer-title veloura-footer-section-title" data-veloura-title-row="true" style="display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;align-items:center!important;width:100%!important;min-width:0!important;direction:rtl!important;">
-              <span class="veloura-footer-title-line veloura-footer-title-line--right" aria-hidden="true"></span>
-              <span class="veloura-footer-title-text">{{ footer_links_title }}</span>
-              <span class="veloura-footer-title-line veloura-footer-title-line--left" aria-hidden="true"></span>
-            </h3>
+  <span class="veloura-footer-title-line veloura-footer-title-line--right" aria-hidden="true"></span>
+  <span class="veloura-footer-title-text">{{ footer_links_title }}</span>
+  <span class="veloura-footer-title-line veloura-footer-title-line--left" aria-hidden="true"></span>
+</h3>
             <salla-menu source="footer" with-cookie-preferences></salla-menu>
           </div>
         {% endif %}
 
-        <div class="veloura-footer-block veloura-footer-store">
-          <div class="veloura-footer-identity">
-            {% if not footer_hide_logo %}
-              <a href="{{ link('/') }}" class="veloura-footer-logo" aria-label="{{ store.name }}">
-                {% if footer_logo_is_video %}
-                  <video class="veloura-footer-logo__media" src="{{ footer_logo }}" autoplay muted loop playsinline></video>
-                {% else %}
-                  <img class="veloura-footer-logo__media" src="{{ footer_logo }}" loading="eager" decoding="async" alt="{{ store.name }}">
-                {% endif %}
-              </a>
-            {% endif %}
-
-            <h3 class="veloura-footer-title veloura-footer-store-title">{{ footer_store_title }}</h3>
-
-            {% if footer_store_description %}
-              <div class="veloura-footer-description">
-                {{ footer_store_description|raw }}
-              </div>
-            {% endif %}
-          </div>
-
-          <div class="veloura-footer-trust">
-            <salla-trust-badges {% if theme.settings.get('footer_is_dark') %} dark {% endif %}></salla-trust-badges>
-
-            {% if store.settings.tax.number %}
-              <div class="veloura-footer-tax">
-                {% if store.settings.tax.certificate %}
-                  <a class="load-img-onclick" data-modal-id="modal-value-tax" href="#/" aria-label="{{ trans('common.elements.tax_number') }}">
-                    <img width="40" height="50" src="{{ 'images/tax.png' | cdn(70,70) }}" loading="lazy" alt="value added tax">
-                  </a>
-                {% endif %}
-
-                <div>
-                  <p>{{ trans('common.elements.tax_number') }}</p>
-                  <b>{{ store.settings.tax.number }}</b>
-                </div>
-              </div>
-
-              {% if store.settings.tax.certificate %}
-                <salla-modal sub-title-first sub-title="{{ trans('common.elements.tax_number') }}" modal-title="{{ store.settings.tax.number }}" id="modal-value-tax">
-                  <div class="flex justify-center max-w-full">
-                    <img class="w-full" loading="lazy" data-src="{{ store.settings.tax.certificate }}" alt="{{ store.settings.tax.number }}"/>
-                  </div>
-                </salla-modal>
-              {% endif %}
-            {% endif %}
-          </div>
-        </div>
-
         <div class="veloura-footer-block veloura-footer-contact">
           <h3 class="veloura-footer-title veloura-footer-section-title" data-veloura-title-row="true" style="display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;align-items:center!important;width:100%!important;min-width:0!important;direction:rtl!important;">
-            <span class="veloura-footer-title-line veloura-footer-title-line--right" aria-hidden="true"></span>
-            <span class="veloura-footer-title-text">{{ footer_contact_title }}</span>
-            <span class="veloura-footer-title-line veloura-footer-title-line--left" aria-hidden="true"></span>
-          </h3>
+  <span class="veloura-footer-title-line veloura-footer-title-line--right" aria-hidden="true"></span>
+  <span class="veloura-footer-title-text">{{ footer_contact_title }}</span>
+  <span class="veloura-footer-title-line veloura-footer-title-line--left" aria-hidden="true"></span>
+</h3>
 
           <div class="veloura-footer-contact-wrap">
             <div class="veloura-footer-contact-native" data-veloura-footer-contacts>
@@ -553,14 +310,15 @@
           <div class="veloura-footer-block veloura-footer-apps" data-veloura-footer-apps>
             {% if not footer_hide_apps_title %}
               <h3 class="veloura-footer-title veloura-footer-section-title" data-veloura-title-row="true" style="display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;align-items:center!important;width:100%!important;min-width:0!important;direction:rtl!important;">
-                <span class="veloura-footer-title-line veloura-footer-title-line--right" aria-hidden="true"></span>
-                <span class="veloura-footer-title-text">{{ footer_apps_title }}</span>
-                <span class="veloura-footer-title-line veloura-footer-title-line--left" aria-hidden="true"></span>
-              </h3>
+  <span class="veloura-footer-title-line veloura-footer-title-line--right" aria-hidden="true"></span>
+  <span class="veloura-footer-title-text">{{ footer_apps_title }}</span>
+  <span class="veloura-footer-title-line veloura-footer-title-line--left" aria-hidden="true"></span>
+</h3>
             {% endif %}
             <salla-apps-icons class="veloura-footer-apps-icons" data-veloura-footer-apps-icons></salla-apps-icons>
           </div>
         {% endif %}
+
       </div>
     </div>
   </div>
@@ -660,7 +418,6 @@
           'veloura-footer-contact-kind-' + kind
         );
         link.dataset.velouraFooterReady = '1';
-        link.dataset.velouraFooterKind = kind;
         link.setAttribute('aria-label', link.getAttribute('aria-label') || label);
 
         link.innerHTML =
@@ -678,19 +435,16 @@
         const seen = new Set();
 
         root.querySelectorAll('a[href], button').forEach(function (link) {
-          const kind = (link.dataset.velouraFooterKind || '').trim().toLowerCase();
           const href = (link.getAttribute('href') || '').trim().toLowerCase();
           const aria = (link.getAttribute('aria-label') || '').trim().toLowerCase();
           const text = cleanText(link).toLowerCase();
+          const key = href || aria || text;
 
-          /* Keep one visible card for each communication platform. */
-          const key = kind || href || aria || text;
           if (!key) return;
 
           if (seen.has(key)) {
             const holder = link.closest('li') || link;
             holder.hidden = true;
-            holder.style.setProperty('display', 'none', 'important');
             holder.dataset.velouraHiddenDuplicate = '1';
             return;
           }
@@ -715,10 +469,11 @@
             normalizeLink(link, 'social');
           });
 
-        const contactWrap = footer.querySelector('.veloura-footer-contact-wrap');
-        if (contactWrap) {
-          dedupeLinks(contactWrap);
-        }
+        footer
+          .querySelectorAll(
+            '[data-veloura-footer-contacts], [data-veloura-footer-social]'
+          )
+          .forEach(dedupeLinks);
       }
 
       function restoreImages(root) {
