@@ -391,8 +391,12 @@ class App extends AppHelpers {
     initVelouraFooter();
     this.initiateNotifier();
     this.initiateMobileMenu();
-    if (header_is_sticky) {
+    const stickyHeaderEnabled = header_is_sticky === true || header_is_sticky === 1 || ['true', '1', 'on'].includes(String(header_is_sticky || '').toLowerCase());
+    if (stickyHeaderEnabled) {
       this.initiateStickyMenu();
+    } else {
+      document.querySelector('#mainnav')?.classList.remove('fixed-pinned', 'fixed-header', 'animated');
+      document.querySelector('.store-header')?.classList.remove('veloura-sticky-active');
     }
     this.initAddToCart();
     this.initiateDropdowns();
@@ -620,26 +624,76 @@ isElementLoaded(selector){
   }
 
   initiateStickyMenu() {
-    let header = this.element('#mainnav'),
-      height = this.element('#mainnav .inner')?.clientHeight;
-    //when it's landing page, there is no header
-    if (!header) {
+    const nav = this.element('#mainnav');
+    const inner = this.element('#mainnav .inner');
+    const storeHeader = this.element('.store-header');
+
+    if (!nav || !inner || nav.dataset.velouraStickyReady) {
       return;
     }
 
-    window.addEventListener('load', () => setTimeout(() => this.setHeaderHeight(), 500))
-    window.addEventListener('resize', () => this.setHeaderHeight())
+    nav.dataset.velouraStickyReady = 'true';
 
-    window.addEventListener('scroll', () => {
-      window.scrollY >= header.offsetTop + height ? header.classList.add('fixed-pinned', 'animated') : header.classList.remove('fixed-pinned');
-      window.scrollY >= 200 ? header.classList.add('fixed-header') : header.classList.remove('fixed-header', 'animated');
-    }, { passive: true });
+    let threshold = 0;
+    let frame = 0;
+    let resizeObserver = null;
+
+    const measure = () => {
+      const innerHeight = Math.max(1, Math.ceil(inner.getBoundingClientRect().height));
+      nav.style.height = `${innerHeight}px`;
+
+      const navDocumentTop = window.scrollY + nav.getBoundingClientRect().top;
+      threshold = navDocumentTop + innerHeight;
+    };
+
+    const update = () => {
+      frame = 0;
+
+      const shouldPin = window.scrollY >= Math.max(1, threshold - 1);
+      nav.classList.toggle('fixed-pinned', shouldPin);
+      nav.classList.toggle('fixed-header', shouldPin);
+      nav.classList.toggle('animated', shouldPin);
+      storeHeader?.classList.toggle('veloura-sticky-active', shouldPin);
+
+      document.dispatchEvent(new CustomEvent('veloura:header:position', {
+        detail: { sticky: shouldPin }
+      }));
+    };
+
+    const schedule = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(update);
+    };
+
+    const remeasure = () => {
+      measure();
+      schedule();
+    };
+
+    window.addEventListener('load', () => window.setTimeout(remeasure, 120));
+    window.addEventListener('resize', remeasure, { passive: true });
+    window.addEventListener('orientationchange', remeasure, { passive: true });
+    window.addEventListener('scroll', schedule, { passive: true });
+
+    if ('ResizeObserver' in window) {
+      resizeObserver = new ResizeObserver(remeasure);
+      resizeObserver.observe(inner);
+    }
+
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(remeasure).catch(() => {});
+    }
+
+    measure();
+    update();
   }
 
   setHeaderHeight() {
-    let height = this.element('#mainnav .inner').clientHeight,
-      header = this.element('#mainnav');
-    header.style.height = height + 'px';
+    const inner = this.element('#mainnav .inner');
+    const nav = this.element('#mainnav');
+    if (!inner || !nav) return;
+
+    nav.style.height = `${Math.max(1, Math.ceil(inner.getBoundingClientRect().height))}px`;
   }
 
   initiateDropdowns() {
@@ -2712,24 +2766,25 @@ const initVelouraHomeTabs = (() => {
   const getVisibleFixedHeaderBottom = () => {
     const header = document.querySelector('.store-header');
     const navInner = document.querySelector('#mainnav > .inner, #mainnav .inner');
-    if (!header || !navInner || header.classList.contains('veloura-top-hidden')) return 0;
 
-    const style = window.getComputedStyle(navInner);
-    if (style.position !== 'fixed') return 0;
+    if (!header || !navInner || header.classList.contains('veloura-top-hidden')) return 0;
+    if (window.getComputedStyle(navInner).position !== 'fixed') return 0;
 
     const rect = navInner.getBoundingClientRect();
     if (rect.bottom <= 0 || rect.top >= window.innerHeight) return 0;
 
-    return Math.max(0, Math.round(rect.bottom));
+    return Math.max(0, rect.bottom);
   };
 
   const updateStickyOffset = bar => {
     if (!bar?.classList.contains('veloura-home-tabs--sticky')) return;
 
-    const top = getVisibleFixedHeaderBottom();
+    const headerBottom = getVisibleFixedHeaderBottom();
+    const top = Math.max(0, Math.round(headerBottom));
+
     bar.style.setProperty('--veloura-tabs-sticky-top', `${top}px`);
-    bar.classList.toggle('veloura-home-tabs--attached-to-header', top > 0);
-    bar.classList.toggle('veloura-home-tabs--at-top', top === 0);
+    bar.classList.toggle('veloura-home-tabs--below-header', headerBottom > 0);
+    bar.classList.toggle('veloura-home-tabs--first-surface', headerBottom === 0);
   };
 
   const scheduleOffsetUpdate = () => {
@@ -2759,6 +2814,8 @@ const initVelouraHomeTabs = (() => {
       window.addEventListener('scroll', scheduleOffsetUpdate, { passive: true });
       window.addEventListener('resize', scheduleOffsetUpdate, { passive: true });
       document.addEventListener('transitionend', scheduleOffsetUpdate, true);
+      document.addEventListener('veloura:header:state', scheduleOffsetUpdate);
+      document.addEventListener('veloura:header:position', scheduleOffsetUpdate);
     }
   };
 

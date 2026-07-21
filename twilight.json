@@ -1666,7 +1666,7 @@
       "type": "boolean",
       "icon": "sicon-airplay-screen",
       "label": "جعل الهيدر عائمًا",
-      "description": "يظهر الهيدر بهوامش جانبية وحواف كاملة بدل الالتصاق بحواف الشاشة",
+      "description": "يجعل الهيدر داخل حدود الكونتينر مع مسافة علوية وجانبية وحواف كاملة",
       "id": "veloura_top_floating_2026",
       "format": "switch",
       "required": false,
@@ -1684,7 +1684,7 @@
       "type": "boolean",
       "icon": "sicon-compress",
       "label": "تصغير الهيدر العائم عند التمرير",
-      "description": "يقل ارتفاع الهيدر والشعار بعد النزول لتحرير مساحة أكبر للمحتوى",
+      "description": "يقل ارتفاع الهيدر والشعار بعد تثبيته أثناء النزول",
       "id": "veloura_top_compact_on_scroll_2026",
       "format": "switch",
       "required": false,
@@ -1706,8 +1706,8 @@
     {
       "type": "boolean",
       "icon": "sicon-eye",
-      "label": "تفعيل التأثير البلوري للهيدر",
-      "description": "يضيف شفافية وبلورًا للخلفية مع المحافظة على وضوح النص والأيقونات",
+      "label": "تفعيل الزجاج البلوري المحايد",
+      "description": "زجاج شفاف محايد بلمسة لون خفيفة جدًا من لون الهيدر، مع نفس التأثير المستخدم في التبويبات والقائمة العائمة",
       "id": "veloura_top_blur_2026",
       "format": "switch",
       "required": false,
@@ -2226,7 +2226,7 @@
       "format": "switch",
       "id": "veloura_home_tabs_sticky_2026",
       "label": "تثبيت شريط التبويبات أسفل الهيدر عند التمرير",
-      "description": "يبقى شريط التبويبات ظاهرًا أسفل الهيدر أثناء النزول في الصفحة",
+      "description": "تلتصق التبويبات أسفل الهيدر الظاهر مع فاصل صغير، وتنتقل لأعلى الشاشة عند اختفاء الهيدر",
       "icon": "sicon-pin",
       "value": true,
       "selected": true,
@@ -2254,7 +2254,8 @@
           "operation": "=",
           "value": true
         }
-      ]
+      ],
+      "description": "يستخدم كلون أساسي، ومع البلور تظهر منه لمسة خفيفة جدًا فقط"
     },
     {
       "id": "veloura_home_tabs_active_bg_2026",

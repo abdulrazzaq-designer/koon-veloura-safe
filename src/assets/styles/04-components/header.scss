@@ -1768,13 +1768,19 @@ html[dir="ltr"] .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul.mm-spn--parent {
   }
 }
 
-
 /* ========================================================================
-   Veloura Floating / Compact / Blur Header 2026
+   Veloura Floating / Compact Header V3 — Container aligned
    ======================================================================== */
+:root {
+  --veloura-shell-gap: 12px;
+  --veloura-shell-inline: max(
+    var(--veloura-site-spacing, 16px),
+    calc((100vw - var(--veloura-site-container-width, 1280px)) / 2)
+  );
+}
+
 .store-header.veloura-top-enabled {
-  --veloura-floating-gap: clamp(8px, 1.4vw, 18px);
-  --veloura-floating-radius: 24px;
+  --veloura-header-surface-radius: 0px;
 
   .veloura-header-grid,
   .veloura-store-logo,
@@ -1784,42 +1790,49 @@ html[dir="ltr"] .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul.mm-spn--parent {
     transition: min-height .25s ease, height .25s ease, max-height .25s ease,
       border-radius .25s ease, background-color .25s ease,
       box-shadow .25s ease, backdrop-filter .25s ease,
-      -webkit-backdrop-filter .25s ease;
+      -webkit-backdrop-filter .25s ease, inset .25s ease, top .25s ease;
   }
+}
+
+.store-header.veloura-top-enabled.veloura-top-border-sharp {
+  --veloura-header-surface-radius: 0px;
+}
+.store-header.veloura-top-enabled.veloura-top-border-soft {
+  --veloura-header-surface-radius: 12px;
+}
+.store-header.veloura-top-enabled.veloura-top-border-medium {
+  --veloura-header-surface-radius: 24px;
+}
+.store-header.veloura-top-enabled.veloura-top-border-large {
+  --veloura-header-surface-radius: 42px;
 }
 
 .store-header.veloura-top-enabled.veloura-top-floating {
-  padding: var(--veloura-floating-gap) var(--veloura-floating-gap) 0;
+  padding: var(--veloura-shell-gap) var(--veloura-shell-inline) 0 !important;
   background: transparent !important;
 
-  .main-nav-container,
+  #mainnav,
+  .main-nav-container {
+    width: 100% !important;
+    max-width: none !important;
+    background: transparent !important;
+  }
+
   .main-nav-container > .inner {
-    border-radius: var(--veloura-floating-radius) !important;
-    box-shadow: 0 12px 32px rgba(15, 23, 42, .12) !important;
+    width: 100% !important;
+    max-width: none !important;
+    border-radius: var(--veloura-header-surface-radius) !important;
+    overflow: hidden !important;
+    box-shadow:
+      0 16px 38px rgba(15, 23, 42, .14),
+      inset 0 1px 0 rgba(255, 255, 255, .24) !important;
   }
 
   #mainnav.fixed-pinned > .inner {
-    top: var(--veloura-floating-gap) !important;
-    inset-inline: var(--veloura-floating-gap) !important;
+    top: var(--veloura-shell-gap) !important;
+    inset-inline: var(--veloura-shell-inline) !important;
     width: auto !important;
-  }
-}
-
-/* عندما توجد التبويبات تصبح هي الحافة السفلية للمجموعة العائمة */
-body:has(.veloura-home-tabs) .store-header.veloura-top-enabled.veloura-top-floating {
-  .main-nav-container,
-  .main-nav-container > .inner {
-    border-end-start-radius: 0 !important;
-    border-end-end-radius: 0 !important;
-  }
-}
-
-.store-header.veloura-top-enabled.veloura-top-blur {
-  .main-nav-container,
-  .main-nav-container > .inner {
-    background: color-mix(in srgb, var(--veloura-top-bg) 78%, transparent) !important;
-    -webkit-backdrop-filter: blur(18px) saturate(145%);
-    backdrop-filter: blur(18px) saturate(145%);
+    border-radius: var(--veloura-header-surface-radius) !important;
   }
 }
 
@@ -1843,10 +1856,10 @@ body:has(.veloura-home-tabs) .store-header.veloura-top-enabled.veloura-top-float
   }
 }
 
-@media (max-width: 1023px) {
-  .store-header.veloura-top-enabled.veloura-top-floating {
-    --veloura-floating-gap: 8px;
-    --veloura-floating-radius: 20px;
+@media (max-width: 767px) {
+  :root {
+    --veloura-shell-gap: 10px;
+    --veloura-shell-inline: 10px;
   }
 
   .store-header.veloura-top-enabled.veloura-top-compact-on-scroll.veloura-top-scrolled {

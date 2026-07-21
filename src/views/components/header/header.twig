@@ -1,13 +1,24 @@
 {% set top_enabled = true %}
 
-{% set top_floating = theme.settings.get('veloura_top_floating_2026', false) %}
-{% if top_floating.value is defined %}{% set top_floating = top_floating.value %}{% endif %}
+{% set top_floating_raw = theme.settings.get('veloura_top_floating_2026', false) %}
+{% if top_floating_raw.value is defined %}{% set top_floating_raw = top_floating_raw.value %}{% endif %}
+{% if top_floating_raw.selected is defined %}{% set top_floating_raw = top_floating_raw.selected %}{% endif %}
+{% set top_floating = top_floating_raw == true or top_floating_raw == 'true' or top_floating_raw == 1 or top_floating_raw == '1' or top_floating_raw == 'on' %}
 
-{% set top_compact_on_scroll = theme.settings.get('veloura_top_compact_on_scroll_2026', false) %}
-{% if top_compact_on_scroll.value is defined %}{% set top_compact_on_scroll = top_compact_on_scroll.value %}{% endif %}
+{% set top_compact_raw = theme.settings.get('veloura_top_compact_on_scroll_2026', false) %}
+{% if top_compact_raw.value is defined %}{% set top_compact_raw = top_compact_raw.value %}{% endif %}
+{% if top_compact_raw.selected is defined %}{% set top_compact_raw = top_compact_raw.selected %}{% endif %}
+{% set top_compact_on_scroll = top_compact_raw == true or top_compact_raw == 'true' or top_compact_raw == 1 or top_compact_raw == '1' or top_compact_raw == 'on' %}
 
-{% set top_blur = theme.settings.get('veloura_top_blur_2026', false) %}
-{% if top_blur.value is defined %}{% set top_blur = top_blur.value %}{% endif %}
+{% set top_blur_raw = theme.settings.get('veloura_top_blur_2026', false) %}
+{% if top_blur_raw.value is defined %}{% set top_blur_raw = top_blur_raw.value %}{% endif %}
+{% if top_blur_raw.selected is defined %}{% set top_blur_raw = top_blur_raw.selected %}{% endif %}
+{% set top_blur = top_blur_raw == true or top_blur_raw == 'true' or top_blur_raw == 1 or top_blur_raw == '1' or top_blur_raw == 'on' %}
+
+{% set top_hide_on_scroll_raw = theme.settings.get('veloura_top_hide_on_scroll_2026', false) %}
+{% if top_hide_on_scroll_raw.value is defined %}{% set top_hide_on_scroll_raw = top_hide_on_scroll_raw.value %}{% endif %}
+{% if top_hide_on_scroll_raw.selected is defined %}{% set top_hide_on_scroll_raw = top_hide_on_scroll_raw.selected %}{% endif %}
+{% set top_hide_on_scroll = top_hide_on_scroll_raw == true or top_hide_on_scroll_raw == 'true' or top_hide_on_scroll_raw == 1 or top_hide_on_scroll_raw == '1' or top_hide_on_scroll_raw == 'on' %}
 
 
 {# Logo #}
@@ -134,7 +145,7 @@
   {{ top_logo_no_center_laptop ? 'veloura-top-logo-no-center-laptop' : '' }}
   {{ full_width_desktop ? 'veloura-top-full-width-desktop' : '' }}
   {{ hide_lang_desktop ? 'veloura-top-hide-lang-desktop' : '' }}
-  {{ theme.settings.get('veloura_top_hide_on_scroll_2026') ? 'veloura-hide-top-on-scroll' : '' }}
+  {{ top_hide_on_scroll ? 'veloura-hide-top-on-scroll' : '' }}
 
   veloura-top-border-{{ top_border }}
   veloura-top-icons-{{ icons_size }}
@@ -148,6 +159,7 @@
     --veloura-top-text: {{ top_text }};
     --veloura-top-cart-bg: {{ top_cart_bg }};
     --veloura-top-logo-size: {{ top_logo_size_px }}px;
+    --veloura-glass-tint: {{ top_bg }};
   "
 >
   <div id="mainnav" class="main-nav-container shadow-default bg-white">
