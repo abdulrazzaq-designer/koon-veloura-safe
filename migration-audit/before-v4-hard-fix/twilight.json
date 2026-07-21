@@ -1666,31 +1666,30 @@
       "type": "boolean",
       "icon": "sicon-airplay-screen",
       "label": "جعل الهيدر عائمًا",
-      "description": "يجعل الهيدر داخل الكونتينر بحواف كاملة ومسافة متساوية عن أطراف الشاشة.",
-      "id": "veloura_top_floating_v4_2026",
+      "description": "يجعل الهيدر داخل حدود الكونتينر مع مسافة علوية وجانبية وحواف كاملة",
+      "id": "veloura_top_floating_2026",
       "format": "switch",
       "required": false,
-      "value": true,
-      "selected": true,
+      "value": false,
+      "selected": false,
       "conditions": [
         {
           "id": "veloura_top_enabled_2026",
           "operation": "=",
           "value": true
         }
-      ],
-      "default": true
+      ]
     },
     {
       "type": "boolean",
       "icon": "sicon-compress",
       "label": "تصغير الهيدر العائم عند التمرير",
-      "description": "يقلل ارتفاع الهيدر بعد بدء التمرير مع بقاء الأزرار والشعار واضحة.",
-      "id": "veloura_top_compact_on_scroll_v4_2026",
+      "description": "يقل ارتفاع الهيدر والشعار بعد تثبيته أثناء النزول",
+      "id": "veloura_top_compact_on_scroll_2026",
       "format": "switch",
       "required": false,
-      "value": true,
-      "selected": true,
+      "value": false,
+      "selected": false,
       "conditions": [
         {
           "id": "veloura_top_enabled_2026",
@@ -1698,31 +1697,29 @@
           "value": true
         },
         {
-          "id": "veloura_top_floating_v4_2026",
+          "id": "veloura_top_floating_2026",
           "operation": "=",
           "value": true
         }
-      ],
-      "default": true
+      ]
     },
     {
       "type": "boolean",
       "icon": "sicon-eye",
       "label": "تفعيل الزجاج البلوري المحايد",
-      "description": "زجاج محايد خفيف قريب من أسلوب تيليجرام، ويُطبّق على التبويبات أيضًا.",
-      "id": "veloura_top_blur_v4_2026",
+      "description": "زجاج شفاف محايد بلمسة لون خفيفة جدًا من لون الهيدر، مع نفس التأثير المستخدم في التبويبات والقائمة العائمة",
+      "id": "veloura_top_blur_2026",
       "format": "switch",
       "required": false,
-      "value": true,
-      "selected": true,
+      "value": false,
+      "selected": false,
       "conditions": [
         {
           "id": "veloura_top_enabled_2026",
           "operation": "=",
           "value": true
         }
-      ],
-      "default": true
+      ]
     },
     {
       "id": "veloura_top_logo_size_2026",
@@ -1856,7 +1853,7 @@
       "id": "veloura_top_border_style_2026",
       "type": "items",
       "format": "dropdown-list",
-      "label": "حواف القسم العلوي",
+      "label": "الحواف السفلية للقسم العلوي222",
       "icon": "sicon-list",
       "source": "Manual",
       "required": true,
@@ -2227,9 +2224,9 @@
     {
       "type": "boolean",
       "format": "switch",
-      "id": "veloura_home_tabs_sticky_v4_2026",
+      "id": "veloura_home_tabs_sticky_2026",
       "label": "تثبيت شريط التبويبات أسفل الهيدر عند التمرير",
-      "description": "يلتصق أسفل الهيدر، وإذا اختفى الهيدر ينتقل إلى أعلى الشاشة دون فراغ.",
+      "description": "تلتصق التبويبات أسفل الهيدر الظاهر مع فاصل صغير، وتنتقل لأعلى الشاشة عند اختفاء الهيدر",
       "icon": "sicon-pin",
       "value": true,
       "selected": true,
@@ -2240,8 +2237,7 @@
           "operation": "=",
           "value": true
         }
-      ],
-      "default": true
+      ]
     },
     {
       "id": "veloura_home_tabs_bar_bg_2026",

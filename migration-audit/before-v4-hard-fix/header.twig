@@ -1,65 +1,25 @@
 {% set top_enabled = true %}
 
-{# Veloura V4: robust boolean reading. Do not overwrite a scalar value with a selected array. #}
-{% set top_floating_setting = theme.settings.get('veloura_top_floating_v4_2026', true) %}
-{% set top_floating_raw = top_floating_setting %}
-{% if top_floating_setting.value is defined %}
-  {% set top_floating_raw = top_floating_setting.value %}
-{% elseif top_floating_setting.selected is defined %}
-  {% if top_floating_setting.selected.value is defined %}
-    {% set top_floating_raw = top_floating_setting.selected.value %}
-  {% elseif top_floating_setting.selected is iterable and top_floating_setting.selected[0] is defined and top_floating_setting.selected[0].value is defined %}
-    {% set top_floating_raw = top_floating_setting.selected[0].value %}
-  {% else %}
-    {% set top_floating_raw = top_floating_setting.selected %}
-  {% endif %}
-{% endif %}
+{% set top_floating_raw = theme.settings.get('veloura_top_floating_2026', false) %}
+{% if top_floating_raw.value is defined %}{% set top_floating_raw = top_floating_raw.value %}{% endif %}
+{% if top_floating_raw.selected is defined %}{% set top_floating_raw = top_floating_raw.selected %}{% endif %}
 {% set top_floating = top_floating_raw == true or top_floating_raw == 'true' or top_floating_raw == 1 or top_floating_raw == '1' or top_floating_raw == 'on' %}
 
-{% set top_compact_setting = theme.settings.get('veloura_top_compact_on_scroll_v4_2026', true) %}
-{% set top_compact_raw = top_compact_setting %}
-{% if top_compact_setting.value is defined %}
-  {% set top_compact_raw = top_compact_setting.value %}
-{% elseif top_compact_setting.selected is defined %}
-  {% if top_compact_setting.selected.value is defined %}
-    {% set top_compact_raw = top_compact_setting.selected.value %}
-  {% elseif top_compact_setting.selected is iterable and top_compact_setting.selected[0] is defined and top_compact_setting.selected[0].value is defined %}
-    {% set top_compact_raw = top_compact_setting.selected[0].value %}
-  {% else %}
-    {% set top_compact_raw = top_compact_setting.selected %}
-  {% endif %}
-{% endif %}
+{% set top_compact_raw = theme.settings.get('veloura_top_compact_on_scroll_2026', false) %}
+{% if top_compact_raw.value is defined %}{% set top_compact_raw = top_compact_raw.value %}{% endif %}
+{% if top_compact_raw.selected is defined %}{% set top_compact_raw = top_compact_raw.selected %}{% endif %}
 {% set top_compact_on_scroll = top_compact_raw == true or top_compact_raw == 'true' or top_compact_raw == 1 or top_compact_raw == '1' or top_compact_raw == 'on' %}
 
-{% set top_blur_setting = theme.settings.get('veloura_top_blur_v4_2026', true) %}
-{% set top_blur_raw = top_blur_setting %}
-{% if top_blur_setting.value is defined %}
-  {% set top_blur_raw = top_blur_setting.value %}
-{% elseif top_blur_setting.selected is defined %}
-  {% if top_blur_setting.selected.value is defined %}
-    {% set top_blur_raw = top_blur_setting.selected.value %}
-  {% elseif top_blur_setting.selected is iterable and top_blur_setting.selected[0] is defined and top_blur_setting.selected[0].value is defined %}
-    {% set top_blur_raw = top_blur_setting.selected[0].value %}
-  {% else %}
-    {% set top_blur_raw = top_blur_setting.selected %}
-  {% endif %}
-{% endif %}
+{% set top_blur_raw = theme.settings.get('veloura_top_blur_2026', false) %}
+{% if top_blur_raw.value is defined %}{% set top_blur_raw = top_blur_raw.value %}{% endif %}
+{% if top_blur_raw.selected is defined %}{% set top_blur_raw = top_blur_raw.selected %}{% endif %}
 {% set top_blur = top_blur_raw == true or top_blur_raw == 'true' or top_blur_raw == 1 or top_blur_raw == '1' or top_blur_raw == 'on' %}
 
-{% set top_hide_setting = theme.settings.get('veloura_top_hide_on_scroll_2026', false) %}
-{% set top_hide_on_scroll_raw = top_hide_setting %}
-{% if top_hide_setting.value is defined %}
-  {% set top_hide_on_scroll_raw = top_hide_setting.value %}
-{% elseif top_hide_setting.selected is defined %}
-  {% if top_hide_setting.selected.value is defined %}
-    {% set top_hide_on_scroll_raw = top_hide_setting.selected.value %}
-  {% elseif top_hide_setting.selected is iterable and top_hide_setting.selected[0] is defined and top_hide_setting.selected[0].value is defined %}
-    {% set top_hide_on_scroll_raw = top_hide_setting.selected[0].value %}
-  {% else %}
-    {% set top_hide_on_scroll_raw = top_hide_setting.selected %}
-  {% endif %}
-{% endif %}
+{% set top_hide_on_scroll_raw = theme.settings.get('veloura_top_hide_on_scroll_2026', false) %}
+{% if top_hide_on_scroll_raw.value is defined %}{% set top_hide_on_scroll_raw = top_hide_on_scroll_raw.value %}{% endif %}
+{% if top_hide_on_scroll_raw.selected is defined %}{% set top_hide_on_scroll_raw = top_hide_on_scroll_raw.selected %}{% endif %}
 {% set top_hide_on_scroll = top_hide_on_scroll_raw == true or top_hide_on_scroll_raw == 'true' or top_hide_on_scroll_raw == 1 or top_hide_on_scroll_raw == '1' or top_hide_on_scroll_raw == 'on' %}
+
 
 {# Logo #}
 {% set light_logo_url = theme.settings.get('veloura_light_logo_url_2026') %}
@@ -194,11 +154,6 @@
   veloura-desktop-search-{{ desktop_search }}
   veloura-desktop-menu-{{ desktop_menu_mode }}
   "
-  data-veloura-header-v4="true"
-  data-veloura-floating="{{ top_floating ? 'true' : 'false' }}"
-  data-veloura-compact="{{ top_compact_on_scroll ? 'true' : 'false' }}"
-  data-veloura-blur="{{ top_blur ? 'true' : 'false' }}"
-  data-veloura-hide-scroll="{{ top_hide_on_scroll ? 'true' : 'false' }}"
   style="
     --veloura-top-bg: {{ top_bg }};
     --veloura-top-text: {{ top_text }};
