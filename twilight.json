@@ -6827,7 +6827,7 @@
     {
       "type": "boolean",
       "icon": "sicon-toggle-off",
-      "label": "تخصيص منتجات قد تعجبك",
+      "label": "تخصيص منتجات قد تعجبك111111",
       "id": "veloura_product_custom_related_enabled_2026",
       "format": "switch",
       "required": false,
