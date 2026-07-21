@@ -246,24 +246,24 @@
       "selected": false
     },
     {
-      "type": "static",
-      "format": "title",
-      "id": "veloura_general_settings_title_2026",
-      "value": "<div style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(135deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-archive-upload\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4\">الإعدادات العامة</strong></div></div>",
-      "variant": "h1",
-      "icon": "sicon-settings"
-    },
+  "id": "veloura_admin_colored_switches_style_2026",
+  "type": "static",
+  "format": "line",
+  "label": "",
+  "value": "<style id='veloura-admin-colored-switches-style'>.form--static-line:has(#veloura-admin-colored-switches-style),.form--static-title:has(#veloura-admin-colored-switches-style),.form--static-description:has(#veloura-admin-colored-switches-style){display:none!important}:is(s-toggle[name='veloura_general_enabled_2026'],s-toggle[name='veloura_loader_enable_2026'],s-toggle[name='veloura_dark_enabled_2026'],s-toggle[name='veloura_top_enabled_2026'],s-toggle[name='veloura_footer_enabled_2026'],s-toggle[name='veloura_side_categories_enabled_2026'],s-toggle[name='veloura_category_enabled_2026'],s-toggle[name='veloura_cat_banner_panel_open_2026'],s-toggle[name='veloura_cart_banners_enabled_2026'],s-toggle[name='veloura_product_card_enabled_2026'],s-toggle[name='veloura_product_page_enabled_2026'],s-toggle[name='veloura_mobile_floating_menu_enabled_2026']){display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;width:100%!important;min-height:65px!important;padding:10px 14px!important;margin:0!important;box-sizing:border-box!important;border-radius:9999px!important;background:linear-gradient(135deg,#004d65,#006b7a,#00a6a6)!important;color:#fff!important;font-size:22px!important;font-weight:800!important;line-height:1.4!important;text-align:right!important;direction:rtl!important;box-shadow:0 10px 25px rgba(0,77,101,.22)!important;--primary:38deg 100% 55%!important;--gray-400:0 0% 78%!important}:is(s-toggle[name='veloura_general_enabled_2026'],s-toggle[name='veloura_loader_enable_2026'],s-toggle[name='veloura_dark_enabled_2026'],s-toggle[name='veloura_top_enabled_2026'],s-toggle[name='veloura_footer_enabled_2026'],s-toggle[name='veloura_side_categories_enabled_2026'],s-toggle[name='veloura_category_enabled_2026'],s-toggle[name='veloura_cat_banner_panel_open_2026'],s-toggle[name='veloura_cart_banners_enabled_2026'],s-toggle[name='veloura_product_card_enabled_2026'],s-toggle[name='veloura_product_page_enabled_2026'],s-toggle[name='veloura_mobile_floating_menu_enabled_2026'])>i[slot='start']{display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 45px!important;width:45px!important;height:45px!important;min-width:45px!important;min-height:45px!important;padding:0!important;margin:0!important;border:0!important;border-radius:999px!important;background:#fff!important;color:#005369!important;font-size:25px!important;line-height:1!important}</style>",
+  "required": false
+},
     {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تفعيل الإعدادات العامة المتقدمة",
-      "description": "عند التفعيل ستظهر جميع خيارات التحكم العامة",
-      "id": "veloura_general_enabled_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true
-    },
+  "type": "boolean",
+  "format": "switch",
+  "id": "veloura_general_enabled_2026",
+  "label": "الإعدادات العامة",
+  "icon": "sicon-archive-upload",
+  "wide": true,
+  "required": false,
+  "value": true,
+  "selected": true
+},
     {
       "type": "static",
       "id": "veloura_general_line_2026",
@@ -661,23 +661,16 @@
       "format": "line"
     },
     {
-      "type": "static",
-      "format": "title",
-      "id": "veloura_loader_title_2026",
-      "value": "<div style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(135deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(0,77,101,.22)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class='sicon-timer'></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4\">صفحة التحميل</strong></div></div>",
-      "variant": "h6"
-    },
-    {
-      "type": "boolean",
-      "format": "switch",
-      "id": "veloura_loader_enable_2026",
-      "label": "تفعيل صفحة التحميل",
-      "description": "إظهار شاشة تحميل عند دخول الموقع",
-      "icon": "sicon-toggle-on",
-      "value": true,
-      "selected": true,
-      "required": false
-    },
+  "type": "boolean",
+  "format": "switch",
+  "id": "veloura_loader_enable_2026",
+  "label": "صفحة التحميل",
+  "icon": "sicon-timer",
+  "wide": true,
+  "required": false,
+  "value": true,
+  "selected": true
+},
     {
       "type": "static",
       "id": "veloura_loader_logo_line_2026",
@@ -1290,25 +1283,16 @@
       ]
     },
     {
-      "id": "veloura_dark_mode_header",
-      "type": "static",
-      "format": "title",
-      "label": "Title",
-      "value": "<div style=\"width:100%;padding:10px;border-radius:9999px;background: linear-gradient(135deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class='sicon-moon'></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4\">الوضع الداكن</strong></div></div>",
-      "variant": "h1",
-      "icon": "sicon-moon"
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تفعيل الوضع الداكن المتقدم",
-      "description": "عند التفعيل ستظهر جميع إعدادات الوضع الداكن",
-      "id": "veloura_dark_enabled_2026",
-      "format": "switch",
-      "required": false,
-      "value": false,
-      "selected": false
-    },
+  "type": "boolean",
+  "format": "switch",
+  "id": "veloura_dark_enabled_2026",
+  "label": "الوضع الداكن",
+  "icon": "sicon-moon",
+  "wide": true,
+  "required": false,
+  "value": false,
+  "selected": false
+},
     {
       "type": "static",
       "id": "veloura_dark_line_2026",
@@ -1597,24 +1581,16 @@
       ]
     },
     {
-      "type": "static",
-      "format": "description",
-      "id": "veloura_top_header_settings_title",
-      "label": " ",
-      "value": "<div style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(135deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-archive-upload\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4\">خيارات القسم العلوي</strong></div></div>",
-      "icon": "sicon-layout-header"
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تفعيل إعدادات القسم العلوي المتقدمة",
-      "description": "عند التفعيل ستظهر جميع خيارات تخصيص القسم العلوي",
-      "id": "veloura_top_enabled_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true
-    },
+  "type": "boolean",
+  "format": "switch",
+  "id": "veloura_top_enabled_2026",
+  "label": "خيارات القسم العلوي",
+  "icon": "sicon-archive-upload",
+  "wide": true,
+  "required": false,
+  "value": true,
+  "selected": true
+},
     {
       "type": "static",
       "id": "veloura_top_line_general_2026",
@@ -2184,23 +2160,16 @@
       ]
     },
     {
-      "type": "static",
-      "format": "title",
-      "id": "veloura_footer_settings_title_2026",
-      "value": "<div style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(135deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-archive-download\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4\">خيارات القسم السفلي</strong></div></div>",
-      "variant": "h1",
-      "icon": "sicon-layout-footer"
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تفعيل إعدادات القسم السفلي المتقدمة",
-      "id": "veloura_footer_enabled_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true
-    },
+  "type": "boolean",
+  "format": "switch",
+  "id": "veloura_footer_enabled_2026",
+  "label": "خيارات القسم السفلي",
+  "icon": "sicon-archive-download",
+  "wide": true,
+  "required": false,
+  "value": true,
+  "selected": true
+},
     {
       "type": "static",
       "id": "veloura_footer_line_general_2026",
@@ -3033,23 +3002,16 @@
       "icon": "sicon-minus"
     },
     {
-      "id": "veloura_side_categories_title_2026",
-      "type": "static",
-      "format": "title",
-      "label": "القائمة الجانبية للتصنيفات1111",
-      "value": "<div style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(135deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(0,77,101,.22)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class='sicon-menu'></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4\">القائمة الجانبية للتصنيفات</strong></div></div>",
-      "icon": "sicon-menu"
-    },
-    {
-      "id": "veloura_side_categories_enabled_2026",
-      "type": "boolean",
-      "format": "switch",
-      "label": "إظهار إعدادات القائمة الجانبية",
-      "description": "هذا الزر لإظهار أو إخفاء الإعدادات فقط من لوحة التحكم ولا يوقف التأثير من الواجهة",
-      "icon": "sicon-toggle-on",
-      "value": false,
-      "required": false
-    },
+  "type": "boolean",
+  "format": "switch",
+  "id": "veloura_side_categories_enabled_2026",
+  "label": "القائمة الجانبية للتصنيفات",
+  "icon": "sicon-menu",
+  "wide": true,
+  "required": false,
+  "value": false,
+  "selected": false
+},
     {
       "id": "veloura_side_categories_subtitle_general_2026",
       "type": "static",
@@ -3569,24 +3531,16 @@
       ]
     },
     {
-      "type": "static",
-      "format": "title",
-      "id": "veloura_category_settings_title_2026",
-      "value": "<div style=\"width:100%;padding:10px;border-radius:9999px;background: linear-gradient(135deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class='sicon-layout-grid'></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4\">خيارات صفحة التصنيف</strong></div></div>",
-      "variant": "h1",
-      "icon": "sicon-grid"
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "إظهار إعدادات صفحة التصنيف المتقدمة",
-      "description": "هذا الزر لإظهار أو إخفاء خيارات صفحة التصنيف داخل لوحة التحكم فقط، ولا يعطل تأثير الإعدادات على الموقع",
-      "id": "veloura_category_enabled_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true
-    },
+  "type": "boolean",
+  "format": "switch",
+  "id": "veloura_category_enabled_2026",
+  "label": "خيارات صفحة التصنيف",
+  "icon": "sicon-layout-grid",
+  "wide": true,
+  "required": false,
+  "value": true,
+  "selected": true
+},
     {
       "type": "static",
       "id": "veloura_category_line_general_2026",
@@ -4155,24 +4109,16 @@
       ]
     },
     {
-      "type": "static",
-      "format": "title",
-      "id": "veloura_cat_banner_settings_title_2026",
-      "value": "<div style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(135deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class='sicon-image'></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4\">بنرات صفحات التصنيفات</strong></div></div>",
-      "variant": "h1",
-      "icon": "sicon-image"
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "إظهار خيارات بنرات صفحات التصنيفات",
-      "description": "هذا الزر لإظهار أو إخفاء خيارات البنرات داخل لوحة التحكم فقط، ولا يعطل ظهور البنرات في المتجر.",
-      "id": "veloura_cat_banner_panel_open_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true
-    },
+  "type": "boolean",
+  "format": "switch",
+  "id": "veloura_cat_banner_panel_open_2026",
+  "label": "بنرات صفحات التصنيفات",
+  "icon": "sicon-image",
+  "wide": true,
+  "required": false,
+  "value": true,
+  "selected": true
+},
     {
       "type": "collection",
       "format": "collection",
@@ -4281,24 +4227,16 @@
       ]
     },
     {
-      "type": "static",
-      "format": "description",
-      "id": "veloura_cart_banners_settings_title_2026",
-      "label": " ",
-      "value": "<div style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(135deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-image\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4\">بنرات صفحة السلة</strong></div></div>",
-      "icon": "sicon-image"
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تفعيل بنرات صفحة السلة",
-      "description": "عند التفعيل تظهر بنرات مخصصة داخل صفحة السلة",
-      "id": "veloura_cart_banners_enabled_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true
-    },
+  "type": "boolean",
+  "format": "switch",
+  "id": "veloura_cart_banners_enabled_2026",
+  "label": "بنرات صفحة السلة",
+  "icon": "sicon-image",
+  "wide": true,
+  "required": false,
+  "value": true,
+  "selected": true
+},
     {
       "id": "veloura_cart_banners_title_2026",
       "type": "string",
@@ -4497,24 +4435,16 @@
       ]
     },
     {
-      "type": "static",
-      "format": "description",
-      "id": "veloura_product_card_settings_title_2026",
-      "label": " ",
-      "value": "<div style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(135deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class='sicon-braille-hand'></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4\">خيارات بطاقة المنتج</strong></div></div>",
-      "icon": "sicon-products"
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تفعيل إعدادات بطاقة المنتج",
-      "description": "عند التفعيل تظهر خيارات تخصيص بطاقة المنتج ويتم تطبيقها على بطاقات المنتجات",
-      "id": "veloura_product_card_enabled_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true
-    },
+  "type": "boolean",
+  "format": "switch",
+  "id": "veloura_product_card_enabled_2026",
+  "label": "خيارات بطاقة المنتج",
+  "icon": "sicon-braille-hand",
+  "wide": true,
+  "required": false,
+  "value": true,
+  "selected": true
+},
     {
       "type": "static",
       "id": "veloura_product_card_line_general_2026",
@@ -6076,23 +6006,16 @@
       ]
     },
     {
-      "type": "static",
-      "format": "title",
-      "id": "veloura_product_page_settings_title_2026",
-      "value": "<div style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(135deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class='sicon-tag'></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4\">بيانات صفحة المنتج</strong></div></div>",
-      "variant": "h1",
-      "icon": "sicon-tag"
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تفعيل إعدادات بيانات صفحة المنتج",
-      "id": "veloura_product_page_enabled_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true
-    },
+  "type": "boolean",
+  "format": "switch",
+  "id": "veloura_product_page_enabled_2026",
+  "label": "بيانات صفحة المنتج",
+  "icon": "sicon-tag",
+  "wide": true,
+  "required": false,
+  "value": true,
+  "selected": true
+},
     {
       "type": "static",
       "id": "veloura_product_page_line_main_2026",
@@ -6976,23 +6899,16 @@
       "icon": "sicon-minus"
     },
     {
-      "id": "veloura_mobile_floating_menu_title_2026",
-      "type": "static",
-      "format": "title",
-      "label": "قائمة الجوال العائمة",
-      "value": "<div style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(135deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(0,77,101,.22)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class='sicon-airplay-screen'></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4\">قائمة الجوال العائمة</strong></div></div>",
-      "icon": "sicon-mobile"
-    },
-    {
-      "id": "veloura_mobile_floating_menu_enabled_2026",
-      "type": "boolean",
-      "format": "switch",
-      "label": "تفعيل قائمة الجوال العائمة",
-      "description": "إظهار قائمة تنقل عائمة في أسفل شاشة الجوال",
-      "icon": "sicon-toggle-on",
-      "value": false,
-      "required": false
-    },
+  "type": "boolean",
+  "format": "switch",
+  "id": "veloura_mobile_floating_menu_enabled_2026",
+  "label": "قائمة الجوال العائمة",
+  "icon": "sicon-airplay-screen",
+  "wide": true,
+  "required": false,
+  "value": false,
+  "selected": false
+},
     {
       "id": "veloura_mobile_floating_menu_subtitle_general_2026",
       "type": "static",
