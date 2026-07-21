@@ -1,0 +1,102 @@
+/* ========================================================================
+   Veloura Header + Home Tabs V10 — full-width base + top-only reveal
+   ======================================================================== */
+
+/* Non-floating is the true base header: flush to top and both screen edges. */
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--floating) {
+  top: 0 !important;
+  padding-top: 0 !important;
+}
+
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--floating)::before {
+  opacity: 0 !important;
+}
+
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--floating) > .veloura-header-tabs-stack__container {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding-inline: 0 !important;
+}
+
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--floating) .veloura-header-tabs-stack__surface {
+  width: 100% !important;
+  max-width: none !important;
+  border-top: 0 !important;
+  border-inline: 0 !important;
+  border-radius: 0 0 var(--veloura-stack-radius-v8) var(--veloura-stack-radius-v8) !important;
+}
+
+/* Keep the base mode full-width before and after sticky activation. */
+html body .veloura-header-tabs-stack--sticky.veloura-stack-is-stuck:not(.veloura-header-tabs-stack--floating) {
+  top: 0 !important;
+  padding-top: 0 !important;
+}
+
+html body .veloura-header-tabs-stack--sticky.veloura-stack-is-stuck:not(.veloura-header-tabs-stack--floating) > .veloura-header-tabs-stack__container {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding-inline: 0 !important;
+}
+
+html body .veloura-header-tabs-stack--sticky.veloura-stack-is-stuck:not(.veloura-header-tabs-stack--floating) .veloura-header-tabs-stack__surface {
+  border-radius: 0 0 var(--veloura-stack-radius-v8) var(--veloura-stack-radius-v8) !important;
+}
+
+/* Floating mode remains inset inside the exact global container. */
+html body .veloura-header-tabs-stack--floating > .veloura-header-tabs-stack__container {
+  width: 100% !important;
+  max-width: var(--veloura-global-container, 1280px) !important;
+  margin-inline: auto !important;
+  padding-inline: var(--veloura-global-spacing, 12px) !important;
+  box-sizing: border-box !important;
+}
+
+/* Compact immediately and keep logo geometry stable: scale only, no size mutation. */
+html body .veloura-header-tabs-stack .store-header .veloura-header-grid {
+  transition: min-height .14s ease-out !important;
+}
+
+html body .veloura-header-tabs-stack .store-header .veloura-header-logo {
+  contain: layout paint;
+}
+
+html body .veloura-header-tabs-stack .store-header .veloura-store-logo,
+html body .veloura-header-tabs-stack .store-header .veloura-store-logo-video,
+html body .veloura-header-tabs-stack .store-header .navbar-brand img {
+  max-height: var(--veloura-top-logo-size) !important;
+  transform: translate3d(0, 0, 0) scale(1) !important;
+  transform-origin: center center !important;
+  backface-visibility: hidden !important;
+  will-change: transform;
+  transition: transform .14s ease-out !important;
+}
+
+html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-tabs-stack--compact-enabled .store-header.veloura-top-compact-on-scroll .veloura-store-logo,
+html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-tabs-stack--compact-enabled .store-header.veloura-top-compact-on-scroll .navbar-brand img {
+  max-height: var(--veloura-top-logo-size) !important;
+  transform: translate3d(0, 0, 0) scale(.82) !important;
+}
+
+html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-tabs-stack--compact-enabled .store-header.veloura-top-compact-on-scroll .veloura-store-logo-video {
+  height: var(--veloura-top-logo-size) !important;
+  max-height: var(--veloura-top-logo-size) !important;
+  transform: translate3d(0, 0, 0) scale(.82) !important;
+}
+
+/* Compact-disabled never inherits the old floating inset/full-screen mismatch. */
+html body .veloura-header-tabs-stack--compact-disabled .store-header .veloura-store-logo,
+html body .veloura-header-tabs-stack--compact-disabled .store-header .veloura-store-logo-video,
+html body .veloura-header-tabs-stack--compact-disabled .store-header .navbar-brand img {
+  transform: translate3d(0, 0, 0) scale(1) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body .veloura-header-tabs-stack .store-header .veloura-header-grid,
+  html body .veloura-header-tabs-stack .store-header .veloura-store-logo,
+  html body .veloura-header-tabs-stack .store-header .veloura-store-logo-video,
+  html body .veloura-header-tabs-stack .store-header .navbar-brand img {
+    transition: none !important;
+  }
+}

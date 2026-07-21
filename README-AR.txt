@@ -1,7 +1,6 @@
-Veloura Header + Tabs V9
+Veloura Header + Home Tabs V10
 
-- Single glass background layer only.
-- Removes bg-white/shadow layer from header wrappers.
-- Compact OFF: sticky stack becomes full width at top, sharp top corners, configured bottom corners.
-- Compact ON: stable visual logo scaling with hysteresis to prevent shaking.
-- Header and tabs remain one connected surface.
+- إلغاء الوضع العائم يعيد الهيدر بعرض الشاشة كاملاً وملتصقاً بالأعلى والحافتين الجانبيتين.
+- تبقى الحواف الدائرية في الأسفل حسب إعداد الحواف.
+- خيار الإخفاء لا يعيد الهيدر أو التبويبات عند صعود بسيط؛ يعيدهما فقط عند العودة إلى منطقة رأس الصفحة.
+- التصغير يبدأ فور تثبيت الهيدر، مع تصغير بصري ثابت للشعار لمنع الاهتزاز.

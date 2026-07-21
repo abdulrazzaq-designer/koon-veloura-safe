@@ -626,12 +626,12 @@ isElementLoaded(selector){
     const inner = this.element('#mainnav .inner');
     const tabs = this.element('[data-veloura-home-tabs]');
 
-    if (!stack || !storeHeader || !nav || !inner || stack.dataset.velouraStackV10Ready === 'true') {
+    if (!stack || !storeHeader || !nav || !inner || stack.dataset.velouraStackV9Ready === 'true') {
       return;
     }
 
-    stack.dataset.velouraStackV10Ready = 'true';
-    document.documentElement.classList.add('veloura-header-stack-v10-loaded');
+    stack.dataset.velouraStackV9Ready = 'true';
+    document.documentElement.classList.add('veloura-header-stack-v9-loaded');
 
     const toBoolean = (value, fallback = false) => {
       if (value === undefined || value === null || value === '') return fallback;
@@ -646,7 +646,7 @@ isElementLoaded(selector){
       toBoolean(config.sticky, toBoolean(window.header_is_sticky, true))
     );
     const floatingEnabled = toBoolean(config.floating, storeHeader.dataset.velouraFloating === 'true');
-    const compactEnabled = floatingEnabled && toBoolean(config.compact, storeHeader.dataset.velouraCompact === 'true');
+    const compactEnabled = toBoolean(config.compact, storeHeader.dataset.velouraCompact === 'true');
     const blurEnabled = toBoolean(config.blur, storeHeader.dataset.velouraBlur === 'true');
     const hideHeaderOnScroll = toBoolean(
       stack.dataset.velouraHideHeader,
@@ -691,6 +691,7 @@ isElementLoaded(selector){
     let frame = 0;
     let headerHidden = false;
     let tabsHidden = false;
+    let compactState = false;
 
     const dispatchState = (sticky, scrolled) => {
       const surface = stack.querySelector('.veloura-header-tabs-stack__surface') || stack;
@@ -726,27 +727,34 @@ isElementLoaded(selector){
       const delta = currentY - lastScrollY;
       const stuck = stickyEnabled && currentY >= triggerTop;
 
-      // V10: compact immediately when the connected stack becomes sticky.
-      // It remains compact until the stack returns to its original top position,
-      // which avoids threshold oscillation and logo jitter.
-      const scrolled = compactEnabled && stuck;
+      // Hysteresis prevents logo/header oscillation around the sticky threshold.
+      // The logo is scaled visually in CSS, so its layout box never jumps.
+      const compactEnterY = triggerTop + 104;
+      const compactExitY = triggerTop + 28;
+      if (!stuck || !compactEnabled) {
+        compactState = false;
+      } else if (!compactState && currentY >= compactEnterY) {
+        compactState = true;
+      } else if (compactState && currentY <= compactExitY) {
+        compactState = false;
+      }
+
+      const scrolled = compactEnabled && compactState;
 
       stack.classList.toggle('veloura-stack-is-stuck', stuck);
       stack.classList.toggle('veloura-stack-is-scrolled', scrolled);
       storeHeader.classList.toggle('veloura-top-scrolled', scrolled);
       storeHeader.classList.toggle('veloura-sticky-active', stuck);
 
-      // V10 hide policy: once hidden while scrolling down, header/tabs do not
-      // reappear on a small upward scroll. They return only when the visitor
-      // reaches the original top/header area again.
-      const returnedToHeaderTop = !stuck || currentY <= Math.max(4, triggerTop + 2);
-
-      if (returnedToHeaderTop) {
+      if (!stuck || currentY <= triggerTop + 36) {
         headerHidden = false;
         tabsHidden = false;
       } else if (delta > 4) {
         if (hideHeaderOnScroll) headerHidden = true;
         if (hideTabsOnScroll) tabsHidden = true;
+      } else if (delta < -4) {
+        headerHidden = false;
+        tabsHidden = false;
       }
 
       applyVisibility();
