@@ -1,0 +1,147 @@
+/* ========================================================================
+   Veloura Header + Home Tabs V9 — single surface + stable sticky geometry
+   ======================================================================== */
+
+:root {
+  --veloura-stack-glass-v9: rgba(224, 232, 241, .72);
+  --veloura-stack-glass-dark-v9: rgba(25, 36, 52, .78);
+  --veloura-stack-border-v9: rgba(255, 255, 255, .72);
+  --veloura-stack-filter-v9: blur(22px) saturate(135%);
+}
+
+/* The surface is the only background layer. Header and tabs stay transparent. */
+html body .veloura-header-tabs-stack__surface {
+  background: var(--veloura-stack-solid-bg-v9, #fff) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
+  background: var(--veloura-stack-glass-v9) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: var(--veloura-stack-filter-v9) !important;
+  backdrop-filter: var(--veloura-stack-filter-v9) !important;
+}
+
+html.dark body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
+html body.dark .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
+  background: var(--veloura-stack-glass-dark-v9) !important;
+}
+
+/* Remove the legacy bg-white/bg-inherit/blur layers from structural wrappers. */
+html body .veloura-header-tabs-stack .store-header,
+html body .veloura-header-tabs-stack .store-header::before,
+html body .veloura-header-tabs-stack .store-header::after,
+html body .veloura-header-tabs-stack #mainnav,
+html body .veloura-header-tabs-stack #mainnav::before,
+html body .veloura-header-tabs-stack #mainnav::after,
+html body .veloura-header-tabs-stack #mainnav > .inner,
+html body .veloura-header-tabs-stack #mainnav > .inner::before,
+html body .veloura-header-tabs-stack #mainnav > .inner::after,
+html body .veloura-header-tabs-stack .veloura-header-container,
+html body .veloura-header-tabs-stack .veloura-header-grid,
+html body .veloura-header-tabs-stack .veloura-home-tabs,
+html body .veloura-header-tabs-stack .veloura-home-tabs > .container,
+html body .veloura-header-tabs-stack .veloura-home-tabs__track {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+/* Full sticky mode when compact-on-scroll is disabled:
+   flush to top/left/right, sharp top corners, configured radius only below. */
+html body .veloura-header-tabs-stack--sticky.veloura-stack-is-stuck.veloura-header-tabs-stack--compact-disabled {
+  top: 0 !important;
+  padding-top: 0 !important;
+}
+
+html body .veloura-header-tabs-stack--sticky.veloura-stack-is-stuck.veloura-header-tabs-stack--compact-disabled::before {
+  opacity: 0;
+}
+
+html body .veloura-header-tabs-stack--sticky.veloura-stack-is-stuck.veloura-header-tabs-stack--compact-disabled > .veloura-header-tabs-stack__container {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding-inline: 0 !important;
+}
+
+html body .veloura-header-tabs-stack--sticky.veloura-stack-is-stuck.veloura-header-tabs-stack--compact-disabled .veloura-header-tabs-stack__surface {
+  width: 100% !important;
+  border-top: 0 !important;
+  border-inline: 0 !important;
+  border-radius: 0 0 var(--veloura-stack-radius-v8) var(--veloura-stack-radius-v8) !important;
+}
+
+/* Compact mode remains floating/inset. Non-compact mode never changes header height. */
+html body .veloura-header-tabs-stack .store-header .veloura-header-grid {
+  transition: min-height .24s cubic-bezier(.22, 1, .36, 1) !important;
+}
+
+html body .veloura-header-tabs-stack .store-header .veloura-store-logo,
+html body .veloura-header-tabs-stack .store-header .veloura-store-logo-video,
+html body .veloura-header-tabs-stack .store-header .navbar-brand img {
+  transform: translateZ(0) scale(1) !important;
+  transform-origin: center center !important;
+  backface-visibility: hidden;
+  will-change: transform;
+  transition: transform .24s cubic-bezier(.22, 1, .36, 1) !important;
+}
+
+/* Override V8's max-height mutation: visual scale avoids layout feedback/jitter. */
+html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-tabs-stack--compact-enabled .store-header.veloura-top-compact-on-scroll .veloura-store-logo,
+html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-tabs-stack--compact-enabled .store-header.veloura-top-compact-on-scroll .navbar-brand img {
+  max-height: var(--veloura-top-logo-size) !important;
+  transform: translateZ(0) scale(.82) !important;
+}
+
+html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-tabs-stack--compact-enabled .store-header.veloura-top-compact-on-scroll .veloura-store-logo-video {
+  height: var(--veloura-top-logo-size) !important;
+  max-height: var(--veloura-top-logo-size) !important;
+  transform: translateZ(0) scale(.82) !important;
+}
+
+html body .veloura-header-tabs-stack--compact-disabled .store-header .veloura-header-grid {
+  min-height: 78px !important;
+}
+
+@media (max-width: 1023px) {
+  html body .veloura-header-tabs-stack--compact-disabled .store-header .veloura-header-grid {
+    min-height: 72px !important;
+  }
+}
+
+/* Keep the joined edge exact and shadow-free. */
+html body .veloura-header-tabs-stack--has-tabs .store-header,
+html body .veloura-header-tabs-stack--has-tabs .store-header #mainnav,
+html body .veloura-header-tabs-stack--has-tabs .store-header #mainnav > .inner {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+html body .veloura-header-tabs-stack--has-tabs .veloura-home-tabs {
+  margin-top: 0 !important;
+  border-top: 1px solid rgba(15, 23, 42, .09) !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
+    background: rgba(224, 232, 241, .96) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body .veloura-header-tabs-stack .store-header .veloura-header-grid,
+  html body .veloura-header-tabs-stack .store-header .veloura-store-logo,
+  html body .veloura-header-tabs-stack .store-header .veloura-store-logo-video,
+  html body .veloura-header-tabs-stack .store-header .navbar-brand img {
+    transition: none !important;
+  }
+}

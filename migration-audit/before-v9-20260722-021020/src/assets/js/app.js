@@ -626,12 +626,12 @@ isElementLoaded(selector){
     const inner = this.element('#mainnav .inner');
     const tabs = this.element('[data-veloura-home-tabs]');
 
-    if (!stack || !storeHeader || !nav || !inner || stack.dataset.velouraStackV9Ready === 'true') {
+    if (!stack || !storeHeader || !nav || !inner || stack.dataset.velouraStackV8Ready === 'true') {
       return;
     }
 
-    stack.dataset.velouraStackV9Ready = 'true';
-    document.documentElement.classList.add('veloura-header-stack-v9-loaded');
+    stack.dataset.velouraStackV8Ready = 'true';
+    document.documentElement.classList.add('veloura-header-stack-v8-loaded');
 
     const toBoolean = (value, fallback = false) => {
       if (value === undefined || value === null || value === '') return fallback;
@@ -660,12 +660,9 @@ isElementLoaded(selector){
     stack.classList.toggle('veloura-header-tabs-stack--sticky', stickyEnabled);
     stack.classList.toggle('veloura-header-tabs-stack--floating', floatingEnabled);
     stack.classList.toggle('veloura-header-tabs-stack--blur', blurEnabled);
-    stack.classList.toggle('veloura-header-tabs-stack--compact-enabled', compactEnabled);
-    stack.classList.toggle('veloura-header-tabs-stack--compact-disabled', !compactEnabled);
     stack.dataset.velouraSticky = stickyEnabled ? 'true' : 'false';
     stack.dataset.velouraHideHeader = hideHeaderOnScroll ? 'true' : 'false';
     stack.dataset.velouraHideTabs = hideTabsOnScroll ? 'true' : 'false';
-    stack.dataset.velouraCompact = compactEnabled ? 'true' : 'false';
 
     storeHeader.classList.toggle('veloura-top-floating', floatingEnabled);
     storeHeader.classList.toggle('veloura-top-compact-on-scroll', compactEnabled);
@@ -691,7 +688,6 @@ isElementLoaded(selector){
     let frame = 0;
     let headerHidden = false;
     let tabsHidden = false;
-    let compactState = false;
 
     const dispatchState = (sticky, scrolled) => {
       const surface = stack.querySelector('.veloura-header-tabs-stack__surface') || stack;
@@ -725,21 +721,8 @@ isElementLoaded(selector){
 
       const currentY = Math.max(0, window.scrollY || window.pageYOffset || 0);
       const delta = currentY - lastScrollY;
+      const scrolled = currentY > triggerTop + 6;
       const stuck = stickyEnabled && currentY >= triggerTop;
-
-      // Hysteresis prevents logo/header oscillation around the sticky threshold.
-      // The logo is scaled visually in CSS, so its layout box never jumps.
-      const compactEnterY = triggerTop + 104;
-      const compactExitY = triggerTop + 28;
-      if (!stuck || !compactEnabled) {
-        compactState = false;
-      } else if (!compactState && currentY >= compactEnterY) {
-        compactState = true;
-      } else if (compactState && currentY <= compactExitY) {
-        compactState = false;
-      }
-
-      const scrolled = compactEnabled && compactState;
 
       stack.classList.toggle('veloura-stack-is-stuck', stuck);
       stack.classList.toggle('veloura-stack-is-scrolled', scrolled);

@@ -2153,16 +2153,13 @@
 
 <div class="app-inner flex flex-col min-h-full">
     {% hook 'body:start' %}
-{# VELOURA HEADER + HOME TABS CONNECTED STACK V9 START #}
+{# VELOURA HEADER + HOME TABS CONNECTED STACK V8 START #}
 {% set vht_enabled = false %}
 {% set vht_sticky = true %}
 {% set vht_hide_on_scroll = false %}
 {% set vht_items = [] %}
 {% set vht_header_floating = vh_floating %}
 {% set vht_header_blur = vh_blur %}
-{% set vht_header_bg = theme.settings.get('veloura_top_bg_color_2026', '#ffffff') %}
-{% if vht_header_bg.value is defined %}{% set vht_header_bg = vht_header_bg.value %}{% endif %}
-
 {% set vht_top_border = theme.settings.get('veloura_top_border_style_2026', 'medium') %}
 {% if vht_top_border.selected is defined and vht_top_border.selected[0].value is defined %}
   {% set vht_top_border = vht_top_border.selected[0].value %}
@@ -2205,13 +2202,11 @@
 
 <div
   id="veloura-header-tabs-stack"
-  class="veloura-header-tabs-stack{{ vht_stack_sticky ? ' veloura-header-tabs-stack--sticky' : '' }}{{ vh_floating ? ' veloura-header-tabs-stack--floating' : '' }}{{ vh_blur ? ' veloura-header-tabs-stack--blur' : '' }}{{ vh_compact ? ' veloura-header-tabs-stack--compact-enabled' : ' veloura-header-tabs-stack--compact-disabled' }} veloura-header-tabs-stack--radius-{{ vht_top_border }}{{ vht_has_tabs ? ' veloura-header-tabs-stack--has-tabs' : '' }}"
+  class="veloura-header-tabs-stack{{ vht_stack_sticky ? ' veloura-header-tabs-stack--sticky' : '' }}{{ vh_floating ? ' veloura-header-tabs-stack--floating' : '' }}{{ vh_blur ? ' veloura-header-tabs-stack--blur' : '' }} veloura-header-tabs-stack--radius-{{ vht_top_border }}{{ vht_has_tabs ? ' veloura-header-tabs-stack--has-tabs' : '' }}"
   data-veloura-header-tabs-stack
   data-veloura-sticky="{{ vht_stack_sticky ? 'true' : 'false' }}"
   data-veloura-hide-header="{{ vh_hide ? 'true' : 'false' }}"
   data-veloura-hide-tabs="{{ vht_hide_on_scroll ? 'true' : 'false' }}"
-  data-veloura-compact="{{ vh_compact ? 'true' : 'false' }}"
-  style="--veloura-stack-solid-bg-v9: {{ vht_header_bg }};"
 >
   <div class="veloura-header-tabs-stack__container container">
     <div class="veloura-header-tabs-stack__surface">
@@ -2265,7 +2260,7 @@
     </div>
   </div>
 </div>
-{# VELOURA HEADER + HOME TABS CONNECTED STACK V9 END #}
+{# VELOURA HEADER + HOME TABS CONNECTED STACK V8 END #}
     <main id="main-content" role="main">
       {% block content %}{% endblock %}
     </main>
