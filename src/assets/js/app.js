@@ -2700,26 +2700,45 @@ document.addEventListener('DOMContentLoaded', () => {
 const initVelouraHomeTabs = (() => {
   let observer = null;
   let resizeObserver = null;
-  let resizeHandlerBound = false;
+  let frame = 0;
+  let listenersBound = false;
 
-  const normalizeBool = value => {
-    return value === true || value === 'true' || value === 1 || value === '1' || value === 'on';
-  };
+  const normalizeTabName = value => String(value || '')
+    .normalize('NFKC')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLocaleLowerCase('ar');
 
-  const getHeader = () => {
-    return document.querySelector('.app-inner > header, header.store-header, header');
+  const getVisibleFixedHeaderBottom = () => {
+    const header = document.querySelector('.store-header');
+    const navInner = document.querySelector('#mainnav > .inner, #mainnav .inner');
+    if (!header || !navInner || header.classList.contains('veloura-top-hidden')) return 0;
+
+    const style = window.getComputedStyle(navInner);
+    if (style.position !== 'fixed') return 0;
+
+    const rect = navInner.getBoundingClientRect();
+    if (rect.bottom <= 0 || rect.top >= window.innerHeight) return 0;
+
+    return Math.max(0, Math.round(rect.bottom));
   };
 
   const updateStickyOffset = bar => {
     if (!bar?.classList.contains('veloura-home-tabs--sticky')) return;
 
-    const header = getHeader();
-    const headerSticky = normalizeBool(window.header_is_sticky);
-    const height = header && headerSticky
-      ? Math.max(0, Math.round(header.getBoundingClientRect().height))
-      : 0;
+    const top = getVisibleFixedHeaderBottom();
+    bar.style.setProperty('--veloura-tabs-sticky-top', `${top}px`);
+    bar.classList.toggle('veloura-home-tabs--attached-to-header', top > 0);
+    bar.classList.toggle('veloura-home-tabs--at-top', top === 0);
+  };
 
-    bar.style.setProperty('--veloura-tabs-sticky-top', `${height}px`);
+  const scheduleOffsetUpdate = () => {
+    if (frame) return;
+    frame = window.requestAnimationFrame(() => {
+      frame = 0;
+      const bar = document.querySelector('[data-veloura-home-tabs]');
+      if (bar) updateStickyOffset(bar);
+    });
   };
 
   const setupStickyOffset = bar => {
@@ -2727,36 +2746,42 @@ const initVelouraHomeTabs = (() => {
 
     if (resizeObserver) resizeObserver.disconnect();
     if ('ResizeObserver' in window) {
-      resizeObserver = new ResizeObserver(() => updateStickyOffset(bar));
-      const header = getHeader();
+      resizeObserver = new ResizeObserver(scheduleOffsetUpdate);
+      const header = document.querySelector('.store-header');
+      const navInner = document.querySelector('#mainnav > .inner, #mainnav .inner');
       if (header) resizeObserver.observe(header);
+      if (navInner) resizeObserver.observe(navInner);
       resizeObserver.observe(bar);
     }
 
-    if (!resizeHandlerBound) {
-      resizeHandlerBound = true;
-      window.addEventListener('resize', () => {
-        const currentBar = document.querySelector('[data-veloura-home-tabs]');
-        if (currentBar) updateStickyOffset(currentBar);
-      }, { passive: true });
+    if (!listenersBound) {
+      listenersBound = true;
+      window.addEventListener('scroll', scheduleOffsetUpdate, { passive: true });
+      window.addEventListener('resize', scheduleOffsetUpdate, { passive: true });
+      document.addEventListener('transitionend', scheduleOffsetUpdate, true);
     }
   };
 
-  const collectComponents = () => {
-    return Array.from(document.querySelectorAll('[data-veloura-home-tab]'));
-  };
+  const collectComponents = () => Array.from(document.querySelectorAll('[data-veloura-home-tab]'));
 
-  const setActiveTab = (bar, target, focusButton = false) => {
+  const setActiveTab = (bar, requestedTarget, focusButton = false) => {
     const buttons = Array.from(bar.querySelectorAll('[data-veloura-tab-target]'));
-    const validTargets = new Set(buttons.map(button => button.dataset.velouraTabTarget));
-    const activeTarget = validTargets.has(target)
-      ? target
-      : buttons[0]?.dataset.velouraTabTarget;
-
-    if (!activeTarget) return;
+    const buttonMap = new Map();
 
     buttons.forEach(button => {
-      const active = button.dataset.velouraTabTarget === activeTarget;
+      const key = normalizeTabName(button.dataset.velouraTabTarget);
+      if (key && !buttonMap.has(key)) buttonMap.set(key, button);
+    });
+
+    const requestedKey = normalizeTabName(requestedTarget);
+    const activeKey = buttonMap.has(requestedKey)
+      ? requestedKey
+      : buttonMap.keys().next().value;
+
+    if (!activeKey) return;
+
+    buttons.forEach(button => {
+      const active = normalizeTabName(button.dataset.velouraTabTarget) === activeKey;
       button.classList.toggle('is-active', active);
       button.setAttribute('aria-selected', active ? 'true' : 'false');
       button.tabIndex = active ? 0 : -1;
@@ -2764,17 +2789,17 @@ const initVelouraHomeTabs = (() => {
     });
 
     collectComponents().forEach(component => {
-      const assigned = component.dataset.velouraHomeTab || 'always';
-      const show = assigned === 'always' || !validTargets.has(assigned) || assigned === activeTarget;
+      const assigned = normalizeTabName(component.dataset.velouraHomeTab);
+      const show = !assigned || assigned === 'always' || !buttonMap.has(assigned) || assigned === activeKey;
 
       component.hidden = !show;
       component.classList.toggle('veloura-home-tab-is-hidden', !show);
       component.setAttribute('aria-hidden', show ? 'false' : 'true');
     });
 
-    bar.dataset.velouraActiveTab = activeTarget;
+    bar.dataset.velouraActiveTab = activeKey;
     document.dispatchEvent(new CustomEvent('veloura:home-tabs:change', {
-      detail: { tab: activeTarget }
+      detail: { tab: activeKey }
     }));
   };
 
@@ -2825,7 +2850,8 @@ const initVelouraHomeTabs = (() => {
     }
 
     setupStickyOffset(bar);
-    setActiveTab(bar, bar.dataset.velouraActiveTab || bar.querySelector('[data-veloura-tab-target]')?.dataset.velouraTabTarget);
+    const firstTarget = bar.querySelector('[data-veloura-tab-target]')?.dataset.velouraTabTarget;
+    setActiveTab(bar, bar.dataset.velouraActiveTab || firstTarget);
 
     if (observer) observer.disconnect();
     const main = document.getElementById('main-content');
@@ -2833,13 +2859,13 @@ const initVelouraHomeTabs = (() => {
       observer = new MutationObserver(() => {
         window.requestAnimationFrame(() => {
           const currentBar = document.querySelector('[data-veloura-home-tabs]');
-          if (currentBar) {
-            setActiveTab(currentBar, currentBar.dataset.velouraActiveTab);
-          }
+          if (currentBar) setActiveTab(currentBar, currentBar.dataset.velouraActiveTab);
         });
       });
       observer.observe(main, { childList: true, subtree: true });
     }
+
+    scheduleOffsetUpdate();
   };
 
   return init;

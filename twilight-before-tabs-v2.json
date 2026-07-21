@@ -1649,79 +1649,6 @@
       ]
     },
     {
-      "type": "static",
-      "format": "title",
-      "id": "veloura_top_subtitle_floating_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#ecfeff;color:#155e75;text-align:right;font-weight:800;border-right:4px solid #06b6d4\">الهيدر العائم والبلوري</div>",
-      "variant": "h6",
-      "conditions": [
-        {
-          "id": "veloura_top_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-airplay-screen",
-      "label": "جعل الهيدر عائمًا",
-      "description": "يظهر الهيدر بهوامش جانبية وحواف كاملة بدل الالتصاق بحواف الشاشة",
-      "id": "veloura_top_floating_2026",
-      "format": "switch",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_top_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-compress",
-      "label": "تصغير الهيدر العائم عند التمرير",
-      "description": "يقل ارتفاع الهيدر والشعار بعد النزول لتحرير مساحة أكبر للمحتوى",
-      "id": "veloura_top_compact_on_scroll_2026",
-      "format": "switch",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_top_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_top_floating_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-eye",
-      "label": "تفعيل التأثير البلوري للهيدر",
-      "description": "يضيف شفافية وبلورًا للخلفية مع المحافظة على وضوح النص والأيقونات",
-      "id": "veloura_top_blur_2026",
-      "format": "switch",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_top_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "id": "veloura_top_logo_size_2026",
       "type": "number",
       "format": "slider",
@@ -2329,7 +2256,7 @@
       "type": "collection",
       "format": "collection",
       "label": "تبويبات الصفحة الرئيسية",
-      "description": "أضف من تبويب واحد إلى 10 تبويبات. استخدم اسمًا مختلفًا لكل تبويب لأن ربط العناصر يتم بالاسم.",
+      "description": "أضف من تبويب واحد إلى 10 تبويبات. ترتيب العناصر هنا هو ترتيبها في الشريط.",
       "icon": "sicon-list-add",
       "value": [],
       "required": false,
@@ -2355,31 +2282,14 @@
           "maxLength": 40
         },
         {
-          "id": "show_icon",
-          "type": "boolean",
-          "format": "switch",
-          "label": "إضافة أيقونة",
-          "icon": "sicon-toggle-off",
-          "value": false,
-          "selected": false,
-          "required": false
-        },
-        {
           "id": "icon",
           "type": "string",
           "format": "icon",
-          "label": "الأيقونة",
-          "description": "تظهر بجانب اسم التبويب في الشريط",
+          "label": "أيقونة التبويب — اختيارية",
+          "description": "اتركها فارغة لعرض اسم التبويب بدون أيقونة",
           "icon": "sicon-star",
           "value": "",
-          "required": false,
-          "conditions": [
-            {
-              "id": "show_icon",
-              "operation": "=",
-              "value": true
-            }
-          ]
+          "required": false
         }
       ]
     },
@@ -7920,16 +7830,82 @@
       "path": "home.enhanced-slider",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "type": "static",
@@ -8033,16 +8009,82 @@
       "image": "https://cdn.salla.network/images/themes/raed/main-links-with-bg.jpg?v=1.1",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "type": "static",
@@ -8300,16 +8342,82 @@
       "image": "https://cdn.salla.network/images/themes/raed/preview-images/slider-products-with-bg.png?v=1.1",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "type": "static",
@@ -8454,16 +8562,82 @@
       "path": "home.enhanced-square-banners",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "id": "title",
@@ -9079,16 +9253,82 @@
       "path": "home.ultra-square-images",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "id": "ultra_title_general",
@@ -9786,16 +10026,82 @@
       "path": "home.animated-banners",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "id": "title",
@@ -10411,16 +10717,82 @@
       "path": "home.store-features-veloura",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "id": "title",
@@ -10919,16 +11291,82 @@
       "path": "home.faq-veloura",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "id": "veloura_faq_title",
@@ -11241,16 +11679,82 @@
       "path": "home.veloura-title-block",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "id": "veloura_title_text",
@@ -11520,16 +12024,82 @@
       "path": "home.veloura-spacer",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "id": "veloura_spacer_mobile",
@@ -11612,16 +12182,82 @@
       "path": "home.veloura-products",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "id": "veloura_products_options_title",
@@ -12055,16 +12691,82 @@
       "path": "home.veloura-quick-links",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "id": "veloura_quick_options_title",
@@ -12420,16 +13122,82 @@
       "path": "home.veloura-animated-articles",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "id": "veloura_articles_options_title",
@@ -12725,16 +13493,82 @@
       "path": "home.veloura-branches",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "id": "veloura_branches_options_title",
@@ -12922,16 +13756,82 @@
       "path": "home.veloura-brands",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "id": "veloura_brands_options_title",
@@ -13172,16 +14072,82 @@
       "path": "home.veloura-before-after",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "id": "veloura_before_after_options_title",
@@ -13399,16 +14365,82 @@
       "path": "home.veloura-testimonials",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "id": "veloura_testimonials_options_title",
@@ -13742,16 +14774,82 @@
       "path": "home.about-us-veloura",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "id": "veloura_about_options_title",
@@ -14263,16 +15361,82 @@
       "path": "home.veloura-popup",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "id": "veloura_popup_content_title",
@@ -14670,16 +15834,82 @@
       "path": "home.veloura-purchase-steps",
       "fields": [
         {
-          "id": "veloura_home_tab_name_2026",
-          "type": "string",
-          "format": "text",
-          "label": "اسم التبويب الذي يظهر فيه العنصر",
-          "description": "اكتب اسم التبويب نفسه الموجود في قسم تبويبات الصفحة الرئيسية. اتركه فارغًا ليظهر العنصر دائمًا.",
-          "placeholder": "مثال: العطور",
+          "id": "veloura_home_tab_2026",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "إظهار هذا العنصر في",
+          "description": "اختر التبويب الذي يظهر فيه العنصر. خيار «يظهر دائمًا» يبقيه ظاهرًا مع جميع التبويبات.",
           "icon": "sicon-layout-grid",
-          "value": "",
+          "source": "Manual",
+          "multichoice": false,
+          "searchable": false,
           "required": false,
-          "maxLength": 40
+          "value": "always",
+          "default": "always",
+          "selected": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            }
+          ],
+          "options": [
+            {
+              "label": "يظهر دائمًا",
+              "value": "always",
+              "key": "56f39d2b-e816-4a16-8ffb-f5636a5c04c5"
+            },
+            {
+              "label": "التبويب 1",
+              "value": "tab_1",
+              "key": "2d21ea17-1035-4c72-bbc0-9c42917474d4"
+            },
+            {
+              "label": "التبويب 2",
+              "value": "tab_2",
+              "key": "38249a8f-29ea-45d6-a197-9be07ac7a5e1"
+            },
+            {
+              "label": "التبويب 3",
+              "value": "tab_3",
+              "key": "a19b4e28-4d46-40a3-81c7-d3153bc7e072"
+            },
+            {
+              "label": "التبويب 4",
+              "value": "tab_4",
+              "key": "68c3ce7b-86ff-4505-9371-2f3adfcccc3e"
+            },
+            {
+              "label": "التبويب 5",
+              "value": "tab_5",
+              "key": "d6f409e1-b478-4b34-983e-a1758ab3ee79"
+            },
+            {
+              "label": "التبويب 6",
+              "value": "tab_6",
+              "key": "fdbe93c7-fd43-4d9d-8ff9-34c779aa5199"
+            },
+            {
+              "label": "التبويب 7",
+              "value": "tab_7",
+              "key": "1182f57c-fc43-4179-bd44-07b47724cf83"
+            },
+            {
+              "label": "التبويب 8",
+              "value": "tab_8",
+              "key": "b513c026-524a-42c5-86bd-fe425455dc32"
+            },
+            {
+              "label": "التبويب 9",
+              "value": "tab_9",
+              "key": "5fabc26c-b724-4817-a849-a13ab431967c"
+            },
+            {
+              "label": "التبويب 10",
+              "value": "tab_10",
+              "key": "4665f20d-08b6-4a7b-8581-f197f534de16"
+            }
+          ]
         },
         {
           "id": "veloura_steps_options_title",

@@ -1,5 +1,15 @@
 {% set top_enabled = true %}
 
+{% set top_floating = theme.settings.get('veloura_top_floating_2026', false) %}
+{% if top_floating.value is defined %}{% set top_floating = top_floating.value %}{% endif %}
+
+{% set top_compact_on_scroll = theme.settings.get('veloura_top_compact_on_scroll_2026', false) %}
+{% if top_compact_on_scroll.value is defined %}{% set top_compact_on_scroll = top_compact_on_scroll.value %}{% endif %}
+
+{% set top_blur = theme.settings.get('veloura_top_blur_2026', false) %}
+{% if top_blur.value is defined %}{% set top_blur = top_blur.value %}{% endif %}
+
+
 {# Logo #}
 {% set light_logo_url = theme.settings.get('veloura_light_logo_url_2026') %}
 {% set light_logo_image = theme.settings.get('veloura_light_logo_2026') %}
@@ -117,6 +127,9 @@
 <header
   class="store-header
   veloura-top-enabled
+  {{ top_floating ? 'veloura-top-floating' : '' }}
+  {{ top_compact_on_scroll ? 'veloura-top-compact-on-scroll' : '' }}
+  {{ top_blur ? 'veloura-top-blur' : '' }}
   {{ top_logo_center ? 'veloura-top-logo-centered' : '' }}
   {{ top_logo_no_center_laptop ? 'veloura-top-logo-no-center-laptop' : '' }}
   {{ full_width_desktop ? 'veloura-top-full-width-desktop' : '' }}

@@ -1,5 +1,5 @@
 /* ========================================================================
-   Veloura Home Tabs 2026
+   Veloura Home Tabs 2026 — Header-aware V2
    ======================================================================== */
 
 .veloura-home-tabs {
@@ -9,19 +9,46 @@
   --veloura-tabs-inactive-bg: #f1f5f9;
   --veloura-tabs-inactive-text: #0f172a;
   --veloura-tabs-sticky-top: 0px;
+  --veloura-tabs-floating-gap: clamp(8px, 1.4vw, 18px);
 
   position: relative;
-  z-index: 80;
+  z-index: 45;
   width: 100%;
   margin: 0;
   background: var(--veloura-tabs-bar-bg);
-  border-block-end: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+  border-block-end: 1px solid rgba(15, 23, 42, .08);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, .06);
+  transition: top .2s ease, border-radius .25s ease, margin .25s ease,
+    background-color .25s ease, backdrop-filter .25s ease,
+    -webkit-backdrop-filter .25s ease;
 }
 
 .veloura-home-tabs--sticky {
   position: sticky;
   top: var(--veloura-tabs-sticky-top);
+}
+
+.veloura-home-tabs--header-floating {
+  width: auto;
+  margin-inline: var(--veloura-tabs-floating-gap);
+  border-end-start-radius: 24px;
+  border-end-end-radius: 24px;
+  overflow: hidden;
+}
+
+.veloura-home-tabs--header-floating.veloura-home-tabs--attached-to-header {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}
+
+.veloura-home-tabs--header-floating.veloura-home-tabs--at-top {
+  border-radius: 22px;
+}
+
+.veloura-home-tabs--header-blur {
+  background: color-mix(in srgb, var(--veloura-tabs-bar-bg) 78%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(145%);
+  backdrop-filter: blur(18px) saturate(145%);
 }
 
 .veloura-home-tabs__track {
@@ -39,9 +66,7 @@
   -webkit-overflow-scrolling: touch;
 }
 
-.veloura-home-tabs__track::-webkit-scrollbar {
-  display: none;
-}
+.veloura-home-tabs__track::-webkit-scrollbar { display: none; }
 
 .veloura-home-tabs__button {
   display: inline-flex;
@@ -61,7 +86,8 @@
   white-space: nowrap;
   scroll-snap-align: start;
   cursor: pointer;
-  transition: background-color .2s ease, color .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease,
+    transform .2s ease, box-shadow .2s ease;
 }
 
 .veloura-home-tabs__button i {
@@ -70,9 +96,7 @@
   line-height: 1;
 }
 
-.veloura-home-tabs__button:hover {
-  transform: translateY(-1px);
-}
+.veloura-home-tabs__button:hover { transform: translateY(-1px); }
 
 .veloura-home-tabs__button:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--veloura-tabs-active-bg) 32%, transparent);
@@ -88,29 +112,17 @@
 }
 
 [data-veloura-home-tab][hidden],
-.veloura-home-tab-is-hidden {
-  display: none !important;
-}
+.veloura-home-tab-is-hidden { display: none !important; }
 
 @media (max-width: 767px) {
-  .veloura-home-tabs__track {
-    gap: 7px;
-    padding-block: 8px;
-  }
-
-  .veloura-home-tabs__button {
-    min-height: 38px;
-    padding: 8px 14px;
-    font-size: 14px;
-  }
-
-  .veloura-home-tabs__button i {
-    font-size: 16px;
-  }
+  .veloura-home-tabs { --veloura-tabs-floating-gap: 8px; }
+  .veloura-home-tabs--header-floating { border-end-start-radius: 20px; border-end-end-radius: 20px; }
+  .veloura-home-tabs__track { gap: 7px; padding-block: 8px; }
+  .veloura-home-tabs__button { min-height: 38px; padding: 8px 14px; font-size: 14px; }
+  .veloura-home-tabs__button i { font-size: 16px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .veloura-home-tabs__button {
-    transition: none;
-  }
+  .veloura-home-tabs,
+  .veloura-home-tabs__button { transition: none; }
 }
