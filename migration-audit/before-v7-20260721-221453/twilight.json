@@ -88,7 +88,7 @@
     {
       "id": "veloura_header_sticky_v6_2026",
       "label": "تثبيت الهيدر والتبويبات عند التمرير",
-      "description": "يثبت الهيدر والتبويبات كقطعة واحدة متصلة مع مسافة علوية ثابتة.",
+      "description": "يبقي الهيدر العائم ظاهرًا مع مسافة علوية، وتبقى التبويبات ملتصقة أسفله.",
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "format": "switch",
@@ -1635,7 +1635,7 @@
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "label": "إخفاء الهيدر عند النزول وإظهاره عند الصعود",
-      "description": "اختياري. عند إيقافه يبقى الهيدر ظاهرًا طوال التمرير، وهو الوضع الافتراضي.",
+      "description": "اختياري. عند إيقافه يبقى الهيدر ظاهرًا طوال التمرير.",
       "id": "veloura_top_hide_on_scroll_v6_2026",
       "format": "switch",
       "required": false,
@@ -2230,8 +2230,8 @@
       "type": "boolean",
       "format": "switch",
       "id": "veloura_home_tabs_sticky_v4_2026",
-      "label": "تثبيت التبويبات مع الهيدر عند التمرير",
-      "description": "تبقى التبويبات متصلة مباشرة أسفل الهيدر دون فراغ.",
+      "label": "تثبيت شريط التبويبات أسفل الهيدر عند التمرير",
+      "description": "يلتصق أسفل الهيدر، وإذا اختفى الهيدر ينتقل إلى أعلى الشاشة دون فراغ.",
       "icon": "sicon-pin",
       "value": true,
       "selected": true,
@@ -2244,25 +2244,6 @@
         }
       ],
       "default": true
-    },
-    {
-      "type": "boolean",
-      "format": "switch",
-      "id": "veloura_home_tabs_hide_on_scroll_v7_2026",
-      "label": "إخفاء التبويبات عند النزول وإظهارها عند الصعود",
-      "description": "اختياري. عند إيقافه تبقى التبويبات ظاهرة مع الهيدر طوال التمرير.",
-      "icon": "sicon-eye-off",
-      "value": false,
-      "selected": false,
-      "default": false,
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_home_tabs_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
     },
     {
       "id": "veloura_home_tabs_bar_bg_2026",

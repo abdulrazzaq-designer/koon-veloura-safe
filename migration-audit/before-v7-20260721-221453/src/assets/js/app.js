@@ -620,18 +620,16 @@ isElementLoaded(selector){
   }
 
   initiateStickyMenu() {
-    const stack = this.element('[data-veloura-header-tabs-stack]');
-    const storeHeader = this.element('.store-header');
     const nav = this.element('#mainnav');
     const inner = this.element('#mainnav .inner');
-    const tabs = this.element('[data-veloura-home-tabs]');
+    const storeHeader = this.element('.store-header');
 
-    if (!stack || !storeHeader || !nav || !inner || stack.dataset.velouraStackV7Ready === 'true') {
+    if (!nav || !inner || !storeHeader || nav.dataset.velouraStickyV6Ready === 'true') {
       return;
     }
 
-    stack.dataset.velouraStackV7Ready = 'true';
-    document.documentElement.classList.add('veloura-header-stack-v7-loaded');
+    nav.dataset.velouraStickyV6Ready = 'true';
+    document.documentElement.classList.add('veloura-header-v6-loaded');
 
     const toBoolean = (value, fallback = false) => {
       if (value === undefined || value === null || value === '') return fallback;
@@ -641,63 +639,92 @@ isElementLoaded(selector){
     };
 
     const config = window.velouraHeaderConfig || {};
-    const stickyEnabled = toBoolean(
-      stack.dataset.velouraSticky,
-      toBoolean(config.sticky, toBoolean(window.header_is_sticky, true))
-    );
+    const stickyEnabled = toBoolean(config.sticky, toBoolean(window.header_is_sticky, true));
     const floatingEnabled = toBoolean(config.floating, storeHeader.dataset.velouraFloating === 'true');
     const compactEnabled = toBoolean(config.compact, storeHeader.dataset.velouraCompact === 'true');
     const blurEnabled = toBoolean(config.blur, storeHeader.dataset.velouraBlur === 'true');
-    const hideHeaderOnScroll = toBoolean(
-      stack.dataset.velouraHideHeader,
-      toBoolean(config.hideOnScroll, false)
-    );
-    const hideTabsOnScroll = Boolean(tabs) && toBoolean(
-      stack.dataset.velouraHideTabs,
-      toBoolean(tabs?.dataset.velouraTabsHideScroll, false)
-    );
-
-    stack.classList.toggle('veloura-header-tabs-stack--sticky', stickyEnabled);
-    stack.classList.toggle('veloura-header-tabs-stack--floating', floatingEnabled);
-    stack.classList.toggle('veloura-header-tabs-stack--blur', blurEnabled);
-    stack.dataset.velouraSticky = stickyEnabled ? 'true' : 'false';
-    stack.dataset.velouraHideHeader = hideHeaderOnScroll ? 'true' : 'false';
-    stack.dataset.velouraHideTabs = hideTabsOnScroll ? 'true' : 'false';
+    const hideOnScroll = toBoolean(config.hideOnScroll, false);
 
     storeHeader.classList.toggle('veloura-top-floating', floatingEnabled);
     storeHeader.classList.toggle('veloura-top-compact-on-scroll', compactEnabled);
     storeHeader.classList.toggle('veloura-top-blur', blurEnabled);
-    storeHeader.classList.toggle('veloura-hide-top-on-scroll', hideHeaderOnScroll);
+    storeHeader.classList.toggle('veloura-hide-top-on-scroll', hideOnScroll);
     storeHeader.dataset.velouraStickyEnabled = stickyEnabled ? 'true' : 'false';
-    storeHeader.dataset.velouraHideScroll = hideHeaderOnScroll ? 'true' : 'false';
+    storeHeader.dataset.velouraHideScroll = hideOnScroll ? 'true' : 'false';
 
-    // Remove every legacy fixed-header state. V7 makes the connected stack sticky.
-    nav.classList.remove('fixed-pinned', 'fixed-header', 'animated', 'veloura-force-sticky');
-    nav.style.removeProperty('height');
-    inner.style.removeProperty('position');
-    inner.style.removeProperty('top');
-    inner.style.removeProperty('right');
-    inner.style.removeProperty('left');
-    inner.style.removeProperty('width');
-    inner.style.removeProperty('transform');
-    inner.style.removeProperty('opacity');
-    inner.style.removeProperty('visibility');
-
-    let triggerTop = Math.max(0, stack.offsetTop || 0);
+    let triggerTop = 0;
+    let placeholderHeight = 0;
     let lastScrollY = Math.max(0, window.scrollY || window.pageYOffset || 0);
     let frame = 0;
-    let headerHidden = false;
-    let tabsHidden = false;
+    let hiddenByScroll = false;
 
-    const dispatchState = (sticky, scrolled) => {
-      const surface = stack.querySelector('.veloura-header-tabs-stack__surface') || stack;
-      const rect = surface.getBoundingClientRect();
+    const readNumber = value => {
+      const number = Number.parseFloat(value);
+      return Number.isFinite(number) ? number : 0;
+    };
+
+    const documentY = element => {
+      const rect = element.getBoundingClientRect();
+      return Math.max(0, Math.round(rect.top + (window.scrollY || window.pageYOffset || 0)));
+    };
+
+    const readInnerHeight = () => {
+      const rectHeight = inner.getBoundingClientRect().height;
+      return Math.max(1, Math.ceil(inner.offsetHeight || rectHeight || 1));
+    };
+
+    const findLayoutContainer = () => Array.from(document.querySelectorAll(
+      '#main-content .container, main .container, .app-inner > .container'
+    )).find(element => !element.closest(
+      '.store-header, .veloura-home-tabs, .veloura-mobile-floating-menu'
+    ));
+
+    const measureShellEdges = () => {
+      const viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      const candidate = findLayoutContainer();
+      let left = readNumber(getComputedStyle(document.documentElement).getPropertyValue('--veloura-global-spacing')) || 10;
+      let right = left;
+
+      if (candidate) {
+        const rect = candidate.getBoundingClientRect();
+        const styles = window.getComputedStyle(candidate);
+        left = Math.max(0, rect.left + readNumber(styles.paddingLeft));
+        right = Math.max(0, viewportWidth - rect.right + readNumber(styles.paddingRight));
+      }
+
+      left = Math.max(10, Math.round(left));
+      right = Math.max(10, Math.round(right));
+
+      const root = document.documentElement;
+      root.style.setProperty('--veloura-shell-left-v6', `${left}px`);
+      root.style.setProperty('--veloura-shell-right-v6', `${right}px`);
+    };
+
+    const measure = () => {
+      const height = readInnerHeight();
+      const isPinned = nav.classList.contains('veloura-force-sticky');
+
+      if (!isPinned || !placeholderHeight) {
+        placeholderHeight = height;
+      } else {
+        placeholderHeight = Math.max(placeholderHeight, height);
+      }
+
+      triggerTop = documentY(nav);
+      nav.style.height = `${placeholderHeight}px`;
+      nav.style.setProperty('--veloura-header-height', `${height}px`);
+      document.documentElement.style.setProperty('--veloura-live-header-height', `${height}px`);
+      document.documentElement.style.setProperty('--veloura-header-trigger-top', `${triggerTop}px`);
+      measureShellEdges();
+    };
+
+    const dispatchState = (sticky, hidden, scrolled) => {
+      const rect = inner.getBoundingClientRect();
       const detail = {
         sticky,
-        hidden: headerHidden,
-        tabsHidden,
+        hidden,
         scrolled,
-        height: Math.max(0, Math.ceil(rect.height)),
+        height: readInnerHeight(),
         top: rect.top,
         bottom: rect.bottom
       };
@@ -705,44 +732,41 @@ isElementLoaded(selector){
       document.dispatchEvent(new CustomEvent('veloura:header:state', { detail }));
     };
 
-    const applyVisibility = () => {
-      if (!hideHeaderOnScroll) headerHidden = false;
-      if (!hideTabsOnScroll) tabsHidden = false;
-
-      stack.classList.toggle('veloura-hide-header-now', hideHeaderOnScroll && headerHidden);
-      stack.classList.toggle('veloura-hide-tabs-now', hideTabsOnScroll && tabsHidden);
-
-      // Legacy classes must never hide the header when its switch is off.
-      if (!hideHeaderOnScroll) storeHeader.classList.remove('veloura-top-hidden');
-    };
-
     const update = () => {
       frame = 0;
 
       const currentY = Math.max(0, window.scrollY || window.pageYOffset || 0);
       const delta = currentY - lastScrollY;
-      const scrolled = currentY > triggerTop + 6;
-      const stuck = stickyEnabled && currentY >= triggerTop;
+      const shouldPin = stickyEnabled && currentY >= Math.max(1, triggerTop);
+      const isScrolled = currentY > triggerTop + 8;
 
-      stack.classList.toggle('veloura-stack-is-stuck', stuck);
-      stack.classList.toggle('veloura-stack-is-scrolled', scrolled);
-      storeHeader.classList.toggle('veloura-top-scrolled', scrolled);
-      storeHeader.classList.toggle('veloura-sticky-active', stuck);
-
-      if (!stuck || currentY <= triggerTop + 36) {
-        headerHidden = false;
-        tabsHidden = false;
-      } else if (delta > 4) {
-        if (hideHeaderOnScroll) headerHidden = true;
-        if (hideTabsOnScroll) tabsHidden = true;
-      } else if (delta < -4) {
-        headerHidden = false;
-        tabsHidden = false;
+      if (!hideOnScroll || !shouldPin || currentY <= triggerTop + 72) {
+        hiddenByScroll = false;
+      } else if (delta > 5) {
+        hiddenByScroll = true;
+      } else if (delta < -5) {
+        hiddenByScroll = false;
       }
 
-      applyVisibility();
+      const shouldHide = Boolean(hideOnScroll && shouldPin && hiddenByScroll);
+
+      nav.classList.remove('fixed-pinned', 'fixed-header', 'animated');
+      nav.classList.toggle('veloura-force-sticky', shouldPin);
+
+      storeHeader.classList.toggle('veloura-sticky-active', shouldPin);
+      storeHeader.classList.toggle('veloura-top-scrolled', isScrolled);
+      storeHeader.classList.toggle('veloura-top-hidden', shouldHide);
+
+      if (!hideOnScroll) {
+        hiddenByScroll = false;
+        storeHeader.classList.remove('veloura-top-hidden');
+        inner.style.removeProperty('transform');
+        inner.style.removeProperty('opacity');
+        inner.style.removeProperty('visibility');
+      }
+
       lastScrollY = currentY;
-      dispatchState(stuck, scrolled);
+      dispatchState(shouldPin, shouldHide, isScrolled);
     };
 
     const schedule = () => {
@@ -751,21 +775,30 @@ isElementLoaded(selector){
     };
 
     const remeasure = () => {
-      // offsetTop keeps the original document position even while position:sticky is active.
-      triggerTop = Math.max(0, stack.offsetTop || 0);
+      measure();
       schedule();
     };
 
-    window.addEventListener('load', () => window.setTimeout(remeasure, 100), { once: true });
+    window.addEventListener('load', () => window.setTimeout(remeasure, 120), { once: true });
     window.addEventListener('resize', remeasure, { passive: true });
     window.addEventListener('orientationchange', remeasure, { passive: true });
     window.addEventListener('scroll', schedule, { passive: true });
+
+    if ('ResizeObserver' in window) {
+      const resizeObserver = new ResizeObserver(() => {
+        measure();
+        schedule();
+      });
+      resizeObserver.observe(inner);
+      const main = document.getElementById('main-content');
+      if (main) resizeObserver.observe(main);
+    }
 
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(remeasure).catch(() => {});
     }
 
-    applyVisibility();
+    measure();
     update();
   }
 
@@ -2879,14 +2912,6 @@ const initVelouraHomeTabs = (() => {
     if (!bar) return;
 
     syncVisualMode(bar);
-
-    // V7: header and tabs live inside one sticky stack, so no independent top offset.
-    if (bar.closest('[data-veloura-header-tabs-stack]')) {
-      bar.style.setProperty('--veloura-tabs-sticky-top', '0px');
-      bar.classList.add('veloura-home-tabs--below-header');
-      bar.classList.remove('veloura-home-tabs--first-surface');
-      return;
-    }
 
     if (!bar.classList.contains('veloura-home-tabs--sticky')) {
       bar.style.setProperty('--veloura-tabs-sticky-top', '0px');
