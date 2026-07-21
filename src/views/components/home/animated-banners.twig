@@ -1,3 +1,14 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_2026|default('always') %}
+{% if veloura_home_tab_key.selected is defined and veloura_home_tab_key.selected[0].value is defined %}
+  {% set veloura_home_tab_key = veloura_home_tab_key.selected[0].value %}
+{% elseif veloura_home_tab_key is iterable and veloura_home_tab_key[0].value is defined %}
+  {% set veloura_home_tab_key = veloura_home_tab_key[0].value %}
+{% elseif veloura_home_tab_key.value is defined %}
+  {% set veloura_home_tab_key = veloura_home_tab_key.value %}
+{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
 {% set radius_map = {
   'sharp': '0px',
   'soft': '8px',
@@ -18,7 +29,7 @@
 {% set has_mobile_spacing = component.use_h_spacing and not is_full ? true : false %}
 
 {% if component.animated_banners|length > 0 %}
-<section
+<section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
   class="
     s-block
     animated-banners

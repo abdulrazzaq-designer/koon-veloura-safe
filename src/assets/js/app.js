@@ -2695,3 +2695,161 @@ document.addEventListener('DOMContentLoaded', () => {
     openQuickView(button);
   }, true);
 })();
+
+/* VELOURA HOME TABS CONTROLLER START 2026 */
+const initVelouraHomeTabs = (() => {
+  let observer = null;
+  let resizeObserver = null;
+  let resizeHandlerBound = false;
+
+  const normalizeBool = value => {
+    return value === true || value === 'true' || value === 1 || value === '1' || value === 'on';
+  };
+
+  const getHeader = () => {
+    return document.querySelector('.app-inner > header, header.store-header, header');
+  };
+
+  const updateStickyOffset = bar => {
+    if (!bar?.classList.contains('veloura-home-tabs--sticky')) return;
+
+    const header = getHeader();
+    const headerSticky = normalizeBool(window.header_is_sticky);
+    const height = header && headerSticky
+      ? Math.max(0, Math.round(header.getBoundingClientRect().height))
+      : 0;
+
+    bar.style.setProperty('--veloura-tabs-sticky-top', `${height}px`);
+  };
+
+  const setupStickyOffset = bar => {
+    updateStickyOffset(bar);
+
+    if (resizeObserver) resizeObserver.disconnect();
+    if ('ResizeObserver' in window) {
+      resizeObserver = new ResizeObserver(() => updateStickyOffset(bar));
+      const header = getHeader();
+      if (header) resizeObserver.observe(header);
+      resizeObserver.observe(bar);
+    }
+
+    if (!resizeHandlerBound) {
+      resizeHandlerBound = true;
+      window.addEventListener('resize', () => {
+        const currentBar = document.querySelector('[data-veloura-home-tabs]');
+        if (currentBar) updateStickyOffset(currentBar);
+      }, { passive: true });
+    }
+  };
+
+  const collectComponents = () => {
+    return Array.from(document.querySelectorAll('[data-veloura-home-tab]'));
+  };
+
+  const setActiveTab = (bar, target, focusButton = false) => {
+    const buttons = Array.from(bar.querySelectorAll('[data-veloura-tab-target]'));
+    const validTargets = new Set(buttons.map(button => button.dataset.velouraTabTarget));
+    const activeTarget = validTargets.has(target)
+      ? target
+      : buttons[0]?.dataset.velouraTabTarget;
+
+    if (!activeTarget) return;
+
+    buttons.forEach(button => {
+      const active = button.dataset.velouraTabTarget === activeTarget;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-selected', active ? 'true' : 'false');
+      button.tabIndex = active ? 0 : -1;
+      if (active && focusButton) button.focus({ preventScroll: true });
+    });
+
+    collectComponents().forEach(component => {
+      const assigned = component.dataset.velouraHomeTab || 'always';
+      const show = assigned === 'always' || !validTargets.has(assigned) || assigned === activeTarget;
+
+      component.hidden = !show;
+      component.classList.toggle('veloura-home-tab-is-hidden', !show);
+      component.setAttribute('aria-hidden', show ? 'false' : 'true');
+    });
+
+    bar.dataset.velouraActiveTab = activeTarget;
+    document.dispatchEvent(new CustomEvent('veloura:home-tabs:change', {
+      detail: { tab: activeTarget }
+    }));
+  };
+
+  const bindKeyboard = (bar, event) => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+
+    const buttons = Array.from(bar.querySelectorAll('[data-veloura-tab-target]'));
+    const currentIndex = buttons.indexOf(document.activeElement);
+    if (currentIndex < 0 || !buttons.length) return;
+
+    event.preventDefault();
+
+    let nextIndex = currentIndex;
+    if (event.key === 'Home') nextIndex = 0;
+    if (event.key === 'End') nextIndex = buttons.length - 1;
+
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      const rtl = document.documentElement.dir === 'rtl';
+      const step = event.key === 'ArrowRight' ? 1 : -1;
+      const visualStep = rtl ? -step : step;
+      nextIndex = (currentIndex + visualStep + buttons.length) % buttons.length;
+    }
+
+    setActiveTab(bar, buttons[nextIndex].dataset.velouraTabTarget, true);
+  };
+
+  const init = () => {
+    const bar = document.querySelector('[data-veloura-home-tabs]');
+    if (!bar) {
+      collectComponents().forEach(component => {
+        component.hidden = false;
+        component.classList.remove('veloura-home-tab-is-hidden');
+        component.setAttribute('aria-hidden', 'false');
+      });
+      return;
+    }
+
+    if (!bar.dataset.velouraTabsReady) {
+      bar.dataset.velouraTabsReady = 'true';
+
+      bar.addEventListener('click', event => {
+        const button = event.target.closest('[data-veloura-tab-target]');
+        if (!button || !bar.contains(button)) return;
+        setActiveTab(bar, button.dataset.velouraTabTarget);
+      });
+
+      bar.addEventListener('keydown', event => bindKeyboard(bar, event));
+    }
+
+    setupStickyOffset(bar);
+    setActiveTab(bar, bar.dataset.velouraActiveTab || bar.querySelector('[data-veloura-tab-target]')?.dataset.velouraTabTarget);
+
+    if (observer) observer.disconnect();
+    const main = document.getElementById('main-content');
+    if (main) {
+      observer = new MutationObserver(() => {
+        window.requestAnimationFrame(() => {
+          const currentBar = document.querySelector('[data-veloura-home-tabs]');
+          if (currentBar) {
+            setActiveTab(currentBar, currentBar.dataset.velouraActiveTab);
+          }
+        });
+      });
+      observer.observe(main, { childList: true, subtree: true });
+    }
+  };
+
+  return init;
+})();
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initVelouraHomeTabs, { once: true });
+} else {
+  initVelouraHomeTabs();
+}
+document.addEventListener('theme::ready', initVelouraHomeTabs);
+/* VELOURA HOME TABS CONTROLLER END 2026 */
+

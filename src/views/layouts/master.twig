@@ -2064,6 +2064,83 @@
 <div class="app-inner flex flex-col min-h-full">
     {% hook 'body:start' %}
     {% component 'header.header' %}
+{# VELOURA HOME TABS START 2026 #}
+{% if is_page('index') %}
+  {% set vht_enabled_raw = theme.settings.get('veloura_home_tabs_enabled_2026', false) %}
+  {% if vht_enabled_raw.value is defined %}
+    {% set vht_enabled_raw = vht_enabled_raw.value %}
+  {% elseif vht_enabled_raw.selected is defined %}
+    {% set vht_enabled_raw = vht_enabled_raw.selected %}
+  {% endif %}
+  {% set vht_enabled =
+    vht_enabled_raw == true
+    or vht_enabled_raw == 'true'
+    or vht_enabled_raw == 1
+    or vht_enabled_raw == '1'
+    or vht_enabled_raw == 'on'
+  %}
+
+  {% set vht_sticky_raw = theme.settings.get('veloura_home_tabs_sticky_2026', true) %}
+  {% if vht_sticky_raw.value is defined %}
+    {% set vht_sticky_raw = vht_sticky_raw.value %}
+  {% elseif vht_sticky_raw.selected is defined %}
+    {% set vht_sticky_raw = vht_sticky_raw.selected %}
+  {% endif %}
+  {% set vht_sticky =
+    vht_sticky_raw == true
+    or vht_sticky_raw == 'true'
+    or vht_sticky_raw == 1
+    or vht_sticky_raw == '1'
+    or vht_sticky_raw == 'on'
+  %}
+
+  {% set vht_items = theme.settings.get('veloura_home_tabs_items_2026', []) %}
+  {% if vht_items.value is defined %}{% set vht_items = vht_items.value %}{% endif %}
+
+  {% set vht_bar_bg = theme.settings.get('veloura_home_tabs_bar_bg_2026', '#ffffff') %}
+  {% if vht_bar_bg.value is defined %}{% set vht_bar_bg = vht_bar_bg.value %}{% endif %}
+  {% set vht_active_bg = theme.settings.get('veloura_home_tabs_active_bg_2026', '#003848') %}
+  {% if vht_active_bg.value is defined %}{% set vht_active_bg = vht_active_bg.value %}{% endif %}
+  {% set vht_active_text = theme.settings.get('veloura_home_tabs_active_text_2026', '#ffffff') %}
+  {% if vht_active_text.value is defined %}{% set vht_active_text = vht_active_text.value %}{% endif %}
+  {% set vht_inactive_bg = theme.settings.get('veloura_home_tabs_inactive_bg_2026', '#f1f5f9') %}
+  {% if vht_inactive_bg.value is defined %}{% set vht_inactive_bg = vht_inactive_bg.value %}{% endif %}
+  {% set vht_inactive_text = theme.settings.get('veloura_home_tabs_inactive_text_2026', '#0f172a') %}
+  {% if vht_inactive_text.value is defined %}{% set vht_inactive_text = vht_inactive_text.value %}{% endif %}
+
+  {% if vht_enabled and vht_items|length %}
+    <nav
+      id="veloura-home-tabs"
+      class="veloura-home-tabs{{ vht_sticky ? ' veloura-home-tabs--sticky' : '' }}"
+      aria-label="تبويبات الصفحة الرئيسية"
+      data-veloura-home-tabs
+      style="--veloura-tabs-bar-bg:{{ vht_bar_bg }};--veloura-tabs-active-bg:{{ vht_active_bg }};--veloura-tabs-active-text:{{ vht_active_text }};--veloura-tabs-inactive-bg:{{ vht_inactive_bg }};--veloura-tabs-inactive-text:{{ vht_inactive_text }};"
+    >
+      <div class="container">
+        <div class="veloura-home-tabs__track" role="tablist" aria-orientation="horizontal">
+          {% for tab in vht_items %}
+            {% if loop.index <= 10 %}
+              {% set vht_tab_name = tab.name|default('تبويب ' ~ loop.index) %}
+              {% set vht_tab_icon = tab.icon|default('') %}
+              <button
+                type="button"
+                class="veloura-home-tabs__button"
+                role="tab"
+                aria-selected="{{ loop.first ? 'true' : 'false' }}"
+                tabindex="{{ loop.first ? '0' : '-1' }}"
+                data-veloura-tab-target="tab_{{ loop.index }}"
+              >
+                {% if vht_tab_icon %}<i class="{{ vht_tab_icon }}" aria-hidden="true"></i>{% endif %}
+                <span>{{ vht_tab_name }}</span>
+              </button>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </nav>
+  {% endif %}
+{% endif %}
+{# VELOURA HOME TABS END 2026 #}
     <main id="main-content" role="main">
       {% block content %}{% endblock %}
     </main>

@@ -1,3 +1,14 @@
+{# VELOURA HOME TAB ASSIGNMENT START #}
+{% set veloura_home_tab_key = component.veloura_home_tab_2026|default('always') %}
+{% if veloura_home_tab_key.selected is defined and veloura_home_tab_key.selected[0].value is defined %}
+  {% set veloura_home_tab_key = veloura_home_tab_key.selected[0].value %}
+{% elseif veloura_home_tab_key is iterable and veloura_home_tab_key[0].value is defined %}
+  {% set veloura_home_tab_key = veloura_home_tab_key[0].value %}
+{% elseif veloura_home_tab_key.value is defined %}
+  {% set veloura_home_tab_key = veloura_home_tab_key.value %}
+{% endif %}
+{# VELOURA HOME TAB ASSIGNMENT END #}
+
 {% if not component.veloura_popup_hide %}
 
   {% set popup_image = component.veloura_popup_image.url|default(component.veloura_popup_image) %}
@@ -26,7 +37,7 @@
 
   {% set popup_radius = radius_map[radius_key]|default('28px') %}
 
-  <section
+  <section data-veloura-home-tab="{{ veloura_home_tab_key|e }}"
     id="veloura-popup-{{ position }}"
     class="
       veloura-popup
