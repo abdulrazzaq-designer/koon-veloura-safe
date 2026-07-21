@@ -2166,12 +2166,18 @@
       ]
     },
     {
+  "type": "static",
+  "format": "title",
+  "id": "veloura_footer_settings_title_2026",
+  "value": "<div class=\"veloura-switch-title\" style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(270deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-archive-download\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4;text-align:right\">خيارات القسم السفلي</strong></div></div>",
+  "variant": "h1",
+  "icon": "sicon-layout-footer"
+},
+{
   "type": "boolean",
-  "format": "switch",
   "id": "veloura_footer_enabled_2026",
-  "label": "خيارات القسم السفلي",
-  "icon": "sicon-archive-download",
-  "wide": true,
+  "format": "switch",
+  "label": "\u00A0",
   "required": false,
   "value": true,
   "selected": true
