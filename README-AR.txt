@@ -1,9 +1,13 @@
-Koon Veloura V7 - Connected Header + Home Tabs
+Koon Veloura Home Tabs V8
 
-- Header and tabs use one connected glass surface.
-- Equal right/left spacing from the same global container.
-- No gap and no shadow.
-- Sticky behavior is applied to the whole stack.
-- Header hide-on-scroll and tabs hide-on-scroll remain independent options.
+Changes:
+- Header and tabs use one identical glass surface.
+- Tabs have no separate background and use a thin compact row.
+- Tab buttons divide the available width equally.
+- A 2px x 10px separator appears between tabs.
+- The active tab uses a small pulsing dot.
+- A dark transparent gradient appears behind the top floating stack.
+- All shadows remain disabled.
+- Header and tabs keep the exact global container spacing.
 
-Run VERIFY-V7.ps1 from the project root after extraction.
+Install the ZIP into the project root, then run VERIFY-V8.ps1, pnpm production, and salla theme preview.

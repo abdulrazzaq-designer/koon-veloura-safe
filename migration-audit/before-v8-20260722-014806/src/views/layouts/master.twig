@@ -2153,7 +2153,7 @@
 
 <div class="app-inner flex flex-col min-h-full">
     {% hook 'body:start' %}
-{# VELOURA HEADER + HOME TABS CONNECTED STACK V8 START #}
+{# VELOURA HEADER + HOME TABS CONNECTED STACK V7 START #}
 {% set vht_enabled = false %}
 {% set vht_sticky = true %}
 {% set vht_hide_on_scroll = false %}
@@ -2208,7 +2208,7 @@
   data-veloura-hide-header="{{ vh_hide ? 'true' : 'false' }}"
   data-veloura-hide-tabs="{{ vht_hide_on_scroll ? 'true' : 'false' }}"
 >
-  <div class="veloura-header-tabs-stack__container container">
+  <div class="veloura-header-tabs-stack__container">
     <div class="veloura-header-tabs-stack__surface">
       {% component 'header.header' %}
 
@@ -2260,7 +2260,7 @@
     </div>
   </div>
 </div>
-{# VELOURA HEADER + HOME TABS CONNECTED STACK V8 END #}
+{# VELOURA HEADER + HOME TABS CONNECTED STACK V7 END #}
     <main id="main-content" role="main">
       {% block content %}{% endblock %}
     </main>

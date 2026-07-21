@@ -626,12 +626,12 @@ isElementLoaded(selector){
     const inner = this.element('#mainnav .inner');
     const tabs = this.element('[data-veloura-home-tabs]');
 
-    if (!stack || !storeHeader || !nav || !inner || stack.dataset.velouraStackV8Ready === 'true') {
+    if (!stack || !storeHeader || !nav || !inner || stack.dataset.velouraStackV7Ready === 'true') {
       return;
     }
 
-    stack.dataset.velouraStackV8Ready = 'true';
-    document.documentElement.classList.add('veloura-header-stack-v8-loaded');
+    stack.dataset.velouraStackV7Ready = 'true';
+    document.documentElement.classList.add('veloura-header-stack-v7-loaded');
 
     const toBoolean = (value, fallback = false) => {
       if (value === undefined || value === null || value === '') return fallback;
@@ -671,7 +671,7 @@ isElementLoaded(selector){
     storeHeader.dataset.velouraStickyEnabled = stickyEnabled ? 'true' : 'false';
     storeHeader.dataset.velouraHideScroll = hideHeaderOnScroll ? 'true' : 'false';
 
-    // Remove every legacy fixed-header state. V8 makes the connected stack sticky.
+    // Remove every legacy fixed-header state. V7 makes the connected stack sticky.
     nav.classList.remove('fixed-pinned', 'fixed-header', 'animated', 'veloura-force-sticky');
     nav.style.removeProperty('height');
     inner.style.removeProperty('position');
@@ -2880,7 +2880,7 @@ const initVelouraHomeTabs = (() => {
 
     syncVisualMode(bar);
 
-    // V8: header and tabs live inside one sticky stack, so no independent top offset.
+    // V7: header and tabs live inside one sticky stack, so no independent top offset.
     if (bar.closest('[data-veloura-header-tabs-stack]')) {
       bar.style.setProperty('--veloura-tabs-sticky-top', '0px');
       bar.classList.add('veloura-home-tabs--below-header');
