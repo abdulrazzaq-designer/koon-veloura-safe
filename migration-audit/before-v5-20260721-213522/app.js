@@ -624,12 +624,12 @@ isElementLoaded(selector){
     const inner = this.element('#mainnav .inner');
     const storeHeader = this.element('.store-header');
 
-    if (!nav || !inner || !storeHeader || nav.dataset.velouraStickyV5Ready === 'true') {
+    if (!nav || !inner || !storeHeader || nav.dataset.velouraStickyV4Ready === 'true') {
       return;
     }
 
-    nav.dataset.velouraStickyV5Ready = 'true';
-    document.documentElement.classList.add('veloura-header-v5-loaded');
+    nav.dataset.velouraStickyV4Ready = 'true';
+    document.documentElement.classList.add('veloura-header-v4-loaded');
 
     const toBoolean = (value, fallback = false) => {
       if (value === undefined || value === null || value === '') return fallback;
@@ -652,60 +652,56 @@ isElementLoaded(selector){
     storeHeader.dataset.velouraStickyEnabled = stickyEnabled ? 'true' : 'false';
 
     let triggerTop = 0;
-    let lastScrollY = Math.max(0, window.scrollY || window.pageYOffset || 0);
+    let lastScrollY = Math.max(0, window.scrollY);
     let frame = 0;
-    let hiddenByScroll = false;
+    let hideLocked = false;
 
-    const documentY = element => {
-      const rect = element.getBoundingClientRect();
-      return Math.max(0, Math.round(rect.top + (window.scrollY || window.pageYOffset || 0)));
-    };
-
-    const readInnerHeight = () => {
-      const rectHeight = inner.getBoundingClientRect().height;
-      return Math.max(1, Math.ceil(inner.offsetHeight || rectHeight || 1));
-    };
+    const getInnerHeight = () => Math.max(1, Math.ceil(inner.getBoundingClientRect().height));
 
     const measure = () => {
-      const height = readInnerHeight();
-
-      // #mainnav stays in normal flow and is the permanent placeholder.
-      // Its document position does not change when only .inner becomes fixed.
-      triggerTop = documentY(nav);
-      nav.style.height = `${height}px`;
+      const height = getInnerHeight();
       nav.style.setProperty('--veloura-header-height', `${height}px`);
+      nav.style.height = `${height}px`;
+
+      // #mainnav remains in the document flow and acts as the placeholder,
+      // therefore this remains stable even while .inner is position:fixed.
+      triggerTop = Math.max(0, Math.round(window.scrollY + nav.getBoundingClientRect().top));
+
       document.documentElement.style.setProperty('--veloura-live-header-height', `${height}px`);
-      document.documentElement.style.setProperty('--veloura-header-trigger-top', `${triggerTop}px`);
     };
 
     const dispatchState = (sticky, hidden, scrolled) => {
-      const detail = { sticky, hidden, scrolled, height: readInnerHeight() };
-      document.dispatchEvent(new CustomEvent('veloura:header:position', { detail }));
-      document.dispatchEvent(new CustomEvent('veloura:header:state', { detail }));
+      document.dispatchEvent(new CustomEvent('veloura:header:position', {
+        detail: { sticky, hidden, scrolled }
+      }));
+      document.dispatchEvent(new CustomEvent('veloura:header:state', {
+        detail: { sticky, hidden, scrolled }
+      }));
     };
 
     const update = () => {
       frame = 0;
 
-      const currentY = Math.max(0, window.scrollY || window.pageYOffset || 0);
+      const currentY = Math.max(0, window.scrollY);
       const delta = currentY - lastScrollY;
-      const shouldPin = stickyEnabled && currentY >= Math.max(1, triggerTop);
-      const isScrolled = currentY > triggerTop + 12;
+      const shouldPin = stickyEnabled && currentY > triggerTop + 1;
+      const isScrolled = currentY > triggerTop + 16;
 
       if (!hideOnScroll || !shouldPin || currentY <= triggerTop + 72) {
-        hiddenByScroll = false;
-      } else if (delta > 3) {
-        hiddenByScroll = true;
-      } else if (delta < -3) {
-        hiddenByScroll = false;
+        hideLocked = false;
+      } else if (delta > 4) {
+        hideLocked = true;
+      } else if (delta < -4) {
+        hideLocked = false;
       }
 
-      const shouldHide = Boolean(hideOnScroll && shouldPin && hiddenByScroll);
+      const shouldHide = hideOnScroll && shouldPin && hideLocked;
 
-      // Do not use Twilight's old fixed-pinned/fixed-header animation classes;
-      // they translate .inner out of view and conflict with the V5 controller.
-      nav.classList.remove('fixed-pinned', 'fixed-header', 'animated');
       nav.classList.toggle('veloura-force-sticky', shouldPin);
+      // Keep Twilight's native classes for compatibility with existing header CSS.
+      nav.classList.toggle('fixed-pinned', shouldPin);
+      nav.classList.toggle('fixed-header', shouldPin);
+      nav.classList.toggle('animated', shouldPin);
 
       storeHeader.classList.toggle('veloura-sticky-active', shouldPin);
       storeHeader.classList.toggle('veloura-top-scrolled', isScrolled);
@@ -738,7 +734,7 @@ isElementLoaded(selector){
       resizeObserver.observe(inner);
     }
 
-    if (document.fonts && document.fonts.ready) {
+    if (document.fonts?.ready) {
       document.fonts.ready.then(remeasure).catch(() => {});
     }
 

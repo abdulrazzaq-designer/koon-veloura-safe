@@ -86,16 +86,15 @@
       "variant": "h6"
     },
     {
-      "id": "veloura_header_sticky_v5_2026",
-      "label": "تثبيت الهيدر أعلى الصفحة عند التمرير",
-      "description": "يثبت الهيدر فعليًا عند النزول، ويظل ظاهرًا ما لم يتم تفعيل خيار الإخفاء عند النزول.",
+      "id": "header_is_sticky",
+      "label": "تثبت القائمة الرئيسية أعلى الصفحة عند التمرير لأسفل",
+      "description": "يُنصح بالغاء تفعيلها في حالة وجود عناصر كثيرة في القائمة المنسدلة",
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "format": "switch",
       "required": false,
       "value": true,
-      "selected": true,
-      "default": true
+      "selected": true
     },
     {
       "type": "boolean",
@@ -1634,21 +1633,20 @@
     {
       "type": "boolean",
       "icon": "sicon-toggle-off",
-      "label": "إخفاء الهيدر عند النزول وإظهاره عند الصعود",
-      "description": "يعمل فقط بعد تثبيت الهيدر. عند إيقافه يبقى الهيدر ظاهرًا طوال التمرير.",
-      "id": "veloura_top_hide_on_scroll_v5_2026",
+      "label": "إخفاء قسم أعلى الصفحة عند النزول",
+      "description": "يفضل وضع أيقونات القسم العلوي في قائمة الجوال عند تفعيل هذا الزر",
+      "id": "veloura_top_hide_on_scroll_2026",
       "format": "switch",
       "required": false,
-      "value": false,
-      "selected": false,
+      "value": true,
+      "selected": true,
       "conditions": [
         {
           "id": "veloura_top_enabled_2026",
           "operation": "=",
           "value": true
         }
-      ],
-      "default": false
+      ]
     },
     {
       "type": "static",

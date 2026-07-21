@@ -1,0 +1,246 @@
+/* ========================================================================
+   Veloura Header + Home Tabs V5 — precise container, visible neutral glass,
+   no shadows, stable sticky behavior and Telegram-like stacked surfaces.
+   Imported last and intentionally overrides all older header/tabs rules.
+   ======================================================================== */
+
+:root {
+  --veloura-shell-gap: 6px;
+  --veloura-shell-top: var(--veloura-mobile-floating-menu-bottom, var(--veloura-global-spacing, 12px));
+  --veloura-shell-inline: max(
+    var(--veloura-global-spacing, 12px),
+    calc(
+      ((100vw - var(--veloura-global-container, var(--veloura-site-container-width, 1280px))) / 2)
+      + var(--veloura-global-spacing, 12px)
+    )
+  );
+  --veloura-neutral-glass-bg: rgba(226, 232, 240, .78);
+  --veloura-neutral-glass-border: rgba(148, 163, 184, .36);
+  --veloura-neutral-glass-filter: blur(18px) saturate(140%);
+}
+
+html.dark,
+body.dark {
+  --veloura-neutral-glass-bg: rgba(22, 32, 46, .76);
+  --veloura-neutral-glass-border: rgba(255, 255, 255, .16);
+}
+
+html body .store-header.veloura-top-enabled.veloura-top-border-sharp { --veloura-header-surface-radius: 0px; }
+html body .store-header.veloura-top-enabled.veloura-top-border-soft { --veloura-header-surface-radius: 14px; }
+html body .store-header.veloura-top-enabled.veloura-top-border-medium { --veloura-header-surface-radius: 24px; }
+html body .store-header.veloura-top-enabled.veloura-top-border-large { --veloura-header-surface-radius: 38px; }
+
+html body .store-header.veloura-top-enabled {
+  position: relative !important;
+  z-index: 100 !important;
+  width: 100% !important;
+  transform: none !important;
+  background: transparent !important;
+}
+
+html body .store-header.veloura-top-enabled.veloura-top-hidden {
+  transform: none !important;
+}
+
+/* Same exact content edge as the global .container: desktop center + inner padding,
+   and the configured global spacing directly on mobile. */
+html body .store-header.veloura-top-enabled.veloura-top-floating {
+  padding-top: var(--veloura-shell-top) !important;
+  padding-right: var(--veloura-shell-inline) !important;
+  padding-left: var(--veloura-shell-inline) !important;
+  padding-bottom: 0 !important;
+  background: transparent !important;
+}
+
+html body .store-header.veloura-top-enabled #mainnav,
+html body .store-header.veloura-top-enabled .main-nav-container {
+  width: 100% !important;
+  max-width: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+html body .store-header.veloura-top-enabled #mainnav > .inner,
+html body .store-header.veloura-top-enabled .main-nav-container > .inner {
+  width: 100% !important;
+  max-width: none !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+  transition: transform .22s ease, opacity .18s ease, min-height .22s ease,
+    border-radius .2s ease, background-color .2s ease !important;
+}
+
+html body .store-header.veloura-top-enabled.veloura-top-floating #mainnav > .inner,
+html body .store-header.veloura-top-enabled.veloura-top-floating .main-nav-container > .inner {
+  border-radius: var(--veloura-header-surface-radius, 24px) !important;
+}
+
+/* A visible Telegram-like neutral glass. The slight gray-blue tint remains visible
+   even over a pure white page, while backdrop-filter reveals images underneath. */
+html body .store-header.veloura-top-enabled.veloura-top-blur #mainnav > .inner,
+html body .store-header.veloura-top-enabled.veloura-top-blur .main-nav-container > .inner {
+  background-color: var(--veloura-neutral-glass-bg) !important;
+  background-image: none !important;
+  border: 1px solid var(--veloura-neutral-glass-border) !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: var(--veloura-neutral-glass-filter) !important;
+  backdrop-filter: var(--veloura-neutral-glass-filter) !important;
+}
+
+html body .store-header.veloura-top-enabled.veloura-top-blur #mainnav > .inner::before,
+html body .store-header.veloura-top-enabled.veloura-top-blur .main-nav-container > .inner::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* Stable fixed surface. Only .inner is fixed; #mainnav remains the placeholder. */
+html body .store-header.veloura-top-enabled #mainnav.veloura-force-sticky > .inner {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  z-index: 100 !important;
+  transform: translate3d(0, 0, 0) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  box-shadow: none !important;
+}
+
+html body .store-header.veloura-top-enabled.veloura-top-floating #mainnav.veloura-force-sticky > .inner {
+  top: var(--veloura-shell-top) !important;
+  right: var(--veloura-shell-inline) !important;
+  left: var(--veloura-shell-inline) !important;
+  width: auto !important;
+  border-radius: var(--veloura-header-surface-radius, 24px) !important;
+}
+
+html body .store-header.veloura-top-enabled.veloura-top-hidden #mainnav.veloura-force-sticky > .inner {
+  transform: translate3d(0, calc(-100% - var(--veloura-shell-top) - 2px), 0) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html body .store-header.veloura-top-enabled.veloura-top-compact-on-scroll.veloura-top-scrolled .veloura-header-grid {
+  min-height: 58px !important;
+}
+
+html body .store-header.veloura-top-enabled.veloura-top-compact-on-scroll.veloura-top-scrolled .veloura-store-logo,
+html body .store-header.veloura-top-enabled.veloura-top-compact-on-scroll.veloura-top-scrolled .navbar-brand img {
+  max-height: min(var(--veloura-top-logo-size), 38px) !important;
+}
+
+html body .store-header.veloura-top-enabled.veloura-top-compact-on-scroll.veloura-top-scrolled .veloura-store-logo-video {
+  height: min(var(--veloura-top-logo-size), 38px) !important;
+}
+
+/* Tabs: the second Telegram-like surface, same exact edge/radius and only 6px gap. */
+html body .veloura-home-tabs {
+  z-index: 90 !important;
+  box-shadow: none !important;
+  border-block-end: 0 !important;
+  transition: top .18s ease, margin .18s ease, border-radius .18s ease !important;
+}
+
+html body .veloura-home-tabs.veloura-home-tabs--sticky {
+  position: sticky !important;
+  top: var(--veloura-tabs-sticky-top, var(--veloura-shell-top)) !important;
+}
+
+html body .veloura-home-tabs.veloura-home-tabs--header-floating {
+  width: auto !important;
+  max-width: none !important;
+  margin-top: var(--veloura-shell-gap) !important;
+  margin-right: var(--veloura-shell-inline) !important;
+  margin-left: var(--veloura-shell-inline) !important;
+  border-radius: var(--veloura-tabs-surface-radius, 24px) !important;
+  overflow: hidden !important;
+  border: 1px solid var(--veloura-neutral-glass-border) !important;
+  box-shadow: none !important;
+}
+
+html body .veloura-home-tabs.veloura-home-tabs--header-floating > .container {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding-right: 10px !important;
+  padding-left: 10px !important;
+}
+
+html body .veloura-home-tabs.veloura-home-tabs--radius-sharp { --veloura-tabs-surface-radius: 0px; }
+html body .veloura-home-tabs.veloura-home-tabs--radius-soft { --veloura-tabs-surface-radius: 14px; }
+html body .veloura-home-tabs.veloura-home-tabs--radius-medium { --veloura-tabs-surface-radius: 24px; }
+html body .veloura-home-tabs.veloura-home-tabs--radius-large { --veloura-tabs-surface-radius: 38px; }
+
+html body .veloura-home-tabs.veloura-home-tabs--header-blur {
+  background-color: var(--veloura-neutral-glass-bg) !important;
+  background-image: none !important;
+  border-color: var(--veloura-neutral-glass-border) !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: var(--veloura-neutral-glass-filter) !important;
+  backdrop-filter: var(--veloura-neutral-glass-filter) !important;
+}
+
+html body .veloura-home-tabs.veloura-home-tabs--header-blur::before {
+  content: none !important;
+  display: none !important;
+}
+
+html body .veloura-home-tabs__button,
+html body .veloura-home-tabs__button.is-active,
+html body .veloura-home-tabs__button[aria-selected='true'] {
+  box-shadow: none !important;
+}
+
+html body .veloura-home-tabs__button {
+  border-color: rgba(148, 163, 184, .26) !important;
+}
+
+/* Same glass recipe, no shadow, for every floating/glass navigation surface. */
+html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu,
+html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
+  box-shadow: none !important;
+}
+
+html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner,
+html body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
+  background-color: var(--veloura-neutral-glass-bg) !important;
+  background-image: none !important;
+  border: 1px solid var(--veloura-neutral-glass-border) !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: var(--veloura-neutral-glass-filter) !important;
+  backdrop-filter: var(--veloura-neutral-glass-filter) !important;
+}
+
+html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu--pill {
+  bottom: var(--veloura-shell-top) !important;
+}
+
+@media (max-width: 767px) {
+  html body .store-header.veloura-top-enabled.veloura-top-compact-on-scroll.veloura-top-scrolled .veloura-header-grid {
+    min-height: 54px !important;
+  }
+
+  html body .veloura-home-tabs__track {
+    padding-block: 8px !important;
+  }
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  html body .store-header.veloura-top-enabled.veloura-top-blur #mainnav > .inner,
+  html body .veloura-home-tabs.veloura-home-tabs--header-blur,
+  html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
+    background-color: rgba(226, 232, 240, .96) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body .store-header.veloura-top-enabled #mainnav > .inner,
+  html body .veloura-home-tabs {
+    transition: none !important;
+  }
+}
