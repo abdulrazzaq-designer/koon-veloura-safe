@@ -624,12 +624,12 @@ isElementLoaded(selector){
     const inner = this.element('#mainnav .inner');
     const storeHeader = this.element('.store-header');
 
-    if (!nav || !inner || !storeHeader || nav.dataset.velouraStickyV6Ready === 'true') {
+    if (!nav || !inner || !storeHeader || nav.dataset.velouraStickyV5Ready === 'true') {
       return;
     }
 
-    nav.dataset.velouraStickyV6Ready = 'true';
-    document.documentElement.classList.add('veloura-header-v6-loaded');
+    nav.dataset.velouraStickyV5Ready = 'true';
+    document.documentElement.classList.add('veloura-header-v5-loaded');
 
     const toBoolean = (value, fallback = false) => {
       if (value === undefined || value === null || value === '') return fallback;
@@ -643,25 +643,18 @@ isElementLoaded(selector){
     const floatingEnabled = toBoolean(config.floating, storeHeader.dataset.velouraFloating === 'true');
     const compactEnabled = toBoolean(config.compact, storeHeader.dataset.velouraCompact === 'true');
     const blurEnabled = toBoolean(config.blur, storeHeader.dataset.velouraBlur === 'true');
-    const hideOnScroll = toBoolean(config.hideOnScroll, false);
+    const hideOnScroll = toBoolean(config.hideOnScroll, storeHeader.dataset.velouraHideScroll === 'true');
 
     storeHeader.classList.toggle('veloura-top-floating', floatingEnabled);
     storeHeader.classList.toggle('veloura-top-compact-on-scroll', compactEnabled);
     storeHeader.classList.toggle('veloura-top-blur', blurEnabled);
     storeHeader.classList.toggle('veloura-hide-top-on-scroll', hideOnScroll);
     storeHeader.dataset.velouraStickyEnabled = stickyEnabled ? 'true' : 'false';
-    storeHeader.dataset.velouraHideScroll = hideOnScroll ? 'true' : 'false';
 
     let triggerTop = 0;
-    let placeholderHeight = 0;
     let lastScrollY = Math.max(0, window.scrollY || window.pageYOffset || 0);
     let frame = 0;
     let hiddenByScroll = false;
-
-    const readNumber = value => {
-      const number = Number.parseFloat(value);
-      return Number.isFinite(number) ? number : 0;
-    };
 
     const documentY = element => {
       const rect = element.getBoundingClientRect();
@@ -673,61 +666,20 @@ isElementLoaded(selector){
       return Math.max(1, Math.ceil(inner.offsetHeight || rectHeight || 1));
     };
 
-    const findLayoutContainer = () => Array.from(document.querySelectorAll(
-      '#main-content .container, main .container, .app-inner > .container'
-    )).find(element => !element.closest(
-      '.store-header, .veloura-home-tabs, .veloura-mobile-floating-menu'
-    ));
-
-    const measureShellEdges = () => {
-      const viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-      const candidate = findLayoutContainer();
-      let left = readNumber(getComputedStyle(document.documentElement).getPropertyValue('--veloura-global-spacing')) || 10;
-      let right = left;
-
-      if (candidate) {
-        const rect = candidate.getBoundingClientRect();
-        const styles = window.getComputedStyle(candidate);
-        left = Math.max(0, rect.left + readNumber(styles.paddingLeft));
-        right = Math.max(0, viewportWidth - rect.right + readNumber(styles.paddingRight));
-      }
-
-      left = Math.max(10, Math.round(left));
-      right = Math.max(10, Math.round(right));
-
-      const root = document.documentElement;
-      root.style.setProperty('--veloura-shell-left-v6', `${left}px`);
-      root.style.setProperty('--veloura-shell-right-v6', `${right}px`);
-    };
-
     const measure = () => {
       const height = readInnerHeight();
-      const isPinned = nav.classList.contains('veloura-force-sticky');
 
-      if (!isPinned || !placeholderHeight) {
-        placeholderHeight = height;
-      } else {
-        placeholderHeight = Math.max(placeholderHeight, height);
-      }
-
+      // #mainnav stays in normal flow and is the permanent placeholder.
+      // Its document position does not change when only .inner becomes fixed.
       triggerTop = documentY(nav);
-      nav.style.height = `${placeholderHeight}px`;
+      nav.style.height = `${height}px`;
       nav.style.setProperty('--veloura-header-height', `${height}px`);
       document.documentElement.style.setProperty('--veloura-live-header-height', `${height}px`);
       document.documentElement.style.setProperty('--veloura-header-trigger-top', `${triggerTop}px`);
-      measureShellEdges();
     };
 
     const dispatchState = (sticky, hidden, scrolled) => {
-      const rect = inner.getBoundingClientRect();
-      const detail = {
-        sticky,
-        hidden,
-        scrolled,
-        height: readInnerHeight(),
-        top: rect.top,
-        bottom: rect.bottom
-      };
+      const detail = { sticky, hidden, scrolled, height: readInnerHeight() };
       document.dispatchEvent(new CustomEvent('veloura:header:position', { detail }));
       document.dispatchEvent(new CustomEvent('veloura:header:state', { detail }));
     };
@@ -738,32 +690,26 @@ isElementLoaded(selector){
       const currentY = Math.max(0, window.scrollY || window.pageYOffset || 0);
       const delta = currentY - lastScrollY;
       const shouldPin = stickyEnabled && currentY >= Math.max(1, triggerTop);
-      const isScrolled = currentY > triggerTop + 8;
+      const isScrolled = currentY > triggerTop + 12;
 
       if (!hideOnScroll || !shouldPin || currentY <= triggerTop + 72) {
         hiddenByScroll = false;
-      } else if (delta > 5) {
+      } else if (delta > 3) {
         hiddenByScroll = true;
-      } else if (delta < -5) {
+      } else if (delta < -3) {
         hiddenByScroll = false;
       }
 
       const shouldHide = Boolean(hideOnScroll && shouldPin && hiddenByScroll);
 
+      // Do not use Twilight's old fixed-pinned/fixed-header animation classes;
+      // they translate .inner out of view and conflict with the V5 controller.
       nav.classList.remove('fixed-pinned', 'fixed-header', 'animated');
       nav.classList.toggle('veloura-force-sticky', shouldPin);
 
       storeHeader.classList.toggle('veloura-sticky-active', shouldPin);
       storeHeader.classList.toggle('veloura-top-scrolled', isScrolled);
       storeHeader.classList.toggle('veloura-top-hidden', shouldHide);
-
-      if (!hideOnScroll) {
-        hiddenByScroll = false;
-        storeHeader.classList.remove('veloura-top-hidden');
-        inner.style.removeProperty('transform');
-        inner.style.removeProperty('opacity');
-        inner.style.removeProperty('visibility');
-      }
 
       lastScrollY = currentY;
       dispatchState(shouldPin, shouldHide, isScrolled);
@@ -790,8 +736,6 @@ isElementLoaded(selector){
         schedule();
       });
       resizeObserver.observe(inner);
-      const main = document.getElementById('main-content');
-      if (main) resizeObserver.observe(main);
     }
 
     if (document.fonts && document.fonts.ready) {
@@ -2921,18 +2865,12 @@ const initVelouraHomeTabs = (() => {
     const headerBottom = getVisibleFixedHeaderBottom();
     const floating = bar.classList.contains('veloura-home-tabs--header-floating');
     const rootStyle = window.getComputedStyle(document.documentElement);
-    const gap = floating
-      ? (parseFloat(rootStyle.getPropertyValue('--veloura-shell-gap-v6')) || 4)
-      : 0;
-    const standaloneTop = floating
-      ? (parseFloat(rootStyle.getPropertyValue('--veloura-shell-top-v6')) || 10)
-      : 0;
-    const belowHeader = headerBottom > 0;
-    const top = Math.max(0, Math.round(belowHeader ? headerBottom + gap : standaloneTop));
+    const gap = floating ? (parseFloat(rootStyle.getPropertyValue('--veloura-shell-gap')) || 0) : 0;
+    const top = Math.max(0, Math.round(headerBottom > 0 ? headerBottom + gap : gap));
 
     bar.style.setProperty('--veloura-tabs-sticky-top', `${top}px`);
-    bar.classList.toggle('veloura-home-tabs--below-header', belowHeader);
-    bar.classList.toggle('veloura-home-tabs--first-surface', !belowHeader);
+    bar.classList.toggle('veloura-home-tabs--below-header', headerBottom > 0);
+    bar.classList.toggle('veloura-home-tabs--first-surface', headerBottom === 0);
   };
 
   const scheduleOffsetUpdate = () => {
@@ -3033,7 +2971,7 @@ const initVelouraHomeTabs = (() => {
 
   const init = () => {
     const bar = document.querySelector('[data-veloura-home-tabs]');
-    document.documentElement.classList.add('veloura-home-tabs-v6-loaded');
+    document.documentElement.classList.add('veloura-home-tabs-v4-loaded');
     if (!bar) {
       collectComponents().forEach(component => {
         component.hidden = false;

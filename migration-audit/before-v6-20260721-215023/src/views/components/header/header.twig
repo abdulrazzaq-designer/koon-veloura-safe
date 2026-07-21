@@ -46,9 +46,11 @@
 {% endif %}
 {% set top_blur = top_blur_raw == true or top_blur_raw == 'true' or top_blur_raw == 1 or top_blur_raw == '1' or top_blur_raw == 'on' %}
 
-{% set top_hide_setting = theme.settings.get('veloura_top_hide_on_scroll_v6_2026', false) %}
+{% set top_hide_setting = theme.settings.get('veloura_top_hide_on_scroll_v5_2026', false) %}
 {% set top_hide_on_scroll_raw = top_hide_setting %}
-{% if top_hide_setting.selected is defined %}
+{% if top_hide_setting.value is defined %}
+  {% set top_hide_on_scroll_raw = top_hide_setting.value %}
+{% elseif top_hide_setting.selected is defined %}
   {% if top_hide_setting.selected.value is defined %}
     {% set top_hide_on_scroll_raw = top_hide_setting.selected.value %}
   {% elseif top_hide_setting.selected is iterable and top_hide_setting.selected[0] is defined and top_hide_setting.selected[0].value is defined %}
@@ -56,8 +58,6 @@
   {% else %}
     {% set top_hide_on_scroll_raw = top_hide_setting.selected %}
   {% endif %}
-{% elseif top_hide_setting.value is defined %}
-  {% set top_hide_on_scroll_raw = top_hide_setting.value %}
 {% endif %}
 {% set top_hide_on_scroll = top_hide_on_scroll_raw == true or top_hide_on_scroll_raw == 'true' or top_hide_on_scroll_raw == 1 or top_hide_on_scroll_raw == '1' or top_hide_on_scroll_raw == 'on' %}
 
@@ -194,7 +194,7 @@
   veloura-desktop-search-{{ desktop_search }}
   veloura-desktop-menu-{{ desktop_menu_mode }}
   "
-  data-veloura-header-v6="true"
+  data-veloura-header-v4="true"
   data-veloura-floating="{{ top_floating ? 'true' : 'false' }}"
   data-veloura-compact="{{ top_compact_on_scroll ? 'true' : 'false' }}"
   data-veloura-blur="{{ top_blur ? 'true' : 'false' }}"

@@ -1,0 +1,223 @@
+/* ========================================================================
+   Veloura Header + Home Tabs V6
+   ======================================================================== */
+
+:root {
+  --veloura-shell-top-v6: max(10px, var(--veloura-mobile-floating-menu-bottom, 0px));
+  --veloura-shell-gap-v6: 4px;
+  --veloura-shell-left-v6: max(10px, var(--veloura-global-spacing, 10px));
+  --veloura-shell-right-v6: max(10px, var(--veloura-global-spacing, 10px));
+  --veloura-glass-v6:
+    linear-gradient(
+      135deg,
+      rgba(226, 233, 243, .64) 0%,
+      rgba(207, 217, 231, .52) 100%
+    );
+  --veloura-glass-border-v6: rgba(255, 255, 255, .68);
+  --veloura-glass-filter-v6: blur(24px) saturate(150%);
+}
+
+html.dark,
+body.dark {
+  --veloura-glass-v6:
+    linear-gradient(
+      135deg,
+      rgba(24, 36, 52, .76) 0%,
+      rgba(37, 49, 68, .64) 100%
+    );
+  --veloura-glass-border-v6: rgba(255, 255, 255, .14);
+}
+
+html body .store-header.veloura-top-enabled {
+  position: relative !important;
+  z-index: 120 !important;
+  width: 100% !important;
+  transform: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body .store-header.veloura-top-enabled.veloura-top-floating {
+  padding-top: var(--veloura-shell-top-v6) !important;
+  padding-right: var(--veloura-shell-right-v6) !important;
+  padding-left: var(--veloura-shell-left-v6) !important;
+  padding-bottom: 0 !important;
+}
+
+html body .store-header.veloura-top-enabled #mainnav,
+html body .store-header.veloura-top-enabled .main-nav-container {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+html body .store-header.veloura-top-enabled #mainnav > .inner,
+html body .store-header.veloura-top-enabled .main-nav-container > .inner {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+  transform: translate3d(0, 0, 0) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transition:
+    min-height .2s ease,
+    height .2s ease,
+    border-radius .2s ease,
+    background-color .2s ease,
+    backdrop-filter .2s ease,
+    -webkit-backdrop-filter .2s ease !important;
+}
+
+html body .store-header.veloura-top-enabled.veloura-top-floating #mainnav > .inner,
+html body .store-header.veloura-top-enabled.veloura-top-floating .main-nav-container > .inner {
+  border-radius: var(--veloura-header-surface-radius, 24px) !important;
+}
+
+html body .store-header.veloura-top-enabled.veloura-top-blur #mainnav > .inner,
+html body .store-header.veloura-top-enabled.veloura-top-blur .main-nav-container > .inner {
+  background: var(--veloura-glass-v6) !important;
+  border: 1px solid var(--veloura-glass-border-v6) !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: var(--veloura-glass-filter-v6) !important;
+  backdrop-filter: var(--veloura-glass-filter-v6) !important;
+}
+
+html body .store-header.veloura-top-enabled.veloura-top-blur #mainnav > .inner::before,
+html body .store-header.veloura-top-enabled.veloura-top-blur .main-nav-container > .inner::before {
+  content: none !important;
+  display: none !important;
+}
+
+html body .store-header.veloura-top-enabled #mainnav.veloura-force-sticky > .inner {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  z-index: 120 !important;
+  transform: translate3d(0, 0, 0) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  box-shadow: none !important;
+}
+
+html body .store-header.veloura-top-enabled.veloura-top-floating #mainnav.veloura-force-sticky > .inner {
+  top: var(--veloura-shell-top-v6) !important;
+  right: var(--veloura-shell-right-v6) !important;
+  left: var(--veloura-shell-left-v6) !important;
+  width: auto !important;
+  border-radius: var(--veloura-header-surface-radius, 24px) !important;
+}
+
+html body .store-header.veloura-top-enabled:not([data-veloura-hide-scroll='true']),
+html body .store-header.veloura-top-enabled:not([data-veloura-hide-scroll='true']).veloura-top-hidden {
+  transform: none !important;
+}
+
+html body .store-header.veloura-top-enabled:not([data-veloura-hide-scroll='true']) #mainnav.veloura-force-sticky > .inner,
+html body .store-header.veloura-top-enabled:not([data-veloura-hide-scroll='true']).veloura-top-hidden #mainnav.veloura-force-sticky > .inner {
+  transform: translate3d(0, 0, 0) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+html body .store-header.veloura-top-enabled[data-veloura-hide-scroll='true'].veloura-top-hidden #mainnav.veloura-force-sticky > .inner {
+  transform: translate3d(0, calc(-100% - var(--veloura-shell-top-v6) - 2px), 0) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html body .veloura-home-tabs {
+  z-index: 110 !important;
+  box-shadow: none !important;
+  border-block-end: 0 !important;
+  transition: top .14s ease, margin .14s ease !important;
+}
+
+html body .veloura-home-tabs.veloura-home-tabs--sticky {
+  position: sticky !important;
+  top: var(--veloura-tabs-sticky-top, var(--veloura-shell-top-v6)) !important;
+}
+
+html body .veloura-home-tabs.veloura-home-tabs--header-floating {
+  width: auto !important;
+  max-width: none !important;
+  margin-top: var(--veloura-shell-gap-v6) !important;
+  margin-right: var(--veloura-shell-right-v6) !important;
+  margin-left: var(--veloura-shell-left-v6) !important;
+  margin-bottom: 0 !important;
+  overflow: hidden !important;
+  border-radius: var(--veloura-tabs-surface-radius, var(--veloura-header-surface-radius, 24px)) !important;
+  border: 1px solid var(--veloura-glass-border-v6) !important;
+  box-shadow: none !important;
+}
+
+html body .veloura-home-tabs.veloura-home-tabs--header-floating.veloura-home-tabs--below-header {
+  margin-top: 0 !important;
+}
+
+html body .veloura-home-tabs.veloura-home-tabs--header-floating > .container {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding-right: 10px !important;
+  padding-left: 10px !important;
+}
+
+html body .veloura-home-tabs.veloura-home-tabs--header-blur {
+  background: var(--veloura-glass-v6) !important;
+  border-color: var(--veloura-glass-border-v6) !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: var(--veloura-glass-filter-v6) !important;
+  backdrop-filter: var(--veloura-glass-filter-v6) !important;
+}
+
+html body .veloura-home-tabs.veloura-home-tabs--header-blur::before {
+  content: none !important;
+  display: none !important;
+}
+
+html body .veloura-home-tabs__button,
+html body .veloura-home-tabs__button:hover,
+html body .veloura-home-tabs__button.is-active,
+html body .veloura-home-tabs__button[aria-selected='true'] {
+  box-shadow: none !important;
+}
+
+html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu,
+html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner,
+html body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
+  box-shadow: none !important;
+}
+
+html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner,
+html body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
+  background: var(--veloura-glass-v6) !important;
+  border: 1px solid var(--veloura-glass-border-v6) !important;
+  -webkit-backdrop-filter: var(--veloura-glass-filter-v6) !important;
+  backdrop-filter: var(--veloura-glass-filter-v6) !important;
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  html body .store-header.veloura-top-enabled.veloura-top-blur #mainnav > .inner,
+  html body .veloura-home-tabs.veloura-home-tabs--header-blur,
+  html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
+    background: rgba(214, 223, 235, .96) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body .store-header.veloura-top-enabled #mainnav > .inner,
+  html body .veloura-home-tabs {
+    transition: none !important;
+  }
+}

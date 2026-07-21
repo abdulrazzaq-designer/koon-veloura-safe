@@ -66,10 +66,13 @@
     {% endif %}
 
     {% block head_scripts %}{% endblock %}
-    {# Veloura Header V6 runtime config #}
-    {% set vh_sticky_setting = theme.settings.get('veloura_header_sticky_v6_2026', true) %}
+
+    {# Veloura Header V4 runtime config #}
+    {% set vh_sticky_setting = theme.settings.get('veloura_header_sticky_v5_2026', true) %}
     {% set vh_sticky_raw = vh_sticky_setting %}
-    {% if vh_sticky_setting.selected is defined %}
+    {% if vh_sticky_setting.value is defined %}
+      {% set vh_sticky_raw = vh_sticky_setting.value %}
+    {% elseif vh_sticky_setting.selected is defined %}
       {% if vh_sticky_setting.selected.value is defined %}
         {% set vh_sticky_raw = vh_sticky_setting.selected.value %}
       {% elseif vh_sticky_setting.selected is iterable and vh_sticky_setting.selected[0] is defined and vh_sticky_setting.selected[0].value is defined %}
@@ -77,8 +80,6 @@
       {% else %}
         {% set vh_sticky_raw = vh_sticky_setting.selected %}
       {% endif %}
-    {% elseif vh_sticky_setting.value is defined %}
-      {% set vh_sticky_raw = vh_sticky_setting.value %}
     {% endif %}
     {% set vh_sticky = vh_sticky_raw == true or vh_sticky_raw == 'true' or vh_sticky_raw == 1 or vh_sticky_raw == '1' or vh_sticky_raw == 'on' %}
 
@@ -127,9 +128,11 @@
     {% endif %}
     {% set vh_blur = vh_blur_raw == true or vh_blur_raw == 'true' or vh_blur_raw == 1 or vh_blur_raw == '1' or vh_blur_raw == 'on' %}
 
-    {% set vh_hide_setting = theme.settings.get('veloura_top_hide_on_scroll_v6_2026', false) %}
+    {% set vh_hide_setting = theme.settings.get('veloura_top_hide_on_scroll_v5_2026', false) %}
     {% set vh_hide_raw = vh_hide_setting %}
-    {% if vh_hide_setting.selected is defined %}
+    {% if vh_hide_setting.value is defined %}
+      {% set vh_hide_raw = vh_hide_setting.value %}
+    {% elseif vh_hide_setting.selected is defined %}
       {% if vh_hide_setting.selected.value is defined %}
         {% set vh_hide_raw = vh_hide_setting.selected.value %}
       {% elseif vh_hide_setting.selected is iterable and vh_hide_setting.selected[0] is defined and vh_hide_setting.selected[0].value is defined %}
@@ -137,8 +140,6 @@
       {% else %}
         {% set vh_hide_raw = vh_hide_setting.selected %}
       {% endif %}
-    {% elseif vh_hide_setting.value is defined %}
-      {% set vh_hide_raw = vh_hide_setting.value %}
     {% endif %}
     {% set vh_hide = vh_hide_raw == true or vh_hide_raw == 'true' or vh_hide_raw == 1 or vh_hide_raw == '1' or vh_hide_raw == 'on' %}
 

@@ -86,9 +86,9 @@
       "variant": "h6"
     },
     {
-      "id": "veloura_header_sticky_v6_2026",
-      "label": "تثبيت الهيدر والتبويبات عند التمرير",
-      "description": "يبقي الهيدر العائم ظاهرًا مع مسافة علوية، وتبقى التبويبات ملتصقة أسفله.",
+      "id": "veloura_header_sticky_v5_2026",
+      "label": "تثبيت الهيدر أعلى الصفحة عند التمرير",
+      "description": "يثبت الهيدر فعليًا عند النزول، ويظل ظاهرًا ما لم يتم تفعيل خيار الإخفاء عند النزول.",
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "format": "switch",
@@ -1635,8 +1635,8 @@
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "label": "إخفاء الهيدر عند النزول وإظهاره عند الصعود",
-      "description": "اختياري. عند إيقافه يبقى الهيدر ظاهرًا طوال التمرير.",
-      "id": "veloura_top_hide_on_scroll_v6_2026",
+      "description": "يعمل فقط بعد تثبيت الهيدر. عند إيقافه يبقى الهيدر ظاهرًا طوال التمرير.",
+      "id": "veloura_top_hide_on_scroll_v5_2026",
       "format": "switch",
       "required": false,
       "value": false,
