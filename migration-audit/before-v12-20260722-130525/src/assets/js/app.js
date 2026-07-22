@@ -626,12 +626,12 @@ isElementLoaded(selector){
     const inner = this.element('#mainnav .inner');
     const tabs = this.element('[data-veloura-home-tabs]');
 
-    if (!stack || !storeHeader || !nav || !inner || stack.dataset.velouraStackV12Ready === 'true') {
+    if (!stack || !storeHeader || !nav || !inner || stack.dataset.velouraStackV11Ready === 'true') {
       return;
     }
 
-    stack.dataset.velouraStackV12Ready = 'true';
-    document.documentElement.classList.add('veloura-header-stack-v12-loaded');
+    stack.dataset.velouraStackV11Ready = 'true';
+    document.documentElement.classList.add('veloura-header-stack-v11-loaded');
 
     const toBoolean = (value, fallback = false) => {
       if (value === undefined || value === null || value === '') return fallback;
@@ -646,7 +646,7 @@ isElementLoaded(selector){
       toBoolean(config.sticky, toBoolean(window.header_is_sticky, true))
     );
     const floatingEnabled = toBoolean(config.floating, storeHeader.dataset.velouraFloating === 'true');
-    // V12: compact is independent from floating and starts on the first scroll pixel.
+    // V11: compact is independent from floating. It starts on the first real scroll pixel.
     const compactEnabled = toBoolean(config.compact, storeHeader.dataset.velouraCompact === 'true');
     const blurEnabled = toBoolean(config.blur, storeHeader.dataset.velouraBlur === 'true');
     const hideHeaderOnScroll = toBoolean(
@@ -725,7 +725,7 @@ isElementLoaded(selector){
       const delta = currentY - lastScrollY;
       const stuck = stickyEnabled && currentY >= triggerTop;
       // First downward movement compacts immediately; top position stays full-size.
-      const scrolled = compactEnabled && currentY > 0;
+      const scrolled = compactEnabled && currentY > 2;
 
       stack.classList.toggle('veloura-stack-is-stuck', stuck);
       stack.classList.toggle('veloura-stack-is-scrolled', scrolled);

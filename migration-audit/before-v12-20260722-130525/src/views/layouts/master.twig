@@ -2153,7 +2153,7 @@
 
 <div class="app-inner flex flex-col min-h-full">
     {% hook 'body:start' %}
-{# VELOURA HEADER + HOME TABS V13 INDEPENDENT SOLID / UNIFIED GLASS START #}
+{# VELOURA HEADER + HOME TABS CONNECTED STACK V9 START #}
 {% set vht_enabled = false %}
 {% set vht_sticky = true %}
 {% set vht_hide_on_scroll = false %}
@@ -2162,14 +2162,6 @@
 {% set vht_header_blur = vh_blur %}
 {% set vht_header_bg = theme.settings.get('veloura_top_bg_color_2026', '#ffffff') %}
 {% if vht_header_bg.value is defined %}{% set vht_header_bg = vht_header_bg.value %}{% endif %}
-
-{# V13: tabs background is always independent from the header in solid mode. #}
-{% set vht_bar_bg = theme.settings.get('veloura_home_tabs_bar_bg_2026', '#ffffff') %}
-{% if vht_bar_bg.value is defined %}{% set vht_bar_bg = vht_bar_bg.value %}{% endif %}
-
-{# V13: only glass mode uses one shared color for both surfaces. #}
-{% set vht_glass_color = theme.settings.get('veloura_top_glass_unified_color_2026', '#e8eff7') %}
-{% if vht_glass_color.value is defined %}{% set vht_glass_color = vht_glass_color.value %}{% endif %}
 
 {% set vht_top_border = theme.settings.get('veloura_top_border_style_2026', 'medium') %}
 {% if vht_top_border.selected is defined and vht_top_border.selected[0].value is defined %}
@@ -2219,13 +2211,15 @@
   data-veloura-hide-header="{{ vh_hide ? 'true' : 'false' }}"
   data-veloura-hide-tabs="{{ vht_hide_on_scroll ? 'true' : 'false' }}"
   data-veloura-compact="{{ vh_compact ? 'true' : 'false' }}"
-  style="--veloura-header-solid-bg:{{ vht_header_bg }};--veloura-tabs-solid-bg:{{ vht_bar_bg }};--veloura-unified-glass-color:{{ vht_glass_color }};"
+  style="--veloura-stack-solid-bg-v9: {{ vht_header_bg }};"
 >
   <div class="veloura-header-tabs-stack__container container">
     <div class="veloura-header-tabs-stack__surface">
       {% component 'header.header' %}
 
       {% if vht_has_tabs %}
+        {% set vht_bar_bg = theme.settings.get('veloura_home_tabs_bar_bg_2026', '#ffffff') %}
+        {% if vht_bar_bg.value is defined %}{% set vht_bar_bg = vht_bar_bg.value %}{% endif %}
         {% set vht_active_bg = theme.settings.get('veloura_home_tabs_active_bg_2026', '#003848') %}
         {% if vht_active_bg.value is defined %}{% set vht_active_bg = vht_active_bg.value %}{% endif %}
         {% set vht_active_text = theme.settings.get('veloura_home_tabs_active_text_2026', '#ffffff') %}
@@ -2241,7 +2235,7 @@
           aria-label="تبويبات الصفحة الرئيسية"
           data-veloura-home-tabs
           data-veloura-tabs-hide-scroll="{{ vht_hide_on_scroll ? 'true' : 'false' }}"
-          style="--veloura-tabs-bar-bg:{{ vht_bar_bg }};--veloura-tabs-active-bg:{{ vht_active_bg }};--veloura-tabs-active-text:{{ vht_active_text }};--veloura-tabs-inactive-bg:{{ vht_inactive_bg }};--veloura-tabs-inactive-text:{{ vht_inactive_text }};"
+          style="--veloura-tabs-bar-bg:{{ vht_bar_bg }};--veloura-tabs-active-bg:{{ vht_active_bg }};--veloura-tabs-active-text:{{ vht_active_text }};--veloura-tabs-inactive-bg:{{ vht_inactive_bg }};--veloura-tabs-inactive-text:{{ vht_inactive_text }};--veloura-glass-tint:{{ vht_bar_bg }};"
         >
           <div class="container">
             <div class="veloura-home-tabs__track" role="tablist" aria-orientation="horizontal">
@@ -2271,7 +2265,7 @@
     </div>
   </div>
 </div>
-{# VELOURA HEADER + HOME TABS V13 INDEPENDENT SOLID / UNIFIED GLASS END #}
+{# VELOURA HEADER + HOME TABS CONNECTED STACK V9 END #}
     <main id="main-content" role="main">
       {% block content %}{% endblock %}
     </main>

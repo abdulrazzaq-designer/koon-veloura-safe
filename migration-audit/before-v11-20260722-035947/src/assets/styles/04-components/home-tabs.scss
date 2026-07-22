@@ -1,16 +1,16 @@
 /* ========================================================================
-   Veloura Home Tabs V12 — equal width, correct internal separators
+   Veloura Home Tabs V8 — compact equal-width text tabs
    ======================================================================== */
 
 .veloura-home-tabs {
   --veloura-tabs-active-bg: #003848;
-  --veloura-tabs-active-text: #ffffff;
   --veloura-tabs-inactive-text: #0f172a;
 
   position: relative;
   z-index: 1;
   width: 100%;
   margin: 0;
+  background: transparent;
   border: 0;
   box-shadow: none;
 }
@@ -18,20 +18,12 @@
 .veloura-home-tabs__track {
   display: flex;
   align-items: stretch;
+  justify-content: stretch;
+  gap: 0;
   width: 100%;
   min-width: 0;
   padding: 3px 4px 4px;
-  gap: 0;
   overflow: hidden;
-  direction: ltr;
-}
-
-html[dir='rtl'] .veloura-home-tabs__track {
-  flex-direction: row-reverse;
-}
-
-html[dir='ltr'] .veloura-home-tabs__track {
-  flex-direction: row;
 }
 
 .veloura-home-tabs__button {
@@ -39,7 +31,7 @@ html[dir='ltr'] .veloura-home-tabs__track {
   display: inline-flex;
   flex: 1 1 0;
   min-width: 0;
-  min-height: 31px;
+  min-height: 32px;
   align-items: center;
   justify-content: center;
   gap: 5px;
@@ -54,13 +46,9 @@ html[dir='ltr'] .veloura-home-tabs__track {
   line-height: 1.15;
   white-space: nowrap;
   cursor: pointer;
-  transition: color .16s ease, opacity .16s ease;
+  transition: color .18s ease, opacity .18s ease;
 }
 
-html[dir='rtl'] .veloura-home-tabs__button { direction: rtl; }
-html[dir='ltr'] .veloura-home-tabs__button { direction: ltr; }
-
-/* Active marker. */
 .veloura-home-tabs__button::before {
   content: '';
   flex: 0 0 auto;
@@ -69,37 +57,20 @@ html[dir='ltr'] .veloura-home-tabs__button { direction: ltr; }
   border-radius: 999px;
   background: var(--veloura-tabs-active-bg);
   opacity: 0;
-  transform: scale(.7);
+  transform: scale(.6);
 }
 
-/* Separator only on the shared edge between adjacent buttons. */
-.veloura-home-tabs__button::after {
-  content: none;
-  display: none;
-}
-
-.veloura-home-tabs__button + .veloura-home-tabs__button::after {
+.veloura-home-tabs__button:not(:last-child)::after {
   content: '';
-  display: block;
   position: absolute;
   top: 50%;
+  inset-inline-end: -1px;
   width: 2px;
   height: 10px;
-  border: 0;
   border-radius: 999px;
   background: rgba(15, 23, 42, .14);
   transform: translateY(-50%);
   pointer-events: none;
-}
-
-html[dir='rtl'] .veloura-home-tabs__button + .veloura-home-tabs__button::after {
-  right: -1px;
-  left: auto;
-}
-
-html[dir='ltr'] .veloura-home-tabs__button + .veloura-home-tabs__button::after {
-  left: -1px;
-  right: auto;
 }
 
 .veloura-home-tabs__button i {
@@ -116,7 +87,15 @@ html[dir='ltr'] .veloura-home-tabs__button + .veloura-home-tabs__button::after {
   white-space: nowrap;
 }
 
-.veloura-home-tabs__button:hover,
+.veloura-home-tabs__button:hover {
+  color: var(--veloura-tabs-active-bg);
+}
+
+.veloura-home-tabs__button:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--veloura-tabs-active-bg) 34%, transparent);
+  outline-offset: -3px;
+}
+
 .veloura-home-tabs__button.is-active,
 .veloura-home-tabs__button[aria-selected='true'] {
   color: var(--veloura-tabs-active-bg);
@@ -125,12 +104,22 @@ html[dir='ltr'] .veloura-home-tabs__button + .veloura-home-tabs__button::after {
 .veloura-home-tabs__button.is-active::before,
 .veloura-home-tabs__button[aria-selected='true']::before {
   opacity: 1;
-  transform: scale(1);
+  animation: veloura-tab-active-pulse-v8 1.7s ease-out infinite;
 }
 
-.veloura-home-tabs__button:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--veloura-tabs-active-bg) 34%, transparent);
-  outline-offset: -3px;
+@keyframes veloura-tab-active-pulse-v8 {
+  0% {
+    transform: scale(.72);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--veloura-tabs-active-bg) 42%, transparent);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--veloura-tabs-active-bg) 0%, transparent);
+  }
+  100% {
+    transform: scale(.72);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--veloura-tabs-active-bg) 0%, transparent);
+  }
 }
 
 [data-veloura-home-tab][hidden],
@@ -138,19 +127,36 @@ html[dir='ltr'] .veloura-home-tabs__button + .veloura-home-tabs__button::after {
   display: none !important;
 }
 
-html.dark .veloura-home-tabs__button + .veloura-home-tabs__button::after,
-body.dark .veloura-home-tabs__button + .veloura-home-tabs__button::after {
-  background: rgba(255, 255, 255, .18);
+html.dark .veloura-home-tabs__button:not(:last-child)::after,
+body.dark .veloura-home-tabs__button:not(:last-child)::after {
+  background: rgba(255, 255, 255, .16);
 }
 
 @media (max-width: 480px) {
-  .veloura-home-tabs__track { padding-inline: 2px; }
-  .veloura-home-tabs__button { min-height: 29px; padding-inline: 3px; gap: 3px; }
-  .veloura-home-tabs__button i { font-size: 14px; }
-  .veloura-home-tabs__button::before { width: 5px; height: 5px; }
+  .veloura-home-tabs__track {
+    padding-inline: 2px;
+  }
+
+  .veloura-home-tabs__button {
+    min-height: 30px;
+    padding-inline: 3px;
+    gap: 3px;
+  }
+
+  .veloura-home-tabs__button i {
+    font-size: 14px;
+  }
+
+  .veloura-home-tabs__button::before {
+    width: 5px;
+    height: 5px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .veloura-home-tabs__button,
-  .veloura-home-tabs__button::before { transition: none; }
+  .veloura-home-tabs__button::before {
+    transition: none;
+    animation: none !important;
+  }
 }

@@ -626,12 +626,12 @@ isElementLoaded(selector){
     const inner = this.element('#mainnav .inner');
     const tabs = this.element('[data-veloura-home-tabs]');
 
-    if (!stack || !storeHeader || !nav || !inner || stack.dataset.velouraStackV12Ready === 'true') {
+    if (!stack || !storeHeader || !nav || !inner || stack.dataset.velouraStackV10Ready === 'true') {
       return;
     }
 
-    stack.dataset.velouraStackV12Ready = 'true';
-    document.documentElement.classList.add('veloura-header-stack-v12-loaded');
+    stack.dataset.velouraStackV10Ready = 'true';
+    document.documentElement.classList.add('veloura-header-stack-v10-loaded');
 
     const toBoolean = (value, fallback = false) => {
       if (value === undefined || value === null || value === '') return fallback;
@@ -646,8 +646,7 @@ isElementLoaded(selector){
       toBoolean(config.sticky, toBoolean(window.header_is_sticky, true))
     );
     const floatingEnabled = toBoolean(config.floating, storeHeader.dataset.velouraFloating === 'true');
-    // V12: compact is independent from floating and starts on the first scroll pixel.
-    const compactEnabled = toBoolean(config.compact, storeHeader.dataset.velouraCompact === 'true');
+    const compactEnabled = floatingEnabled && toBoolean(config.compact, storeHeader.dataset.velouraCompact === 'true');
     const blurEnabled = toBoolean(config.blur, storeHeader.dataset.velouraBlur === 'true');
     const hideHeaderOnScroll = toBoolean(
       stack.dataset.velouraHideHeader,
@@ -675,6 +674,7 @@ isElementLoaded(selector){
     storeHeader.dataset.velouraStickyEnabled = stickyEnabled ? 'true' : 'false';
     storeHeader.dataset.velouraHideScroll = hideHeaderOnScroll ? 'true' : 'false';
 
+    // Remove every legacy fixed-header state. V8 makes the connected stack sticky.
     nav.classList.remove('fixed-pinned', 'fixed-header', 'animated', 'veloura-force-sticky');
     nav.style.removeProperty('height');
     inner.style.removeProperty('position');
@@ -715,6 +715,7 @@ isElementLoaded(selector){
       stack.classList.toggle('veloura-hide-header-now', hideHeaderOnScroll && headerHidden);
       stack.classList.toggle('veloura-hide-tabs-now', hideTabsOnScroll && tabsHidden);
 
+      // Legacy classes must never hide the header when its switch is off.
       if (!hideHeaderOnScroll) storeHeader.classList.remove('veloura-top-hidden');
     };
 
@@ -724,15 +725,21 @@ isElementLoaded(selector){
       const currentY = Math.max(0, window.scrollY || window.pageYOffset || 0);
       const delta = currentY - lastScrollY;
       const stuck = stickyEnabled && currentY >= triggerTop;
-      // First downward movement compacts immediately; top position stays full-size.
-      const scrolled = compactEnabled && currentY > 0;
+
+      // V10: compact immediately when the connected stack becomes sticky.
+      // It remains compact until the stack returns to its original top position,
+      // which avoids threshold oscillation and logo jitter.
+      const scrolled = compactEnabled && stuck;
 
       stack.classList.toggle('veloura-stack-is-stuck', stuck);
       stack.classList.toggle('veloura-stack-is-scrolled', scrolled);
       storeHeader.classList.toggle('veloura-top-scrolled', scrolled);
       storeHeader.classList.toggle('veloura-sticky-active', stuck);
 
-      const returnedToHeaderTop = currentY <= Math.max(4, triggerTop + 2);
+      // V10 hide policy: once hidden while scrolling down, header/tabs do not
+      // reappear on a small upward scroll. They return only when the visitor
+      // reaches the original top/header area again.
+      const returnedToHeaderTop = !stuck || currentY <= Math.max(4, triggerTop + 2);
 
       if (returnedToHeaderTop) {
         headerHidden = false;
@@ -753,6 +760,7 @@ isElementLoaded(selector){
     };
 
     const remeasure = () => {
+      // offsetTop keeps the original document position even while position:sticky is active.
       triggerTop = Math.max(0, stack.offsetTop || 0);
       schedule();
     };
