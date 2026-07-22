@@ -766,35 +766,9 @@ isElementLoaded(selector){
       schedule();
     };
 
-    let resizeFrame = 0;
-    let resizeTimer = 0;
-    let lastViewportWidth = Math.round(window.innerWidth || 0);
-
-    const handleViewportResize = () => {
-      const nextViewportWidth = Math.round(window.innerWidth || 0);
-      document.documentElement.classList.add('veloura-viewport-resizing');
-
-      if (resizeFrame) window.cancelAnimationFrame(resizeFrame);
-      resizeFrame = window.requestAnimationFrame(() => {
-        resizeFrame = 0;
-
-        if (Math.abs(nextViewportWidth - lastViewportWidth) > 1) {
-          lastViewportWidth = nextViewportWidth;
-          remeasure();
-        } else {
-          schedule();
-        }
-      });
-
-      window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(() => {
-        document.documentElement.classList.remove('veloura-viewport-resizing');
-      }, 160);
-    };
-
     window.addEventListener('load', () => window.setTimeout(remeasure, 100), { once: true });
-    window.addEventListener('resize', handleViewportResize, { passive: true });
-    window.addEventListener('orientationchange', handleViewportResize, { passive: true });
+    window.addEventListener('resize', remeasure, { passive: true });
+    window.addEventListener('orientationchange', remeasure, { passive: true });
     window.addEventListener('scroll', schedule, { passive: true });
 
     if (document.fonts && document.fonts.ready) {
@@ -2869,9 +2843,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /* VELOURA HOME TABS CONTROLLER START 2026 */
 const initVelouraHomeTabs = (() => {
+  let observer = null;
+  let resizeObserver = null;
   let frame = 0;
-  let standaloneListenersBound = false;
-  let lateSyncTimer = 0;
+  let listenersBound = false;
 
   const normalizeTabName = value => String(value || '')
     .normalize('NFKC')
@@ -2915,6 +2890,7 @@ const initVelouraHomeTabs = (() => {
 
     syncVisualMode(bar);
 
+    // V8: header and tabs live inside one sticky stack, so no independent top offset.
     if (bar.closest('[data-veloura-header-tabs-stack]')) {
       bar.style.setProperty('--veloura-tabs-sticky-top', '0px');
       bar.classList.add('veloura-home-tabs--below-header');
@@ -2946,7 +2922,6 @@ const initVelouraHomeTabs = (() => {
 
   const scheduleOffsetUpdate = () => {
     if (frame) return;
-
     frame = window.requestAnimationFrame(() => {
       frame = 0;
       const bar = document.querySelector('[data-veloura-home-tabs]');
@@ -2957,22 +2932,27 @@ const initVelouraHomeTabs = (() => {
   const setupStickyOffset = bar => {
     updateStickyOffset(bar);
 
-    // The current Koon implementation places tabs in the same sticky stack.
-    // Avoid ResizeObserver and global transition listeners in this mode:
-    // they caused repeated layout work while changing preview breakpoints.
-    if (bar.closest('[data-veloura-header-tabs-stack]')) return;
+    if (resizeObserver) resizeObserver.disconnect();
+    if ('ResizeObserver' in window) {
+      resizeObserver = new ResizeObserver(scheduleOffsetUpdate);
+      const header = document.querySelector('.store-header');
+      const navInner = document.querySelector('#mainnav > .inner, #mainnav .inner');
+      if (header) resizeObserver.observe(header);
+      if (navInner) resizeObserver.observe(navInner);
+      resizeObserver.observe(bar);
+    }
 
-    if (!standaloneListenersBound) {
-      standaloneListenersBound = true;
+    if (!listenersBound) {
+      listenersBound = true;
       window.addEventListener('scroll', scheduleOffsetUpdate, { passive: true });
       window.addEventListener('resize', scheduleOffsetUpdate, { passive: true });
+      document.addEventListener('transitionend', scheduleOffsetUpdate, true);
+      document.addEventListener('veloura:header:state', scheduleOffsetUpdate);
       document.addEventListener('veloura:header:position', scheduleOffsetUpdate);
     }
   };
 
-  const collectComponents = () => Array.from(
-    document.querySelectorAll('[data-veloura-home-tab]')
-  );
+  const collectComponents = () => Array.from(document.querySelectorAll('[data-veloura-home-tab]'));
 
   const setActiveTab = (bar, requestedTarget, focusButton = false) => {
     const buttons = Array.from(bar.querySelectorAll('[data-veloura-tab-target]'));
@@ -3036,16 +3016,9 @@ const initVelouraHomeTabs = (() => {
     setActiveTab(bar, buttons[nextIndex].dataset.velouraTabTarget, true);
   };
 
-  const syncCurrentTab = () => {
-    const currentBar = document.querySelector('[data-veloura-home-tabs]');
-    if (!currentBar) return;
-    setActiveTab(currentBar, currentBar.dataset.velouraActiveTab);
-  };
-
   const init = () => {
     const bar = document.querySelector('[data-veloura-home-tabs]');
-    document.documentElement.classList.add('veloura-home-tabs-v18-loaded');
-
+    document.documentElement.classList.add('veloura-home-tabs-v6-loaded');
     if (!bar) {
       collectComponents().forEach(component => {
         component.hidden = false;
@@ -3068,15 +3041,20 @@ const initVelouraHomeTabs = (() => {
     }
 
     setupStickyOffset(bar);
-
     const firstTarget = bar.querySelector('[data-veloura-tab-target]')?.dataset.velouraTabTarget;
     setActiveTab(bar, bar.dataset.velouraActiveTab || firstTarget);
 
-    // Two bounded re-syncs cover late custom-element hydration without keeping
-    // a subtree MutationObserver alive during responsive preview changes.
-    window.clearTimeout(lateSyncTimer);
-    lateSyncTimer = window.setTimeout(syncCurrentTab, 350);
-    window.setTimeout(syncCurrentTab, 1100);
+    if (observer) observer.disconnect();
+    const main = document.getElementById('main-content');
+    if (main) {
+      observer = new MutationObserver(() => {
+        window.requestAnimationFrame(() => {
+          const currentBar = document.querySelector('[data-veloura-home-tabs]');
+          if (currentBar) setActiveTab(currentBar, currentBar.dataset.velouraActiveTab);
+        });
+      });
+      observer.observe(main, { childList: true, subtree: true });
+    }
 
     scheduleOffsetUpdate();
   };
