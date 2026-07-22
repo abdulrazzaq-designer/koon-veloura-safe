@@ -626,12 +626,12 @@ isElementLoaded(selector){
     const inner = this.element('#mainnav .inner');
     const tabs = this.element('[data-veloura-home-tabs]');
 
-    if (!stack || !storeHeader || !nav || !inner || stack.dataset.velouraStackV14Ready === 'true') {
+    if (!stack || !storeHeader || !nav || !inner || stack.dataset.velouraStackV12Ready === 'true') {
       return;
     }
 
-    stack.dataset.velouraStackV14Ready = 'true';
-    document.documentElement.classList.add('veloura-header-stack-v14-loaded');
+    stack.dataset.velouraStackV12Ready = 'true';
+    document.documentElement.classList.add('veloura-header-stack-v12-loaded');
 
     const toBoolean = (value, fallback = false) => {
       if (value === undefined || value === null || value === '') return fallback;
@@ -709,22 +709,13 @@ isElementLoaded(selector){
     };
 
     const applyVisibility = () => {
-      if (!hideHeaderOnScroll) {
-        headerHidden = false;
-        storeHeader.classList.remove('veloura-top-hidden');
-        storeHeader.removeAttribute('aria-hidden');
-      }
-
-      if (!hideTabsOnScroll) {
-        tabsHidden = false;
-        if (tabs) {
-          tabs.hidden = false;
-          tabs.removeAttribute('aria-hidden');
-        }
-      }
+      if (!hideHeaderOnScroll) headerHidden = false;
+      if (!hideTabsOnScroll) tabsHidden = false;
 
       stack.classList.toggle('veloura-hide-header-now', hideHeaderOnScroll && headerHidden);
       stack.classList.toggle('veloura-hide-tabs-now', hideTabsOnScroll && tabsHidden);
+
+      if (!hideHeaderOnScroll) storeHeader.classList.remove('veloura-top-hidden');
     };
 
     const update = () => {

@@ -1,10 +1,9 @@
-V13 - فصل ألوان الهيدر والتبويبات
+Veloura Header + Tabs V14
 
-عند إيقاف الوضع الزجاجي:
-- لون خلفية الهيدر يتحكم بالهيدر فقط.
-- لون خلفية التبويبات يتحكم بالتبويبات فقط.
-
-عند تشغيل الوضع الزجاجي:
-- تُخفى الخلفيتان المنفصلتان.
-- يظهر خيار جديد: لون الزجاج الموحد للهيدر والتبويبات.
-- هذا اللون وحده يتحكم بالسطح الزجاجي المشترك.
+This patch restores the structural rules accidentally omitted in V13 while preserving V13 independent colors:
+- Radius settings work again.
+- Non-floating mode is full-width and flush to top/right/left with lower radius only.
+- Floating mode uses the exact theme container and full radius.
+- Header and tabs remain sticky and visible unless their hide switches are explicitly enabled.
+- Solid header and tabs colors remain independent.
+- Glass mode alone uses one unified glass color.
