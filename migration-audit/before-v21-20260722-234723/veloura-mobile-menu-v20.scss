@@ -1,9 +1,9 @@
 /* ========================================================================
-   Veloura Mobile Floating Menu V21 — exact header glass match + active tile
+   Veloura Mobile Floating Menu V20 — settings wiring + true glass + active tile
 
    Loaded last. It intentionally replaces the mobile-menu portions of V18/V19:
    - all documented menu settings control the rendered result;
-   - glass reuses the exact header surface variables for identical opacity, border and blur;
+   - glass is uniformly transparent and uses the header blur strength;
    - active scale values 1 / 1.06 / 1.08 work without changing slot widths;
    - the active tile follows the configured menu radius;
    - the lower indicator is always inside and attached to the menu edge;
@@ -81,19 +81,19 @@
 
   /* Same blur strength as the header, but substantially more transparent. */
   html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
-    background: var(--veloura-v15-glass-fallback, rgba(207, 220, 233, .82)) !important;
-    background-color: var(--veloura-v15-glass-fallback, rgba(207, 220, 233, .82)) !important;
+    background: rgba(207, 220, 233, .44) !important;
+    background-color: rgba(207, 220, 233, .44) !important;
     background-image: none !important;
-    border: 1px solid var(--veloura-v15-border, rgba(255, 255, 255, .68)) !important;
-    -webkit-backdrop-filter: var(--veloura-v15-filter, blur(22px) saturate(138%)) !important;
-    backdrop-filter: var(--veloura-v15-filter, blur(22px) saturate(138%)) !important;
+    border: 1px solid rgba(255, 255, 255, .50) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(138%) !important;
+    backdrop-filter: blur(22px) saturate(138%) !important;
     box-shadow: none !important;
   }
 
   html.dark body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner,
   html body.dark.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
-    background: var(--veloura-v15-glass-dark-fallback, rgba(28, 40, 57, .86)) !important;
-    background-color: var(--veloura-v15-glass-dark-fallback, rgba(28, 40, 57, .86)) !important;
+    background: rgba(28, 40, 57, .48) !important;
+    background-color: rgba(28, 40, 57, .48) !important;
     border-color: rgba(255, 255, 255, .14) !important;
   }
 
@@ -235,8 +235,8 @@
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   @media (max-width: 1023px) {
     html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
-      background: rgba(207, 220, 233, .96) !important;
-      background-color: rgba(207, 220, 233, .96) !important;
+      background: rgba(207, 220, 233, .78) !important;
+      background-color: rgba(207, 220, 233, .78) !important;
     }
   }
 }
