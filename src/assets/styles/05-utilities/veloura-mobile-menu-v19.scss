@@ -1,0 +1,140 @@
+/* ========================================================================
+   Veloura Mobile Floating Menu V19 — active tile geometry + restored fade
+   Focused override only. Loaded after V18.
+   ======================================================================== */
+
+@media (max-width: 1023px) {
+  html body .veloura-mobile-floating-menu {
+    isolation: isolate !important;
+    overflow: visible !important;
+  }
+
+  /* Restore the soft fade below the floating bar without using box-shadow. */
+  html body .veloura-mobile-floating-menu::before {
+    content: '' !important;
+    display: block !important;
+    position: absolute !important;
+    inset-inline-start: -10px !important;
+    inset-inline-end: -10px !important;
+    bottom: -22px !important;
+    z-index: 0 !important;
+    width: auto !important;
+    height: 46px !important;
+    pointer-events: none !important;
+    background: linear-gradient(
+      180deg,
+      rgba(15, 23, 42, .24) 0%,
+      rgba(15, 23, 42, .11) 46%,
+      rgba(15, 23, 42, 0) 100%
+    ) !important;
+    box-shadow: none !important;
+  }
+
+  html body .veloura-mobile-floating-menu::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  html body .veloura-mobile-floating-menu__inner {
+    position: relative !important;
+    z-index: 1 !important;
+    overflow: visible !important;
+  }
+
+  /* Every item owns one equal, full-height slot. */
+  html body .veloura-mobile-floating-menu__item,
+  html body .veloura-mobile-floating-menu__item:hover,
+  html body .veloura-mobile-floating-menu__item:focus,
+  html body .veloura-mobile-floating-menu__item:active,
+  html body .veloura-mobile-floating-menu__item.is-active,
+  html body .veloura-mobile-floating-menu__item[aria-current='page'] {
+    position: relative !important;
+    isolation: isolate !important;
+    align-self: stretch !important;
+    width: auto !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 1px !important;
+    padding: 5px 2px 8px !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  html body .veloura-mobile-floating-menu__item i,
+  html body .veloura-mobile-floating-menu__item span {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  /* Reset V18 pseudo-elements before rebuilding the active tile. */
+  html body .veloura-mobile-floating-menu__item::before,
+  html body .veloura-mobile-floating-menu__item::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  /* The active link itself remains full height; its colored tile is inset. */
+  html body .veloura-mobile-floating-menu__item.is-active,
+  html body .veloura-mobile-floating-menu__item[aria-current='page'] {
+    z-index: 3 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border-radius: 0 !important;
+    color: #fff !important;
+  }
+
+  html body .veloura-mobile-floating-menu__item.is-active::before,
+  html body .veloura-mobile-floating-menu__item[aria-current='page']::before {
+    content: '' !important;
+    display: block !important;
+    position: absolute !important;
+    inset-inline-start: 0 !important;
+    inset-inline-end: 0 !important;
+    top: 2px !important;
+    bottom: 8px !important;
+    z-index: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: var(--veloura-mobile-floating-menu-radius, 0px) !important;
+    background: var(--veloura-mobile-floating-menu-active, #004d65) !important;
+    background-color: var(--veloura-mobile-floating-menu-active, #004d65) !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+  }
+
+  /* Windows 11 style indicator: attached to the menu's lower edge. */
+  html body .veloura-mobile-floating-menu__item.is-active::after,
+  html body .veloura-mobile-floating-menu__item[aria-current='page']::after {
+    content: '' !important;
+    display: block !important;
+    position: absolute !important;
+    inset-inline-start: 30% !important;
+    inset-inline-end: 30% !important;
+    bottom: 0 !important;
+    z-index: 4 !important;
+    width: auto !important;
+    height: 4px !important;
+    min-height: 4px !important;
+    max-height: 4px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 999px 999px 0 0 !important;
+    background: var(--veloura-mobile-floating-menu-active, #004d65) !important;
+    background-color: var(--veloura-mobile-floating-menu-active, #004d65) !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    pointer-events: none !important;
+  }
+
+  html body .veloura-mobile-floating-menu__item.is-active i,
+  html body .veloura-mobile-floating-menu__item.is-active span,
+  html body .veloura-mobile-floating-menu__item[aria-current='page'] i,
+  html body .veloura-mobile-floating-menu__item[aria-current='page'] span {
+    color: #fff !important;
+  }
+}
