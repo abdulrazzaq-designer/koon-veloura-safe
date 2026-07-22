@@ -1,0 +1,303 @@
+{% set top_enabled = true %}
+
+{# Veloura V4: robust boolean reading. Do not overwrite a scalar value with a selected array. #}
+{% set top_floating_setting = theme.settings.get('veloura_top_floating_v4_2026', true) %}
+{% set top_floating_raw = top_floating_setting %}
+{% if top_floating_setting.value is defined %}
+  {% set top_floating_raw = top_floating_setting.value %}
+{% elseif top_floating_setting.selected is defined %}
+  {% if top_floating_setting.selected.value is defined %}
+    {% set top_floating_raw = top_floating_setting.selected.value %}
+  {% elseif top_floating_setting.selected is iterable and top_floating_setting.selected[0] is defined and top_floating_setting.selected[0].value is defined %}
+    {% set top_floating_raw = top_floating_setting.selected[0].value %}
+  {% else %}
+    {% set top_floating_raw = top_floating_setting.selected %}
+  {% endif %}
+{% endif %}
+{% set top_floating = top_floating_raw == true or top_floating_raw == 'true' or top_floating_raw == 1 or top_floating_raw == '1' or top_floating_raw == 'on' %}
+
+{% set top_compact_setting = theme.settings.get('veloura_top_compact_on_scroll_v4_2026', true) %}
+{% set top_compact_raw = top_compact_setting %}
+{% if top_compact_setting.value is defined %}
+  {% set top_compact_raw = top_compact_setting.value %}
+{% elseif top_compact_setting.selected is defined %}
+  {% if top_compact_setting.selected.value is defined %}
+    {% set top_compact_raw = top_compact_setting.selected.value %}
+  {% elseif top_compact_setting.selected is iterable and top_compact_setting.selected[0] is defined and top_compact_setting.selected[0].value is defined %}
+    {% set top_compact_raw = top_compact_setting.selected[0].value %}
+  {% else %}
+    {% set top_compact_raw = top_compact_setting.selected %}
+  {% endif %}
+{% endif %}
+{% set top_compact_on_scroll = top_compact_raw == true or top_compact_raw == 'true' or top_compact_raw == 1 or top_compact_raw == '1' or top_compact_raw == 'on' %}
+
+{% set top_blur_setting = theme.settings.get('veloura_top_blur_v4_2026', true) %}
+{% set top_blur_raw = top_blur_setting %}
+{% if top_blur_setting.value is defined %}
+  {% set top_blur_raw = top_blur_setting.value %}
+{% elseif top_blur_setting.selected is defined %}
+  {% if top_blur_setting.selected.value is defined %}
+    {% set top_blur_raw = top_blur_setting.selected.value %}
+  {% elseif top_blur_setting.selected is iterable and top_blur_setting.selected[0] is defined and top_blur_setting.selected[0].value is defined %}
+    {% set top_blur_raw = top_blur_setting.selected[0].value %}
+  {% else %}
+    {% set top_blur_raw = top_blur_setting.selected %}
+  {% endif %}
+{% endif %}
+{% set top_blur = top_blur_raw == true or top_blur_raw == 'true' or top_blur_raw == 1 or top_blur_raw == '1' or top_blur_raw == 'on' %}
+
+{% set top_hide_setting = theme.settings.get('veloura_top_hide_on_scroll_v6_2026', false) %}
+{% set top_hide_on_scroll_raw = top_hide_setting %}
+{% if top_hide_setting.selected is defined %}
+  {% if top_hide_setting.selected.value is defined %}
+    {% set top_hide_on_scroll_raw = top_hide_setting.selected.value %}
+  {% elseif top_hide_setting.selected is iterable and top_hide_setting.selected[0] is defined and top_hide_setting.selected[0].value is defined %}
+    {% set top_hide_on_scroll_raw = top_hide_setting.selected[0].value %}
+  {% else %}
+    {% set top_hide_on_scroll_raw = top_hide_setting.selected %}
+  {% endif %}
+{% elseif top_hide_setting.value is defined %}
+  {% set top_hide_on_scroll_raw = top_hide_setting.value %}
+{% endif %}
+{% set top_hide_on_scroll = top_hide_on_scroll_raw == true or top_hide_on_scroll_raw == 'true' or top_hide_on_scroll_raw == 1 or top_hide_on_scroll_raw == '1' or top_hide_on_scroll_raw == 'on' %}
+
+{# Logo #}
+{% set light_logo_url = theme.settings.get('veloura_light_logo_url_2026') %}
+{% set light_logo_image = theme.settings.get('veloura_light_logo_2026') %}
+{% set veloura_light_logo = light_logo_url ?: light_logo_image %}
+
+{% set top_logo_url = theme.settings.get('veloura_top_logo_url_2026') %}
+{% set top_logo_image = theme.settings.get('veloura_top_logo_image_2026') %}
+{% set top_logo = top_logo_url ?: top_logo_image ?: veloura_light_logo ?: store.logo|cdn(175) %}
+
+{% set top_logo_lower = top_logo|lower %}
+{% set top_logo_is_video = top_logo_lower ends with '.webm' or top_logo_lower ends with '.mp4' %}
+
+{# General Settings #}
+{% set top_logo_center = theme.settings.get('veloura_top_logo_center_2026', true) %}
+{% if top_logo_center.value is defined %}{% set top_logo_center = top_logo_center.value %}{% endif %}
+
+{% set top_logo_no_center_laptop = theme.settings.get('veloura_top_logo_no_center_laptop_2026', false) %}
+{% if top_logo_no_center_laptop.value is defined %}{% set top_logo_no_center_laptop = top_logo_no_center_laptop.value %}{% endif %}
+
+{% set top_logo_size_value = theme.settings.get('veloura_top_logo_size_2026', 5) %}
+{% if top_logo_size_value.value is defined %}{% set top_logo_size_value = top_logo_size_value.value %}{% endif %}
+{% set top_logo_size_px = 32 + (top_logo_size_value * 3) %}
+
+{% set top_bg = theme.settings.get('veloura_top_bg_color_2026', '#ffffff') %}
+{% if top_bg.value is defined %}{% set top_bg = top_bg.value %}{% endif %}
+
+{% set top_text = theme.settings.get('veloura_top_text_color_2026', '#004d65') %}
+{% if top_text.value is defined %}{% set top_text = top_text.value %}{% endif %}
+
+{% set top_cart_bg = theme.settings.get('veloura_top_cart_bg_2026', '#f87171') %}
+{% if top_cart_bg.value is defined %}{% set top_cart_bg = top_cart_bg.value %}{% endif %}
+
+{% set top_border = theme.settings.get('veloura_top_border_style_2026', 'sharp') %}
+{% if top_border.selected is defined and top_border.selected[0].value is defined %}
+  {% set top_border = top_border.selected[0].value %}
+{% elseif top_border.value is defined %}
+  {% set top_border = top_border.value %}
+{% elseif top_border is iterable and top_border[0].value is defined %}
+  {% set top_border = top_border[0].value %}
+{% endif %}
+
+{% set icons_size = theme.settings.get('veloura_top_icons_size_2026', 'small') %}
+{% if icons_size.selected is defined and icons_size.selected[0].value is defined %}
+  {% set icons_size = icons_size.selected[0].value %}
+{% elseif icons_size.value is defined %}
+  {% set icons_size = icons_size.value %}
+{% elseif icons_size is iterable and icons_size[0].value is defined %}
+  {% set icons_size = icons_size[0].value %}
+{% endif %}
+
+{% set mobile_search = theme.settings.get('veloura_top_mobile_search_display_2026', 'icon_right') %}
+{% if mobile_search.selected is defined and mobile_search.selected[0].value is defined %}
+  {% set mobile_search = mobile_search.selected[0].value %}
+{% elseif mobile_search.value is defined %}
+  {% set mobile_search = mobile_search.value %}
+{% elseif mobile_search is iterable and mobile_search[0].value is defined %}
+  {% set mobile_search = mobile_search[0].value %}
+{% endif %}
+
+{% set desktop_search = theme.settings.get('veloura_top_desktop_search_display_2026', 'bar_sticky_icon') %}
+{% if desktop_search.selected is defined and desktop_search.selected[0].value is defined %}
+  {% set desktop_search = desktop_search.selected[0].value %}
+{% elseif desktop_search.value is defined %}
+  {% set desktop_search = desktop_search.value %}
+{% elseif desktop_search is iterable and desktop_search[0].value is defined %}
+  {% set desktop_search = desktop_search[0].value %}
+{% endif %}
+
+{% set desktop_menu_mode = theme.settings.get('veloura_top_desktop_menu_mode_2026', 'links') %}
+{% if desktop_menu_mode.selected is defined and desktop_menu_mode.selected[0].value is defined %}
+  {% set desktop_menu_mode = desktop_menu_mode.selected[0].value %}
+{% elseif desktop_menu_mode.value is defined %}
+  {% set desktop_menu_mode = desktop_menu_mode.value %}
+{% elseif desktop_menu_mode is iterable and desktop_menu_mode[0].value is defined %}
+  {% set desktop_menu_mode = desktop_menu_mode[0].value %}
+{% endif %}
+
+{% set show_mobile_lang = theme.settings.get('veloura_top_mobile_currency_lang_icon_2026', true) %}
+{% if show_mobile_lang.value is defined %}{% set show_mobile_lang = show_mobile_lang.value %}{% endif %}
+
+{% set hide_lang_desktop = theme.settings.get('veloura_top_hide_currency_lang_desktop_2026', false) %}
+{% if hide_lang_desktop.value is defined %}{% set hide_lang_desktop = hide_lang_desktop.value %}{% endif %}
+
+{% set hide_cart_total_mobile = theme.settings.get('veloura_top_hide_cart_total_mobile_2026', true) %}
+{% if hide_cart_total_mobile.value is defined %}{% set hide_cart_total_mobile = hide_cart_total_mobile.value %}{% endif %}
+
+{# false = الهيدر يحترم كونتينر اللابتوب افتراضياً، وإذا فعّلت خيار العرض الكامل من الإعدادات يصير Full Width #}
+{% set full_width_desktop = theme.settings.get('veloura_top_full_width_desktop_2026', false) %}
+{% if full_width_desktop.value is defined %}{% set full_width_desktop = full_width_desktop.value %}{% endif %}
+
+{% set show_wishlist = theme.settings.get('veloura_top_show_wishlist_2026', false) %}
+{% if show_wishlist.value is defined %}{% set show_wishlist = show_wishlist.value %}{% endif %}
+
+{% set dark_pos = theme.settings.get('veloura_dark_toggle_position_2026', 'left') %}
+{% if dark_pos.selected is defined and dark_pos.selected[0].value is defined %}
+  {% set dark_pos = dark_pos.selected[0].value %}
+{% elseif dark_pos.value is defined %}
+  {% set dark_pos = dark_pos.value %}
+{% elseif dark_pos is iterable and dark_pos[0].value is defined %}
+  {% set dark_pos = dark_pos[0].value %}
+{% endif %}
+
+{% set top_menu_icon = theme.settings.get('veloura_top_menu_icon_2026', 'sicon-menu') %}
+{% if top_menu_icon.selected is defined and top_menu_icon.selected[0].value is defined %}
+  {% set top_menu_icon = top_menu_icon.selected[0].value %}
+{% elseif top_menu_icon.value is defined %}
+  {% set top_menu_icon = top_menu_icon.value %}
+{% elseif top_menu_icon is iterable and top_menu_icon[0].value is defined %}
+  {% set top_menu_icon = top_menu_icon[0].value %}
+{% endif %}
+{% if not top_menu_icon %}
+  {% set top_menu_icon = 'sicon-menu' %}
+{% endif %}
+
+<header
+  class="store-header
+  veloura-top-enabled
+  {{ top_floating ? 'veloura-top-floating' : '' }}
+  {{ top_compact_on_scroll ? 'veloura-top-compact-on-scroll' : '' }}
+  {{ top_blur ? 'veloura-top-blur' : '' }}
+  {{ top_logo_center ? 'veloura-top-logo-centered' : '' }}
+  {{ top_logo_no_center_laptop ? 'veloura-top-logo-no-center-laptop' : '' }}
+  {{ full_width_desktop ? 'veloura-top-full-width-desktop' : '' }}
+  {{ hide_lang_desktop ? 'veloura-top-hide-lang-desktop' : '' }}
+  {{ top_hide_on_scroll ? 'veloura-hide-top-on-scroll' : '' }}
+
+  veloura-top-border-{{ top_border }}
+  veloura-top-icons-{{ icons_size }}
+
+  veloura-mobile-search-{{ mobile_search }}
+  veloura-desktop-search-{{ desktop_search }}
+  veloura-desktop-menu-{{ desktop_menu_mode }}
+  "
+  data-veloura-header-v9="true"
+  data-veloura-floating="{{ top_floating ? 'true' : 'false' }}"
+  data-veloura-compact="{{ top_compact_on_scroll ? 'true' : 'false' }}"
+  data-veloura-blur="{{ top_blur ? 'true' : 'false' }}"
+  data-veloura-hide-scroll="{{ top_hide_on_scroll ? 'true' : 'false' }}"
+  style="
+    --veloura-top-bg: {{ top_bg }};
+    --veloura-header-solid-bg: {{ top_bg }};
+    --veloura-top-text: {{ top_text }};
+    --veloura-top-cart-bg: {{ top_cart_bg }};
+    --veloura-top-logo-size: {{ top_logo_size_px }}px;
+  "
+>
+  <div id="mainnav" class="main-nav-container">
+    <div class="inner w-full">
+      <div class="veloura-header-container">
+        <div class="veloura-header-grid">
+
+          <div class="veloura-header-side veloura-header-left">
+            {% if not hide_lang_desktop %}
+              <div class="veloura-lang-desktop">
+                {% if store.settings.is_multilingual or store.settings.currencies_enabled %}
+                  <salla-localization-modal show-trigger></salla-localization-modal>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            <salla-cart-summary class="veloura-cart-summary {{ hide_cart_total_mobile ? 'veloura-cart-hide-total veloura-cart-icon-only-mobile' : '' }}">
+              <span slot="icon" class="veloura-cart-custom-icon">
+                <i class="{{ theme.settings.get('veloura_top_cart_icon_2026', 'sicon-shopping-bag') }}"></i>
+              </span>
+            </salla-cart-summary>
+
+            <button type="button" class="veloura-header-icon veloura-login-btn" onclick="salla.event.dispatch('login::open')" aria-label="تسجيل الدخول">
+              <i class="{{ theme.settings.get('veloura_top_login_icon_2026', 'sicon-user-circle') }}"></i>
+            </button>
+
+            {% if show_wishlist %}
+              <a class="veloura-header-icon veloura-wishlist-btn" href="{{ store.url }}/wishlist" aria-label="المفضلة">
+                <i class="sicon-heart"></i>
+              </a>
+            {% endif %}
+
+            {% if theme.settings.get('veloura_dark_enabled_2026') and theme.settings.get('veloura_dark_toggle_enabled_2026') and dark_pos == 'left' %}
+              <button type="button" class="veloura-header-icon veloura-dark-toggle" aria-label="تبديل الوضع الداكن">
+                <i class="sicon-moon veloura-dark-toggle__icon"></i>
+              </button>
+            {% endif %}
+
+            <button type="button" class="veloura-header-icon veloura-search-toggle veloura-search-toggle-left" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
+              <i class="sicon-search"></i>
+            </button>
+          </div>
+
+          <a class="navbar-brand veloura-header-logo" href="{{ store.url }}">
+            {% if top_logo_is_video %}
+              <video class="veloura-store-logo veloura-store-logo-video" src="{{ top_logo }}" autoplay muted loop playsinline data-light-logo="{{ top_logo }}" data-dark-logo="{{ theme.settings.get('veloura_dark_logo_2026') }}" aria-label="{{ store.name }} logo"></video>
+            {% else %}
+              <img fetchpriority="high" width="100%" height="100%" loading="eager" src="{{ top_logo }}" data-light-logo="{{ top_logo }}" data-dark-logo="{{ theme.settings.get('veloura_dark_logo_2026') }}" class="veloura-store-logo" alt="{{ store.name }} logo">
+            {% endif %}
+
+            {% if is_page('index') %}
+              <h1 class="sr-only">{{ store.name }}</h1>
+            {% else %}
+              <h2 class="sr-only">{{ store.name }}</h2>
+            {% endif %}
+          </a>
+
+          <div class="veloura-header-side veloura-header-right">
+            <button type="button" class="veloura-header-icon veloura-search-toggle veloura-search-toggle-right" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
+              <i class="sicon-search"></i>
+            </button>
+
+            {% if theme.settings.get('veloura_dark_enabled_2026') and theme.settings.get('veloura_dark_toggle_enabled_2026') and dark_pos == 'right' %}
+              <button type="button" class="veloura-header-icon veloura-dark-toggle" aria-label="تبديل الوضع الداكن">
+                <i class="sicon-moon veloura-dark-toggle__icon"></i>
+              </button>
+            {% endif %}
+
+            {% if show_mobile_lang %}
+              <button type="button" class="veloura-header-icon veloura-lang-mobile" onclick="document.querySelector('salla-localization-modal')?.click()" aria-label="اللغة والعملة">
+                <i class="sicon-earth"></i>
+              </button>
+            {% endif %}
+
+            <div class="veloura-menu-links-wrap">
+              <custom-main-menu></custom-main-menu>
+            </div>
+
+            <a class="veloura-header-icon veloura-menu-trigger-mobile mburger mburger--collapse" href="#mobile-menu" aria-label="فتح القائمة">
+              <i class="{{ top_menu_icon }}"></i>
+            </a>
+          </div>
+
+          <div class="veloura-mobile-search-bar">
+            <salla-search inline oval height="40"></salla-search>
+          </div>
+
+          <div class="veloura-desktop-search-bar">
+            <salla-search inline oval height="40"></salla-search>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

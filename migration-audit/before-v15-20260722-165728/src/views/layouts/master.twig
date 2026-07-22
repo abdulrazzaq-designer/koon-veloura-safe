@@ -2153,7 +2153,7 @@
 
 <div class="app-inner flex flex-col min-h-full">
     {% hook 'body:start' %}
-{# VELOURA HEADER + HOME TABS V15 START #}
+{# VELOURA HEADER + HOME TABS V13 INDEPENDENT SOLID / UNIFIED GLASS START #}
 {% set vht_enabled = false %}
 {% set vht_sticky = true %}
 {% set vht_hide_on_scroll = false %}
@@ -2167,7 +2167,9 @@
 {% set vht_bar_bg = theme.settings.get('veloura_home_tabs_bar_bg_2026', '#ffffff') %}
 {% if vht_bar_bg.value is defined %}{% set vht_bar_bg = vht_bar_bg.value %}{% endif %}
 
-{# V15: the unified glass color is fixed in CSS for consistent rendering. #}
+{# V13: only glass mode uses one shared color for both surfaces. #}
+{% set vht_glass_color = theme.settings.get('veloura_top_glass_unified_color_2026', '#e8eff7') %}
+{% if vht_glass_color.value is defined %}{% set vht_glass_color = vht_glass_color.value %}{% endif %}
 
 {% set vht_top_border = theme.settings.get('veloura_top_border_style_2026', 'medium') %}
 {% if vht_top_border.selected is defined and vht_top_border.selected[0].value is defined %}
@@ -2217,15 +2219,21 @@
   data-veloura-hide-header="{{ vh_hide ? 'true' : 'false' }}"
   data-veloura-hide-tabs="{{ vht_hide_on_scroll ? 'true' : 'false' }}"
   data-veloura-compact="{{ vh_compact ? 'true' : 'false' }}"
-  style="--veloura-header-solid-bg:{{ vht_header_bg }};--veloura-tabs-solid-bg:{{ vht_bar_bg }};"
+  style="--veloura-header-solid-bg:{{ vht_header_bg }};--veloura-tabs-solid-bg:{{ vht_bar_bg }};--veloura-unified-glass-color:{{ vht_glass_color }};"
 >
   <div class="veloura-header-tabs-stack__container container">
     <div class="veloura-header-tabs-stack__surface">
       {% component 'header.header' %}
 
       {% if vht_has_tabs %}
-        {% set vht_active_color = theme.settings.get('veloura_home_tabs_active_bg_2026', '#003848') %}
-        {% if vht_active_color.value is defined %}{% set vht_active_color = vht_active_color.value %}{% endif %}
+        {% set vht_active_bg = theme.settings.get('veloura_home_tabs_active_bg_2026', '#003848') %}
+        {% if vht_active_bg.value is defined %}{% set vht_active_bg = vht_active_bg.value %}{% endif %}
+        {% set vht_active_text = theme.settings.get('veloura_home_tabs_active_text_2026', '#ffffff') %}
+        {% if vht_active_text.value is defined %}{% set vht_active_text = vht_active_text.value %}{% endif %}
+        {% set vht_inactive_bg = theme.settings.get('veloura_home_tabs_inactive_bg_2026', '#f1f5f9') %}
+        {% if vht_inactive_bg.value is defined %}{% set vht_inactive_bg = vht_inactive_bg.value %}{% endif %}
+        {% set vht_inactive_text = theme.settings.get('veloura_home_tabs_inactive_text_2026', '#0f172a') %}
+        {% if vht_inactive_text.value is defined %}{% set vht_inactive_text = vht_inactive_text.value %}{% endif %}
 
         <nav
           id="veloura-home-tabs"
@@ -2233,41 +2241,16 @@
           aria-label="تبويبات الصفحة الرئيسية"
           data-veloura-home-tabs
           data-veloura-tabs-hide-scroll="{{ vht_hide_on_scroll ? 'true' : 'false' }}"
-          style="--veloura-tabs-bar-bg:{{ vht_bar_bg }};--veloura-tabs-active-color:{{ vht_active_color }};"
+          style="--veloura-tabs-bar-bg:{{ vht_bar_bg }};--veloura-tabs-active-bg:{{ vht_active_bg }};--veloura-tabs-active-text:{{ vht_active_text }};--veloura-tabs-inactive-bg:{{ vht_inactive_bg }};--veloura-tabs-inactive-text:{{ vht_inactive_text }};"
         >
           <div class="container">
             <div class="veloura-home-tabs__track" role="tablist" aria-orientation="horizontal">
               {% for tab in vht_items %}
                 {% if loop.index <= 10 and tab.name|default('') %}
                   {% set vht_tab_name = tab.name|default('تبويب ' ~ loop.index) %}
-
-                  {% set vht_show_icon_raw = tab.show_icon is defined ? tab.show_icon : false %}
-                  {% if vht_show_icon_raw.value is defined %}
-                    {% set vht_show_icon_raw = vht_show_icon_raw.value %}
-                  {% elseif vht_show_icon_raw.selected is defined %}
-                    {% if vht_show_icon_raw.selected.value is defined %}
-                      {% set vht_show_icon_raw = vht_show_icon_raw.selected.value %}
-                    {% elseif vht_show_icon_raw.selected is iterable and vht_show_icon_raw.selected[0] is defined and vht_show_icon_raw.selected[0].value is defined %}
-                      {% set vht_show_icon_raw = vht_show_icon_raw.selected[0].value %}
-                    {% else %}
-                      {% set vht_show_icon_raw = vht_show_icon_raw.selected %}
-                    {% endif %}
-                  {% endif %}
-                  {% set vht_show_icon = vht_show_icon_raw == true or vht_show_icon_raw == 'true' or vht_show_icon_raw == 1 or vht_show_icon_raw == '1' or vht_show_icon_raw == 'on' %}
-
-                  {% set vht_tab_icon_raw = tab.icon|default('') %}
-                  {% if vht_tab_icon_raw.selected is defined and vht_tab_icon_raw.selected.value is defined %}
-                    {% set vht_tab_icon = vht_tab_icon_raw.selected.value %}
-                  {% elseif vht_tab_icon_raw.selected is defined and vht_tab_icon_raw.selected is iterable and vht_tab_icon_raw.selected[0] is defined and vht_tab_icon_raw.selected[0].value is defined %}
-                    {% set vht_tab_icon = vht_tab_icon_raw.selected[0].value %}
-                  {% elseif vht_tab_icon_raw is iterable and vht_tab_icon_raw[0] is defined and vht_tab_icon_raw[0].value is defined %}
-                    {% set vht_tab_icon = vht_tab_icon_raw[0].value %}
-                  {% elseif vht_tab_icon_raw.value is defined %}
-                    {% set vht_tab_icon = vht_tab_icon_raw.value %}
-                  {% else %}
-                    {% set vht_tab_icon = vht_tab_icon_raw %}
-                  {% endif %}
-
+                  {% set vht_show_icon = tab.show_icon|default(false) %}
+                  {% if vht_show_icon.value is defined %}{% set vht_show_icon = vht_show_icon.value %}{% endif %}
+                  {% set vht_tab_icon = tab.icon|default('') %}
                   <button
                     type="button"
                     class="veloura-home-tabs__button"
@@ -2276,7 +2259,7 @@
                     tabindex="{{ loop.first ? '0' : '-1' }}"
                     data-veloura-tab-target="{{ vht_tab_name|e }}"
                   >
-                    {% if vht_show_icon and vht_tab_icon %}<i class="{{ vht_tab_icon|e('html_attr') }}" aria-hidden="true"></i>{% endif %}
+                    {% if vht_show_icon and vht_tab_icon %}<i class="{{ vht_tab_icon }}" aria-hidden="true"></i>{% endif %}
                     <span>{{ vht_tab_name }}</span>
                   </button>
                 {% endif %}
@@ -2288,7 +2271,7 @@
     </div>
   </div>
 </div>
-{# VELOURA HEADER + HOME TABS V15 END #}
+{# VELOURA HEADER + HOME TABS V13 INDEPENDENT SOLID / UNIFIED GLASS END #}
     <main id="main-content" role="main">
       {% block content %}{% endblock %}
     </main>

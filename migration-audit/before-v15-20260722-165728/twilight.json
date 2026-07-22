@@ -251,7 +251,7 @@
       "type": "static",
       "format": "description",
       "label": " ",
-      "value": "<span id='veloura-switch-inside-title-marker'></span><style id='veloura-switch-inside-title-css'>:is(.form--static-description,.form--static-title,.form--static-line):has(#veloura-switch-inside-title-marker){display:none!important}:is(.form--static-title,.form--static-description):has(.veloura-switch-title){position:relative!important;margin-bottom:0!important;overflow:visible!important}.veloura-switch-title{position:relative!important;min-height:65px!important;padding-left:82px!important;box-sizing:border-box!important;overflow:visible!important;direction:rtl!important}.veloura-switch-title>div:last-child{position:static!important;flex:1 1 auto!important;width:auto!important;margin:0!important;padding:0!important;transform:none!important;text-align:right!important;direction:rtl!important}.veloura-switch-title>div:last-child strong{display:block!important;width:100%!important;text-align:right!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:clip!important;font-size:22px!important;line-height:1.25!important}:is(.form--static-title,.form--static-description):has(.veloura-switch-title)+.field-wrapper.form--boolean-switch{position:relative!important;z-index:2!important;width:100%!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:visible!important}:is(.form--static-title,.form--static-description):has(.veloura-switch-title)+.field-wrapper.form--boolean-switch>div:first-child{position:absolute!important;left:16px!important;top:-62px!important;display:flex!important;align-items:center!important;justify-content:center!important;width:56px!important;height:32px!important;margin:0!important;padding:0!important;border:0!important;overflow:visible!important;pointer-events:none!important}:is(.form--static-title,.form--static-description):has(.veloura-switch-title)+.field-wrapper.form--boolean-switch s-toggle{display:inline-flex!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;max-width:none!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:0!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;color:transparent!important;line-height:normal!important;transform:none!important;pointer-events:auto!important;--primary:193.33 100% 14.12%!important;--gray-400:215 14% 65%!important}:is(.form--static-title,.form--static-description):has(.veloura-switch-title)+.field-wrapper.form--boolean-switch s-toggle>i[slot='start']{display:none!important}</style>",
+      "value": "<span id='veloura-switch-inside-title-marker'></span><style id='veloura-switch-inside-title-css'>:is(.form--static-description,.form--static-title,.form--static-line):has(#veloura-switch-inside-title-marker){display:none!important}:is(.form--static-title,.form--static-description):has(.veloura-switch-title){position:relative!important;margin-bottom:0!important;overflow:visible!important}.veloura-switch-title{position:relative!important;min-height:65px!important;padding-left:82px!important;box-sizing:border-box!important;overflow:visible!important;direction:rtl!important}.veloura-switch-title>div:last-child{position:static!important;flex:1 1 auto!important;width:auto!important;margin:0!important;padding:0!important;transform:none!important;text-align:right!important;direction:rtl!important}.veloura-switch-title>div:last-child strong{display:block!important;width:100%!important;text-align:right!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:clip!important;font-size:22px!important;line-height:1.25!important}:is(.form--static-title,.form--static-description):has(.veloura-switch-title)+.field-wrapper.form--boolean-switch{position:relative!important;z-index:100!important;width:100%!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:visible!important}:is(.form--static-title,.form--static-description):has(.veloura-switch-title)+.field-wrapper.form--boolean-switch>div:first-child{position:absolute!important;left:16px!important;top:-62px!important;display:flex!important;align-items:center!important;justify-content:center!important;width:56px!important;height:32px!important;margin:0!important;padding:0!important;border:0!important;overflow:visible!important;pointer-events:none!important}:is(.form--static-title,.form--static-description):has(.veloura-switch-title)+.field-wrapper.form--boolean-switch s-toggle{display:inline-flex!important;flex:0 0 auto!important;width:auto!important;min-width:0!important;max-width:none!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:0!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;color:transparent!important;line-height:normal!important;transform:none!important;pointer-events:auto!important;--primary:193.33 100% 14.12%!important;--gray-400:215 14% 65%!important}:is(.form--static-title,.form--static-description):has(.veloura-switch-title)+.field-wrapper.form--boolean-switch s-toggle>i[slot='start']{display:none!important}</style>",
       "required": false
     },
     {
@@ -1711,7 +1711,7 @@
       "type": "boolean",
       "icon": "sicon-eye",
       "label": "تفعيل الوضع الزجاجي الموحد",
-      "description": "عند التفعيل يستخدم الهيدر والتبويبات لوناً زجاجياً ثابتاً ومحايداً، وتختفي خلفيتهما الصلبة فقط.",
+      "description": "عند التفعيل تُخفى خلفية الهيدر وخلفية التبويبات المنفصلتان، ويستخدمان لون الزجاج الموحد فقط.",
       "id": "veloura_top_blur_v4_2026",
       "format": "switch",
       "required": false,
@@ -1725,6 +1725,29 @@
         }
       ],
       "default": true
+    },
+    {
+      "id": "veloura_top_glass_unified_color_2026",
+      "type": "string",
+      "format": "color",
+      "inputType": "color",
+      "label": "لون الزجاج الموحد للهيدر والتبويبات",
+      "description": "يعمل فقط عند تفعيل الوضع الزجاجي. لا يؤثر على ألوان الهيدر والتبويبات عند إيقاف الزجاج.",
+      "icon": "sicon-paint-bucket",
+      "value": "#e8eff7",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_top_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_top_blur_v4_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
     },
     {
       "id": "veloura_top_logo_size_2026",
@@ -2288,7 +2311,7 @@
       "type": "string",
       "format": "color",
       "inputType": "color",
-      "label": "لون التبويب النشط",
+      "label": "لون خلفية التبويب النشط",
       "icon": "sicon-paint-bucket",
       "value": "#003848",
       "required": false,
@@ -2298,8 +2321,58 @@
           "operation": "=",
           "value": true
         }
-      ],
-      "description": "يطبق على نص وأيقونة التبويب النشط وعلى نقطة التفعيل، بدون إضافة خلفية للتبويب."
+      ]
+    },
+    {
+      "id": "veloura_home_tabs_active_text_2026",
+      "type": "string",
+      "format": "color",
+      "inputType": "color",
+      "label": "لون نص التبويب النشط",
+      "icon": "sicon-paint-bucket",
+      "value": "#ffffff",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_home_tabs_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_home_tabs_inactive_bg_2026",
+      "type": "string",
+      "format": "color",
+      "inputType": "color",
+      "label": "لون خلفية التبويب غير النشط",
+      "icon": "sicon-paint-bucket",
+      "value": "#f1f5f9",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_home_tabs_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_home_tabs_inactive_text_2026",
+      "type": "string",
+      "format": "color",
+      "inputType": "color",
+      "label": "لون نص التبويب غير النشط",
+      "icon": "sicon-paint-bucket",
+      "value": "#0f172a",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_home_tabs_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
     },
     {
       "id": "veloura_home_tabs_items_2026",
@@ -2339,15 +2412,14 @@
           "icon": "sicon-toggle-off",
           "value": false,
           "selected": false,
-          "required": false,
-          "default": false
+          "required": false
         },
         {
           "id": "icon",
           "type": "string",
           "format": "icon",
           "label": "الأيقونة",
-          "description": "يظهر هذا الحقل فقط بعد تفعيل زر إضافة أيقونة، وتستخدم الأيقونة لون نص التبويب.",
+          "description": "تظهر بجانب اسم التبويب في الشريط",
           "icon": "sicon-star",
           "value": "",
           "required": false,
@@ -4569,7 +4641,7 @@
       "id": "veloura_cart_banners_gap_2026",
       "type": "number",
       "format": "slider",
-      "label": "المسافة بين البنرات",
+      "label": "المسافة بين البنرات11111",
       "description": "القيمة بالبكسل",
       "inputType": "range",
       "icon": "sicon-resize",
@@ -7352,32 +7424,42 @@
       "type": "items",
       "format": "dropdown-list",
       "label": "تكبير العنصر النشط",
-      "description": "تكبير خفيف ومتزن. يتم تقييد التكبير بصرياً حتى لا يخرج العنصر أو النقطة خارج القائمة.",
+      "description": "اختر مقدار تكبير العنصر النشط",
       "icon": "sicon-star",
       "source": "Manual",
       "required": true,
       "selected": [
         {
-          "label": "خفيف",
-          "value": "1.06",
-          "key": "vmfm-active-scale-106-v15-2026"
+          "label": "متوسط",
+          "value": "1.12",
+          "key": "vmfm-active-scale-112-2026"
         }
       ],
       "options": [
         {
           "label": "بدون تكبير",
           "value": "1",
-          "key": "vmfm-active-scale-100-v15-2026"
+          "key": "vmfm-active-scale-100-2026"
         },
         {
           "label": "خفيف",
-          "value": "1.06",
-          "key": "vmfm-active-scale-106-v15-2026"
+          "value": "1.08",
+          "key": "vmfm-active-scale-108-2026"
         },
         {
-          "label": "واضح",
-          "value": "1.08",
-          "key": "vmfm-active-scale-108-v15-2026"
+          "label": "متوسط",
+          "value": "1.12",
+          "key": "vmfm-active-scale-112-2026"
+        },
+        {
+          "label": "كبير",
+          "value": "1.18",
+          "key": "vmfm-active-scale-118-2026"
+        },
+        {
+          "label": "كبير جدًا",
+          "value": "1.24",
+          "key": "vmfm-active-scale-124-2026"
         }
       ],
       "conditions": [
@@ -7386,8 +7468,7 @@
           "operation": "=",
           "value": true
         }
-      ],
-      "value": "1.06"
+      ]
     },
     {
       "id": "veloura_mobile_floating_menu_subtitle_style_2026",
@@ -7409,7 +7490,7 @@
       "type": "boolean",
       "format": "switch",
       "label": "تفعيل الشكل البلوري",
-      "description": "يستخدم لوناً زجاجياً رمادياً مزرقاً ثابتاً وموحداً، بدون تدرج أو اختلاف لون بين جانبي القائمة.",
+      "description": "يعطي القائمة تأثير زجاجي احترافي مثل iPhone مع Blur وشفافية",
       "icon": "sicon-magic-wand",
       "value": false,
       "required": false,
