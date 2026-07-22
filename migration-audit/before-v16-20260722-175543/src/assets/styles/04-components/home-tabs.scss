@@ -1,5 +1,5 @@
 /* ========================================================================
-   Veloura Home Tabs V16 — exact RTL/LTR separators and clearer active marker
+   Veloura Home Tabs V15 — compact, icon-safe, one active color
    ======================================================================== */
 
 .veloura-home-tabs {
@@ -36,7 +36,7 @@ html[dir='ltr'] .veloura-home-tabs__track { direction: ltr; }
   min-height: 31px;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 5px;
   padding: 4px 6px;
   border: 0;
   border-radius: 0;
@@ -54,36 +54,30 @@ html[dir='ltr'] .veloura-home-tabs__track { direction: ltr; }
 html[dir='rtl'] .veloura-home-tabs__button { direction: rtl; }
 html[dir='ltr'] .veloura-home-tabs__button { direction: ltr; }
 
-/* Active marker: a clearer pulse that always follows the active color. */
+/* Active pulse dot; it uses the same color as active text and icon. */
 .veloura-home-tabs__button::before {
   content: '';
   flex: 0 0 auto;
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 999px;
   background: var(--veloura-tabs-active-color);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--veloura-tabs-active-color) 18%, transparent);
   opacity: 0;
   transform: scale(.72);
-  transition: opacity .16s ease, transform .16s ease, box-shadow .16s ease;
+  transition: opacity .16s ease, transform .16s ease;
 }
 
-/*
- * Separator logic is physical, not logical:
- * RTL DOM starts at the right, so every item except the last gets a separator
- * on its LEFT edge. LTR does the mirror image. This guarantees separators
- * only between tabs and never on an outside edge.
- */
+/* Exactly one separator on the shared edge between adjacent buttons. */
 .veloura-home-tabs__button::after {
   content: none;
   display: none;
 }
 
-html[dir='rtl'] .veloura-home-tabs__button:not(:last-child)::after,
-html[dir='ltr'] .veloura-home-tabs__button:not(:last-child)::after {
+.veloura-home-tabs__button + .veloura-home-tabs__button::after {
   content: '';
   display: block;
   position: absolute;
+  inset-inline-start: -1px;
   top: 50%;
   width: 2px;
   height: 10px;
@@ -92,16 +86,6 @@ html[dir='ltr'] .veloura-home-tabs__button:not(:last-child)::after {
   background: rgba(15, 23, 42, .14);
   transform: translateY(-50%);
   pointer-events: none;
-}
-
-html[dir='rtl'] .veloura-home-tabs__button:not(:last-child)::after {
-  left: -1px;
-  right: auto;
-}
-
-html[dir='ltr'] .veloura-home-tabs__button:not(:last-child)::after {
-  right: -1px;
-  left: auto;
 }
 
 .veloura-home-tabs__button i {
@@ -135,20 +119,12 @@ html[dir='ltr'] .veloura-home-tabs__button:not(:last-child)::after {
 .veloura-home-tabs__button[aria-selected='true']::before {
   opacity: 1;
   transform: scale(1);
-  animation: veloura-tabs-dot-pulse 1.55s ease-in-out infinite;
+  animation: veloura-tabs-dot-pulse 1.8s ease-in-out infinite;
 }
 
 @keyframes veloura-tabs-dot-pulse {
-  0%, 100% {
-    opacity: .82;
-    transform: scale(.92);
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--veloura-tabs-active-color) 14%, transparent);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.18);
-    box-shadow: 0 0 0 5px color-mix(in srgb, var(--veloura-tabs-active-color) 8%, transparent);
-  }
+  0%, 100% { opacity: .72; transform: scale(.88); }
+  50% { opacity: 1; transform: scale(1.16); }
 }
 
 .veloura-home-tabs__button:focus-visible {
@@ -161,14 +137,14 @@ html[dir='ltr'] .veloura-home-tabs__button:not(:last-child)::after {
   display: none !important;
 }
 
-html.dark .veloura-home-tabs__button:not(:last-child)::after,
-body.dark .veloura-home-tabs__button:not(:last-child)::after {
+html.dark .veloura-home-tabs__button + .veloura-home-tabs__button::after,
+body.dark .veloura-home-tabs__button + .veloura-home-tabs__button::after {
   background: rgba(255, 255, 255, .18);
 }
 
 @media (max-width: 480px) {
   .veloura-home-tabs__track { padding-inline: 2px; }
-  .veloura-home-tabs__button { min-height: 29px; padding-inline: 3px; gap: 6px; }
+  .veloura-home-tabs__button { min-height: 29px; padding-inline: 3px; gap: 3px; }
   .veloura-home-tabs__button i { font-size: 14px; }
   .veloura-home-tabs__button::before { width: 5px; height: 5px; }
 }
