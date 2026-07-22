@@ -51242,16 +51242,56 @@ html.veloura-viewport-resizing .veloura-mobile-floating-menu * {
   }
 }
 /* ========================================================================
-   Veloura Mobile Floating Menu V21 — exact header glass match + active tile
+   Veloura V22 — single active tile + exact lower indicator + page-color fades
 
-   Loaded last. It intentionally replaces the mobile-menu portions of V18/V19:
-   - all documented menu settings control the rendered result;
-   - glass reuses the exact header surface variables for identical opacity, border and blur;
-   - active scale values 1 / 1.06 / 1.08 work without changing slot widths;
-   - the active tile follows the configured menu radius;
-   - the lower indicator is always inside and attached to the menu edge;
-   - the soft lower fade is restored without box-shadow.
+   This file is loaded last and owns only:
+   1) mobile floating-menu glass/material and active-state geometry;
+   2) the soft page-background fade behind the mobile menu;
+   3) the matching page-background fade behind the header/tabs stack.
+
+   It deliberately removes the former pseudo-layer used as the active tile,
+   so the active item has one background only and cannot look duplicated.
    ======================================================================== */
+:root {
+  --veloura-v22-page-bg: var(--veloura-site-bg, #ffffff);
+  --veloura-v22-active-radius: 16px;
+}
+html.dark body,
+html body.dark {
+  --veloura-v22-page-bg: var(--veloura-dark-body-bg, #010202);
+}
+/* ------------------------------------------------------------------------
+   Header backdrop fade — a background-color fade, never a shadow.
+   ------------------------------------------------------------------------ */
+html body .veloura-header-tabs-stack {
+  overflow: visible !important;
+}
+html body .veloura-header-tabs-stack::before {
+  content: "" !important;
+  display: block !important;
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+  height: calc(100% + 44px) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.82) 58%, transparent 100%) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+@supports (color: color-mix(in lch, red, blue)) and (top: var(--f)){
+html body .veloura-header-tabs-stack::before {
+  background: linear-gradient(180deg, var(--veloura-v22-page-bg) 0%, color-mix(in srgb, var(--veloura-v22-page-bg) 82%, transparent) 58%, transparent 100%) !important;
+}
+}
+html body .veloura-header-tabs-stack > .veloura-header-tabs-stack__container {
+  position: relative !important;
+  z-index: 1 !important;
+}
+/* ------------------------------------------------------------------------
+   Mobile floating menu
+   ------------------------------------------------------------------------ */
 @media (max-width: 1023px) {
   html body .veloura-mobile-floating-menu {
     isolation: isolate !important;
@@ -51261,22 +51301,28 @@ html.veloura-viewport-resizing .veloura-mobile-floating-menu * {
     background-image: none !important;
     box-shadow: none !important;
   }
-  /* Soft dark fade behind and below the bar — not a shadow. */
+  /* Fade from the real page background below/behind the menu. */
   html body .veloura-mobile-floating-menu::before {
     content: "" !important;
     display: block !important;
     position: absolute !important;
-    left: -16px !important;
-    right: -16px !important;
-    top: 34% !important;
-    bottom: -28px !important;
+    left: -24px !important;
+    right: -24px !important;
+    top: -34px !important;
+    bottom: -24px !important;
     z-index: 0 !important;
     pointer-events: none !important;
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.16) 44%, rgba(15, 23, 42, 0.1) 68%, rgba(15, 23, 42, 0) 100%) !important;
+    background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.36) 34%, rgba(255, 255, 255, 0.82) 72%, #ffffff 100%) !important;
     border: 0 !important;
     border-radius: 0 !important;
     box-shadow: none !important;
   }
+
+@supports (color: color-mix(in lch, red, blue)) and (top: var(--f)){
+html body .veloura-mobile-floating-menu::before {
+    background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--veloura-v22-page-bg) 36%, transparent) 34%, color-mix(in srgb, var(--veloura-v22-page-bg) 82%, transparent) 72%, var(--veloura-v22-page-bg) 100%) !important;
+  }
+}
   html body .veloura-mobile-floating-menu::after {
     content: none !important;
     display: none !important;
@@ -51301,10 +51347,10 @@ html.veloura-viewport-resizing .veloura-mobile-floating-menu * {
     border: 0 !important;
     border-radius: 0px !important;
     border-radius: var(--veloura-mobile-floating-menu-radius, 0px) !important;
-    background: #fff !important;
-    background: var(--veloura-mobile-floating-menu-bg, #fff) !important;
-    background-color: #fff !important;
-    background-color: var(--veloura-mobile-floating-menu-bg, #fff) !important;
+    background: #ffffff !important;
+    background: var(--veloura-mobile-floating-menu-bg, #ffffff) !important;
+    background-color: #ffffff !important;
+    background-color: var(--veloura-mobile-floating-menu-bg, #ffffff) !important;
     background-image: none !important;
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
@@ -51316,7 +51362,7 @@ html.veloura-viewport-resizing .veloura-mobile-floating-menu * {
     content: none !important;
     display: none !important;
   }
-  /* Same blur strength as the header, but substantially more transparent. */
+  /* Exact same glass material as the header/tabs surface. */
   html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
     background: rgba(207, 220, 233, .82) !important;
     background: var(--veloura-v15-glass-fallback, rgba(207, 220, 233, 0.82)) !important;
@@ -51339,6 +51385,7 @@ html.veloura-viewport-resizing .veloura-mobile-floating-menu * {
     background-color: var(--veloura-v15-glass-dark-fallback, rgba(28, 40, 57, 0.86)) !important;
     border-color: rgba(255, 255, 255, 0.14) !important;
   }
+  /* Complete reset: every normal item is one transparent slot. */
   html body .veloura-mobile-floating-menu__item,
   html body .veloura-mobile-floating-menu__item:hover,
   html body .veloura-mobile-floating-menu__item:focus,
@@ -51360,9 +51407,10 @@ html.veloura-viewport-resizing .veloura-mobile-floating-menu * {
     min-height: 100% !important;
     max-height: 100% !important;
     margin: 0 1px !important;
-    padding: 4px 2px 5px !important;
+    padding: 3px 2px 5px !important;
     overflow: visible !important;
     border: 0 !important;
+    outline: 0 !important;
     border-radius: 0 !important;
     background: transparent !important;
     background-color: transparent !important;
@@ -51370,6 +51418,12 @@ html.veloura-viewport-resizing .veloura-mobile-floating-menu * {
     color: #111827 !important;
     color: var(--veloura-mobile-floating-menu-text, #111827) !important;
     box-shadow: none !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+    clip-path: none !important;
+    -webkit-clip-path: none !important;
+    mask: none !important;
+    -webkit-mask: none !important;
     transform: none !important;
     box-sizing: border-box !important;
   }
@@ -51386,6 +51440,8 @@ html.veloura-viewport-resizing .veloura-mobile-floating-menu * {
     font-size: var(--veloura-mobile-floating-menu-icon-size, 22px) !important;
     line-height: 1 !important;
     color: inherit !important;
+    filter: none !important;
+    -webkit-filter: none !important;
     transform: none !important;
     transform-origin: center center !important;
   }
@@ -51394,93 +51450,116 @@ html.veloura-viewport-resizing .veloura-mobile-floating-menu * {
     z-index: 3 !important;
     display: block !important;
     flex: 0 0 auto !important;
-    margin: 2px 0 0 !important;
+    margin: 1px 0 0 !important;
     padding: 0 !important;
     font-size: 12px !important;
     font-size: var(--veloura-mobile-floating-menu-font-size, 12px) !important;
     line-height: 1.05 !important;
     color: inherit !important;
+    filter: none !important;
+    -webkit-filter: none !important;
     transform: none !important;
     transform-origin: center center !important;
   }
+  /* Remove every former active background layer. */
   html body .veloura-mobile-floating-menu__item::before,
-  html body .veloura-mobile-floating-menu__item::after {
+  html body .veloura-mobile-floating-menu__item:hover::before,
+  html body .veloura-mobile-floating-menu__item:focus::before,
+  html body .veloura-mobile-floating-menu__item:active::before,
+  html body .veloura-mobile-floating-menu__item.is-active::before,
+  html body .veloura-mobile-floating-menu__item[aria-current=page]::before {
     content: none !important;
     display: none !important;
+    background: none !important;
+    box-shadow: none !important;
   }
+  /* One active surface only: the item itself. */
   html body .veloura-mobile-floating-menu__item.is-active,
   html body .veloura-mobile-floating-menu__item[aria-current=page] {
     z-index: 4 !important;
-    color: #fff !important;
-  }
-  /* Raised colored tile. Its scale is wired to the selected dashboard option. */
-  html body .veloura-mobile-floating-menu__item.is-active::before,
-  html body .veloura-mobile-floating-menu__item[aria-current=page]::before {
-    content: "" !important;
-    display: block !important;
-    position: absolute !important;
-    left: 2px !important;
-    right: 2px !important;
-    top: -5px !important;
-    bottom: 7px !important;
-    z-index: 1 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
-    border-radius: 0px !important;
-    border-radius: var(--veloura-mobile-floating-menu-radius, 0px) !important;
+    align-self: flex-start !important;
+    height: calc(100% - 2px) !important;
+    min-height: calc(100% - 2px) !important;
+    max-height: calc(100% - 2px) !important;
+    padding: 3px 2px 5px !important;
+    border-radius: max(0px, min(0px, 18px)) !important;
+    border-radius: var(--veloura-v22-active-radius) !important;
     background: #004d65 !important;
     background: var(--veloura-mobile-floating-menu-active, #004d65) !important;
     background-color: #004d65 !important;
     background-color: var(--veloura-mobile-floating-menu-active, #004d65) !important;
     background-image: none !important;
-    box-shadow: none !important;
-    transform: scale(1) !important;
-    transform: scale(var(--veloura-mobile-floating-menu-active-scale, 1)) !important;
+    color: #ffffff !important;
+    transform: translateY(-4px) !important;
     transform-origin: center bottom !important;
-    pointer-events: none !important;
+  }
+  html body .veloura-mobile-floating-menu__item.is-active,
+  html body .veloura-mobile-floating-menu__item[aria-current=page] {
+    --veloura-v22-active-radius: max(0px, min(var(--veloura-mobile-floating-menu-radius, 0px), 18px));
   }
   html body .veloura-mobile-floating-menu__item.is-active i,
   html body .veloura-mobile-floating-menu__item.is-active span,
   html body .veloura-mobile-floating-menu__item[aria-current=page] i,
   html body .veloura-mobile-floating-menu__item[aria-current=page] span {
-    color: #fff !important;
-    transform: translateY(-2px) scale(1) !important;
-    transform: translateY(-2px) scale(var(--veloura-mobile-floating-menu-active-scale, 1)) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) scale(max(1, min(1, 1.04))) !important;
+    transform: translateY(-1px) scale(max(1, min(var(--veloura-mobile-floating-menu-active-scale, 1), 1.04))) !important;
   }
-  /* Attached Windows-style marker: 3px clear gap above it, exact bottom edge. */
+  /* 20x4 indicator, attached to the menu bottom with a 2px clear gap. */
   html body .veloura-mobile-floating-menu__item.is-active::after,
   html body .veloura-mobile-floating-menu__item[aria-current=page]::after {
     content: "" !important;
     display: block !important;
     position: absolute !important;
-    left: 31% !important;
-    right: 31% !important;
-    bottom: 0 !important;
-    z-index: 6 !important;
-    width: auto !important;
+    left: 50% !important;
+    inset-inline-end: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: -6px !important;
+    z-index: 8 !important;
+    width: 20px !important;
+    min-width: 20px !important;
+    max-width: 20px !important;
     height: 4px !important;
     min-height: 4px !important;
     max-height: 4px !important;
     margin: 0 !important;
     padding: 0 !important;
     border: 0 !important;
-    border-radius: 999px 999px 0 0 !important;
+    border-radius: 4px 4px 0 0 !important;
     background: #004d65 !important;
     background: var(--veloura-mobile-floating-menu-active, #004d65) !important;
     background-color: #004d65 !important;
     background-color: var(--veloura-mobile-floating-menu-active, #004d65) !important;
     background-image: none !important;
     box-shadow: none !important;
-    transform: none !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+    clip-path: none !important;
+    -webkit-clip-path: none !important;
+    transform: translateX(-50%) !important;
     pointer-events: none !important;
+  }
+}
+@supports not (color: color-mix(in srgb, white 50%, transparent)) {
+  html body .veloura-header-tabs-stack::before {
+    background: linear-gradient(180deg, #ffffff 0%, transparent 100%) !important;
+    background: linear-gradient(180deg, var(--veloura-v22-page-bg) 0%, transparent 100%) !important;
+  }
+  @media (max-width: 1023px) {
+    html body .veloura-mobile-floating-menu::before {
+      background: linear-gradient(180deg, transparent 0%, #ffffff 100%) !important;
+      background: linear-gradient(180deg, transparent 0%, var(--veloura-v22-page-bg) 100%) !important;
+    }
   }
 }
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   @media (max-width: 1023px) {
     html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
-      background: rgba(207, 220, 233, 0.96) !important;
-      background-color: rgba(207, 220, 233, 0.96) !important;
+      background: rgba(207, 220, 233, .82) !important;
+      background: var(--veloura-v15-glass-fallback, rgba(207, 220, 233, 0.94)) !important;
+      background-color: rgba(207, 220, 233, .82) !important;
+      background-color: var(--veloura-v15-glass-fallback, rgba(207, 220, 233, 0.94)) !important;
     }
   }
 }
