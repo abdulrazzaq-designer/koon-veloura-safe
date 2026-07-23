@@ -113,9 +113,6 @@
             <div class="main-content w-full lg:w-[calc(100%-384px)]">
                 {% hook 'cart:items.start' %}
 
-                {# Veloura Cart Banners V2.3: before products #}
-                {% include 'components/cart/veloura-cart-banners.twig' with { veloura_cart_banners_target: 'before_products' } %}
-
                 {% for item in cart.items %}
                     <form onchange="salla.form.onChange('cart.updateItem', event)" id="item-{{ item.id }}">
                         <section class="cart-item bg-white p-5 xs:p-7 rounded-md mb-5 relative">
@@ -224,9 +221,6 @@
                 <salla-offer></salla-offer>
                 
                 {% hook 'cart:items.end' %}
-
-                {# Veloura Cart Banners V2.3: after products #}
-                {% include 'components/cart/veloura-cart-banners.twig' with { veloura_cart_banners_target: 'after_products' } %}
             </div>
 
             {% hook 'cart:summary.start' %}
@@ -318,9 +312,6 @@
                                 {{ trans('pages.cart.complete_order') }}
                             </salla-button>
                             {% hook 'cart:submit.end' %}
-
-                            {# Veloura Cart Banners V2.3: after checkout button #}
-                            {% include 'components/cart/veloura-cart-banners.twig' with { veloura_cart_banners_target: 'after_checkout_button' } %}
                         </div>
                         {% hook 'cart:summary.end' %}
                     </div>
