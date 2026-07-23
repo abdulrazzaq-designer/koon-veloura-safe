@@ -1,39 +1,22 @@
 /* ========================================================================
-   Veloura Neutral Frosted Glass V3
-   White/silver neutral material with reduced color pickup from the page.
-   The 1px neutral edge ring keeps glass visible over white backgrounds.
+   Veloura Unified Silver Glass V4
+   Neutral white/silver material shared by header, tabs, floating menu and
+   explicit glass surfaces. No blue tint and no shadow.
    ======================================================================== */
 
 :root {
-  --veloura-glass-base: rgba(255, 255, 255, .64);
-  --veloura-glass-layer: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, .22),
-    rgba(229, 231, 235, .08)
-  );
-  --veloura-glass-border: rgba(255, 255, 255, .88);
-  --veloura-glass-ring: rgba(15, 23, 42, .12);
-  --veloura-glass-highlight: rgba(255, 255, 255, .82);
-  --veloura-glass-filter: blur(17px) saturate(36%) brightness(104%) contrast(98%);
-
-  /* Keep all existing header/menu consumers on the same material. */
-  --veloura-v15-glass-fallback: var(--veloura-glass-base);
-  --veloura-v15-border: var(--veloura-glass-border);
-  --veloura-v15-filter: var(--veloura-glass-filter);
+  --veloura-glass-base: rgba(248, 250, 252, .72);
+  --veloura-glass-border: rgba(255, 255, 255, .66);
+  --veloura-glass-highlight: rgba(255, 255, 255, .22);
+  --veloura-glass-shadow: none;
+  --veloura-glass-filter: blur(22px) saturate(138%);
 }
 
 html.dark,
 body.dark {
-  --veloura-glass-base: rgba(24, 24, 27, .70);
-  --veloura-glass-layer: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, .08),
-    rgba(0, 0, 0, .10)
-  );
-  --veloura-glass-border: rgba(255, 255, 255, .16);
-  --veloura-glass-ring: rgba(0, 0, 0, .34);
-  --veloura-glass-highlight: rgba(255, 255, 255, .10);
-  --veloura-v15-glass-dark-fallback: var(--veloura-glass-base);
+  --veloura-glass-base: rgba(17, 24, 39, .76);
+  --veloura-glass-border: rgba(255, 255, 255, .14);
+  --veloura-glass-highlight: rgba(255, 255, 255, .08);
 }
 
 .store-header.veloura-top-enabled.veloura-top-blur .main-nav-container,
@@ -45,16 +28,40 @@ body.dark {
 .veloura-home-tabs.veloura-home-tabs--header-blur,
 body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner,
 html.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content,
-body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content,
-body.veloura-general-enabled.veloura-glass-effect .veloura-glass {
-  background: var(--veloura-glass-layer), var(--veloura-glass-base) !important;
+body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
+  background: var(--veloura-glass-base) !important;
   background-color: var(--veloura-glass-base) !important;
+  background-image: none !important;
   border: 1px solid var(--veloura-glass-border) !important;
+  box-shadow: none !important;
   -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
   backdrop-filter: var(--veloura-glass-filter) !important;
-  box-shadow:
-    0 0 0 1px var(--veloura-glass-ring),
-    inset 0 1px 0 var(--veloura-glass-highlight) !important;
+}
+
+.store-header.veloura-top-enabled.veloura-top-blur .main-nav-container > .inner,
+.veloura-home-tabs.veloura-home-tabs--header-blur,
+body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
+  position: relative;
+  isolation: isolate;
+}
+
+.store-header.veloura-top-enabled.veloura-top-blur .main-nav-container > .inner::before,
+.veloura-home-tabs.veloura-home-tabs--header-blur::before,
+body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(180deg, var(--veloura-glass-highlight), transparent 42%);
+}
+
+.store-header.veloura-top-enabled.veloura-top-blur .main-nav-container > .inner > *,
+.veloura-home-tabs.veloura-home-tabs--header-blur > *,
+body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner > * {
+  position: relative;
+  z-index: 1;
 }
 
 body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu {
@@ -67,12 +74,22 @@ body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
   border-radius: var(--veloura-mobile-floating-menu-radius, 999px) !important;
 }
 
+body.veloura-general-enabled.veloura-glass-effect .veloura-glass {
+  background: var(--veloura-glass-base) !important;
+  background-color: var(--veloura-glass-base) !important;
+  background-image: none !important;
+  border: 1px solid var(--veloura-glass-border) !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
+  backdrop-filter: var(--veloura-glass-filter) !important;
+}
+
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   .store-header.veloura-top-enabled.veloura-top-blur .main-nav-container > .inner,
   .veloura-home-tabs.veloura-home-tabs--header-blur,
   body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner,
   body.veloura-general-enabled.veloura-glass-effect .veloura-glass {
-    background: rgba(247, 247, 248, .94) !important;
+    background: rgba(248, 250, 252, .94) !important;
   }
 
   html.dark .store-header.veloura-top-enabled.veloura-top-blur .main-nav-container > .inner,
@@ -83,6 +100,6 @@ body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
   body.dark .veloura-home-tabs.veloura-home-tabs--header-blur,
   body.dark.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner,
   body.dark.veloura-general-enabled.veloura-glass-effect .veloura-glass {
-    background: rgba(24, 24, 27, .94) !important;
+    background: rgba(17, 24, 39, .94) !important;
   }
 }

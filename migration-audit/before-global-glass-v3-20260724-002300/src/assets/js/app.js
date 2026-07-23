@@ -382,9 +382,9 @@ const initVelouraFooter = (() => {
 })();
 
 /* ========================================================================
-   Veloura Neutral Frosted Glass V3 Runtime
-   Injects glass styles into open Shadow DOM components without ever applying
-   backdrop-filter to full-screen hosts, wrappers or backdrops.
+   Veloura Global Glass Runtime
+   Styles Salla modal web-components that render inside open Shadow DOM.
+   The observer watches only added modal hosts and does not rescan page layout.
    ======================================================================== */
 const initVelouraGlobalGlass = (() => {
   const STYLE_ID = 'veloura-global-glass-shadow-style';
@@ -398,46 +398,12 @@ const initVelouraGlobalGlass = (() => {
 
   const SHADOW_CSS = `
     :host {
-      --veloura-shadow-glass-bg: var(--veloura-global-glass-bg, rgba(255, 255, 255, .64));
-      --veloura-shadow-glass-layer: var(--veloura-global-glass-layer, linear-gradient(145deg, rgba(255, 255, 255, .22), rgba(229, 231, 235, .08)));
-      --veloura-shadow-glass-border: var(--veloura-global-glass-border, rgba(255, 255, 255, .88));
-      --veloura-shadow-glass-ring: var(--veloura-global-glass-ring, rgba(15, 23, 42, .12));
-      --veloura-shadow-glass-filter: var(--veloura-global-glass-filter, blur(17px) saturate(36%) brightness(104%) contrast(98%));
-      --veloura-shadow-glass-overlay: var(--veloura-global-glass-overlay, rgba(15, 23, 42, .12));
-      --veloura-shadow-glass-control: var(--veloura-global-glass-control, rgba(255, 255, 255, .52));
+      --veloura-shadow-glass-bg: var(--veloura-global-glass-bg, rgba(248, 250, 252, .72));
+      --veloura-shadow-glass-border: var(--veloura-global-glass-border, rgba(255, 255, 255, .66));
+      --veloura-shadow-glass-filter: var(--veloura-global-glass-filter, blur(22px) saturate(138%));
+      --veloura-shadow-glass-overlay: var(--veloura-global-glass-overlay, rgba(15, 23, 42, .18));
     }
 
-    /* Full-screen hosts and wrappers must remain completely non-glass. */
-    :host,
-    .s-modal-wrapper,
-    .s-modal-container,
-    .s-login-modal,
-    .s-auth-modal,
-    .login-modal,
-    .auth-modal,
-    [part~='wrapper'],
-    [part~='container'] {
-      -webkit-backdrop-filter: none !important;
-      backdrop-filter: none !important;
-      filter: none !important;
-      box-shadow: none !important;
-    }
-
-    .s-modal-wrapper,
-    .s-modal-container,
-    .s-login-modal,
-    .s-auth-modal,
-    .login-modal,
-    .auth-modal,
-    [part~='wrapper'],
-    [part~='container'] {
-      background: transparent !important;
-      background-image: none !important;
-      border-color: transparent !important;
-    }
-
-    /* The page behind the dialog is dimmed only; it is never blurred. */
-    .s-salla-modal-overlay,
     .s-modal-overlay,
     .s-modal-backdrop,
     .modal-backdrop,
@@ -448,35 +414,27 @@ const initVelouraGlobalGlass = (() => {
       -webkit-backdrop-filter: none !important;
       backdrop-filter: none !important;
       filter: none !important;
-      box-shadow: none !important;
-      transition-property: opacity, visibility, background-color !important;
-      transition-delay: 0s !important;
     }
 
-    /* Only the visible dialog panel receives the glass material. */
-    .s-salla-modal-body,
     .s-modal-body,
     .s-modal-content,
+    .s-modal-container,
+    .s-modal-wrapper,
+    .s-login-modal,
+    .s-auth-modal,
+    .login-modal,
+    .auth-modal,
     .modal-content,
-    .s-login-modal__body,
-    .s-login-modal__content,
-    .s-auth-modal__body,
-    .s-auth-modal__content,
-    [part~='body'],
+    [part~='dialog'],
     [part~='content'],
-    [part~='panel'],
-    [part~='surface'] {
-      background: var(--veloura-shadow-glass-layer), var(--veloura-shadow-glass-bg) !important;
-      background-color: var(--veloura-shadow-glass-bg) !important;
+    [part~='body'],
+    [role='dialog'] {
+      background: var(--veloura-shadow-glass-bg) !important;
+      background-image: none !important;
       border: 1px solid var(--veloura-shadow-glass-border) !important;
       -webkit-backdrop-filter: var(--veloura-shadow-glass-filter) !important;
       backdrop-filter: var(--veloura-shadow-glass-filter) !important;
-      filter: none !important;
-      box-shadow:
-        0 0 0 1px var(--veloura-shadow-glass-ring),
-        inset 0 1px 0 rgba(255, 255, 255, .82) !important;
-      transition-property: opacity, transform, visibility !important;
-      transition-delay: 0s !important;
+      box-shadow: none !important;
     }
 
     input,
@@ -484,10 +442,8 @@ const initVelouraGlobalGlass = (() => {
     textarea,
     .form-input,
     .s-form-control {
-      background: var(--veloura-shadow-glass-control) !important;
-      border-color: color-mix(in srgb, var(--veloura-shadow-glass-ring) 70%, transparent) !important;
-      -webkit-backdrop-filter: none !important;
-      backdrop-filter: none !important;
+      background: color-mix(in srgb, var(--veloura-shadow-glass-bg) 64%, transparent) !important;
+      border-color: var(--veloura-shadow-glass-border) !important;
     }
   `;
 
@@ -496,10 +452,7 @@ const initVelouraGlobalGlass = (() => {
   }
 
   function injectIntoShadowRoot(shadowRoot) {
-    if (!shadowRoot) return;
-
-    const previousStyle = shadowRoot.getElementById(STYLE_ID);
-    if (previousStyle) previousStyle.remove();
+    if (!shadowRoot || shadowRoot.getElementById(STYLE_ID)) return;
 
     const style = document.createElement('style');
     style.id = STYLE_ID;
@@ -513,9 +466,6 @@ const initVelouraGlobalGlass = (() => {
     if (!host || host.nodeType !== 1) return;
 
     host.setAttribute('data-veloura-glass-host', 'true');
-    host.style.setProperty('-webkit-backdrop-filter', 'none', 'important');
-    host.style.setProperty('backdrop-filter', 'none', 'important');
-    host.style.setProperty('filter', 'none', 'important');
 
     if (host.shadowRoot) {
       injectIntoShadowRoot(host.shadowRoot);

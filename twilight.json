@@ -8056,7 +8056,7 @@
         {
           "type": "boolean",
           "icon": "sicon-toggle-off",
-          "label": "دمج مع العنصر السابق",
+          "label": "دمج مع العنصر السابق1111",
           "description": null,
           "id": "merge_with_top_component",
           "format": "switch",
