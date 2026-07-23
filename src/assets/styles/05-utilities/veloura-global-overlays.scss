@@ -1,0 +1,173 @@
+/* ========================================================================
+   Veloura Global Overlay Glass — Final Authority
+   Activated by body.veloura-glass-effect.
+   Uses exactly the current header material variables from V18.
+   ======================================================================== */
+
+body.veloura-glass-effect {
+  --veloura-global-glass-bg: var(--veloura-v15-glass-fallback, rgba(207, 220, 233, .82));
+  --veloura-global-glass-border: var(--veloura-v15-border, rgba(255, 255, 255, .68));
+  --veloura-global-glass-filter: var(--veloura-v15-filter, blur(22px) saturate(138%));
+  --veloura-global-glass-overlay: rgba(15, 23, 42, .34);
+  --veloura-global-glass-control: rgba(255, 255, 255, .44);
+}
+
+html.dark body.veloura-glass-effect,
+html body.dark.veloura-glass-effect {
+  --veloura-global-glass-bg: var(--veloura-v15-glass-dark-fallback, rgba(28, 40, 57, .86));
+  --veloura-global-glass-border: rgba(255, 255, 255, .16);
+  --veloura-global-glass-overlay: rgba(2, 6, 23, .54);
+  --veloura-global-glass-control: rgba(15, 23, 42, .48);
+}
+
+/* Shared floating surfaces. */
+html body.veloura-glass-effect .veloura-glass-surface,
+html body.veloura-glass-effect .veloura-popup .veloura-popup__box,
+html body.veloura-glass-effect .veloura-qv-full .veloura-qv-full__dialog,
+html body.veloura-glass-effect .veloura-quick-view-modal .veloura-quick-view-modal__dialog,
+html body.veloura-glass-effect .swal2-container .swal2-popup:not(.swal2-toast),
+html body.veloura-glass-effect .s-modal .s-modal-body,
+html body.veloura-glass-effect .s-modal .s-modal-content,
+html body.veloura-glass-effect .s-modal-body,
+html body.veloura-glass-effect .s-modal-content,
+html body.veloura-glass-effect .s-login-modal,
+html body.veloura-glass-effect .s-auth-modal,
+html body.veloura-glass-effect .login-modal .modal-content,
+html body.veloura-glass-effect .auth-modal .modal-content {
+  background: var(--veloura-global-glass-bg) !important;
+  background-color: var(--veloura-global-glass-bg) !important;
+  background-image: none !important;
+  border: 1px solid var(--veloura-global-glass-border) !important;
+  -webkit-backdrop-filter: var(--veloura-global-glass-filter) !important;
+  backdrop-filter: var(--veloura-global-glass-filter) !important;
+  box-shadow: none !important;
+}
+
+/* Quick view keeps one translucent shell; its internal columns must not cover it. */
+html body.veloura-glass-effect .veloura-qv-full .veloura-qv-full__media,
+html body.veloura-glass-effect .veloura-qv-full .veloura-qv-full__content,
+html body.veloura-glass-effect .veloura-quick-view-modal .veloura-quick-view-modal__media,
+html body.veloura-glass-effect .veloura-quick-view-modal .veloura-quick-view-modal__content,
+html body.veloura-glass-effect .veloura-popup .veloura-popup__content {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Dim/blur the page behind each floating surface. */
+html body.veloura-glass-effect .veloura-qv-full .veloura-qv-full__overlay,
+html body.veloura-glass-effect .veloura-quick-view-modal .veloura-quick-view-modal__overlay,
+html body.veloura-glass-effect .veloura-popup .veloura-popup__overlay,
+html body.veloura-glass-effect .s-modal-overlay,
+html body.veloura-glass-effect .s-modal-backdrop,
+html body.veloura-glass-effect .modal-backdrop,
+html body.veloura-glass-effect .swal2-container.swal2-backdrop-show {
+  background: var(--veloura-global-glass-overlay) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(112%) !important;
+  backdrop-filter: blur(6px) saturate(112%) !important;
+}
+
+/* Salla web-component parts when exposed by the component. */
+html body.veloura-glass-effect salla-login-modal,
+html body.veloura-glass-effect salla-modal,
+html body.veloura-glass-effect salla-search {
+  --s-modal-bg: var(--veloura-global-glass-bg);
+  --modal-bg: var(--veloura-global-glass-bg);
+  --s-modal-overlay-bg: var(--veloura-global-glass-overlay);
+}
+
+html body.veloura-glass-effect salla-login-modal::part(dialog),
+html body.veloura-glass-effect salla-login-modal::part(content),
+html body.veloura-glass-effect salla-login-modal::part(body),
+html body.veloura-glass-effect salla-modal::part(dialog),
+html body.veloura-glass-effect salla-modal::part(content),
+html body.veloura-glass-effect salla-modal::part(body) {
+  background: var(--veloura-global-glass-bg) !important;
+  border: 1px solid var(--veloura-global-glass-border) !important;
+  -webkit-backdrop-filter: var(--veloura-global-glass-filter) !important;
+  backdrop-filter: var(--veloura-global-glass-filter) !important;
+  box-shadow: none !important;
+}
+
+html body.veloura-glass-effect salla-login-modal::part(overlay),
+html body.veloura-glass-effect salla-login-modal::part(backdrop),
+html body.veloura-glass-effect salla-modal::part(overlay),
+html body.veloura-glass-effect salla-modal::part(backdrop) {
+  background: var(--veloura-global-glass-overlay) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(112%) !important;
+  backdrop-filter: blur(6px) saturate(112%) !important;
+}
+
+/* Controls on glass surfaces remain readable without becoming opaque blocks. */
+html body.veloura-glass-effect :is(
+  .veloura-popup__box,
+  .veloura-qv-full__dialog,
+  .veloura-quick-view-modal__dialog,
+  .s-modal-body,
+  .s-modal-content,
+  .s-login-modal,
+  .s-auth-modal
+) :is(input, select, textarea, .form-input, .s-form-control) {
+  background: var(--veloura-global-glass-control) !important;
+  border-color: var(--veloura-global-glass-border) !important;
+}
+
+html body.veloura-glass-effect :is(
+  .veloura-popup__box,
+  .veloura-qv-full__dialog,
+  .veloura-quick-view-modal__dialog
+) :is(.veloura-popup__close, .veloura-qv-full__close, .veloura-quick-view-modal__close) {
+  background: var(--veloura-global-glass-control) !important;
+  border: 1px solid var(--veloura-global-glass-border) !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: blur(10px) saturate(120%) !important;
+  backdrop-filter: blur(10px) saturate(120%) !important;
+}
+
+/* Mobile fixed add-to-cart: glass only when the sticky feature is active. */
+@media (max-width: 767px) {
+  html body.veloura-glass-effect.is-sticky-product-bar .veloura-product-page .sticky-product-bar.veloura-product-sticky-bar,
+  html body.veloura-glass-effect.veloura-product-sticky-active .veloura-product-page .sticky-product-bar.veloura-product-sticky-bar,
+  html body.veloura-glass-effect .veloura-product-page.veloura-product-mobile-sticky-enabled .sticky-product-bar.veloura-product-sticky-bar {
+    background: var(--veloura-global-glass-bg) !important;
+    background-color: var(--veloura-global-glass-bg) !important;
+    background-image: none !important;
+    border: 1px solid var(--veloura-global-glass-border) !important;
+    border-bottom: 0 !important;
+    -webkit-backdrop-filter: var(--veloura-global-glass-filter) !important;
+    backdrop-filter: var(--veloura-global-glass-filter) !important;
+    box-shadow: none !important;
+  }
+
+  html body.veloura-glass-effect.is-sticky-product-bar .veloura-product-page .sticky-product-bar.veloura-product-sticky-bar::after,
+  html body.veloura-glass-effect.veloura-product-sticky-active .veloura-product-page .sticky-product-bar.veloura-product-sticky-bar::after,
+  html body.veloura-glass-effect .veloura-product-page.veloura-product-mobile-sticky-enabled .sticky-product-bar.veloura-product-sticky-bar::after {
+    content: none !important;
+    display: none !important;
+  }
+}
+
+/* Keep the old explicit utility class compatible with the same material. */
+html body.veloura-glass-effect .veloura-glass {
+  background: var(--veloura-global-glass-bg) !important;
+  border: 1px solid var(--veloura-global-glass-border) !important;
+  -webkit-backdrop-filter: var(--veloura-global-glass-filter) !important;
+  backdrop-filter: var(--veloura-global-glass-filter) !important;
+  box-shadow: none !important;
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  html body.veloura-glass-effect .veloura-glass-surface,
+  html body.veloura-glass-effect .veloura-popup .veloura-popup__box,
+  html body.veloura-glass-effect .veloura-qv-full .veloura-qv-full__dialog,
+  html body.veloura-glass-effect .veloura-quick-view-modal .veloura-quick-view-modal__dialog {
+    background: rgba(224, 232, 240, .96) !important;
+  }
+
+  html.dark body.veloura-glass-effect .veloura-glass-surface,
+  html body.dark.veloura-glass-effect .veloura-glass-surface,
+  html.dark body.veloura-glass-effect .veloura-popup .veloura-popup__box,
+  html body.dark.veloura-glass-effect .veloura-popup .veloura-popup__box {
+    background: rgba(28, 40, 57, .96) !important;
+  }
+}

@@ -618,7 +618,7 @@
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "label": "تفعيل تأثير الزجاج العام",
-      "description": "يوحّد نفس زجاج الهيدر على العرض السريع، النوافذ المنبثقة، تسجيل الدخول وشريط إضافة السلة الثابت",
+      "description": "يضيف تأثير زجاجي خفيف على بعض الكروت والأقسام",
       "id": "veloura_general_glass_effect_2026",
       "format": "switch",
       "required": false,

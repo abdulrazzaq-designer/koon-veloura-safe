@@ -200,30 +200,7 @@
     {% set veloura_product_body_classes = is_page('product.single') ? theme.settings.get('veloura_product_body_classes_2026') : '' %}
 
     {% set veloura_full_width_sections = theme.settings.get('veloura_site_sections_full_width_2026', false) %}
-
-    {# Normalize the global glass switch; Salla may return a scalar or a setting object. #}
-    {% set veloura_glass_effect_setting = theme.settings.get('veloura_general_glass_effect_2026', false) %}
-    {% set veloura_glass_effect_raw = veloura_glass_effect_setting %}
-    {% if veloura_glass_effect_setting.value is defined %}
-      {% set veloura_glass_effect_raw = veloura_glass_effect_setting.value %}
-    {% elseif veloura_glass_effect_setting.selected is defined %}
-      {% if veloura_glass_effect_setting.selected.value is defined %}
-        {% set veloura_glass_effect_raw = veloura_glass_effect_setting.selected.value %}
-      {% elseif veloura_glass_effect_setting.selected is iterable and veloura_glass_effect_setting.selected[0] is defined and veloura_glass_effect_setting.selected[0].value is defined %}
-        {% set veloura_glass_effect_raw = veloura_glass_effect_setting.selected[0].value %}
-      {% else %}
-        {% set veloura_glass_effect_raw = veloura_glass_effect_setting.selected %}
-      {% endif %}
-    {% endif %}
-    {% set veloura_glass_effect =
-      veloura_glass_effect_raw == true
-      or veloura_glass_effect_raw == 'true'
-      or veloura_glass_effect_raw == 1
-      or veloura_glass_effect_raw == '1'
-      or veloura_glass_effect_raw == 'on'
-      or veloura_glass_effect_raw == 'yes'
-    %}
-
+    {% set veloura_glass_effect = theme.settings.get('veloura_general_glass_effect_2026', false) %}
     {% set veloura_clean_borders = theme.settings.get('veloura_general_clean_borders_2026', false) %}
 
     {% set veloura_should_show_bg_image = veloura_site_bg_image and (not veloura_site_bg_home_only or is_page('index')) %}
@@ -1113,14 +1090,12 @@
         box-shadow: none !important;
       }
 
-      /* Global glass is applied only to explicit floating/overlay surfaces.
-         Product cards and the header keep their own independent settings. */
-      body.veloura-general-enabled.veloura-glass-effect .veloura-glass {
-        background: var(--veloura-global-glass-bg, rgba(207, 220, 233, .82)) !important;
-        border: 1px solid var(--veloura-global-glass-border, rgba(255, 255, 255, .68)) !important;
-        -webkit-backdrop-filter: var(--veloura-global-glass-filter, blur(22px) saturate(138%)) !important;
-        backdrop-filter: var(--veloura-global-glass-filter, blur(22px) saturate(138%)) !important;
-        box-shadow: none !important;
+      body.veloura-general-enabled.veloura-glass-effect .veloura-glass,
+      body.veloura-general-enabled.veloura-glass-effect .s-product-card,
+      body.veloura-general-enabled.veloura-glass-effect .main-nav-container {
+        background-color: rgba(255, 255, 255, .72) !important;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
       }
 
       {% if vpc_enabled %}
@@ -2569,7 +2544,7 @@
 {# Twilight Components #}
 <salla-offer-modal></salla-offer-modal>
 <salla-search></salla-search>
-<salla-login-modal class="veloura-glass-host" data-veloura-glass-host="login"></salla-login-modal>
+<salla-login-modal></salla-login-modal>
 
 {% if store.scope %}
     <salla-scopes selection="{{ store.scope.display_as == 'popup' ? 'mandatory' : 'optional' }}"></salla-scopes>

@@ -290,7 +290,7 @@
       modal.innerHTML = `
         <div class="veloura-quick-view-modal__overlay" data-veloura-qv-close></div>
 
-        <div class="veloura-quick-view-modal__dialog veloura-glass-surface" role="dialog" aria-modal="true">
+        <div class="veloura-quick-view-modal__dialog" role="dialog" aria-modal="true">
           <button type="button" class="veloura-quick-view-modal__close" data-veloura-qv-close aria-label="إغلاق">
             ×
           </button>

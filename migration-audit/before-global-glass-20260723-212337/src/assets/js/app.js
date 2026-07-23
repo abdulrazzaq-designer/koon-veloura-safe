@@ -380,135 +380,6 @@ const initVelouraFooter = (() => {
   return initVelouraFooter;
 })();
 
-/* ========================================================================
-   Veloura Global Glass Runtime
-   Styles Salla modal web-components that render inside open Shadow DOM.
-   The observer watches only added modal hosts and does not rescan page layout.
-   ======================================================================== */
-const initVelouraGlobalGlass = (() => {
-  const STYLE_ID = 'veloura-global-glass-shadow-style';
-  const HOST_SELECTOR = [
-    'salla-login-modal',
-    'salla-modal',
-    'salla-search',
-    'salla-localization-modal',
-    'salla-gifting'
-  ].join(',');
-
-  const SHADOW_CSS = `
-    :host {
-      --veloura-shadow-glass-bg: var(--veloura-global-glass-bg, rgba(207, 220, 233, .82));
-      --veloura-shadow-glass-border: var(--veloura-global-glass-border, rgba(255, 255, 255, .68));
-      --veloura-shadow-glass-filter: var(--veloura-global-glass-filter, blur(22px) saturate(138%));
-      --veloura-shadow-glass-overlay: var(--veloura-global-glass-overlay, rgba(15, 23, 42, .34));
-    }
-
-    .s-modal-overlay,
-    .s-modal-backdrop,
-    .modal-backdrop,
-    .backdrop,
-    [part~='overlay'],
-    [part~='backdrop'] {
-      background: var(--veloura-shadow-glass-overlay) !important;
-      -webkit-backdrop-filter: blur(6px) saturate(112%) !important;
-      backdrop-filter: blur(6px) saturate(112%) !important;
-    }
-
-    .s-modal-body,
-    .s-modal-content,
-    .s-modal-container,
-    .s-modal-wrapper,
-    .s-login-modal,
-    .s-auth-modal,
-    .login-modal,
-    .auth-modal,
-    .modal-content,
-    [part~='dialog'],
-    [part~='content'],
-    [part~='body'],
-    [role='dialog'] {
-      background: var(--veloura-shadow-glass-bg) !important;
-      background-image: none !important;
-      border: 1px solid var(--veloura-shadow-glass-border) !important;
-      -webkit-backdrop-filter: var(--veloura-shadow-glass-filter) !important;
-      backdrop-filter: var(--veloura-shadow-glass-filter) !important;
-      box-shadow: none !important;
-    }
-
-    input,
-    select,
-    textarea,
-    .form-input,
-    .s-form-control {
-      background: color-mix(in srgb, var(--veloura-shadow-glass-bg) 64%, transparent) !important;
-      border-color: var(--veloura-shadow-glass-border) !important;
-    }
-  `;
-
-  function isEnabled() {
-    return Boolean(document.body && document.body.classList.contains('veloura-glass-effect'));
-  }
-
-  function injectIntoShadowRoot(shadowRoot) {
-    if (!shadowRoot || shadowRoot.getElementById(STYLE_ID)) return;
-
-    const style = document.createElement('style');
-    style.id = STYLE_ID;
-    style.textContent = SHADOW_CSS;
-    shadowRoot.appendChild(style);
-
-    shadowRoot.querySelectorAll(HOST_SELECTOR).forEach(markHost);
-  }
-
-  function markHost(host) {
-    if (!host || host.nodeType !== 1) return;
-
-    host.setAttribute('data-veloura-glass-host', 'true');
-
-    if (host.shadowRoot) {
-      injectIntoShadowRoot(host.shadowRoot);
-    }
-  }
-
-  function scan(scope = document) {
-    if (!isEnabled() || !scope || typeof scope.querySelectorAll !== 'function') return;
-
-    if (scope.matches && scope.matches(HOST_SELECTOR)) markHost(scope);
-    scope.querySelectorAll(HOST_SELECTOR).forEach(markHost);
-  }
-
-  function scheduleScan() {
-    [0, 80, 220, 500, 1000, 1800].forEach(delay => {
-      window.setTimeout(() => scan(document), delay);
-    });
-  }
-
-  function init() {
-    if (!isEnabled()) return;
-
-    scheduleScan();
-
-    document.addEventListener('theme::ready', scheduleScan);
-    document.addEventListener('click', event => {
-      if (event.target.closest('.veloura-login-btn, [data-login], [data-open-login], .s-login-modal-trigger')) {
-        scheduleScan();
-      }
-    }, true);
-
-    const observer = new MutationObserver(mutations => {
-      mutations.forEach(mutation => {
-        mutation.addedNodes.forEach(node => {
-          if (node.nodeType === 1) scan(node);
-        });
-      });
-    });
-
-    observer.observe(document.documentElement, { childList: true, subtree: true });
-  }
-
-  return init;
-})();
-
 class App extends AppHelpers {
   constructor() {
     super();
@@ -518,7 +389,6 @@ class App extends AppHelpers {
   loadTheApp() {
     this.commonThings();
     initVelouraFooter();
-    initVelouraGlobalGlass();
     this.initiateNotifier();
     this.initiateMobileMenu();
     // V4: initialize the whole header system even when sticky is disabled,
@@ -2695,7 +2565,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.setAttribute('aria-hidden', 'true');
     modal.innerHTML = `
       <div class="veloura-qv-full__overlay" data-veloura-qv-full-close></div>
-      <div class="veloura-qv-full__dialog veloura-glass-surface" role="dialog" aria-modal="true">
+      <div class="veloura-qv-full__dialog" role="dialog" aria-modal="true">
         <button type="button" class="veloura-qv-full__close" data-veloura-qv-full-close aria-label="إغلاق">×</button>
         <div class="veloura-qv-full__grid">
           <div class="veloura-qv-full__media">

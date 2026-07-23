@@ -83,7 +83,8 @@ body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
 }
 
 /* نفس الزجاج للإعداد العام والبطاقات عند تفعيل خيار البلور العام */
-body.veloura-general-enabled.veloura-glass-effect .veloura-glass {
+body.veloura-general-enabled.veloura-glass-effect .veloura-glass,
+body.veloura-general-enabled.veloura-glass-effect .s-product-card {
   background:
     linear-gradient(135deg, var(--veloura-glass-base), color-mix(in srgb, var(--veloura-site-second-bg, #ffffff) 5%, var(--veloura-glass-base))) !important;
   border: 1px solid var(--veloura-glass-border) !important;
