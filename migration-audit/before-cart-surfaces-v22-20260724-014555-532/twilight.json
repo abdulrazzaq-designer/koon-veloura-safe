@@ -4427,7 +4427,7 @@
       "type": "static",
       "format": "description",
       "id": "veloura_cart_banners_settings_title_2026",
-      "value": "<div class=\"veloura-switch-title\" style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(270deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-image\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4;text-align:right\">صفحة وبنرات السلة</strong></div></div>",
+      "value": "<div class=\"veloura-switch-title\" style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(270deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-image\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4;text-align:right\">بنرات السلة</strong></div></div>",
       "label": " ",
       "icon": "sicon-image"
     },
@@ -4639,12 +4639,19 @@
       ]
     },
     {
+      "type": "static",
+      "format": "description",
+      "id": "veloura_cart_surfaces_settings_title_2026",
+      "value": "<div class=\"veloura-switch-title\" style=\"width:100%;padding:10px;border-radius:9999px;background:linear-gradient(270deg,#004d65,#006b7a,#00a6a6);color:#fff;display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:right;box-shadow:0 10px 25px rgba(49,46,129,.20)\"><div style=\"width:45px;height:45px;border-radius:999px;background:#fff;color:#005369;display:flex;align-items:center;justify-content:center;font-size:25px;flex-shrink:0\"><i class=\"sicon-shopping-bag\"></i></div><div style=\"flex:1\"><strong style=\"display:block;font-size:22px;font-weight:800;line-height:1.4;text-align:right\">Ù…Ø¸Ù‡Ø± Ø¹Ù†Ø§ØµØ± ØµÙØ­Ø© Ø§Ù„Ø³Ù„Ø©</strong></div></div>",
+      "label": " ",
+      "icon": "sicon-shopping-bag"
+    },
+    {
       "type": "boolean",
       "format": "switch",
       "id": "veloura_cart_surfaces_enabled_2026",
-      "label": "تفعيل تخصيص خلفية وحواف عناصر السلة",
-      "description": "عند التفعيل يمكنك اختيار لون خلفية وحواف بطاقات المنتجات وملخص الطلب داخل صفحة السلة. عند التعطيل يبقى تصميم السلة الأساسي كما هو.",
-      "icon": "sicon-paint-brush",
+      "label": "Â ",
+      "description": "ÙØ¹Ù‘Ù„ Ø§Ù„Ø®ÙŠØ§Ø± Ù„ØªØ®ØµÙŠØµ Ø®Ù„ÙÙŠØ© ÙˆØ­ÙˆØ§Ù Ø¨Ø·Ø§Ù‚Ø§Øª Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª ÙˆÙ…Ù„Ø®Øµ Ø§Ù„Ø·Ù„Ø¨ Ø¯Ø§Ø®Ù„ ØµÙØ­Ø© Ø§Ù„Ø³Ù„Ø© ÙÙ‚Ø·",
       "wide": true,
       "required": false,
       "value": false,
@@ -4654,8 +4661,8 @@
       "id": "veloura_cart_surfaces_bg_color_2026",
       "type": "string",
       "format": "color",
-      "label": "لون خلفية عناصر السلة",
-      "description": "يطبق اللون على بطاقة المنتج وصناديق الشحن والهدايا وملخص الطلب فقط.",
+      "label": "Ù„ÙˆÙ† Ø®Ù„ÙÙŠØ© Ø¹Ù†Ø§ØµØ± Ø§Ù„Ø³Ù„Ø©",
+      "description": "ÙŠØ·Ø¨Ù‚ Ø¹Ù„Ù‰ Ø¨Ø·Ø§Ù‚Ø© Ø§Ù„Ù…Ù†ØªØ¬ ÙˆØµÙ†Ø§Ø¯ÙŠÙ‚ Ù…Ù„Ø®Øµ Ø§Ù„Ø·Ù„Ø¨ ÙˆØ§Ù„Ø´Ø­Ù† ÙˆØ§Ù„Ù‡Ø¯Ø§ÙŠØ§",
       "icon": "sicon-palette",
       "value": "#f3f4f6",
       "required": false,
@@ -4671,41 +4678,40 @@
       "id": "veloura_cart_surfaces_radius_2026",
       "type": "items",
       "format": "dropdown-list",
-      "label": "حواف عناصر السلة",
-      "description": "اختر درجة تدوير حواف بطاقات المنتجات وملخص الطلب.",
+      "label": "Ø­ÙˆØ§Ù Ø¹Ù†Ø§ØµØ± Ø§Ù„Ø³Ù„Ø©",
       "icon": "sicon-border-radius",
       "source": "Manual",
       "required": true,
       "selected": [
         {
-          "label": "ناعمة",
+          "label": "Ù†Ø§Ø¹Ù…Ø©",
           "value": "medium",
           "key": "veloura-cart-surfaces-radius-medium-2026"
         }
       ],
       "options": [
         {
-          "label": "حادة",
+          "label": "Ø­Ø§Ø¯Ø©",
           "value": "sharp",
           "key": "veloura-cart-surfaces-radius-sharp-2026"
         },
         {
-          "label": "خفيفة",
+          "label": "Ø®ÙÙŠÙØ©",
           "value": "soft",
           "key": "veloura-cart-surfaces-radius-soft-2026"
         },
         {
-          "label": "ناعمة",
+          "label": "Ù†Ø§Ø¹Ù…Ø©",
           "value": "medium",
           "key": "veloura-cart-surfaces-radius-medium-2026"
         },
         {
-          "label": "ناعمة جدًا",
+          "label": "Ù†Ø§Ø¹Ù…Ø© Ø¬Ø¯Ù‹Ø§",
           "value": "large",
           "key": "veloura-cart-surfaces-radius-large-2026"
         },
         {
-          "label": "دائرية",
+          "label": "Ø¯Ø§Ø¦Ø±ÙŠØ©",
           "value": "round",
           "key": "veloura-cart-surfaces-radius-round-2026"
         }
@@ -4722,8 +4728,8 @@
       "type": "boolean",
       "format": "switch",
       "id": "veloura_cart_surfaces_border_enabled_2026",
-      "label": "إظهار إطار خفيف حول العناصر",
-      "description": "يفيد عندما يكون لون العناصر قريبًا من لون خلفية المتجر.",
+      "label": "Ø¥Ø¸Ù‡Ø§Ø± Ø¥Ø·Ø§Ø± Ø®ÙÙŠÙ Ø­ÙˆÙ„ Ø§Ù„Ø¹Ù†Ø§ØµØ±",
+      "description": "ÙŠØ¶ÙŠÙ Ø¥Ø·Ø§Ø±Ù‹Ø§ Ø±ÙÙŠØ¹Ù‹Ø§ ÙŠØ³Ø§Ø¹Ø¯ Ø§Ù„Ø¹Ù†Ø§ØµØ± Ø¹Ù„Ù‰ Ø§Ù„Ø¸Ù‡ÙˆØ± ÙÙˆÙ‚ Ø§Ù„Ø®Ù„ÙÙŠØ§Øª Ø§Ù„Ù…ØªÙ‚Ø§Ø±Ø¨Ø©",
       "icon": "sicon-border-all",
       "required": false,
       "value": false,
@@ -4740,7 +4746,7 @@
       "id": "veloura_cart_surfaces_border_color_2026",
       "type": "string",
       "format": "color",
-      "label": "لون إطار عناصر السلة",
+      "label": "Ù„ÙˆÙ† Ø¥Ø·Ø§Ø± Ø¹Ù†Ø§ØµØ± Ø§Ù„Ø³Ù„Ø©",
       "icon": "sicon-palette",
       "value": "#e5e7eb",
       "required": false,
@@ -4761,8 +4767,8 @@
       "type": "boolean",
       "format": "switch",
       "id": "veloura_cart_surfaces_shadow_enabled_2026",
-      "label": "إظهار ظل خفيف حول العناصر",
-      "description": "يضيف ظلًا محايدًا وخفيفًا دون تغيير لون العناصر.",
+      "label": "Ø¥Ø¸Ù‡Ø§Ø± Ø¸Ù„ Ø®ÙÙŠÙ",
+      "description": "Ø¸Ù„ Ù…Ø­Ø§ÙŠØ¯ ÙˆØ®ÙÙŠÙ Ø­ÙˆÙ„ Ø¨Ø·Ø§Ù‚Ø§Øª Ø§Ù„Ø³Ù„Ø©",
       "icon": "sicon-magic",
       "required": false,
       "value": false,
@@ -4774,8 +4780,7 @@
           "value": true
         }
       ]
-    },
-    {
+    },    {
       "type": "static",
       "format": "description",
       "id": "veloura_product_card_settings_title_2026",
