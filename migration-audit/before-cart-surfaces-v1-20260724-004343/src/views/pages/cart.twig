@@ -48,58 +48,8 @@
 #}
 
 {% extends "layouts.master" %}
-
-{# Veloura cart surfaces: disabled by default, therefore legacy stores remain unchanged. #}
-{% set vcs_enabled_raw = theme.settings.get('veloura_cart_surfaces_enabled_2026', false) %}
-{% if vcs_enabled_raw.value is defined %}
-    {% set vcs_enabled_raw = vcs_enabled_raw.value %}
-{% elseif vcs_enabled_raw.selected is defined %}
-    {% if vcs_enabled_raw.selected.value is defined %}
-        {% set vcs_enabled_raw = vcs_enabled_raw.selected.value %}
-    {% else %}
-        {% set vcs_enabled_raw = vcs_enabled_raw.selected %}
-    {% endif %}
-{% endif %}
-{% set vcs_enabled = vcs_enabled_raw == true or vcs_enabled_raw == 'true' or vcs_enabled_raw == 1 or vcs_enabled_raw == '1' or vcs_enabled_raw == 'on' %}
-
-{% set vcs_bg = theme.settings.get('veloura_cart_surfaces_bg_color_2026', '#f3f4f6') %}
-{% if vcs_bg.value is defined %}{% set vcs_bg = vcs_bg.value %}{% endif %}
-
-{% set vcs_radius_raw = theme.settings.get('veloura_cart_surfaces_radius_2026', 'medium') %}
-{% if vcs_radius_raw.selected is defined %}
-    {% if vcs_radius_raw.selected.value is defined %}
-        {% set vcs_radius_raw = vcs_radius_raw.selected.value %}
-    {% elseif vcs_radius_raw.selected is iterable and vcs_radius_raw.selected[0] is defined and vcs_radius_raw.selected[0].value is defined %}
-        {% set vcs_radius_raw = vcs_radius_raw.selected[0].value %}
-    {% else %}
-        {% set vcs_radius_raw = vcs_radius_raw.selected %}
-    {% endif %}
-{% elseif vcs_radius_raw.value is defined %}
-    {% set vcs_radius_raw = vcs_radius_raw.value %}
-{% endif %}
-{% set vcs_radius_map = {
-    'sharp': '0px',
-    'soft': '10px',
-    'medium': '16px',
-    'large': '24px',
-    'round': '32px'
-} %}
-{% set vcs_radius = vcs_radius_map[vcs_radius_raw]|default('16px') %}
-
-{% set vcs_border_raw = theme.settings.get('veloura_cart_surfaces_border_enabled_2026', false) %}
-{% if vcs_border_raw.value is defined %}{% set vcs_border_raw = vcs_border_raw.value %}{% elseif vcs_border_raw.selected is defined %}{% set vcs_border_raw = vcs_border_raw.selected %}{% endif %}
-{% set vcs_border = vcs_border_raw == true or vcs_border_raw == 'true' or vcs_border_raw == 1 or vcs_border_raw == '1' or vcs_border_raw == 'on' %}
-
-{% set vcs_border_color = theme.settings.get('veloura_cart_surfaces_border_color_2026', '#d1d5db') %}
-{% if vcs_border_color.value is defined %}{% set vcs_border_color = vcs_border_color.value %}{% endif %}
-
-{% set vcs_shadow_raw = theme.settings.get('veloura_cart_surfaces_shadow_enabled_2026', false) %}
-{% if vcs_shadow_raw.value is defined %}{% set vcs_shadow_raw = vcs_shadow_raw.value %}{% elseif vcs_shadow_raw.selected is defined %}{% set vcs_shadow_raw = vcs_shadow_raw.selected %}{% endif %}
-{% set vcs_shadow = vcs_shadow_raw == true or vcs_shadow_raw == 'true' or vcs_shadow_raw == 1 or vcs_shadow_raw == '1' or vcs_shadow_raw == 'on' %}
 {% block content %}
-    <div id="veloura-cart-page"
-         class="container veloura-cart-page{{ vcs_enabled ? ' veloura-cart-surfaces-enabled' : '' }}{{ vcs_border ? ' veloura-cart-surfaces-border' : '' }}{{ vcs_shadow ? ' veloura-cart-surfaces-shadow' : '' }}"
-         {% if vcs_enabled %}style="--veloura-cart-surface-bg: {{ vcs_bg }}; --veloura-cart-surface-radius: {{ vcs_radius }}; --veloura-cart-surface-border: {{ vcs_border_color }};"{% endif %}>
+    <div class="container">
         {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
         <nav class="breadcrumbs w-full py-5">
             <salla-breadcrumb></salla-breadcrumb>
@@ -112,7 +62,7 @@
 
                 {% for item in cart.items %}
                     <form onchange="salla.form.onChange('cart.updateItem', event)" id="item-{{ item.id }}">
-                        <section class="cart-item veloura-cart-surface veloura-cart-item-surface bg-white p-5 xs:p-7 rounded-md mb-5 relative">
+                        <section class="cart-item bg-white p-5 xs:p-7 rounded-md mb-5 relative">
                             <input type="hidden" name="id" value="{{ item.id }}">
                                 <!-- product -->
                                 <div class="md:flex rtl:space-x-reverse md:space-x-12 items-start justify-between mb-8 last:mb-0">
@@ -204,7 +154,7 @@
                 {% endfor %}
 
                 {% if cart.options|length %}
-                  <div class="cart-options veloura-cart-surface veloura-cart-options-surface">
+                  <div class="cart-options">
                     {% for product_option in cart.options %}
                       <form class="first:pt-5 relative" onchange="salla.form.onChange('cart.updateItem', event)" id="item-{{ product_option.id }}">
                         <input type="hidden" name="id" value="{{ product_option.id }}">
@@ -225,7 +175,7 @@
             <!-- sidebar -->
             {% if cart.items|length %}
                 <div class="sticky top-24 w-full lg:w-96 rtl:lg:mr-8 ltr:lg:ml-8">
-                    <div class="veloura-cart-surface veloura-cart-shipping-surface shadow-default bg-white p-5 xs:p-7 rounded-md mb-5 relative {{ cart.free_shipping_bar ? '' : 'hidden' }}" id="free-shipping">
+                    <div class="shadow-default bg-white p-5 xs:p-7 rounded-md mb-5 relative {{ cart.free_shipping_bar ? '' : 'hidden' }}" id="free-shipping">
                         <div class="flex rtl:space-x-reverse space-x-3 items-center">
                             <i class="bg-primary text-white rounded-icon sicon-shipping-fast {{ theme.is_rtl ? 'flip-x':'' }}"></i>
                             {% set is_free=cart.free_shipping_bar.has_free_shipping %}
@@ -254,11 +204,11 @@
                         </salla-loyalty-panel>
                     {% endif %}
 
-                    <div id="cart-gifting" class="veloura-cart-surface veloura-cart-gifting-surface shadow-default bg-white xs:p-2 rounded-md mb-5 relative  {{gift.enabled ? '' : 'hidden' }}">
+                    <div id="cart-gifting" class="shadow-default bg-white xs:p-2 rounded-md mb-5 relative  {{gift.enabled ? '' : 'hidden' }}">
                         <salla-gifting id="salla-gifting" class="mt-5" widget-title="{{ trans("pages.cart.gift_widget_title") }}"  widget-subtitle="{{ gift.text }}" class="mt-5" {{gift.type}}-products  vertical></salla-gifting>
                     </div>
 
-                    <div class="veloura-cart-surface veloura-cart-summary-surface shadow-default bg-white p-5 xs:p-7 rounded-md mb-5 relative transition-height duration-1000">
+                    <div class="shadow-default bg-white p-5 xs:p-7 rounded-md mb-5 relative transition-height duration-1000">
                         <h2 class="font-bold text-sm mb-5">{{ trans('pages.cart.summary') }}</h2>
 
                         <div class="flex justify-between text-sm mb-5">
