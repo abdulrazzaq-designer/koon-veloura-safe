@@ -1,5 +1,4 @@
 import MobileMenu from 'mmenu-light';
-import './mobile-floating-menu';
 import Swal from 'sweetalert2';
 import Anime from './partials/anime';
 import initTootTip from './partials/tooltip';
@@ -398,10 +397,10 @@ const initVelouraGlobalGlass = (() => {
 
   const SHADOW_CSS = `
     :host {
-      --veloura-shadow-glass-bg: var(--veloura-global-glass-bg, rgba(248, 250, 252, .72));
-      --veloura-shadow-glass-border: var(--veloura-global-glass-border, rgba(255, 255, 255, .66));
+      --veloura-shadow-glass-bg: var(--veloura-global-glass-bg, rgba(207, 220, 233, .82));
+      --veloura-shadow-glass-border: var(--veloura-global-glass-border, rgba(255, 255, 255, .68));
       --veloura-shadow-glass-filter: var(--veloura-global-glass-filter, blur(22px) saturate(138%));
-      --veloura-shadow-glass-overlay: var(--veloura-global-glass-overlay, rgba(15, 23, 42, .18));
+      --veloura-shadow-glass-overlay: var(--veloura-global-glass-overlay, rgba(15, 23, 42, .34));
     }
 
     .s-modal-overlay,
@@ -411,9 +410,8 @@ const initVelouraGlobalGlass = (() => {
     [part~='overlay'],
     [part~='backdrop'] {
       background: var(--veloura-shadow-glass-overlay) !important;
-      -webkit-backdrop-filter: none !important;
-      backdrop-filter: none !important;
-      filter: none !important;
+      -webkit-backdrop-filter: blur(6px) saturate(112%) !important;
+      backdrop-filter: blur(6px) saturate(112%) !important;
     }
 
     .s-modal-body,

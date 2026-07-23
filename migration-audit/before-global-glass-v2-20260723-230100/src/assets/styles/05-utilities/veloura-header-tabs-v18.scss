@@ -15,8 +15,8 @@
   --veloura-v15-top-gap: var(--veloura-global-spacing, 12px);
   --veloura-v15-border: rgba(255, 255, 255, .68);
   --veloura-v15-separator: rgba(15, 23, 42, .11);
-  --veloura-v15-glass-fallback: rgba(248, 250, 252, .72);
-  --veloura-v15-glass-dark-fallback: rgba(17, 24, 39, .76);
+  --veloura-v15-glass-fallback: rgba(207, 220, 233, .82);
+  --veloura-v15-glass-dark-fallback: rgba(28, 40, 57, .86);
   --veloura-v15-filter: blur(22px) saturate(138%);
 }
 
@@ -284,7 +284,7 @@ html body .veloura-header-tabs-stack--blur > .veloura-header-tabs-stack__contain
 html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
   background: var(--veloura-v15-glass-fallback) !important;
   background-color: var(--veloura-v15-glass-fallback) !important;
-  background: var(--veloura-v15-glass-fallback) !important;
+  background: rgba(207, 220, 233, .82) !important;
   border-color: var(--veloura-v15-border) !important;
   -webkit-backdrop-filter: var(--veloura-v15-filter) !important;
   backdrop-filter: var(--veloura-v15-filter) !important;
@@ -295,7 +295,7 @@ html.dark body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surf
 html body.dark .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
   background: var(--veloura-v15-glass-dark-fallback) !important;
   background-color: var(--veloura-v15-glass-dark-fallback) !important;
-  background: var(--veloura-v15-glass-dark-fallback) !important;
+  background: rgba(28, 40, 57, .86) !important;
 }
 
 html body .veloura-header-tabs-stack--blur .store-header,

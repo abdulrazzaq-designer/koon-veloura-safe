@@ -1,25 +1,23 @@
 /* ========================================================================
-   Veloura Global Overlay Glass V2 — Neutral Silver
+   Veloura Global Overlay Glass — Final Authority
    Activated by body.veloura-glass-effect.
-   Floating dialogs use the same white/silver material as the header.
-   Backdrops are dim-only (no page blur), so closing login/search leaves no
-   delayed blur layer behind.
+   Uses exactly the current header material variables from V18.
    ======================================================================== */
 
 body.veloura-glass-effect {
-  --veloura-global-glass-bg: var(--veloura-v15-glass-fallback, rgba(248, 250, 252, .72));
-  --veloura-global-glass-border: var(--veloura-v15-border, rgba(255, 255, 255, .66));
+  --veloura-global-glass-bg: var(--veloura-v15-glass-fallback, rgba(207, 220, 233, .82));
+  --veloura-global-glass-border: var(--veloura-v15-border, rgba(255, 255, 255, .68));
   --veloura-global-glass-filter: var(--veloura-v15-filter, blur(22px) saturate(138%));
-  --veloura-global-glass-overlay: rgba(15, 23, 42, .18);
-  --veloura-global-glass-control: rgba(255, 255, 255, .48);
+  --veloura-global-glass-overlay: rgba(15, 23, 42, .34);
+  --veloura-global-glass-control: rgba(255, 255, 255, .44);
 }
 
 html.dark body.veloura-glass-effect,
 html body.dark.veloura-glass-effect {
-  --veloura-global-glass-bg: var(--veloura-v15-glass-dark-fallback, rgba(17, 24, 39, .76));
-  --veloura-global-glass-border: rgba(255, 255, 255, .14);
-  --veloura-global-glass-overlay: rgba(2, 6, 23, .34);
-  --veloura-global-glass-control: rgba(15, 23, 42, .52);
+  --veloura-global-glass-bg: var(--veloura-v15-glass-dark-fallback, rgba(28, 40, 57, .86));
+  --veloura-global-glass-border: rgba(255, 255, 255, .16);
+  --veloura-global-glass-overlay: rgba(2, 6, 23, .54);
+  --veloura-global-glass-control: rgba(15, 23, 42, .48);
 }
 
 /* Shared floating surfaces. */
@@ -45,7 +43,7 @@ html body.veloura-glass-effect .auth-modal .modal-content {
   box-shadow: none !important;
 }
 
-/* Quick view/popup internal columns stay transparent over one glass shell. */
+/* Quick view keeps one translucent shell; its internal columns must not cover it. */
 html body.veloura-glass-effect .veloura-qv-full .veloura-qv-full__media,
 html body.veloura-glass-effect .veloura-qv-full .veloura-qv-full__content,
 html body.veloura-glass-effect .veloura-quick-view-modal .veloura-quick-view-modal__media,
@@ -56,7 +54,7 @@ html body.veloura-glass-effect .veloura-popup .veloura-popup__content {
   background-image: none !important;
 }
 
-/* Backdrops dim the page only. Never blur the entire store. */
+/* Dim/blur the page behind each floating surface. */
 html body.veloura-glass-effect .veloura-qv-full .veloura-qv-full__overlay,
 html body.veloura-glass-effect .veloura-quick-view-modal .veloura-quick-view-modal__overlay,
 html body.veloura-glass-effect .veloura-popup .veloura-popup__overlay,
@@ -65,12 +63,11 @@ html body.veloura-glass-effect .s-modal-backdrop,
 html body.veloura-glass-effect .modal-backdrop,
 html body.veloura-glass-effect .swal2-container.swal2-backdrop-show {
   background: var(--veloura-global-glass-overlay) !important;
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-  filter: none !important;
+  -webkit-backdrop-filter: blur(6px) saturate(112%) !important;
+  backdrop-filter: blur(6px) saturate(112%) !important;
 }
 
-/* Salla web-component parts when exposed. */
+/* Salla web-component parts when exposed by the component. */
 html body.veloura-glass-effect salla-login-modal,
 html body.veloura-glass-effect salla-modal,
 html body.veloura-glass-effect salla-search {
@@ -97,12 +94,11 @@ html body.veloura-glass-effect salla-login-modal::part(backdrop),
 html body.veloura-glass-effect salla-modal::part(overlay),
 html body.veloura-glass-effect salla-modal::part(backdrop) {
   background: var(--veloura-global-glass-overlay) !important;
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-  filter: none !important;
+  -webkit-backdrop-filter: blur(6px) saturate(112%) !important;
+  backdrop-filter: blur(6px) saturate(112%) !important;
 }
 
-/* Controls stay readable without becoming opaque blocks. */
+/* Controls on glass surfaces remain readable without becoming opaque blocks. */
 html body.veloura-glass-effect :is(
   .veloura-popup__box,
   .veloura-qv-full__dialog,
@@ -124,11 +120,11 @@ html body.veloura-glass-effect :is(
   background: var(--veloura-global-glass-control) !important;
   border: 1px solid var(--veloura-global-glass-border) !important;
   box-shadow: none !important;
-  -webkit-backdrop-filter: blur(10px) saturate(118%) !important;
-  backdrop-filter: blur(10px) saturate(118%) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(120%) !important;
+  backdrop-filter: blur(10px) saturate(120%) !important;
 }
 
-/* Mobile fixed add-to-cart. */
+/* Mobile fixed add-to-cart: glass only when the sticky feature is active. */
 @media (max-width: 767px) {
   html body.veloura-glass-effect.is-sticky-product-bar .veloura-product-page .sticky-product-bar.veloura-product-sticky-bar,
   html body.veloura-glass-effect.veloura-product-sticky-active .veloura-product-page .sticky-product-bar.veloura-product-sticky-bar,
@@ -151,6 +147,7 @@ html body.veloura-glass-effect :is(
   }
 }
 
+/* Keep the old explicit utility class compatible with the same material. */
 html body.veloura-glass-effect .veloura-glass {
   background: var(--veloura-global-glass-bg) !important;
   border: 1px solid var(--veloura-global-glass-border) !important;
@@ -164,13 +161,13 @@ html body.veloura-glass-effect .veloura-glass {
   html body.veloura-glass-effect .veloura-popup .veloura-popup__box,
   html body.veloura-glass-effect .veloura-qv-full .veloura-qv-full__dialog,
   html body.veloura-glass-effect .veloura-quick-view-modal .veloura-quick-view-modal__dialog {
-    background: rgba(248, 250, 252, .94) !important;
+    background: rgba(224, 232, 240, .96) !important;
   }
 
   html.dark body.veloura-glass-effect .veloura-glass-surface,
   html body.dark.veloura-glass-effect .veloura-glass-surface,
   html.dark body.veloura-glass-effect .veloura-popup .veloura-popup__box,
   html body.dark.veloura-glass-effect .veloura-popup .veloura-popup__box {
-    background: rgba(17, 24, 39, .94) !important;
+    background: rgba(28, 40, 57, .96) !important;
   }
 }
