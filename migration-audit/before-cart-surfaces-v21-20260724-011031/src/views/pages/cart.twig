@@ -49,60 +49,7 @@
 
 {% extends "layouts.master" %}
 {% block content %}
-    {# Veloura Cart Surfaces V2.1 settings #}
-    {% set vcart_enabled_raw = theme.settings.get('veloura_cart_surfaces_enabled_2026', false) %}
-    {% if vcart_enabled_raw.value is defined %}
-        {% set vcart_enabled_raw = vcart_enabled_raw.value %}
-    {% elseif vcart_enabled_raw.selected is defined %}
-        {% set vcart_enabled_raw = vcart_enabled_raw.selected %}
-    {% endif %}
-    {% set vcart_surfaces_enabled = vcart_enabled_raw == true or vcart_enabled_raw == 'true' or vcart_enabled_raw == 1 or vcart_enabled_raw == '1' or vcart_enabled_raw == 'on' %}
-
-    {% set vcart_surface_bg = theme.settings.get('veloura_cart_surfaces_bg_color_2026', '#f3f4f6') %}
-    {% if vcart_surface_bg.value is defined %}
-        {% set vcart_surface_bg = vcart_surface_bg.value %}
-    {% endif %}
-
-    {% set vcart_surface_radius_raw = theme.settings.get('veloura_cart_surfaces_radius_2026', 'medium') %}
-    {% if vcart_surface_radius_raw is iterable and vcart_surface_radius_raw[0].value is defined %}
-        {% set vcart_surface_radius_key = vcart_surface_radius_raw[0].value %}
-    {% elseif vcart_surface_radius_raw.value is defined %}
-        {% set vcart_surface_radius_key = vcart_surface_radius_raw.value %}
-    {% else %}
-        {% set vcart_surface_radius_key = vcart_surface_radius_raw %}
-    {% endif %}
-
-    {% set vcart_border_raw = theme.settings.get('veloura_cart_surfaces_border_enabled_2026', false) %}
-    {% if vcart_border_raw.value is defined %}
-        {% set vcart_border_raw = vcart_border_raw.value %}
-    {% elseif vcart_border_raw.selected is defined %}
-        {% set vcart_border_raw = vcart_border_raw.selected %}
-    {% endif %}
-    {% set vcart_surface_border_enabled = vcart_border_raw == true or vcart_border_raw == 'true' or vcart_border_raw == 1 or vcart_border_raw == '1' or vcart_border_raw == 'on' %}
-
-    {% set vcart_surface_border_color = theme.settings.get('veloura_cart_surfaces_border_color_2026', '#e5e7eb') %}
-    {% if vcart_surface_border_color.value is defined %}
-        {% set vcart_surface_border_color = vcart_surface_border_color.value %}
-    {% endif %}
-
-    {% set vcart_shadow_raw = theme.settings.get('veloura_cart_surfaces_shadow_enabled_2026', false) %}
-    {% if vcart_shadow_raw.value is defined %}
-        {% set vcart_shadow_raw = vcart_shadow_raw.value %}
-    {% elseif vcart_shadow_raw.selected is defined %}
-        {% set vcart_shadow_raw = vcart_shadow_raw.selected %}
-    {% endif %}
-    {% set vcart_surface_shadow_enabled = vcart_shadow_raw == true or vcart_shadow_raw == 'true' or vcart_shadow_raw == 1 or vcart_shadow_raw == '1' or vcart_shadow_raw == 'on' %}
-
-    {% set vcart_surface_radius_map = {
-        'sharp': '0px',
-        'soft': '10px',
-        'medium': '16px',
-        'large': '24px',
-        'round': '32px'
-    } %}
-    {% set vcart_surface_radius = vcart_surface_radius_map[vcart_surface_radius_key]|default('16px') %}
-    <div class="container{% if vcart_surfaces_enabled %} veloura-cart-surfaces-enabled{% endif %}{% if vcart_surface_border_enabled %} veloura-cart-border-enabled{% endif %}{% if vcart_surface_shadow_enabled %} veloura-cart-shadow-enabled{% endif %}"
-         style="--veloura-cart-surface-bg: {{ vcart_surface_bg }}; --veloura-cart-surface-radius: {{ vcart_surface_radius }}; --veloura-cart-surface-border-color: {{ vcart_surface_border_color }};">
+    <div class="container">
         {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
         <nav class="breadcrumbs w-full py-5">
             <salla-breadcrumb></salla-breadcrumb>
