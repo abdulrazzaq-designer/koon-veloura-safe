@@ -1,4 +1,3 @@
-import initVelouraCartBanners from './partials/veloura-cart-banners';
 import MobileMenu from 'mmenu-light';
 import './mobile-floating-menu';
 import Swal from 'sweetalert2';
@@ -3275,6 +3274,3 @@ if (document.readyState === 'loading') {
 document.addEventListener('theme::ready', initVelouraHomeTabs);
 /* VELOURA HOME TABS CONTROLLER END 2026 */
 
-
-
-document.addEventListener('DOMContentLoaded', () => initVelouraCartBanners());
