@@ -4669,7 +4669,14 @@
       "wide": true,
       "required": false,
       "value": false,
-      "selected": false
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_cart_banners_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
     },
     {
       "id": "veloura_cart_surfaces_bg_color_2026",
