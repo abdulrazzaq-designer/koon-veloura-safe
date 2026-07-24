@@ -6015,8 +6015,8 @@
     {
       "type": "boolean",
       "icon": "sicon-toggle-off",
-      "label": "تفعيل الوضع الزجاجي",
-      "description": "عند التفعيل تصبح نافذة العرض السريع بلورية بنفس خامة زجاج الهيدر، بدون تغبيش خلفية الصفحة.",
+      "label": "تفعيل تغبيش خلفية العرض السريع",
+      "description": "عند التفعيل يتم تغبيش خلفية الصفحة خلف نافذة العرض السريع",
       "id": "veloura_quick_view_overlay_blur_2026",
       "format": "switch",
       "required": false,
@@ -6076,6 +6076,30 @@
         },
         {
           "id": "veloura_quick_view_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_quick_view_product_link_text_2026",
+      "type": "string",
+      "format": "text",
+      "label": "نص زر تفاصيل المنتج",
+      "value": "عرض تفاصيل المنتج",
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_quick_view_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_quick_view_show_product_link_2026",
           "operation": "=",
           "value": true
         }
