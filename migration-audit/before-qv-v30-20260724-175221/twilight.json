@@ -5783,6 +5783,37 @@
       ]
     },
     {
+      "id": "veloura_quick_view_button_margin_bottom_2026",
+      "type": "number",
+      "format": "slider",
+      "label": "المسافة أسفل زر العرض السريع",
+      "description": "تتحكم بالفراغ أسفل زر العرض السريع عندما يكون تحت زر أضف للسلة",
+      "inputType": "range",
+      "icon": "sicon-pin",
+      "value": "0",
+      "required": false,
+      "step": "1",
+      "minimum": "0",
+      "maximum": "60",
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_quick_view_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_quick_view_button_position_2026",
+          "operation": "=",
+          "value": "below_add_to_cart"
+        }
+      ]
+    },
+    {
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "label": "إظهار أيقونة داخل زر العرض السريع",
@@ -6333,11 +6364,10 @@
       "type": "number",
       "format": "slider",
       "label": "المسافة يمين ويسار زر أضف للسلة",
-      "description": "القيمة بالبكسل مباشرة: 0 يعني بلا مسافة، و10 يعني 10px. تتحكم بعرض زر أضف للسلة وزر العرض السريع عندما يكون تحت السلة.",
+      "description": "تضيف فراغًا يمين ويسار الزر بدون التحكم بعرضه الداخلي",
       "inputType": "range",
       "icon": "sicon-pin",
-      "value": "10",
-      "default": "10",
+      "value": "0",
       "required": false,
       "step": "1",
       "minimum": "0",
@@ -6354,12 +6384,11 @@
       "id": "veloura_product_card_button_margin_bottom_2026",
       "type": "number",
       "format": "slider",
-      "label": "المسافة أسفل أزرار البطاقة",
-      "description": "القيمة بالبكسل مباشرة: 0 يعني بلا مسافة. تطبق على أضف للسلة، العرض السريع تحت السلة، وزر عرض المزيد.",
+      "label": "المسافة أسفل زر أضف للسلة",
+      "description": "القيمة بالبكسل",
       "inputType": "range",
       "icon": "sicon-pin",
-      "value": "10",
-      "default": "10",
+      "value": "0",
       "required": false,
       "step": "1",
       "minimum": "0",

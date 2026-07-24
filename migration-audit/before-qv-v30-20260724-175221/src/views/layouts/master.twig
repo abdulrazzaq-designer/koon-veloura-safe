@@ -1736,65 +1736,43 @@
 
     {# tracking services, custom css feature. #}
     
-
-
-{# Veloura QV V30 absolute card spacing start #}
+{# Veloura QV V29 card alignment layout fix start #}
 {# Normalize product-card text alignment switch #}
-{% set v30_center_text_raw = theme.settings.get('veloura_product_card_center_text_2026', false) %}
-{% if v30_center_text_raw.value is defined %}
-  {% set v30_center_text_raw = v30_center_text_raw.value %}
-{% elseif v30_center_text_raw.selected is defined %}
-  {% if v30_center_text_raw.selected.value is defined %}
-    {% set v30_center_text_raw = v30_center_text_raw.selected.value %}
-  {% elseif v30_center_text_raw.selected is iterable and v30_center_text_raw.selected[0] is defined and v30_center_text_raw.selected[0].value is defined %}
-    {% set v30_center_text_raw = v30_center_text_raw.selected[0].value %}
+{% set v29_center_text_raw = theme.settings.get('veloura_product_card_center_text_2026', false) %}
+{% if v29_center_text_raw.value is defined %}
+  {% set v29_center_text_raw = v29_center_text_raw.value %}
+{% elseif v29_center_text_raw.selected is defined %}
+  {% if v29_center_text_raw.selected.value is defined %}
+    {% set v29_center_text_raw = v29_center_text_raw.selected.value %}
+  {% elseif v29_center_text_raw.selected is iterable and v29_center_text_raw.selected[0] is defined and v29_center_text_raw.selected[0].value is defined %}
+    {% set v29_center_text_raw = v29_center_text_raw.selected[0].value %}
   {% else %}
-    {% set v30_center_text_raw = v30_center_text_raw.selected %}
+    {% set v29_center_text_raw = v29_center_text_raw.selected %}
   {% endif %}
 {% endif %}
-{% set v30_center_text = v30_center_text_raw == true or v30_center_text_raw == 'true' or v30_center_text_raw == 1 or v30_center_text_raw == '1' or v30_center_text_raw == 'on' %}
+{% set v29_center_text = v29_center_text_raw == true or v29_center_text_raw == 'true' or v29_center_text_raw == 1 or v29_center_text_raw == '1' or v29_center_text_raw == 'on' %}
 
-{# Horizontal spacing is absolute: 0px means 0px. No hidden base value is added. #}
-{% set v30_button_margin_x_raw = theme.settings.get('veloura_product_card_button_margin_x_2026', 10) %}
-{% if v30_button_margin_x_raw.value is defined %}
-  {% set v30_button_margin_x_raw = v30_button_margin_x_raw.value %}
-{% elseif v30_button_margin_x_raw.selected is defined %}
-  {% if v30_button_margin_x_raw.selected.value is defined %}
-    {% set v30_button_margin_x_raw = v30_button_margin_x_raw.selected.value %}
-  {% elseif v30_button_margin_x_raw.selected is iterable and v30_button_margin_x_raw.selected[0] is defined and v30_button_margin_x_raw.selected[0].value is defined %}
-    {% set v30_button_margin_x_raw = v30_button_margin_x_raw.selected[0].value %}
-  {% else %}
-    {% set v30_button_margin_x_raw = v30_button_margin_x_raw.selected %}
-  {% endif %}
-{% endif %}
-{% set v30_button_margin_x = v30_button_margin_x_raw + 0 %}
-{% if v30_button_margin_x < 0 %}{% set v30_button_margin_x = 0 %}{% endif %}
-{% if v30_button_margin_x > 60 %}{% set v30_button_margin_x = 60 %}{% endif %}
+{# Shared horizontal margin: add-to-cart and under-cart quick view use the same value #}
+{% set v29_button_margin_x = theme.settings.get('veloura_product_card_button_margin_x_2026', 0) %}
+{% if v29_button_margin_x.value is defined %}{% set v29_button_margin_x = v29_button_margin_x.value %}{% endif %}
+{% set v29_button_margin_x = v29_button_margin_x + 0 %}
+{% if v29_button_margin_x < 0 %}{% set v29_button_margin_x = 0 %}{% endif %}
+{% if v29_button_margin_x > 60 %}{% set v29_button_margin_x = 60 %}{% endif %}
 
-{# Bottom spacing is absolute: 0px means 0px. It controls cart, under-cart quick view, and more/details buttons. #}
-{% set v30_button_bottom_space_raw = theme.settings.get('veloura_product_card_button_margin_bottom_2026', 10) %}
-{% if v30_button_bottom_space_raw.value is defined %}
-  {% set v30_button_bottom_space_raw = v30_button_bottom_space_raw.value %}
-{% elseif v30_button_bottom_space_raw.selected is defined %}
-  {% if v30_button_bottom_space_raw.selected.value is defined %}
-    {% set v30_button_bottom_space_raw = v30_button_bottom_space_raw.selected.value %}
-  {% elseif v30_button_bottom_space_raw.selected is iterable and v30_button_bottom_space_raw.selected[0] is defined and v30_button_bottom_space_raw.selected[0].value is defined %}
-    {% set v30_button_bottom_space_raw = v30_button_bottom_space_raw.selected[0].value %}
-  {% else %}
-    {% set v30_button_bottom_space_raw = v30_button_bottom_space_raw.selected %}
-  {% endif %}
-{% endif %}
-{% set v30_button_bottom_space = v30_button_bottom_space_raw + 0 %}
-{% if v30_button_bottom_space < 0 %}{% set v30_button_bottom_space = 0 %}{% endif %}
-{% if v30_button_bottom_space > 60 %}{% set v30_button_bottom_space = 60 %}{% endif %}
+{# Under-cart quick-view bottom spacing #}
+{% set v29_qv_margin_bottom = theme.settings.get('veloura_quick_view_button_margin_bottom_2026', 0) %}
+{% if v29_qv_margin_bottom.value is defined %}{% set v29_qv_margin_bottom = v29_qv_margin_bottom.value %}{% endif %}
+{% set v29_qv_margin_bottom = v29_qv_margin_bottom + 0 %}
+{% if v29_qv_margin_bottom < 0 %}{% set v29_qv_margin_bottom = 0 %}{% endif %}
+{% if v29_qv_margin_bottom > 60 %}{% set v29_qv_margin_bottom = 60 %}{% endif %}
 
-<style id="veloura-qv-v30-absolute-card-spacing-2026">
+<style id="veloura-qv-v29-card-align-layout-fix-2026">
   :root {
-    --veloura-v30-card-button-margin-x: {{ v30_button_margin_x }}px;
-    --veloura-v30-card-button-bottom-space: {{ v30_button_bottom_space }}px;
+    --veloura-v29-card-button-margin-x: {{ v29_button_margin_x }}px;
+    --veloura-v29-qv-margin-bottom: {{ v29_qv_margin_bottom }}px;
   }
 
-  /* V30: تثبيت توزيع البطاقة — الصورة والنصوص في الأعلى، والسعر والأزرار في الأسفل */
+  /* V29: تثبيت توزيع البطاقة — الصورة والنصوص في الأعلى، والسعر والأزرار في الأسفل */
   html body .s-product-card-entry.s-product-card-vertical,
   html body .s-product-card-entry:not(.s-product-card-horizontal):not(.s-product-card-full-image) {
     display: flex !important;
@@ -1834,8 +1812,8 @@
     width: 100% !important;
   }
 
-  /* V30: التوسيط يتحكم بالنص الرئيسي، عنوان المنتج، العنوان الفرعي، والسعر فقط */
-  {% if v30_center_text %}
+  /* V29: التوسيط يتحكم بالنص الرئيسي، عنوان المنتج، العنوان الفرعي، والسعر فقط */
+  {% if v29_center_text %}
   html body .s-product-card-entry .s-product-card-content-main,
   html body .s-product-card-entry .s-product-card-content-title,
   html body .s-product-card-entry .s-product-card-content-title a,
@@ -1876,84 +1854,53 @@
   }
   {% endif %}
 
-  /* V30: الأزرار تبقى في المنتصف دائمًا ولا تتأثر بإلغاء توسيط النص */
+  /* V29: أزرار أضف للسلة والعرض السريع تبقى في المنتصف دائمًا ولا تتأثر بإلغاء التوسيط */
   html body .s-product-card-entry .s-product-card-content-footer,
-  html body .s-product-card-entry .veloura-quick-view-under-cart-wrap {
+  html body .s-product-card-entry .s-product-card-content-footer > *,
+  html body .s-product-card-entry .s-product-card-content-footer salla-add-product-button,
+  html body .s-product-card-entry .s-product-card-content-footer .s-button-element,
+  html body .s-product-card-entry .veloura-quick-view-under-cart-wrap,
+  html body .s-product-card-entry .veloura-quick-view-under-cart-wrap .veloura-quick-view-btn,
+  html body .s-product-card-entry .veloura-quick-view-btn.is-under-cart {
+    text-align: center !important;
+    justify-content: center !important;
+    align-items: center !important;
+    direction: rtl !important;
+  }
+
+  html body .s-product-card-entry .s-product-card-content-footer {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    text-align: center !important;
-    direction: rtl !important;
-    gap: 0 !important;
-    row-gap: 0 !important;
-    column-gap: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    padding-bottom: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  /* V30: المسافة أسفل أضف للسلة قيمة مباشرة وليست مضافة فوق قيمة افتراضية */
-  html body .s-product-card-entry .s-product-card-content-footer {
-    margin-bottom: var(--veloura-v30-card-button-bottom-space) !important;
   }
 
   html body .s-product-card-entry .s-product-card-content-footer salla-add-product-button,
-  html body .s-product-card-entry .s-product-card-content-footer .s-button-element,
-  html body .s-product-card-entry .s-product-card-content-footer .s-button-btn,
-  html body .s-product-card-entry .s-product-card-content-footer button,
-  html body .s-product-card-entry .s-product-card-content-footer a[class*="button"],
-  html body .s-product-card-entry .s-product-card-content-footer a[class*="btn"] {
+  html body .s-product-card-entry .s-product-card-content-footer .s-button-element {
+    margin-left: var(--veloura-v29-card-button-margin-x) !important;
+    margin-right: var(--veloura-v29-card-button-margin-x) !important;
+  }
+
+  /* V29: زر العرض السريع تحت أضف للسلة يأخذ نفس حواف العرض ونفس هامش يمين/يسار زر أضف للسلة */
+  html body .s-product-card-entry .veloura-quick-view-under-cart-wrap {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    width: calc(100% - (var(--veloura-v30-card-button-margin-x) * 2)) !important;
-    max-width: calc(100% - (var(--veloura-v30-card-button-margin-x) * 2)) !important;
-    min-width: 0 !important;
-    margin-left: var(--veloura-v30-card-button-margin-x) !important;
-    margin-right: var(--veloura-v30-card-button-margin-x) !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  /* V30: العرض السريع تحت السلة يأخذ نفس عرض أضف للسلة ونفس المسافة يمين/يسار */
-  html body .s-product-card-entry .veloura-quick-view-under-cart-wrap {
-    margin-top: 0 !important;
-    margin-bottom: var(--veloura-v30-card-button-bottom-space) !important;
+    margin-bottom: var(--veloura-v29-qv-margin-bottom) !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   html body .s-product-card-entry .veloura-quick-view-under-cart-wrap .veloura-quick-view-btn,
-  html body .s-product-card-entry .veloura-quick-view-under-cart-wrap button,
-  html body .s-product-card-entry .veloura-quick-view-under-cart-wrap a,
   html body .s-product-card-entry .veloura-quick-view-btn.is-under-cart {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    width: calc(100% - (var(--veloura-v30-card-button-margin-x) * 2)) !important;
-    max-width: calc(100% - (var(--veloura-v30-card-button-margin-x) * 2)) !important;
-    min-width: 0 !important;
-    margin-left: var(--veloura-v30-card-button-margin-x) !important;
-    margin-right: var(--veloura-v30-card-button-margin-x) !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
+    width: calc(100% - (var(--veloura-v29-card-button-margin-x) * 2)) !important;
+    max-width: calc(100% - (var(--veloura-v29-card-button-margin-x) * 2)) !important;
+    margin-left: var(--veloura-v29-card-button-margin-x) !important;
+    margin-right: var(--veloura-v29-card-button-margin-x) !important;
     box-sizing: border-box !important;
     line-height: 1 !important;
   }
-
-  /* V30: زر عرض المزيد/تفاصيل المنتج يأخذ نفس مسافة الأسفل المباشرة بدون قيمة مخفية */
-  html body .veloura-quick-view-modal .veloura-quick-view-product-link,
-  html body .veloura-quick-view-modal .veloura-quick-view-more,
-  html body .veloura-quick-view-modal .veloura-qv-more,
-  html body .veloura-quick-view-modal .veloura-qv-product-link,
-  html body .veloura-qv-modal .veloura-quick-view-product-link,
-  html body .veloura-qv-modal .veloura-qv-more,
-  html body [data-veloura-qv-more],
-  html body [data-veloura-quick-view-more] {
-    margin-bottom: var(--veloura-v30-card-button-bottom-space) !important;
-  }
 </style>
-{# Veloura QV V30 absolute card spacing end #}
+{# Veloura QV V29 card alignment layout fix end #}
 
 {% hook 'head:end' %}
     {# ================================
