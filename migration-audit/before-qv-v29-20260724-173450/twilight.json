@@ -5787,14 +5787,14 @@
       "type": "number",
       "format": "slider",
       "label": "المسافة أسفل زر العرض السريع",
-      "description": "تتحكم بالفراغ أسفل زر العرض السريع عندما يكون تحت زر أضف للسلة",
+      "description": "يظهر هذا الخيار عندما يكون زر العرض السريع تحت زر إضافة السلة",
       "inputType": "range",
       "icon": "sicon-pin",
       "value": "0",
       "required": false,
       "step": "1",
       "minimum": "0",
-      "maximum": "60",
+      "maximum": "40",
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
