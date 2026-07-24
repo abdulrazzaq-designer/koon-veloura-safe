@@ -89,34 +89,16 @@
        ربط آمن لخيارات صفحة المنتج
     ================================ #}
 
-    {# Veloura Product Settings Normalizers V37 start #}
     {% macro veloura_bool(raw, fallback) %}
-      {# Salla settings may arrive as a primitive, {value}, {selected:{value}}, or {selected:[{value}]}. #}
       {% if raw.value is defined %}
-        {% if raw.value.value is defined %}
-          {% set raw = raw.value.value %}
-        {% elseif raw.value is iterable and raw.value[0] is defined and raw.value[0].value is defined %}
-          {% set raw = raw.value[0].value %}
-        {% else %}
-          {% set raw = raw.value %}
-        {% endif %}
+        {% set raw = raw.value %}
       {% elseif raw.selected is defined %}
-        {% if raw.selected.value is defined %}
-          {% set raw = raw.selected.value %}
-        {% elseif raw.selected is iterable and raw.selected[0] is defined and raw.selected[0].value is defined %}
-          {% set raw = raw.selected[0].value %}
-        {% elseif raw.selected is iterable and raw.selected[0] is defined %}
-          {% set raw = raw.selected[0] %}
-        {% else %}
-          {% set raw = raw.selected %}
-        {% endif %}
-      {% elseif raw is iterable and raw[0] is defined and raw[0].value is defined %}
-        {% set raw = raw[0].value %}
+        {% set raw = raw.selected %}
       {% endif %}
 
-      {% if raw == true or raw == 'true' or raw == 1 or raw == '1' or raw == 'on' or raw == 'yes' %}
+      {% if raw == true or raw == 'true' or raw == 1 or raw == '1' or raw == 'on' %}
         true
-      {% elseif raw == false or raw == 'false' or raw == 0 or raw == '0' or raw == 'off' or raw == 'no' %}
+      {% elseif raw == false or raw == 'false' or raw == 0 or raw == '0' or raw == 'off' %}
         false
       {% else %}
         {{ fallback ? 'true' : 'false' }}
@@ -124,41 +106,18 @@
     {% endmacro %}
 
     {% macro veloura_select(raw, fallback) %}
-      {% if raw.selected is defined %}
-        {% if raw.selected.value is defined %}
-          {{ raw.selected.value }}
-        {% elseif raw.selected is iterable and raw.selected[0] is defined and raw.selected[0].value is defined %}
-          {{ raw.selected[0].value }}
-        {% elseif raw.selected is iterable and raw.selected[0] is defined %}
-          {{ raw.selected[0] }}
-        {% elseif raw.selected %}
-          {{ raw.selected }}
-        {% else %}
-          {{ fallback }}
-        {% endif %}
-      {% elseif raw.value is defined %}
-        {% if raw.value.value is defined %}
-          {{ raw.value.value }}
-        {% elseif raw.value is iterable and raw.value[0] is defined and raw.value[0].value is defined %}
-          {{ raw.value[0].value }}
-        {% elseif raw.value is iterable and raw.value[0] is defined %}
-          {{ raw.value[0] }}
-        {% elseif raw.value %}
-          {{ raw.value }}
-        {% else %}
-          {{ fallback }}
-        {% endif %}
-      {% elseif raw is iterable and raw[0] is defined and raw[0].value is defined %}
+      {% if raw.selected is defined and raw.selected[0].value is defined %}
+        {{ raw.selected[0].value }}
+      {% elseif raw is iterable and raw[0].value is defined %}
         {{ raw[0].value }}
-      {% elseif raw is iterable and raw[0] is defined %}
-        {{ raw[0] }}
+      {% elseif raw.value is defined %}
+        {{ raw.value }}
       {% elseif raw %}
         {{ raw }}
       {% else %}
         {{ fallback }}
       {% endif %}
     {% endmacro %}
-{# Veloura Product Settings Normalizers V37 end #}
 
     {% set vpp_enabled = _self.veloura_bool(theme.settings.get('veloura_product_page_enabled_2026', true), true)|trim == 'true' %}
     {% set vpp_hide_breadcrumb = _self.veloura_bool(theme.settings.get('veloura_product_hide_breadcrumb_2026', false), false)|trim == 'true' %}
@@ -265,7 +224,7 @@
     } %}
     {% set vpp_general_radius = vpp_radius_map[vpp_general_radius_key]|default('28px') %}
 
-<div data-veloura-product-build="v20-marketing-related" data-veloura-v37-thumbs="{{ vpp_thumbnails_position }}" data-veloura-v37-stock-radar="{{ vpp_show_stock_radar ? 'pulse' : 'simple' }}" data-veloura-v37-images-zoom="{{ vpp_images_zoom ? 'true' : 'false' }}" data-veloura-quantity-style="{{ vpp_mobile_quantity_style }}" class="container veloura-product-page {{ vpp_enabled ? 'veloura-product-enabled' : '' }} {{ vpp_hide_breadcrumb ? 'veloura-product-hide-breadcrumb' : '' }} {{ vpp_hide_thumbnails ? 'veloura-product-hide-thumbs' : '' }} veloura-product-thumbs-{{ vpp_thumbnails_position }} veloura-product-images-{{ vpp_images_height_mode }} {{ vpp_images_zoom ? 'veloura-product-zoom-enabled' : '' }} {{ vpp_enabled and vpp_hide_short_description ? 'veloura-product-desc-collapsed' : '' }} {{ vpp_mobile_sticky_cart ? 'veloura-product-mobile-sticky-enabled' : 'veloura-product-mobile-sticky-disabled' }} {{ vpp_mobile_sticky_price ? 'veloura-product-mobile-sticky-price' : '' }} veloura-product-qty-{{ vpp_mobile_quantity_style }} {{ vpp_mobile_buttons_compact ? 'veloura-product-buttons-compact' : '' }} {{ vpp_hide_discount_value ? 'veloura-product-hide-discount' : '' }} {{ vpp_hide_tags_visual_only ? 'veloura-product-tags-visual-hidden' : '' }}" style="--veloura-product-bg-inline: {{ vpp_basic_bg }}; --veloura-product-secondary-bg-inline: {{ vpp_second_bg }}; --veloura-product-dark-bg-inline: {{ vpp_dark_basic_bg }}; --veloura-product-dark-secondary-bg-inline: {{ vpp_dark_second_bg }}; --veloura-product-radius: {{ vpp_general_radius }};" >
+<div data-veloura-product-build="v20-marketing-related" data-veloura-quantity-style="{{ vpp_mobile_quantity_style }}" class="container veloura-product-page {{ vpp_enabled ? 'veloura-product-enabled' : '' }} {{ vpp_hide_breadcrumb ? 'veloura-product-hide-breadcrumb' : '' }} {{ vpp_hide_thumbnails ? 'veloura-product-hide-thumbs' : '' }} veloura-product-thumbs-{{ vpp_thumbnails_position }} veloura-product-images-{{ vpp_images_height_mode }} {{ vpp_images_zoom ? 'veloura-product-zoom-enabled' : '' }} {{ vpp_enabled and vpp_hide_short_description ? 'veloura-product-desc-collapsed' : '' }} {{ vpp_mobile_sticky_cart ? 'veloura-product-mobile-sticky-enabled' : 'veloura-product-mobile-sticky-disabled' }} {{ vpp_mobile_sticky_price ? 'veloura-product-mobile-sticky-price' : '' }} veloura-product-qty-{{ vpp_mobile_quantity_style }} {{ vpp_mobile_buttons_compact ? 'veloura-product-buttons-compact' : '' }} {{ vpp_hide_discount_value ? 'veloura-product-hide-discount' : '' }} {{ vpp_hide_tags_visual_only ? 'veloura-product-tags-visual-hidden' : '' }}" style="--veloura-product-bg-inline: {{ vpp_basic_bg }}; --veloura-product-secondary-bg-inline: {{ vpp_second_bg }}; --veloura-product-dark-bg-inline: {{ vpp_dark_basic_bg }}; --veloura-product-dark-secondary-bg-inline: {{ vpp_dark_second_bg }}; --veloura-product-radius: {{ vpp_general_radius }};" >
 
         {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
         {% if not (vpp_enabled and vpp_hide_breadcrumb) %}
@@ -443,11 +402,7 @@
                 {% endif %}
 {% if vpp_enabled and vpp_show_availability and product.is_available %}
                     <div class="veloura-product-stock-radar {{ vpp_show_stock_radar ? 'is-pulse' : 'is-simple' }}">
-                        {# Veloura Stock Radar V37 start #}
-                        {% if vpp_show_stock_radar %}
-                            <span class="veloura-product-stock-radar__dot"></span>
-                        {% endif %}
-                        {# Veloura Stock Radar V37 end #}
+                        <span class="veloura-product-stock-radar__dot"></span>
                         <span>متوفر</span>
                     </div>
                 {% endif %}

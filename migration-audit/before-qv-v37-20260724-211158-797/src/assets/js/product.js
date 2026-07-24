@@ -21,7 +21,15 @@ class Product extends BasePage {
         this.initVelouraPurchaseButtons();
         this.initVelouraReadMore();
 
-        /* Veloura V37 zoom source of truth */ const velouraProductPage = document.querySelector('.veloura-product-page'); const velouraZoomControlled = Boolean(velouraProductPage && velouraProductPage.classList.contains('veloura-product-enabled')); const themeZoomEnabled = velouraZoomControlled ? velouraProductPage.classList.contains('veloura-product-zoom-enabled') : (typeof imageZoom !== 'undefined' && imageZoom); if (themeZoomEnabled) {
+        const velouraProductPage = document.querySelector('.veloura-product-page');
+        const velouraZoomAllowed =
+            !velouraProductPage ||
+            velouraProductPage.classList.contains('veloura-product-zoom-enabled');
+
+        const themeZoomEnabled =
+            typeof imageZoom !== 'undefined' && imageZoom;
+
+        if (themeZoomEnabled && velouraZoomAllowed) {
             this.initImagesZooming();
             window.addEventListener('resize', () => this.initImagesZooming());
         }
