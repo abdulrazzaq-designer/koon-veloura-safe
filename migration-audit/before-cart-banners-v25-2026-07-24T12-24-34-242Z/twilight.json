@@ -4587,27 +4587,6 @@
       ]
     },
     {
-      "id": "veloura_cart_banners_columns_2026",
-      "type": "number",
-      "format": "slider",
-      "label": "عدد البنرات في الصف",
-      "description": "اختر من بنر واحد إلى ثلاثة بنرات في الصف",
-      "inputType": "range",
-      "icon": "sicon-grid",
-      "value": "2",
-      "required": false,
-      "step": "1",
-      "minimum": "1",
-      "maximum": "3",
-      "conditions": [
-        {
-          "id": "veloura_cart_banners_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "id": "veloura_cart_banners_items_2026",
       "type": "collection",
       "format": "collection",

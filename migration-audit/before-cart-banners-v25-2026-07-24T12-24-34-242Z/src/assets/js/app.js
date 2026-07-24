@@ -3278,6 +3278,3 @@ document.addEventListener('theme::ready', initVelouraHomeTabs);
 
 
 document.addEventListener('DOMContentLoaded', () => initVelouraCartBanners());
-
-
-document.addEventListener('DOMContentLoaded', () => initVelouraCartBanners());
