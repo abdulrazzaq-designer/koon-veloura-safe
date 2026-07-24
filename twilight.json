@@ -4692,6 +4692,11 @@
           "id": "veloura_cart_surfaces_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_cart_banners_enabled_2026",
+          "operation": "=",
+          "value": true
         }
       ]
     },
@@ -4709,6 +4714,11 @@
           "label": "ناعمة",
           "value": "medium",
           "key": "veloura-cart-surfaces-radius-medium-2026"
+        },
+        {
+          "id": "veloura_cart_banners_enabled_2026",
+          "operation": "=",
+          "value": true
         }
       ],
       "options": [
@@ -4743,6 +4753,11 @@
           "id": "veloura_cart_surfaces_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_cart_banners_enabled_2026",
+          "operation": "=",
+          "value": true
         }
       ]
     },
@@ -4759,6 +4774,11 @@
       "conditions": [
         {
           "id": "veloura_cart_surfaces_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_cart_banners_enabled_2026",
           "operation": "=",
           "value": true
         }
@@ -4782,6 +4802,11 @@
           "id": "veloura_cart_surfaces_border_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_cart_banners_enabled_2026",
+          "operation": "=",
+          "value": true
         }
       ]
     },
@@ -4798,6 +4823,11 @@
       "conditions": [
         {
           "id": "veloura_cart_surfaces_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_cart_banners_enabled_2026",
           "operation": "=",
           "value": true
         }
