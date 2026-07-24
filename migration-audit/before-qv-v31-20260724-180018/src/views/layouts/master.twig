@@ -1738,64 +1738,63 @@
     
 
 
-
-
-{# Veloura QV V31 linked absolute spacing start #}
-{# V31 keeps slider values absolute: 0 means 0px, 10 means 10px. #}
-{% set v31_center_text_raw = theme.settings.get('veloura_product_card_center_text_2026', false) %}
-{% if v31_center_text_raw.value is defined %}
-  {% set v31_center_text_raw = v31_center_text_raw.value %}
-{% elseif v31_center_text_raw.selected is defined %}
-  {% if v31_center_text_raw.selected.value is defined %}
-    {% set v31_center_text_raw = v31_center_text_raw.selected.value %}
-  {% elseif v31_center_text_raw.selected is iterable and v31_center_text_raw.selected[0] is defined and v31_center_text_raw.selected[0].value is defined %}
-    {% set v31_center_text_raw = v31_center_text_raw.selected[0].value %}
+{# Veloura QV V30 absolute card spacing start #}
+{# Normalize product-card text alignment switch #}
+{% set v30_center_text_raw = theme.settings.get('veloura_product_card_center_text_2026', false) %}
+{% if v30_center_text_raw.value is defined %}
+  {% set v30_center_text_raw = v30_center_text_raw.value %}
+{% elseif v30_center_text_raw.selected is defined %}
+  {% if v30_center_text_raw.selected.value is defined %}
+    {% set v30_center_text_raw = v30_center_text_raw.selected.value %}
+  {% elseif v30_center_text_raw.selected is iterable and v30_center_text_raw.selected[0] is defined and v30_center_text_raw.selected[0].value is defined %}
+    {% set v30_center_text_raw = v30_center_text_raw.selected[0].value %}
   {% else %}
-    {% set v31_center_text_raw = v31_center_text_raw.selected %}
+    {% set v30_center_text_raw = v30_center_text_raw.selected %}
   {% endif %}
 {% endif %}
-{% set v31_center_text = v31_center_text_raw == true or v31_center_text_raw == 'true' or v31_center_text_raw == 1 or v31_center_text_raw == '1' or v31_center_text_raw == 'on' %}
+{% set v30_center_text = v30_center_text_raw == true or v30_center_text_raw == 'true' or v30_center_text_raw == 1 or v30_center_text_raw == '1' or v30_center_text_raw == 'on' %}
 
-{% set v31_button_margin_x_raw = theme.settings.get('veloura_product_card_button_margin_x_2026', 10) %}
-{% if v31_button_margin_x_raw.value is defined %}
-  {% set v31_button_margin_x_raw = v31_button_margin_x_raw.value %}
-{% elseif v31_button_margin_x_raw.selected is defined %}
-  {% if v31_button_margin_x_raw.selected.value is defined %}
-    {% set v31_button_margin_x_raw = v31_button_margin_x_raw.selected.value %}
-  {% elseif v31_button_margin_x_raw.selected is iterable and v31_button_margin_x_raw.selected[0] is defined and v31_button_margin_x_raw.selected[0].value is defined %}
-    {% set v31_button_margin_x_raw = v31_button_margin_x_raw.selected[0].value %}
+{# Horizontal spacing is absolute: 0px means 0px. No hidden base value is added. #}
+{% set v30_button_margin_x_raw = theme.settings.get('veloura_product_card_button_margin_x_2026', 10) %}
+{% if v30_button_margin_x_raw.value is defined %}
+  {% set v30_button_margin_x_raw = v30_button_margin_x_raw.value %}
+{% elseif v30_button_margin_x_raw.selected is defined %}
+  {% if v30_button_margin_x_raw.selected.value is defined %}
+    {% set v30_button_margin_x_raw = v30_button_margin_x_raw.selected.value %}
+  {% elseif v30_button_margin_x_raw.selected is iterable and v30_button_margin_x_raw.selected[0] is defined and v30_button_margin_x_raw.selected[0].value is defined %}
+    {% set v30_button_margin_x_raw = v30_button_margin_x_raw.selected[0].value %}
   {% else %}
-    {% set v31_button_margin_x_raw = v31_button_margin_x_raw.selected %}
+    {% set v30_button_margin_x_raw = v30_button_margin_x_raw.selected %}
   {% endif %}
 {% endif %}
-{% set v31_button_margin_x = v31_button_margin_x_raw + 0 %}
-{% if v31_button_margin_x < 0 %}{% set v31_button_margin_x = 0 %}{% endif %}
-{% if v31_button_margin_x > 60 %}{% set v31_button_margin_x = 60 %}{% endif %}
+{% set v30_button_margin_x = v30_button_margin_x_raw + 0 %}
+{% if v30_button_margin_x < 0 %}{% set v30_button_margin_x = 0 %}{% endif %}
+{% if v30_button_margin_x > 60 %}{% set v30_button_margin_x = 60 %}{% endif %}
 
-{% set v31_button_bottom_space_raw = theme.settings.get('veloura_product_card_button_margin_bottom_2026', 10) %}
-{% if v31_button_bottom_space_raw.value is defined %}
-  {% set v31_button_bottom_space_raw = v31_button_bottom_space_raw.value %}
-{% elseif v31_button_bottom_space_raw.selected is defined %}
-  {% if v31_button_bottom_space_raw.selected.value is defined %}
-    {% set v31_button_bottom_space_raw = v31_button_bottom_space_raw.selected.value %}
-  {% elseif v31_button_bottom_space_raw.selected is iterable and v31_button_bottom_space_raw.selected[0] is defined and v31_button_bottom_space_raw.selected[0].value is defined %}
-    {% set v31_button_bottom_space_raw = v31_button_bottom_space_raw.selected[0].value %}
+{# Bottom spacing is absolute: 0px means 0px. It controls cart, under-cart quick view, and more/details buttons. #}
+{% set v30_button_bottom_space_raw = theme.settings.get('veloura_product_card_button_margin_bottom_2026', 10) %}
+{% if v30_button_bottom_space_raw.value is defined %}
+  {% set v30_button_bottom_space_raw = v30_button_bottom_space_raw.value %}
+{% elseif v30_button_bottom_space_raw.selected is defined %}
+  {% if v30_button_bottom_space_raw.selected.value is defined %}
+    {% set v30_button_bottom_space_raw = v30_button_bottom_space_raw.selected.value %}
+  {% elseif v30_button_bottom_space_raw.selected is iterable and v30_button_bottom_space_raw.selected[0] is defined and v30_button_bottom_space_raw.selected[0].value is defined %}
+    {% set v30_button_bottom_space_raw = v30_button_bottom_space_raw.selected[0].value %}
   {% else %}
-    {% set v31_button_bottom_space_raw = v31_button_bottom_space_raw.selected %}
+    {% set v30_button_bottom_space_raw = v30_button_bottom_space_raw.selected %}
   {% endif %}
 {% endif %}
-{% set v31_button_bottom_space = v31_button_bottom_space_raw + 0 %}
-{% if v31_button_bottom_space < 0 %}{% set v31_button_bottom_space = 0 %}{% endif %}
-{% if v31_button_bottom_space > 60 %}{% set v31_button_bottom_space = 60 %}{% endif %}
+{% set v30_button_bottom_space = v30_button_bottom_space_raw + 0 %}
+{% if v30_button_bottom_space < 0 %}{% set v30_button_bottom_space = 0 %}{% endif %}
+{% if v30_button_bottom_space > 60 %}{% set v30_button_bottom_space = 60 %}{% endif %}
 
-<style id="veloura-qv-v31-linked-absolute-spacing-2026">
+<style id="veloura-qv-v30-absolute-card-spacing-2026">
   :root {
-    --veloura-v31-card-button-margin-x: {{ v31_button_margin_x }}px;
-    --veloura-v31-card-button-bottom-space: {{ v31_button_bottom_space }}px;
-    --veloura-v31-card-action-width: calc(100% - (var(--veloura-v31-card-button-margin-x) * 2));
+    --veloura-v30-card-button-margin-x: {{ v30_button_margin_x }}px;
+    --veloura-v30-card-button-bottom-space: {{ v30_button_bottom_space }}px;
   }
 
-  /* V31: توزيع البطاقة ثابت: الصورة والنصوص أعلى، والسعر والأزرار أسفل */
+  /* V30: تثبيت توزيع البطاقة — الصورة والنصوص في الأعلى، والسعر والأزرار في الأسفل */
   html body .s-product-card-entry.s-product-card-vertical,
   html body .s-product-card-entry:not(.s-product-card-horizontal):not(.s-product-card-full-image) {
     display: flex !important;
@@ -1833,11 +1832,10 @@
   html body .s-product-card-entry .veloura-quick-view-under-cart-wrap {
     flex: 0 0 auto !important;
     width: 100% !important;
-    max-width: 100% !important;
   }
 
-  /* V31: التوسيط يحرّك النصوص والسعر فقط */
-  {% if v31_center_text %}
+  /* V30: التوسيط يتحكم بالنص الرئيسي، عنوان المنتج، العنوان الفرعي، والسعر فقط */
+  {% if v30_center_text %}
   html body .s-product-card-entry .s-product-card-content-main,
   html body .s-product-card-entry .s-product-card-content-title,
   html body .s-product-card-entry .s-product-card-content-title a,
@@ -1878,82 +1876,72 @@
   }
   {% endif %}
 
-  /* V31: الحاويات بلا فراغات مخفية. السلايدر هو القيمة النهائية وليس قيمة مضافة */
+  /* V30: الأزرار تبقى في المنتصف دائمًا ولا تتأثر بإلغاء توسيط النص */
   html body .s-product-card-entry .s-product-card-content-footer,
   html body .s-product-card-entry .veloura-quick-view-under-cart-wrap {
     display: flex !important;
     justify-content: center !important;
-    align-items: stretch !important;
+    align-items: center !important;
     text-align: center !important;
     direction: rtl !important;
     gap: 0 !important;
     row-gap: 0 !important;
     column-gap: 0 !important;
-    padding: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-bottom: 0 !important;
     box-sizing: border-box !important;
   }
 
+  /* V30: المسافة أسفل أضف للسلة قيمة مباشرة وليست مضافة فوق قيمة افتراضية */
   html body .s-product-card-entry .s-product-card-content-footer {
-    margin: 0 !important;
-    margin-bottom: var(--veloura-v31-card-button-bottom-space) !important;
+    margin-bottom: var(--veloura-v30-card-button-bottom-space) !important;
   }
 
-  html body .s-product-card-entry .veloura-quick-view-under-cart-wrap {
-    margin: 0 !important;
-    margin-top: 0 !important;
-    margin-bottom: var(--veloura-v31-card-button-bottom-space) !important;
-  }
-
-  /* V31: زر أضف للسلة يأخذ نفس عرض العرض السريع، والصفر يساوي صفر فعلي */
-  html body .s-product-card-entry .s-product-card-content-footer > salla-add-product-button,
   html body .s-product-card-entry .s-product-card-content-footer salla-add-product-button,
-  html body .s-product-card-entry .s-product-card-content-footer .veloura-v31-cart-full {
-    display: block !important;
-    flex: 0 0 var(--veloura-v31-card-action-width) !important;
-    width: var(--veloura-v31-card-action-width) !important;
-    max-width: var(--veloura-v31-card-action-width) !important;
+  html body .s-product-card-entry .s-product-card-content-footer .s-button-element,
+  html body .s-product-card-entry .s-product-card-content-footer .s-button-btn,
+  html body .s-product-card-entry .s-product-card-content-footer button,
+  html body .s-product-card-entry .s-product-card-content-footer a[class*="button"],
+  html body .s-product-card-entry .s-product-card-content-footer a[class*="btn"] {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: calc(100% - (var(--veloura-v30-card-button-margin-x) * 2)) !important;
+    max-width: calc(100% - (var(--veloura-v30-card-button-margin-x) * 2)) !important;
     min-width: 0 !important;
-    margin-left: var(--veloura-v31-card-button-margin-x) !important;
-    margin-right: var(--veloura-v31-card-button-margin-x) !important;
+    margin-left: var(--veloura-v30-card-button-margin-x) !important;
+    margin-right: var(--veloura-v30-card-button-margin-x) !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     box-sizing: border-box !important;
   }
 
-  html body .s-product-card-entry .s-product-card-content-footer salla-add-product-button[width="wide"],
-  html body .s-product-card-entry .s-product-card-content-footer salla-add-product-button .s-add-product-button-main,
-  html body .s-product-card-entry .s-product-card-content-footer salla-add-product-button salla-button,
-  html body .s-product-card-entry .s-product-card-content-footer salla-add-product-button .s-button-element,
-  html body .s-product-card-entry .s-product-card-content-footer salla-add-product-button .s-button-btn,
-  html body .s-product-card-entry .s-product-card-content-footer salla-add-product-button button {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
+  /* V30: العرض السريع تحت السلة يأخذ نفس عرض أضف للسلة ونفس المسافة يمين/يسار */
+  html body .s-product-card-entry .veloura-quick-view-under-cart-wrap {
+    margin-top: 0 !important;
+    margin-bottom: var(--veloura-v30-card-button-bottom-space) !important;
   }
 
-  /* V31: العرض السريع تحت السلة مربوط بنفس سلايدر يمين/يسار ونفس عرض أضف للسلة */
   html body .s-product-card-entry .veloura-quick-view-under-cart-wrap .veloura-quick-view-btn,
   html body .s-product-card-entry .veloura-quick-view-under-cart-wrap button,
   html body .s-product-card-entry .veloura-quick-view-under-cart-wrap a,
-  html body .s-product-card-entry .veloura-quick-view-btn.is-under-cart,
-  html body .s-product-card-entry .veloura-v31-qv-full {
+  html body .s-product-card-entry .veloura-quick-view-btn.is-under-cart {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    flex: 0 0 var(--veloura-v31-card-action-width) !important;
-    width: var(--veloura-v31-card-action-width) !important;
-    max-width: var(--veloura-v31-card-action-width) !important;
+    width: calc(100% - (var(--veloura-v30-card-button-margin-x) * 2)) !important;
+    max-width: calc(100% - (var(--veloura-v30-card-button-margin-x) * 2)) !important;
     min-width: 0 !important;
-    margin-left: var(--veloura-v31-card-button-margin-x) !important;
-    margin-right: var(--veloura-v31-card-button-margin-x) !important;
+    margin-left: var(--veloura-v30-card-button-margin-x) !important;
+    margin-right: var(--veloura-v30-card-button-margin-x) !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     box-sizing: border-box !important;
     line-height: 1 !important;
   }
 
-  /* V31: زر عرض المزيد/تفاصيل المنتج يأخذ نفس مسافة الأسفل بدون Default مخفي */
+  /* V30: زر عرض المزيد/تفاصيل المنتج يأخذ نفس مسافة الأسفل المباشرة بدون قيمة مخفية */
   html body .veloura-quick-view-modal .veloura-quick-view-product-link,
   html body .veloura-quick-view-modal .veloura-quick-view-more,
   html body .veloura-quick-view-modal .veloura-qv-more,
@@ -1962,61 +1950,10 @@
   html body .veloura-qv-modal .veloura-qv-more,
   html body [data-veloura-qv-more],
   html body [data-veloura-quick-view-more] {
-    margin-bottom: var(--veloura-v31-card-button-bottom-space) !important;
+    margin-bottom: var(--veloura-v30-card-button-bottom-space) !important;
   }
 </style>
-
-<script id="veloura-qv-v31-force-wide-cart-2026">
-(function () {
-  function markWideCartButtons(root) {
-    var scope = root && root.querySelectorAll ? root : document;
-    var cartSelector = '.s-product-card-entry .s-product-card-content-footer salla-add-product-button, .s-product-card-entry salla-add-product-button, salla-product-card salla-add-product-button';
-    scope.querySelectorAll(cartSelector).forEach(function (button) {
-      button.setAttribute('width', 'wide');
-      button.classList.add('veloura-v31-cart-full');
-      try {
-        var innerButton = button.querySelector && button.querySelector('salla-button');
-        if (innerButton) innerButton.setAttribute('width', 'wide');
-      } catch (e) {}
-      try {
-        if (button.shadowRoot) {
-          var shadowButton = button.shadowRoot.querySelector('salla-button');
-          if (shadowButton) shadowButton.setAttribute('width', 'wide');
-        }
-      } catch (e) {}
-    });
-
-    scope.querySelectorAll('.s-product-card-entry .veloura-quick-view-under-cart-wrap .veloura-quick-view-btn, .s-product-card-entry .veloura-quick-view-btn.is-under-cart').forEach(function (button) {
-      button.classList.add('veloura-v31-qv-full');
-    });
-  }
-
-  function scheduleSync(root) {
-    markWideCartButtons(root || document);
-    window.requestAnimationFrame(function () { markWideCartButtons(root || document); });
-    window.setTimeout(function () { markWideCartButtons(root || document); }, 250);
-    window.setTimeout(function () { markWideCartButtons(root || document); }, 1000);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { scheduleSync(document); });
-  } else {
-    scheduleSync(document);
-  }
-
-  if ('MutationObserver' in window) {
-    var observer = new MutationObserver(function (mutations) {
-      mutations.forEach(function (mutation) {
-        mutation.addedNodes && mutation.addedNodes.forEach(function (node) {
-          if (node.nodeType === 1) scheduleSync(node);
-        });
-      });
-    });
-    observer.observe(document.documentElement, { childList: true, subtree: true });
-  }
-})();
-</script>
-{# Veloura QV V31 linked absolute spacing end #}
+{# Veloura QV V30 absolute card spacing end #}
 
 {% hook 'head:end' %}
     {# ================================
