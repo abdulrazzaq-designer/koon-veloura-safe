@@ -5783,37 +5783,6 @@
       ]
     },
     {
-      "id": "veloura_quick_view_button_margin_bottom_2026",
-      "type": "number",
-      "format": "slider",
-      "label": "المسافة أسفل زر العرض السريع",
-      "description": "يظهر هذا الخيار عندما يكون زر العرض السريع تحت زر إضافة السلة",
-      "inputType": "range",
-      "icon": "sicon-pin",
-      "value": "0",
-      "required": false,
-      "step": "1",
-      "minimum": "0",
-      "maximum": "40",
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "below_add_to_cart"
-        }
-      ]
-    },
-    {
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "label": "إظهار أيقونة داخل زر العرض السريع",

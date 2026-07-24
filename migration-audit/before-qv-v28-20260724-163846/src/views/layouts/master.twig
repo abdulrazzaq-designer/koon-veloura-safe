@@ -665,20 +665,6 @@
   {% set vqv_button_height_value = 30 %}
 {% endif %}
 {% set vqv_button_height = 32 + vqv_button_height_value %}
-{# Veloura QV V28 bottom spacing start #}
-{% set vqv_button_margin_bottom_raw = theme.settings.get('veloura_quick_view_button_margin_bottom_2026', '0') %}
-{% if vqv_button_margin_bottom_raw.value is defined %}
-  {% set vqv_button_margin_bottom_raw = vqv_button_margin_bottom_raw.value %}
-{% endif %}
-{% set vqv_button_margin_bottom = vqv_button_margin_bottom_raw + 0 %}
-{% if vqv_button_margin_bottom < 0 %}
-  {% set vqv_button_margin_bottom = 0 %}
-{% endif %}
-{% if vqv_button_margin_bottom > 40 %}
-  {% set vqv_button_margin_bottom = 40 %}
-{% endif %}
-{# Veloura QV V28 bottom spacing end #}
-
 
 {% set vpc_action_size_value = theme.settings.get('veloura_product_card_action_size_2026', 10) %}
 
@@ -1063,7 +1049,6 @@
             --veloura-quick-view-button-text: {{ vqv_button_text_color }};
             --veloura-quick-view-button-radius: {{ vpc_radius_map[vqv_button_radius_key]|default('999px') }};
             --veloura-quick-view-button-height: {{ vqv_button_height }}px;
-            --veloura-quick-view-button-margin-bottom: {{ vqv_button_margin_bottom }}px;
 
             --veloura-quick-view-modal-bg: {{ vqv_modal_bg_color }};
             --veloura-quick-view-modal-text: {{ vqv_modal_text_color }};
@@ -3413,83 +3398,6 @@ document.addEventListener('DOMContentLoaded', function () {
       attributes: true,
       attributeFilter: ['class']
     });
-  });
-
-  document.addEventListener('theme::ready', syncAll);
-  document.addEventListener('salla::product.cards::loaded', syncAll);
-})();
-</script>
-
-
-<script data-cfasync="false" id="veloura-qv-v28-layout-bottom-spacing-2026">
-(function () {
-  'use strict';
-
-  var STYLE_ID = 'veloura-qv-v28-layout-style-2026';
-  var css = "\n/* ========================================================================\n   Veloura QV V28 — stable product-card vertical layout and bottom spacing\n   ======================================================================== */\n\n/* الصورة والعنوان والعنوان الفرعي تبقى في أعلى البطاقة. */\nhtml body.veloura-product-card-enabled .s-product-card-entry.s-product-card-vertical,\nhtml body.veloura-product-card-enabled .s-product-card-entry:not(.s-product-card-horizontal):not(.s-product-card-full-image) {\n  display: flex !important;\n  flex-direction: column !important;\n  height: 100% !important;\n}\n\nhtml body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image,\nhtml body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image-full {\n  flex: 0 0 auto !important;\n}\n\nhtml body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content {\n  display: flex !important;\n  flex-direction: column !important;\n  flex: 1 1 auto !important;\n  min-height: 0 !important;\n}\n\nhtml body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-main {\n  flex: 0 0 auto !important;\n}\n\n/* الفراغ المرن يكون بين النصوص العلوية والسعر فقط. */\nhtml body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-sub {\n  flex: 0 0 auto !important;\n  margin-top: auto !important;\n  width: 100% !important;\n}\n\nhtml body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer,\nhtml body.veloura-product-card-enabled .s-product-card-entry .veloura-quick-view-under-cart-wrap {\n  flex: 0 0 auto !important;\n}\n\n/* عند إلغاء توسيط النصوص: العنوان الرئيسي والفرعي والسعر فقط يرجعون يمين. */\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-content-main,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-content-title,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-content-title a,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-content-subtitle,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-content-sub,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-content-price,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-price,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-sale-price,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-sale-price h4,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-sale-price span,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-starting-price,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-starting-price p,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-starting-price h4,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-regular-price {\n  text-align: right !important;\n  justify-content: flex-start !important;\n  align-items: flex-start !important;\n  direction: rtl !important;\n}\n\n/* أزرار إضافة السلة والعرض السريع تبقى في المنتصف حتى عند إلغاء توسيط النصوص. */\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-content-footer,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-content-footer > *,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-content-footer salla-add-product-button,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .veloura-quick-view-under-cart-wrap,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .veloura-quick-view-under-cart-wrap .veloura-quick-view-btn,\nhtml body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .veloura-quick-view-btn.is-under-cart {\n  text-align: center !important;\n  justify-content: center !important;\n  align-items: center !important;\n  direction: rtl !important;\n}\n\nhtml body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer {\n  display: flex !important;\n  justify-content: center !important;\n  align-items: center !important;\n  width: 100% !important;\n}\n\nhtml body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer salla-add-product-button,\nhtml body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer .s-button-element {\n  margin-inline: auto !important;\n}\n\n/* المسافة السفلية الجديدة لزر العرض السريع عندما يكون تحت زر إضافة السلة. */\nhtml body.veloura-product-card-enabled.veloura-quick-view-position-below_add_to_cart .s-product-card-entry .veloura-quick-view-under-cart-wrap,\nhtml body.veloura-product-card-enabled.veloura-quick-view-position-below-add-to-cart .s-product-card-entry .veloura-quick-view-under-cart-wrap,\nhtml body.veloura-product-card-enabled.veloura-quick-view-position-inside_card .s-product-card-entry .veloura-quick-view-under-cart-wrap,\nhtml body.veloura-product-card-enabled.veloura-quick-view-position-inside-card .s-product-card-entry .veloura-quick-view-under-cart-wrap {\n  margin-bottom: var(--veloura-quick-view-button-margin-bottom, 0px) !important;\n}\n\n/* تأكيد عدم وجود فراغ مخفي داخل زر العرض السريع السفلي. */\nhtml body.veloura-product-card-enabled .s-product-card-entry .veloura-quick-view-under-cart-wrap .veloura-quick-view-btn {\n  line-height: 1 !important;\n}\n";
-
-  function ensureStyle() {
-    var style = document.getElementById(STYLE_ID);
-    if (!style) {
-      style = document.createElement('style');
-      style.id = STYLE_ID;
-      style.textContent = css;
-    }
-    if (document.head && style.parentNode !== document.head) {
-      document.head.appendChild(style);
-    } else if (document.head && document.head.lastElementChild !== style) {
-      document.head.appendChild(style);
-    }
-  }
-
-  function ready(fn) {
-    if (document.readyState !== 'loading') fn();
-    else document.addEventListener('DOMContentLoaded', fn);
-  }
-
-  function syncCard(card) {
-    if (!card) return;
-    var content = card.querySelector('.s-product-card-content');
-    var main = card.querySelector('.s-product-card-content-main');
-    var price = card.querySelector('.s-product-card-content-sub');
-    var footer = card.querySelector('.s-product-card-content-footer');
-    var qv = card.querySelector('.veloura-quick-view-under-cart-wrap');
-
-    if (content) content.classList.add('veloura-pc-v28-content-stack');
-    if (main) main.classList.add('veloura-pc-v28-top-text');
-    if (price) price.classList.add('veloura-pc-v28-bottom-price');
-    if (footer) footer.classList.add('veloura-pc-v28-bottom-action');
-    if (qv) qv.classList.add('veloura-pc-v28-bottom-qv');
-  }
-
-  function syncAll() {
-    ensureStyle();
-    document.querySelectorAll('.s-product-card-entry, product-card, custom-salla-product-card').forEach(function (node) {
-      var card = node.classList && node.classList.contains('s-product-card-entry')
-        ? node
-        : (node.querySelector && node.querySelector('.s-product-card-entry')) || node;
-      syncCard(card);
-    });
-  }
-
-  ready(function () {
-    syncAll();
-    [120, 350, 850, 1600, 2600].forEach(function (ms) { setTimeout(syncAll, ms); });
-
-    var timer = null;
-    var observer = new MutationObserver(function () {
-      clearTimeout(timer);
-      timer = setTimeout(syncAll, 80);
-    });
-
-    if (document.body) {
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['class']
-      });
-    }
   });
 
   document.addEventListener('theme::ready', syncAll);
