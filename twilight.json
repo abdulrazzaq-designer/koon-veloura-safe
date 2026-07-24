@@ -4435,13 +4435,11 @@
       "type": "boolean",
       "format": "switch",
       "id": "veloura_cart_banners_enabled_2026",
-      "label": "تفعيل بنرات السلة",
+      "label": " ",
       "wide": true,
       "required": false,
       "value": false,
-      "selected": false,
-      "description": "عند التفعيل تظهر خيارات إضافة البنرات ومكان عرضها داخل صفحة السلة.",
-      "icon": "sicon-image"
+      "selected": false
     },
     {
       "id": "veloura_cart_banners_title_2026",
@@ -4657,7 +4655,7 @@
       "type": "string",
       "format": "color",
       "label": "لون خلفية عناصر السلة",
-      "description": "يطبق اللون على بطاقة المنتج وخياراته وصناديق الشحن والهدايا وملخص الطلب.",
+      "description": "يطبق اللون على بطاقة المنتج وصناديق الشحن والهدايا وملخص الطلب فقط.",
       "icon": "sicon-palette",
       "value": "#f3f4f6",
       "required": false,
@@ -8195,7 +8193,7 @@
         {
           "type": "boolean",
           "icon": "sicon-toggle-off",
-          "label": "دمج مع العنصر السابق1111",
+          "label": "دمج مع العنصر السابق",
           "description": null,
           "id": "merge_with_top_component",
           "format": "switch",

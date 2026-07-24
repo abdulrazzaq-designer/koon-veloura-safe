@@ -1,7 +1,4 @@
-Extract this ZIP into the project root, then run:
+Cart Page V2.3 emergency rollback
 
-powershell -ExecutionPolicy Bypass -File .\ROLLBACK-CART-SURFACES-V1.ps1
-
-git restore -- public
-pnpm production
-salla theme preview
+Run from the project root:
+node .\ROLLBACK-CART-PAGE-V23.js
