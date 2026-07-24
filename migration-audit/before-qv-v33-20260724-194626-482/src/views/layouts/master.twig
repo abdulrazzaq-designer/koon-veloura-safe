@@ -1742,63 +1742,85 @@
 
 
 
-
-
-{# Veloura QV V33 safe cart and shared spacing start #}
-{# V33 hotfix: do not move or rebuild Salla's add-to-cart component. #}
-{% set v33_margin_x_raw = theme.settings.get('veloura_product_card_button_margin_x_2026', 10) %}
-{% if v33_margin_x_raw.value is defined %}
-  {% set v33_margin_x_raw = v33_margin_x_raw.value %}
-{% elseif v33_margin_x_raw.selected is defined %}
-  {% if v33_margin_x_raw.selected.value is defined %}
-    {% set v33_margin_x_raw = v33_margin_x_raw.selected.value %}
-  {% elseif v33_margin_x_raw.selected is iterable and v33_margin_x_raw.selected[0] is defined and v33_margin_x_raw.selected[0].value is defined %}
-    {% set v33_margin_x_raw = v33_margin_x_raw.selected[0].value %}
+{# Veloura QV V32 shared actions bottom stack start #}
+{# V32: both sliders are absolute. Their default is 10px; a saved zero remains a real zero. #}
+{% set v32_center_text_raw = theme.settings.get('veloura_product_card_center_text_2026', false) %}
+{% if v32_center_text_raw.value is defined %}
+  {% set v32_center_text_raw = v32_center_text_raw.value %}
+{% elseif v32_center_text_raw.selected is defined %}
+  {% if v32_center_text_raw.selected.value is defined %}
+    {% set v32_center_text_raw = v32_center_text_raw.selected.value %}
+  {% elseif v32_center_text_raw.selected is iterable and v32_center_text_raw.selected[0] is defined and v32_center_text_raw.selected[0].value is defined %}
+    {% set v32_center_text_raw = v32_center_text_raw.selected[0].value %}
   {% else %}
-    {% set v33_margin_x_raw = v33_margin_x_raw.selected %}
+    {% set v32_center_text_raw = v32_center_text_raw.selected %}
   {% endif %}
 {% endif %}
-{% set v33_margin_x = v33_margin_x_raw + 0 %}
-{% if v33_margin_x < 0 %}{% set v33_margin_x = 0 %}{% endif %}
-{% if v33_margin_x > 100 %}{% set v33_margin_x = 100 %}{% endif %}
+{% set v32_center_text = v32_center_text_raw == true or v32_center_text_raw == 'true' or v32_center_text_raw == 1 or v32_center_text_raw == '1' or v32_center_text_raw == 'on' %}
 
-{% set v33_margin_bottom_raw = theme.settings.get('veloura_product_card_button_margin_bottom_2026', 10) %}
-{% if v33_margin_bottom_raw.value is defined %}
-  {% set v33_margin_bottom_raw = v33_margin_bottom_raw.value %}
-{% elseif v33_margin_bottom_raw.selected is defined %}
-  {% if v33_margin_bottom_raw.selected.value is defined %}
-    {% set v33_margin_bottom_raw = v33_margin_bottom_raw.selected.value %}
-  {% elseif v33_margin_bottom_raw.selected is iterable and v33_margin_bottom_raw.selected[0] is defined and v33_margin_bottom_raw.selected[0].value is defined %}
-    {% set v33_margin_bottom_raw = v33_margin_bottom_raw.selected[0].value %}
+{% set v32_button_margin_x_raw = theme.settings.get('veloura_product_card_button_margin_x_2026', 10) %}
+{% if v32_button_margin_x_raw.value is defined %}
+  {% set v32_button_margin_x_raw = v32_button_margin_x_raw.value %}
+{% elseif v32_button_margin_x_raw.selected is defined %}
+  {% if v32_button_margin_x_raw.selected.value is defined %}
+    {% set v32_button_margin_x_raw = v32_button_margin_x_raw.selected.value %}
+  {% elseif v32_button_margin_x_raw.selected is iterable and v32_button_margin_x_raw.selected[0] is defined and v32_button_margin_x_raw.selected[0].value is defined %}
+    {% set v32_button_margin_x_raw = v32_button_margin_x_raw.selected[0].value %}
   {% else %}
-    {% set v33_margin_bottom_raw = v33_margin_bottom_raw.selected %}
+    {% set v32_button_margin_x_raw = v32_button_margin_x_raw.selected %}
   {% endif %}
 {% endif %}
-{% set v33_margin_bottom = v33_margin_bottom_raw + 0 %}
-{% if v33_margin_bottom < 0 %}{% set v33_margin_bottom = 0 %}{% endif %}
-{% if v33_margin_bottom > 100 %}{% set v33_margin_bottom = 100 %}{% endif %}
+{% set v32_button_margin_x = v32_button_margin_x_raw + 0 %}
+{% if v32_button_margin_x < 0 %}{% set v32_button_margin_x = 0 %}{% endif %}
+{% if v32_button_margin_x > 100 %}{% set v32_button_margin_x = 100 %}{% endif %}
 
-<style id="veloura-qv-v33-safe-cart-shared-spacing-2026">
+{% set v32_button_bottom_space_raw = theme.settings.get('veloura_product_card_button_margin_bottom_2026', 10) %}
+{% if v32_button_bottom_space_raw.value is defined %}
+  {% set v32_button_bottom_space_raw = v32_button_bottom_space_raw.value %}
+{% elseif v32_button_bottom_space_raw.selected is defined %}
+  {% if v32_button_bottom_space_raw.selected.value is defined %}
+    {% set v32_button_bottom_space_raw = v32_button_bottom_space_raw.selected.value %}
+  {% elseif v32_button_bottom_space_raw.selected is iterable and v32_button_bottom_space_raw.selected[0] is defined and v32_button_bottom_space_raw.selected[0].value is defined %}
+    {% set v32_button_bottom_space_raw = v32_button_bottom_space_raw.selected[0].value %}
+  {% else %}
+    {% set v32_button_bottom_space_raw = v32_button_bottom_space_raw.selected %}
+  {% endif %}
+{% endif %}
+{% set v32_button_bottom_space = v32_button_bottom_space_raw + 0 %}
+{% if v32_button_bottom_space < 0 %}{% set v32_button_bottom_space = 0 %}{% endif %}
+{% if v32_button_bottom_space > 100 %}{% set v32_button_bottom_space = 100 %}{% endif %}
+
+<style id="veloura-qv-v32-shared-actions-bottom-stack-2026">
   :root {
-    --veloura-v33-card-action-margin-x: {{ v33_margin_x }}px;
-    --veloura-v33-card-action-margin-bottom: {{ v33_margin_bottom }}px;
-    --veloura-v33-card-action-width: calc(100% - (var(--veloura-v33-card-action-margin-x) * 2));
+    --veloura-v32-card-button-margin-x: {{ v32_button_margin_x }}px;
+    --veloura-v32-card-button-bottom-space: {{ v32_button_bottom_space }}px;
+    --veloura-v32-card-action-width: calc(100% - (var(--veloura-v32-card-button-margin-x) * 2));
   }
 
-  /* Keep the native product-card DOM intact and use flex only for vertical distribution. */
-  html body.veloura-product-card-enabled .s-product-card-entry:not(.s-product-card-horizontal):not(.s-product-card-full-image) {
-    display: flex !important;
-    flex-direction: column !important;
+  /* Make every marked product-card host and its vertical entry consume the full available card height. */
+  html body salla-product-card.veloura-v32-product-host {
+    display: block !important;
     height: 100% !important;
     min-height: 100% !important;
   }
 
-  html body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image,
-  html body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image-full {
+  html body .s-product-card-entry.veloura-v32-card-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .s-product-card-entry.veloura-v32-card-layout .s-product-card-image,
+  html body .s-product-card-entry.veloura-v32-card-layout .s-product-card-image-full,
+  html body .s-product-card-entry.veloura-v32-card-layout .s-product-card-image a,
+  html body .s-product-card-entry.veloura-v32-card-layout .s-product-card-image img {
     flex: 0 0 auto !important;
   }
 
-  html body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content {
+  /* The title area stays at the top. The price block is pushed to the bottom of the content area. */
+  html body .s-product-card-entry.veloura-v32-card-layout .s-product-card-content {
     display: flex !important;
     flex-direction: column !important;
     flex: 1 1 auto !important;
@@ -1807,221 +1829,353 @@
     box-sizing: border-box !important;
   }
 
-  html body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-main {
+  html body .s-product-card-entry.veloura-v32-card-layout .s-product-card-content-main {
     flex: 0 0 auto !important;
     width: 100% !important;
   }
 
-  /* The only flexible empty area is between title/subtitle and price. */
-  html body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-sub {
+  html body .s-product-card-entry.veloura-v32-card-layout .s-product-card-content-sub,
+  html body .s-product-card-entry.veloura-v32-card-layout .veloura-v32-price-bottom {
     flex: 0 0 auto !important;
     margin-top: auto !important;
     width: 100% !important;
   }
 
-  /* One safe outer width for cart / more button. Do not alter Salla component internals. */
-  html body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer {
+  /* Footer and under-cart quick view become one direct, full-card-width action stack. */
+  html body .s-product-card-entry.veloura-v32-card-layout > .veloura-v32-card-actions-stack {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    row-gap: 0 !important;
+    column-gap: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Both rows use the exact same final width and the exact same left/right value. */
+  html body .s-product-card-entry.veloura-v32-card-layout > .veloura-v32-card-actions-stack > .s-product-card-content-footer,
+  html body .s-product-card-entry.veloura-v32-card-layout > .veloura-v32-card-actions-stack > .veloura-quick-view-under-cart-wrap,
+  html body .s-product-card-entry.veloura-v32-card-layout > .veloura-v32-card-actions-stack > .veloura-v32-action-row {
     display: flex !important;
     flex: 0 0 auto !important;
     align-items: stretch !important;
     justify-content: center !important;
-    width: var(--veloura-v33-card-action-width) !important;
-    max-width: var(--veloura-v33-card-action-width) !important;
+    width: var(--veloura-v32-card-action-width) !important;
+    max-width: var(--veloura-v32-card-action-width) !important;
     min-width: 0 !important;
     margin-top: 0 !important;
-    margin-right: var(--veloura-v33-card-action-margin-x) !important;
-    margin-left: var(--veloura-v33-card-action-margin-x) !important;
-    margin-bottom: var(--veloura-v33-card-action-margin-bottom) !important;
+    margin-right: var(--veloura-v32-card-button-margin-x) !important;
+    margin-left: var(--veloura-v32-card-button-margin-x) !important;
     padding: 0 !important;
+    gap: 0 !important;
     box-sizing: border-box !important;
-    pointer-events: auto !important;
-    opacity: 1 !important;
-    visibility: visible !important;
+    text-align: center !important;
   }
 
-  html body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer > *,
-  html body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer salla-add-product-button {
+  html body .s-product-card-entry.veloura-v32-card-layout > .veloura-v32-card-actions-stack > .s-product-card-content-footer {
+    margin-bottom: var(--veloura-v32-card-button-bottom-space) !important;
+  }
+
+  html body .s-product-card-entry.veloura-v32-card-layout > .veloura-v32-card-actions-stack > .veloura-quick-view-under-cart-wrap {
+    margin-bottom: var(--veloura-v32-card-button-bottom-space) !important;
+  }
+
+  /* Every actual control fills its shared row. This removes the native fixed/max-content cart width. */
+  html body .s-product-card-entry.veloura-v32-card-layout .s-product-card-content-footer > *,
+  html body .s-product-card-entry.veloura-v32-card-layout .s-product-card-content-footer salla-add-product-button,
+  html body .s-product-card-entry.veloura-v32-card-layout .s-product-card-content-footer salla-button,
+  html body .s-product-card-entry.veloura-v32-card-layout .s-product-card-content-footer .s-add-product-button-main,
+  html body .s-product-card-entry.veloura-v32-card-layout .s-product-card-content-footer .s-button-element,
+  html body .s-product-card-entry.veloura-v32-card-layout .s-product-card-content-footer .s-button-btn,
+  html body .s-product-card-entry.veloura-v32-card-layout .s-product-card-content-footer button,
+  html body .s-product-card-entry.veloura-v32-card-layout .veloura-quick-view-under-cart-wrap > *,
+  html body .s-product-card-entry.veloura-v32-card-layout .veloura-quick-view-under-cart-wrap .veloura-quick-view-btn,
+  html body .s-product-card-entry.veloura-v32-card-layout .veloura-quick-view-under-cart-wrap button,
+  html body .s-product-card-entry.veloura-v32-card-layout .veloura-quick-view-under-cart-wrap a {
+    display: flex !important;
+    flex: 1 1 100% !important;
+    align-items: center !important;
+    justify-content: center !important;
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
     margin: 0 !important;
     box-sizing: border-box !important;
-    pointer-events: auto !important;
-    opacity: 1 !important;
-    visibility: visible !important;
   }
 
-  /* Restore the native clickable cart surface and its theme colors. */
-  html body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer .s-button-element,
-  html body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer button,
-  html body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button .s-button-element,
-  html body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button button {
-    width: 100% !important;
-    max-width: 100% !important;
-    pointer-events: auto !important;
-    cursor: pointer !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    background: var(--veloura-product-button-bg, #004d65) !important;
-    border-color: var(--veloura-product-button-bg, #004d65) !important;
-    color: var(--veloura-product-button-text, #ffffff) !important;
-  }
-
-  html body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer .s-button-element *,
-  html body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer button *,
-  html body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button .s-button-element *,
-  html body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button button * {
-    color: var(--veloura-product-button-text, #ffffff) !important;
-    fill: var(--veloura-product-button-text, #ffffff) !important;
-    pointer-events: none !important;
-  }
-
-  /* Quick view under cart receives the exact same horizontal and bottom values. */
-  html body.veloura-product-card-enabled.veloura-quick-view-position-below_add_to_cart .s-product-card-entry .veloura-quick-view-under-cart-wrap,
-  html body.veloura-product-card-enabled.veloura-quick-view-position-below-add-to-cart .s-product-card-entry .veloura-quick-view-under-cart-wrap,
-  html body.veloura-product-card-enabled.veloura-quick-view-position-inside_card .s-product-card-entry .veloura-quick-view-under-cart-wrap,
-  html body.veloura-product-card-enabled.veloura-quick-view-position-inside-card .s-product-card-entry .veloura-quick-view-under-cart-wrap {
-    display: block !important;
-    flex: 0 0 auto !important;
-    position: relative !important;
-    width: var(--veloura-v33-card-action-width) !important;
-    max-width: var(--veloura-v33-card-action-width) !important;
-    min-width: 0 !important;
-    margin-top: 0 !important;
-    margin-right: var(--veloura-v33-card-action-margin-x) !important;
-    margin-left: var(--veloura-v33-card-action-margin-x) !important;
-    margin-bottom: var(--veloura-v33-card-action-margin-bottom) !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-    pointer-events: auto !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-
-  html body.veloura-product-card-enabled .s-product-card-entry .veloura-quick-view-under-cart-wrap .veloura-quick-view-btn,
-  html body.veloura-product-card-enabled .s-product-card-entry .veloura-quick-view-under-cart-wrap button,
-  html body.veloura-product-card-enabled .s-product-card-entry .veloura-quick-view-under-cart-wrap a {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-    box-sizing: border-box !important;
-    pointer-events: auto !important;
-    cursor: pointer !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-
-  /* Text alignment never changes the action controls. */
-  html body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .s-product-card-content-footer,
-  html body.veloura-product-card-enabled.veloura-product-card-align-right .s-product-card-entry .veloura-quick-view-under-cart-wrap {
+  /* Centering changes product text and price only; the two action rows remain centered by construction. */
+  {% if v32_center_text %}
+  html body .s-product-card-entry .s-product-card-content-main,
+  html body .s-product-card-entry .s-product-card-content-title,
+  html body .s-product-card-entry .s-product-card-content-title a,
+  html body .s-product-card-entry .s-product-card-content-subtitle,
+  html body .s-product-card-entry .s-product-card-content-sub,
+  html body .s-product-card-entry .s-product-card-content-price,
+  html body .s-product-card-entry .s-product-card-price,
+  html body .s-product-card-entry .s-product-card-sale-price,
+  html body .s-product-card-entry .s-product-card-sale-price h4,
+  html body .s-product-card-entry .s-product-card-sale-price span,
+  html body .s-product-card-entry .s-product-card-starting-price,
+  html body .s-product-card-entry .s-product-card-starting-price p,
+  html body .s-product-card-entry .s-product-card-starting-price h4,
+  html body .s-product-card-entry .s-product-card-regular-price {
     text-align: center !important;
     justify-content: center !important;
-    align-items: stretch !important;
+    align-items: center !important;
   }
+  {% else %}
+  html body .s-product-card-entry .s-product-card-content-main,
+  html body .s-product-card-entry .s-product-card-content-title,
+  html body .s-product-card-entry .s-product-card-content-title a,
+  html body .s-product-card-entry .s-product-card-content-subtitle,
+  html body .s-product-card-entry .s-product-card-content-sub,
+  html body .s-product-card-entry .s-product-card-content-price,
+  html body .s-product-card-entry .s-product-card-price,
+  html body .s-product-card-entry .s-product-card-sale-price,
+  html body .s-product-card-entry .s-product-card-sale-price h4,
+  html body .s-product-card-entry .s-product-card-sale-price span,
+  html body .s-product-card-entry .s-product-card-starting-price,
+  html body .s-product-card-entry .s-product-card-starting-price p,
+  html body .s-product-card-entry .s-product-card-starting-price h4,
+  html body .s-product-card-entry .s-product-card-regular-price {
+    text-align: right !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    direction: rtl !important;
+  }
+  {% endif %}
 </style>
 
-<script data-cfasync="false" id="veloura-qv-v33-safe-card-cleanup-2026">
+<script id="veloura-qv-v32-card-layout-runtime-2026">
 (function () {
-  'use strict';
+  var CARD_SELECTOR = '.s-product-card-entry';
+  var ACTION_STACK_CLASS = 'veloura-v32-card-actions-stack';
+  var ACTION_ROW_CLASS = 'veloura-v32-action-row';
+  var SHADOW_STYLE_ID = 'veloura-v32-cart-wide-shadow-style';
+  var actionWidth = 'calc(100% - (var(--veloura-v32-card-button-margin-x) * 2))';
+  var actionMargin = 'var(--veloura-v32-card-button-margin-x)';
+  var actionBottom = 'var(--veloura-v32-card-button-bottom-space)';
 
-  var V32_PROPS = [
-    'display', 'height', 'min-height', 'flex-direction', 'flex', 'width', 'max-width', 'min-width',
-    'margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'padding', 'gap',
-    'row-gap', 'column-gap', 'box-sizing', 'align-items', 'justify-content'
-  ];
-
-  function clearV32Inline(element) {
+  function setImportant(element, property, value) {
     if (!element || !element.style) return;
-    V32_PROPS.forEach(function (property) {
-      element.style.removeProperty(property);
+    element.style.setProperty(property, value, 'important');
+  }
+
+  function makeFullWidth(element) {
+    if (!element) return;
+    setImportant(element, 'width', '100%');
+    setImportant(element, 'max-width', '100%');
+    setImportant(element, 'min-width', '0');
+    setImportant(element, 'margin', '0');
+    setImportant(element, 'box-sizing', 'border-box');
+  }
+
+  function injectCartShadowStyle(button) {
+    if (!button || !button.shadowRoot) return;
+    var old = button.shadowRoot.getElementById(SHADOW_STYLE_ID);
+    if (old) old.remove();
+    var style = document.createElement('style');
+    style.id = SHADOW_STYLE_ID;
+    style.textContent = ':host{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important}' +
+      'salla-button,.s-add-product-button-main,.s-button-element,.s-button-btn,button{display:flex!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;box-sizing:border-box!important}';
+    button.shadowRoot.appendChild(style);
+  }
+
+  function forceCartWide(footer) {
+    if (!footer) return;
+    footer.querySelectorAll('salla-add-product-button').forEach(function (button) {
+      button.setAttribute('width', 'wide');
+      button.classList.add('veloura-v32-cart-wide');
+      makeFullWidth(button);
+      try {
+        var inner = button.querySelector('salla-button');
+        if (inner) {
+          inner.setAttribute('width', 'wide');
+          makeFullWidth(inner);
+        }
+      } catch (error) {}
+      try { injectCartShadowStyle(button); } catch (error) {}
+      if (typeof button.componentOnReady === 'function' && button.dataset.velouraV32ReadyWatch !== '1') {
+        button.dataset.velouraV32ReadyWatch = '1';
+        button.componentOnReady().then(function () {
+          injectCartShadowStyle(button);
+          makeFullWidth(button);
+        }).catch(function () {});
+      }
+    });
+    Array.prototype.forEach.call(footer.children || [], makeFullWidth);
+  }
+
+  function forceQuickViewWide(wrapper) {
+    if (!wrapper) return;
+    wrapper.querySelectorAll('.veloura-quick-view-btn, .veloura-quick-view-button, [data-veloura-quick-view], button, a').forEach(function (button) {
+      button.classList.add('veloura-v32-qv-wide');
+      makeFullWidth(button);
+      setImportant(button, 'display', 'flex');
+      setImportant(button, 'align-items', 'center');
+      setImportant(button, 'justify-content', 'center');
     });
   }
 
-  function restoreCard(card) {
-    if (!card || !card.querySelector) return;
+  function styleActionRow(row, isFooter) {
+    if (!row) return;
+    row.classList.add(ACTION_ROW_CLASS);
+    setImportant(row, 'display', 'flex');
+    setImportant(row, 'width', actionWidth);
+    setImportant(row, 'max-width', actionWidth);
+    setImportant(row, 'min-width', '0');
+    setImportant(row, 'margin-top', '0');
+    setImportant(row, 'margin-right', actionMargin);
+    setImportant(row, 'margin-left', actionMargin);
+    setImportant(row, 'margin-bottom', actionBottom);
+    setImportant(row, 'padding', '0');
+    setImportant(row, 'gap', '0');
+    setImportant(row, 'box-sizing', 'border-box');
+    setImportant(row, 'align-items', 'stretch');
+    setImportant(row, 'justify-content', 'center');
+    if (isFooter) forceCartWide(row); else forceQuickViewWide(row);
+  }
 
-    var host = card.closest && card.closest('salla-product-card');
-    var content = card.querySelector('.s-product-card-content');
-    var stack = Array.prototype.find.call(card.children || [], function (child) {
-      return child.classList && child.classList.contains('veloura-v32-card-actions-stack');
-    });
+  function findOrCreateQuickViewWrapper(entry, host) {
+    var scope = host || entry;
+    var wrapper = entry.querySelector('.veloura-quick-view-under-cart-wrap') ||
+      (scope && scope.querySelector ? scope.querySelector('.veloura-quick-view-under-cart-wrap') : null);
+    if (wrapper) return wrapper;
 
-    var footer = card.querySelector('.s-product-card-content-footer');
-    var quickView = card.querySelector('.veloura-quick-view-under-cart-wrap');
+    var button = entry.querySelector('.veloura-quick-view-btn.is-under-cart, .veloura-quick-view-button.is-under-cart') ||
+      (scope && scope.querySelector ? scope.querySelector('.veloura-quick-view-btn.is-under-cart, .veloura-quick-view-button.is-under-cart') : null);
+    if (!button || !button.parentNode) return null;
 
-    /* Undo V32 re-parenting once, then leave Salla's native controls untouched. */
-    if (content) {
-      if (footer && footer.parentNode !== content) content.appendChild(footer);
-      if (quickView && quickView.parentNode !== content) content.appendChild(quickView);
-      if (footer && quickView && footer.nextSibling !== quickView) {
-        content.insertBefore(quickView, footer.nextSibling);
-      }
-    }
+    wrapper = document.createElement('div');
+    wrapper.className = 'veloura-quick-view-under-cart-wrap veloura-v32-created-qv-wrap';
+    button.parentNode.insertBefore(wrapper, button);
+    wrapper.appendChild(button);
+    return wrapper;
+  }
 
-    if (stack && stack.parentNode) stack.parentNode.removeChild(stack);
+  function syncCard(entry) {
+    if (!entry || !entry.querySelector || entry.classList.contains('s-product-card-horizontal')) return;
+    var content = entry.querySelector('.s-product-card-content');
+    if (!content) return;
 
+    var host = entry.closest('salla-product-card');
     if (host) {
-      host.classList.remove('veloura-v32-product-host');
-      clearV32Inline(host);
+      host.classList.add('veloura-v32-product-host');
+      setImportant(host, 'display', 'block');
+      setImportant(host, 'height', '100%');
+      setImportant(host, 'min-height', '100%');
     }
 
-    card.classList.remove('veloura-v32-card-layout');
-    clearV32Inline(card);
+    entry.classList.add('veloura-v32-card-layout');
+    setImportant(entry, 'display', 'flex');
+    setImportant(entry, 'flex-direction', 'column');
+    setImportant(entry, 'height', '100%');
+    setImportant(entry, 'min-height', '100%');
 
-    [content, card.querySelector('.s-product-card-content-sub'), footer, quickView].forEach(clearV32Inline);
+    setImportant(content, 'display', 'flex');
+    setImportant(content, 'flex-direction', 'column');
+    setImportant(content, 'flex', '1 1 auto');
+    setImportant(content, 'min-height', '0');
+    setImportant(content, 'width', '100%');
 
-    card.querySelectorAll('.veloura-v32-action-row, .veloura-v32-cart-wide, .veloura-v32-qv-wide').forEach(function (element) {
-      var wasCartWide = element.classList.contains('veloura-v32-cart-wide');
-      element.classList.remove('veloura-v32-action-row', 'veloura-v32-cart-wide', 'veloura-v32-qv-wide');
-      clearV32Inline(element);
-      if (wasCartWide && element.tagName && element.tagName.toLowerCase() === 'salla-add-product-button') {
-        element.removeAttribute('width');
-      }
+    var priceBlock = content.querySelector('.s-product-card-content-sub');
+    if (priceBlock) {
+      priceBlock.classList.add('veloura-v32-price-bottom');
+      setImportant(priceBlock, 'margin-top', 'auto');
+      setImportant(priceBlock, 'width', '100%');
+    }
+
+    var stack = Array.prototype.find.call(entry.children || [], function (child) {
+      return child.classList && child.classList.contains(ACTION_STACK_CLASS);
     });
+    if (!stack) {
+      stack = document.createElement('div');
+      stack.className = ACTION_STACK_CLASS;
+      entry.appendChild(stack);
+    }
 
+    setImportant(stack, 'display', 'flex');
+    setImportant(stack, 'flex-direction', 'column');
+    setImportant(stack, 'width', '100%');
+    setImportant(stack, 'max-width', '100%');
+    setImportant(stack, 'min-width', '0');
+    setImportant(stack, 'margin', '0');
+    setImportant(stack, 'padding', '0');
+    setImportant(stack, 'gap', '0');
+    setImportant(stack, 'box-sizing', 'border-box');
+
+    var footer = entry.querySelector('.s-product-card-content-footer');
     if (footer) {
-      Array.prototype.forEach.call(footer.children || [], clearV32Inline);
-      footer.querySelectorAll('salla-add-product-button, salla-add-product-button salla-button').forEach(clearV32Inline);
+      if (footer.parentNode !== stack) stack.appendChild(footer);
+      if (stack.firstElementChild !== footer) stack.insertBefore(footer, stack.firstElementChild);
     }
 
-    if (quickView) {
-      Array.prototype.forEach.call(quickView.children || [], clearV32Inline);
-      quickView.querySelectorAll('.veloura-quick-view-btn, .veloura-quick-view-button, button, a').forEach(clearV32Inline);
-    }
-
-    card.querySelectorAll('salla-add-product-button').forEach(function (button) {
-      if (button.shadowRoot) {
-        var injected = button.shadowRoot.getElementById('veloura-v32-cart-wide-shadow-style');
-        if (injected) injected.remove();
+    var quickViewWrapper = findOrCreateQuickViewWrapper(entry, host);
+    if (quickViewWrapper) {
+      if (quickViewWrapper.parentNode !== stack) stack.appendChild(quickViewWrapper);
+      if (footer && footer.nextElementSibling !== quickViewWrapper) {
+        stack.insertBefore(quickViewWrapper, footer.nextElementSibling);
       }
-    });
+    }
+
+    styleActionRow(footer, true);
+    styleActionRow(quickViewWrapper, false);
+  }
+
+  function collectCards(scope) {
+    var cards = [];
+    if (scope && scope.nodeType === 1 && scope.matches && scope.matches(CARD_SELECTOR)) cards.push(scope);
+    if (scope && scope.nodeType === 1 && scope.closest) {
+      var closestCard = scope.closest(CARD_SELECTOR);
+      if (closestCard && cards.indexOf(closestCard) === -1) cards.push(closestCard);
+    }
+    if (scope && scope.querySelectorAll) {
+      scope.querySelectorAll(CARD_SELECTOR).forEach(function (entry) { if (cards.indexOf(entry) === -1) cards.push(entry); });
+    }
+    return cards;
   }
 
   function sync(scope) {
-    var cards = [];
-    if (scope && scope.matches && scope.matches('.s-product-card-entry')) cards.push(scope);
-    if (scope && scope.querySelectorAll) {
-      scope.querySelectorAll('.s-product-card-entry').forEach(function (card) { cards.push(card); });
-    }
-    cards.forEach(restoreCard);
+    collectCards(scope || document).forEach(syncCard);
   }
 
-  function run() {
-    sync(document);
-    window.requestAnimationFrame(function () { sync(document); });
-    window.setTimeout(function () { sync(document); }, 250);
-    window.setTimeout(function () { sync(document); }, 900);
+  function schedule(scope) {
+    sync(scope || document);
+    window.requestAnimationFrame(function () { sync(scope || document); });
+    window.setTimeout(function () { sync(scope || document); }, 120);
+    window.setTimeout(function () { sync(scope || document); }, 450);
+    window.setTimeout(function () { sync(document); }, 1200);
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
-  else run();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { schedule(document); });
+  } else {
+    schedule(document);
+  }
 
-  document.addEventListener('theme::ready', run);
-  document.addEventListener('salla::product.cards::loaded', run);
+  document.addEventListener('theme::ready', function () { schedule(document); });
+  window.addEventListener('load', function () { schedule(document); }, { once: true });
+
+  if ('MutationObserver' in window) {
+    var observer = new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
+        mutation.addedNodes && mutation.addedNodes.forEach(function (node) {
+          if (node.nodeType === 1) schedule(node);
+        });
+      });
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+  }
 })();
 </script>
-{# Veloura QV V33 safe cart and shared spacing end #}
+{# Veloura QV V32 shared actions bottom stack end #}
 
 {% hook 'head:end' %}
     {# ================================
