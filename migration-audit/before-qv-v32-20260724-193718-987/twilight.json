@@ -6332,8 +6332,8 @@
       "id": "veloura_product_card_button_margin_x_2026",
       "type": "number",
       "format": "slider",
-      "label": "المسافة يمين ويسار زري البطاقة",
-      "description": "القيمة النهائية بالبكسل للزرين معاً. 0 يلصق أضف للسلة والعرض السريع بحافتي البطاقة، و50 يضع 50px يميناً و50px يساراً لكليهما.",
+      "label": "المسافة يمين ويسار أزرار البطاقة",
+      "description": "القيمة بالبكسل مباشرة: 0 يعني بلا مسافة. تتحكم في عرض زر أضف للسلة وزر العرض السريع تحت السلة معاً.",
       "inputType": "range",
       "icon": "sicon-pin",
       "value": "10",
@@ -6341,7 +6341,7 @@
       "required": false,
       "step": "1",
       "minimum": "0",
-      "maximum": "100",
+      "maximum": "60",
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
@@ -6354,8 +6354,8 @@
       "id": "veloura_product_card_button_margin_bottom_2026",
       "type": "number",
       "format": "slider",
-      "label": "المسافة أسفل زري البطاقة",
-      "description": "القيمة النهائية بالبكسل للزرين معاً. تطبق أسفل أضف للسلة وأسفل العرض السريع؛ 0 يعني التصاقاً فعلياً بلا مسافة مخفية.",
+      "label": "المسافة أسفل أزرار البطاقة",
+      "description": "القيمة بالبكسل مباشرة: 0 يعني بلا مسافة. تتحكم في المسافة أسفل أضف للسلة، العرض السريع تحت السلة، وزر عرض المزيد.",
       "inputType": "range",
       "icon": "sicon-pin",
       "value": "10",
@@ -6363,7 +6363,7 @@
       "required": false,
       "step": "1",
       "minimum": "0",
-      "maximum": "100",
+      "maximum": "60",
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
