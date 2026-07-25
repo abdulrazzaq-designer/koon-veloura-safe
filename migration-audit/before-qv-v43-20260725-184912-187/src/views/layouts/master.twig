@@ -2668,6 +2668,25 @@
     box-sizing: border-box !important;
   }
 
+  /* Related products: inherited variables are also consumed by styles injected into Salla shadow roots. */
+  .veloura-product-related-products {
+    --veloura-v42-related-count: var(--veloura-v42-related-desktop, 4);
+    --veloura-v42-related-slide-width: calc((100% - var(--veloura-v42-related-gap-total, 48px)) / var(--veloura-v42-related-count));
+  }
+  .veloura-product-related-products .swiper-slide,
+  .veloura-product-related-products salla-products-slider > *,
+  .veloura-product-related-products salla-slider [slot="items"] > * {
+    width: var(--veloura-v42-related-slide-width) !important;
+    max-width: var(--veloura-v42-related-slide-width) !important;
+    flex: 0 0 var(--veloura-v42-related-slide-width) !important;
+    box-sizing: border-box !important;
+  }
+  @media (max-width: 767px) {
+    .veloura-product-related-products {
+      --veloura-v42-related-count: var(--veloura-v42-related-mobile, 2);
+    }
+  }
+
   @media (max-width: 640px) {
     html body.veloura-v42-sticky-enabled .veloura-v42-sticky-ancestor {
       transform: none !important;
@@ -2804,7 +2823,24 @@
     if (!Number.isFinite(value)) value = fallback;
     return Math.min(max, Math.max(min, value));
   }
-  function injectPrimaryButtonStyle(bar) { return; }
+
+  function injectPrimaryButtonStyle(bar) {
+    var host = bar && bar.querySelector('salla-add-product-button');
+    if (!host) return;
+    host.style.setProperty('--color-primary', 'var(--color-primary, #004d65)');
+    host.style.setProperty('--button-background-color', 'var(--color-primary, #004d65)');
+    host.style.setProperty('--button-text-color', '#fff');
+
+    if (!host.shadowRoot || host.shadowRoot.getElementById('veloura-v42-sticky-primary-button')) return;
+    var style = document.createElement('style');
+    style.id = 'veloura-v42-sticky-primary-button';
+    style.textContent = [
+      ':host{--color-primary:var(--color-primary,#004d65);--button-background-color:var(--color-primary,#004d65);--button-text-color:#fff}',
+      'button:not(.s-button-outline),.s-button-primary,.s-button-element:not(.s-button-outline){background:var(--color-primary,#004d65)!important;border-color:var(--color-primary,#004d65)!important;color:#fff!important}',
+      'button:not(.s-button-outline) *,.s-button-primary *,.s-button-element:not(.s-button-outline) *{color:#fff!important;fill:#fff!important}'
+    ].join('');
+    host.shadowRoot.appendChild(style);
+  }
 
   function clearImportant(element, names) {
     names.forEach(function (name) { element.style.removeProperty(name); });
@@ -2920,9 +2956,80 @@
     });
     main.dataset.velouraV42Ordered = '1';
   }
-  function applyRelatedColumns() { return true; }
 
-  function scheduleRelated() { return; }
+  function collectShadowRoots(node, output) {
+    if (!node) return;
+    if (node.shadowRoot && output.indexOf(node.shadowRoot) === -1) {
+      output.push(node.shadowRoot);
+      collectShadowRoots(node.shadowRoot, output);
+    }
+    if (!node.querySelectorAll) return;
+    node.querySelectorAll('*').forEach(function (child) {
+      if (child.shadowRoot && output.indexOf(child.shadowRoot) === -1) {
+        output.push(child.shadowRoot);
+        collectShadowRoots(child.shadowRoot, output);
+      }
+    });
+  }
+
+  function applyRelatedColumns() {
+    var container = document.querySelector('.veloura-product-related-products');
+    var host = container && container.querySelector('salla-products-slider');
+    if (!container || !host) return false;
+
+    var desktop = numberAttr(container, 'data-veloura-related-desktop', 4, 2, 6);
+    var mobile = numberAttr(container, 'data-veloura-related-mobile', 2, 1, 3);
+    var count = relatedMedia.matches ? mobile : desktop;
+    var gap = relatedMedia.matches ? 12 : 16;
+    var gapTotal = gap * Math.max(0, count - 1);
+    var width = 'calc((100% - ' + gapTotal + 'px) / ' + count + ')';
+
+    container.style.setProperty('--veloura-v42-related-desktop', String(desktop));
+    container.style.setProperty('--veloura-v42-related-mobile', String(mobile));
+    container.style.setProperty('--veloura-v42-related-count', String(count));
+    container.style.setProperty('--veloura-v42-related-gap-total', gapTotal + 'px');
+    container.style.setProperty('--veloura-v42-related-slide-width', width);
+    host.style.setProperty('--veloura-v42-related-slide-width', width);
+
+    var roots = [];
+    collectShadowRoots(host, roots);
+    roots.forEach(function (shadowRoot) {
+      if (!shadowRoot.querySelector('.swiper, .swiper-slide, salla-slider')) return;
+      var style = shadowRoot.getElementById('veloura-v42-related-columns-shadow');
+      if (!style) {
+        style = document.createElement('style');
+        style.id = 'veloura-v42-related-columns-shadow';
+        shadowRoot.appendChild(style);
+      }
+      style.textContent = '.swiper-slide{width:var(--veloura-v42-related-slide-width)!important;max-width:var(--veloura-v42-related-slide-width)!important;flex:0 0 var(--veloura-v42-related-slide-width)!important;box-sizing:border-box!important}';
+
+      shadowRoot.querySelectorAll('.swiper').forEach(function (element) {
+        var swiper = element.swiper;
+        if (!swiper || !swiper.params) return;
+        swiper.params.slidesPerView = 'auto';
+        swiper.params.spaceBetween = gap;
+        if (swiper.originalParams) {
+          swiper.originalParams.slidesPerView = 'auto';
+          swiper.originalParams.spaceBetween = gap;
+        }
+        if (typeof swiper.update === 'function') swiper.update();
+      });
+    });
+
+    if (host.swiper && host.swiper.params) {
+      host.swiper.params.slidesPerView = 'auto';
+      host.swiper.params.spaceBetween = gap;
+      if (typeof host.swiper.update === 'function') host.swiper.update();
+    }
+
+    return roots.length > 0;
+  }
+
+  function scheduleRelated() {
+    [0, 100, 350, 900, 1800].forEach(function (delay) {
+      window.setTimeout(applyRelatedColumns, delay);
+    });
+  }
 
   function run() {
     syncSticky();
@@ -2968,132 +3075,6 @@
 })();
 </script>
 {# Veloura QV V42 product details order, related columns and compact sticky end #}
-{# Veloura QV V43 native related slider and purchase button colors start #}
-<style id="veloura-qv-v43-style-2026">
-  /* V43 deliberately does not size the related section/container or shadow slides with CSS.
-     The official slider-config is passed before Salla initializes the component. */
-  .veloura-product-related-products,
-  .veloura-product-related-products > salla-products-slider {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  /* Keep the purchase component visible; actual colors are applied to its internal buttons at runtime. */
-  .veloura-product-page .sticky-product-bar.veloura-product-sticky-bar salla-add-product-button {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-</style>
-<script data-cfasync="false" id="veloura-qv-v43-runtime-2026">
-(function () {
-  'use strict';
-
-  function cssValue(element, name, fallback) {
-    if (!element) return fallback;
-    var value = window.getComputedStyle(element).getPropertyValue(name).trim();
-    return value || fallback;
-  }
-
-  function concreteThemeColors(host) {
-    var body = document.body;
-    var root = document.documentElement;
-    var storePrimary = cssValue(root, '--color-primary', cssValue(body, '--color-primary', '#004d65'));
-    var storeText = cssValue(root, '--color-primary-reverse', cssValue(body, '--color-primary-reverse', '#ffffff'));
-    var cartBg = cssValue(body, '--veloura-product-button-bg', storePrimary);
-    var cartText = cssValue(body, '--veloura-product-button-text', '#ffffff');
-
-    host.style.setProperty('--veloura-v43-cart-bg', cartBg);
-    host.style.setProperty('--veloura-v43-cart-text', cartText);
-    host.style.setProperty('--veloura-v43-store-bg', storePrimary);
-    host.style.setProperty('--veloura-v43-store-text', storeText);
-    return { storePrimary: storePrimary, storeText: storeText, cartBg: cartBg, cartText: cartText };
-  }
-
-  function injectButtonSurface(component, id, background, text, outline) {
-    if (!component) return;
-    component.style.setProperty('--color-primary', background);
-    component.style.setProperty('--color-primary-reverse', text);
-    component.style.setProperty('--button-background-color', outline ? 'transparent' : background);
-    component.style.setProperty('--button-text-color', outline ? background : text);
-    component.style.setProperty('--button-border-color', background);
-
-    if (!component.shadowRoot) return;
-    var style = component.shadowRoot.getElementById(id);
-    if (!style) {
-      style = document.createElement('style');
-      style.id = id;
-      component.shadowRoot.appendChild(style);
-    }
-    style.textContent = outline
-      ? 'button,.s-button-element,.s-button-btn{background:transparent!important;background-color:transparent!important;border-color:' + background + '!important;color:' + background + '!important}button *,.s-button-element *,.s-button-btn *{color:' + background + '!important;fill:' + background + '!important}'
-      : 'button,.s-button-element,.s-button-btn{background:' + background + '!important;background-color:' + background + '!important;border-color:' + background + '!important;color:' + text + '!important}button *,.s-button-element *,.s-button-btn *{color:' + text + '!important;fill:' + text + '!important}';
-  }
-
-  function stylePurchaseButtons() {
-    var page = document.querySelector('.veloura-product-page');
-    var bar = page && page.querySelector('.sticky-product-bar.veloura-product-sticky-bar');
-    var host = bar && bar.querySelector('salla-add-product-button');
-    if (!host) return false;
-
-    var colors = concreteThemeColors(host);
-    var root = host.shadowRoot;
-    if (!root) return false;
-
-    var old = root.getElementById('veloura-v42-sticky-primary-button');
-    if (old) old.remove();
-
-    var style = root.getElementById('veloura-v43-purchase-colors');
-    if (!style) {
-      style = document.createElement('style');
-      style.id = 'veloura-v43-purchase-colors';
-      root.appendChild(style);
-    }
-    style.textContent = [
-      '.s-add-product-button-main>salla-button{--color-primary:var(--veloura-v43-cart-bg)!important;--color-primary-reverse:var(--veloura-v43-cart-text)!important;--button-background-color:var(--veloura-v43-cart-bg)!important;--button-text-color:var(--veloura-v43-cart-text)!important}',
-      '.s-add-product-button-mini-checkout,salla-quick-buy{--color-primary:var(--veloura-v43-store-bg)!important;--color-primary-reverse:var(--veloura-v43-store-text)!important;--button-background-color:transparent!important;--button-text-color:var(--veloura-v43-store-bg)!important;--button-border-color:var(--veloura-v43-store-bg)!important}'
-    ].join('');
-
-    var cart = root.querySelector('.s-add-product-button-main > salla-button');
-    injectButtonSurface(cart, 'veloura-v43-cart-surface', colors.cartBg, colors.cartText, false);
-
-    root.querySelectorAll('salla-quick-buy, .s-add-product-button-mini-checkout').forEach(function (quick) {
-      injectButtonSurface(quick, 'veloura-v43-buy-now-surface', colors.storePrimary, colors.storeText, true);
-    });
-    return true;
-  }
-
-  function scheduleButtons() {
-    [0, 80, 250, 700, 1500].forEach(function (delay) { window.setTimeout(stylePurchaseButtons, delay); });
-  }
-
-  function run() { scheduleButtons(); }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true });
-  else run();
-  document.addEventListener('theme::ready', scheduleButtons);
-  document.addEventListener('salla::product::details::loaded', scheduleButtons);
-  document.addEventListener('product::price.updated', scheduleButtons);
-
-  if (window.MutationObserver) {
-    window.setTimeout(function () {
-      var bar = document.querySelector('.sticky-product-bar.veloura-product-sticky-bar');
-      if (!bar) return;
-      var timer = 0;
-      var observer = new MutationObserver(function () {
-        window.clearTimeout(timer);
-        timer = window.setTimeout(stylePurchaseButtons, 30);
-      });
-      observer.observe(bar, { childList: true, subtree: true });
-      window.setTimeout(function () { observer.disconnect(); }, 4000);
-    }, 0);
-  }
-})();
-</script>
-{# Veloura QV V43 native related slider and purchase button colors end #}
 {% hook 'head:end' %}
     {# ================================
    Veloura Global Container Bridge 2026

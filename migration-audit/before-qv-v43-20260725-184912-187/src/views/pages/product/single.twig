@@ -812,23 +812,9 @@
             {% set veloura_related_source_value_attr = veloura_related_source_value|json_encode %}
         {% endif %}
 
-        {# Veloura V43 related slider config start #}
-        {% set veloura_v43_related_slider_config = {
-            'slidesPerView': vpp_related_mobile_columns,
-            'spaceBetween': 12,
-            'breakpoints': {
-                '768': {
-                    'slidesPerView': vpp_related_desktop_columns,
-                    'spaceBetween': 16
-                }
-            }
-        } %}
-        {# Veloura V43 related slider config end #}
-
         <div class="container veloura-product-related-products" data-veloura-related-desktop="{{ vpp_related_desktop_columns }}" data-veloura-related-mobile="{{ vpp_related_mobile_columns }}">
             <salla-products-slider
                 data-veloura-related-slider
-                slider-config="{{ veloura_v43_related_slider_config|json_encode|e('html_attr') }}"
                 source="{{ veloura_related_source }}"
                 source-value="{{ veloura_related_source_value_attr|e('html_attr') }}"
                 block-title="{{ vpp_liked_title }}"
