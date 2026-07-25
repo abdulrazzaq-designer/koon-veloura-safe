@@ -8024,14 +8024,14 @@
     {
       "id": "veloura_product_related_desktop_columns_2026",
       "type": "number",
-      "format": "slider",
+      "format": "integer",
       "label": "عدد منتجات قد تعجبك في الصف — اللابتوب",
-      "description": "سلايدر مطابق لطريقة Ultra Square Images؛ اختر من منتجين إلى 6 منتجات في الصف.",
+      "description": "عدد المنتجات الظاهرة في الصف داخل منتجات قد تعجبك على اللابتوب — قيمة رقمية من 2 إلى 6.",
       "icon": "sicon-grid",
-      "value": "4",
+      "value": 4,
       "required": false,
-      "minimum": "2",
-      "maximum": "6",
+      "minimum": 2,
+      "maximum": 6,
       "conditions": [
         {
           "id": "veloura_product_page_panel_open_2026",
@@ -8048,21 +8048,19 @@
           "operation": "=",
           "value": true
         }
-      ],
-      "inputType": "range",
-      "step": "1"
+      ]
     },
     {
       "id": "veloura_product_related_mobile_columns_2026",
       "type": "number",
-      "format": "slider",
+      "format": "integer",
       "label": "عدد منتجات قد تعجبك في الصف — الجوال",
-      "description": "سلايدر مطابق لطريقة Ultra Square Images؛ اختر من منتج واحد إلى 3 منتجات في الصف.",
+      "description": "عدد المنتجات الظاهرة في الصف داخل منتجات قد تعجبك على الجوال — قيمة رقمية من 1 إلى 3.",
       "icon": "sicon-grid",
-      "value": "2",
+      "value": 2,
       "required": false,
-      "minimum": "1",
-      "maximum": "3",
+      "minimum": 1,
+      "maximum": 3,
       "conditions": [
         {
           "id": "veloura_product_page_panel_open_2026",
@@ -8079,9 +8077,7 @@
           "operation": "=",
           "value": true
         }
-      ],
-      "inputType": "range",
-      "step": "1"
+      ]
     },
     {
       "type": "static",
