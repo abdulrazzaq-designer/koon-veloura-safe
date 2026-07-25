@@ -198,11 +198,11 @@
     {% set vpp_hide_liked_products = _self.veloura_bool(theme.settings.get('veloura_product_hide_liked_products_2026', false), false)|trim == 'true' %}
     {% set vpp_liked_title = theme.settings.get('veloura_product_liked_title_2026', trans('pages.products.similar_products')) ?: trans('pages.products.similar_products') %}
 
-    {% set vpp_related_desktop_columns_raw = _self.veloura_select(theme.settings.get('veloura_related_desktop_columns', 4), 4)|trim %}
+    {% set vpp_related_desktop_columns_raw = _self.veloura_select(theme.settings.get('veloura_product_related_desktop_columns_2026', 4), 4)|trim %}
     {% set vpp_related_desktop_columns = vpp_related_desktop_columns_raw + 0 %}
-    {% if vpp_related_desktop_columns < 1 %}{% set vpp_related_desktop_columns = 1 %}{% endif %}
+    {% if vpp_related_desktop_columns < 2 %}{% set vpp_related_desktop_columns = 2 %}{% endif %}
     {% if vpp_related_desktop_columns > 6 %}{% set vpp_related_desktop_columns = 6 %}{% endif %}
-    {% set vpp_related_mobile_columns_raw = _self.veloura_select(theme.settings.get('veloura_related_mobile_columns', 2), 2)|trim %}
+    {% set vpp_related_mobile_columns_raw = _self.veloura_select(theme.settings.get('veloura_product_related_mobile_columns_2026', 2), 2)|trim %}
     {% set vpp_related_mobile_columns = vpp_related_mobile_columns_raw + 0 %}
     {% if vpp_related_mobile_columns < 1 %}{% set vpp_related_mobile_columns = 1 %}{% endif %}
     {% if vpp_related_mobile_columns > 3 %}{% set vpp_related_mobile_columns = 3 %}{% endif %}
@@ -292,6 +292,8 @@
     {% set vpp_general_radius = vpp_radius_map[vpp_general_radius_key]|default('28px') %}
 
 <div data-veloura-v42-sticky="{{ vpp_mobile_sticky_cart ? 'true' : 'false' }}"
+     data-veloura-related-desktop="{{ vpp_related_desktop_columns }}"
+     data-veloura-related-mobile="{{ vpp_related_mobile_columns }}"
      data-v42-order-title="{{ vpp_order_title }}"
      data-v42-order-price="{{ vpp_order_price }}"
      data-v42-order-status="{{ vpp_order_status }}"
@@ -810,21 +812,23 @@
             {% set veloura_related_source_value_attr = veloura_related_source_value|json_encode %}
         {% endif %}
 
-        
+        {# Veloura V43 related slider config start #}
+        {% set veloura_v43_related_slider_config = {
+            'slidesPerView': vpp_related_mobile_columns,
+            'spaceBetween': 12,
+            'breakpoints': {
+                '768': {
+                    'slidesPerView': vpp_related_desktop_columns,
+                    'spaceBetween': 16
+                }
+            }
+        } %}
+        {# Veloura V43 related slider config end #}
 
-        <div class="container veloura-product-related-products">
+        <div class="container veloura-product-related-products" data-veloura-related-desktop="{{ vpp_related_desktop_columns }}" data-veloura-related-mobile="{{ vpp_related_mobile_columns }}">
             <salla-products-slider
                 data-veloura-related-slider
-                slider-config='{
-                  "slidesPerView": {{ vpp_related_mobile_columns|default(2) }},
-                  "spaceBetween": 12,
-                  "breakpoints": {
-                    "768": {
-                      "slidesPerView": {{ vpp_related_desktop_columns|default(4) }},
-                      "spaceBetween": 16
-                    }
-                  }
-                }'
+                slider-config="{{ veloura_v43_related_slider_config|json_encode|e('html_attr') }}"
                 source="{{ veloura_related_source }}"
                 source-value="{{ veloura_related_source_value_attr|e('html_attr') }}"
                 block-title="{{ vpp_liked_title }}"

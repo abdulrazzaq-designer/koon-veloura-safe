@@ -7901,36 +7901,6 @@
       ]
     },
     {
-      "id": "veloura_related_mobile_columns",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
-      "label": "عدد المنتجات في الجوال",
-      "description": null,
-      "labelHTML": null,
-      "icon": "sicon-pin",
-      "value": "2",
-      "required": false,
-      "step": "1",
-      "minimum": "1",
-      "maximum": "3"
-    },
-    {
-      "id": "veloura_related_desktop_columns",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
-      "label": "عدد المنتجات في الكمبيوتر",
-      "description": null,
-      "labelHTML": null,
-      "icon": "sicon-pin",
-      "value": "4",
-      "required": false,
-      "step": "1",
-      "minimum": "1",
-      "maximum": "6"
-    },
-    {
       "id": "veloura_product_custom_related_source_2026",
       "type": "items",
       "format": "dropdown-list",
@@ -8050,6 +8020,68 @@
       "selected": [],
       "options": [],
       "maxLength": 10
+    },
+    {
+      "id": "veloura_product_related_desktop_columns_2026",
+      "type": "number",
+      "format": "slider",
+      "label": "عدد منتجات قد تعجبك في الصف — اللابتوب",
+      "description": "سلايدر مطابق لطريقة Ultra Square Images؛ اختر من منتجين إلى 6 منتجات في الصف.",
+      "icon": "sicon-grid",
+      "value": "4",
+      "required": false,
+      "minimum": "2",
+      "maximum": "6",
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_hide_liked_products_2026",
+          "operation": "=",
+          "value": false
+        },
+        {
+          "id": "veloura_product_custom_related_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "inputType": "range",
+      "step": "1"
+    },
+    {
+      "id": "veloura_product_related_mobile_columns_2026",
+      "type": "number",
+      "format": "slider",
+      "label": "عدد منتجات قد تعجبك في الصف — الجوال",
+      "description": "سلايدر مطابق لطريقة Ultra Square Images؛ اختر من منتج واحد إلى 3 منتجات في الصف.",
+      "icon": "sicon-grid",
+      "value": "2",
+      "required": false,
+      "minimum": "1",
+      "maximum": "3",
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_hide_liked_products_2026",
+          "operation": "=",
+          "value": false
+        },
+        {
+          "id": "veloura_product_custom_related_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "inputType": "range",
+      "step": "1"
     },
     {
       "type": "static",
