@@ -6477,6 +6477,49 @@
       ]
     },
     {
+      "id": "veloura_product_thumbnails_position_desktop_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "طريقة عرض الصور المصغرة في اللابتوب",
+      "icon": "sicon-list",
+      "source": "Manual",
+      "required": false,
+      "value": "below_image",
+      "default": "below_image",
+      "selected": [
+        {
+          "label": "أسفل صورة المنتج",
+          "value": "below_image",
+          "key": "veloura-product-thumbs-below"
+        }
+      ],
+      "options": [
+        {
+          "label": "أسفل صورة المنتج",
+          "value": "below_image",
+          "key": "veloura-product-thumbs-below"
+        },
+        {
+          "label": "على الجانب الأيمن",
+          "value": "right_side",
+          "key": "veloura-product-thumbs-right"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_hide_thumbnails_2026",
+          "operation": "=",
+          "value": false
+        }
+      ],
+      "description": "في اللابتوب: أسفل الصورة أو عمود عمودي على الجانب الأيمن. في الجوال تبقى الصور المصغرة أسفل الصورة."
+    },
+    {
       "id": "veloura_product_images_height_mode_2026",
       "type": "items",
       "format": "dropdown-list",
@@ -6840,7 +6883,7 @@
     {
       "type": "boolean",
       "icon": "sicon-toggle-off",
-      "label": "تصغير القائمة المثبتة أسفل الجوال",
+      "label": "تصغير حجم أزرار الإضافة والشراء الآن",
       "id": "veloura_product_mobile_buttons_compact_2026",
       "format": "switch",
       "required": false,
@@ -6858,7 +6901,7 @@
           "value": true
         }
       ],
-      "description": "يجعل القائمة المثبتة بطاقة عائمة داخل حواف الشاشة، بحواف دائرية كاملة ومسافة من الجانبين والأسفل."
+      "description": "يناسب الشاشات الصغيرة ويخفف ضغط الشريط السفلي"
     },
     {
       "type": "static",
@@ -6890,7 +6933,7 @@
           "value": true
         }
       ],
-      "description": "عند التفعيل وكتابة كود فعلي يظهر صندوق الخصم داخل تفاصيل المنتج فوق الوصف مباشرة، ويمكن للعميل نسخه."
+      "description": "يظهر صندوق الكوبون داخل تفاصيل المنتج فقط بعد تفعيل الخيار وكتابة كود فعلي في خانة كود الخصم."
     },
     {
       "id": "veloura_product_coupon_title_2026",
@@ -6951,8 +6994,8 @@
           "value": true
         }
       ],
-      "placeholder": "اكتب الكود الفعلي، مثال: VEL10",
-      "description": "لا تكتب كلمة مثال. أنشئ الكود نفسه ضمن كوبونات المتجر، ثم اكتبه هنا ليظهر فوق وصف المنتج."
+      "placeholder": "مثال: VEL10 — اكتب الكود الفعلي هنا",
+      "description": "هذه الخانة تعرض الكود وتنسخه للعميل فقط. أنشئ الكود نفسه مسبقاً ضمن كوبونات المتجر ليعمل عند الدفع."
     },
     {
       "type": "boolean",
@@ -6987,800 +7030,6 @@
         },
         {
           "id": "veloura_product_purchase_count_condition_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "static",
-      "format": "title",
-      "id": "veloura_product_details_order_title_2026",
-      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:14px;background:#eef2ff;color:#3730a3;text-align:right;font-weight:800;border-right:4px solid #6366f1\"><span>ترتيب تفاصيل المنتج</span><div style=\"font-size:12px;font-weight:500;opacity:.8;margin-top:4px\">اختر ترتيب كل مجموعة من 1 إلى 10</div></div>",
-      "variant": "h6",
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_product_order_title_2026",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "ترتيب اسم المنتج والعلامة والتصنيف",
-      "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": false,
-      "value": "1",
-      "default": "1",
-      "selected": [
-        {
-          "label": "الترتيب 1",
-          "value": "1",
-          "key": "veloura-v42-order-1-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "الترتيب 1",
-          "value": "1",
-          "key": "veloura-v42-order-1-2026"
-        },
-        {
-          "label": "الترتيب 2",
-          "value": "2",
-          "key": "veloura-v42-order-2-2026"
-        },
-        {
-          "label": "الترتيب 3",
-          "value": "3",
-          "key": "veloura-v42-order-3-2026"
-        },
-        {
-          "label": "الترتيب 4",
-          "value": "4",
-          "key": "veloura-v42-order-4-2026"
-        },
-        {
-          "label": "الترتيب 5",
-          "value": "5",
-          "key": "veloura-v42-order-5-2026"
-        },
-        {
-          "label": "الترتيب 6",
-          "value": "6",
-          "key": "veloura-v42-order-6-2026"
-        },
-        {
-          "label": "الترتيب 7",
-          "value": "7",
-          "key": "veloura-v42-order-7-2026"
-        },
-        {
-          "label": "الترتيب 8",
-          "value": "8",
-          "key": "veloura-v42-order-8-2026"
-        },
-        {
-          "label": "الترتيب 9",
-          "value": "9",
-          "key": "veloura-v42-order-9-2026"
-        },
-        {
-          "label": "الترتيب 10",
-          "value": "10",
-          "key": "veloura-v42-order-10-2026"
-        }
-      ],
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_product_order_price_2026",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "ترتيب السعر والتقييم",
-      "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": false,
-      "value": "2",
-      "default": "2",
-      "selected": [
-        {
-          "label": "الترتيب 2",
-          "value": "2",
-          "key": "veloura-v42-order-2-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "الترتيب 1",
-          "value": "1",
-          "key": "veloura-v42-order-1-2026"
-        },
-        {
-          "label": "الترتيب 2",
-          "value": "2",
-          "key": "veloura-v42-order-2-2026"
-        },
-        {
-          "label": "الترتيب 3",
-          "value": "3",
-          "key": "veloura-v42-order-3-2026"
-        },
-        {
-          "label": "الترتيب 4",
-          "value": "4",
-          "key": "veloura-v42-order-4-2026"
-        },
-        {
-          "label": "الترتيب 5",
-          "value": "5",
-          "key": "veloura-v42-order-5-2026"
-        },
-        {
-          "label": "الترتيب 6",
-          "value": "6",
-          "key": "veloura-v42-order-6-2026"
-        },
-        {
-          "label": "الترتيب 7",
-          "value": "7",
-          "key": "veloura-v42-order-7-2026"
-        },
-        {
-          "label": "الترتيب 8",
-          "value": "8",
-          "key": "veloura-v42-order-8-2026"
-        },
-        {
-          "label": "الترتيب 9",
-          "value": "9",
-          "key": "veloura-v42-order-9-2026"
-        },
-        {
-          "label": "الترتيب 10",
-          "value": "10",
-          "key": "veloura-v42-order-10-2026"
-        }
-      ],
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_product_order_status_2026",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "ترتيب حالة التوفر والعداد التنازلي",
-      "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": false,
-      "value": "3",
-      "default": "3",
-      "selected": [
-        {
-          "label": "الترتيب 3",
-          "value": "3",
-          "key": "veloura-v42-order-3-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "الترتيب 1",
-          "value": "1",
-          "key": "veloura-v42-order-1-2026"
-        },
-        {
-          "label": "الترتيب 2",
-          "value": "2",
-          "key": "veloura-v42-order-2-2026"
-        },
-        {
-          "label": "الترتيب 3",
-          "value": "3",
-          "key": "veloura-v42-order-3-2026"
-        },
-        {
-          "label": "الترتيب 4",
-          "value": "4",
-          "key": "veloura-v42-order-4-2026"
-        },
-        {
-          "label": "الترتيب 5",
-          "value": "5",
-          "key": "veloura-v42-order-5-2026"
-        },
-        {
-          "label": "الترتيب 6",
-          "value": "6",
-          "key": "veloura-v42-order-6-2026"
-        },
-        {
-          "label": "الترتيب 7",
-          "value": "7",
-          "key": "veloura-v42-order-7-2026"
-        },
-        {
-          "label": "الترتيب 8",
-          "value": "8",
-          "key": "veloura-v42-order-8-2026"
-        },
-        {
-          "label": "الترتيب 9",
-          "value": "9",
-          "key": "veloura-v42-order-9-2026"
-        },
-        {
-          "label": "الترتيب 10",
-          "value": "10",
-          "key": "veloura-v42-order-10-2026"
-        }
-      ],
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_product_order_coupon_2026",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "ترتيب كود الخصم",
-      "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": false,
-      "value": "4",
-      "default": "4",
-      "selected": [
-        {
-          "label": "الترتيب 4",
-          "value": "4",
-          "key": "veloura-v42-order-4-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "الترتيب 1",
-          "value": "1",
-          "key": "veloura-v42-order-1-2026"
-        },
-        {
-          "label": "الترتيب 2",
-          "value": "2",
-          "key": "veloura-v42-order-2-2026"
-        },
-        {
-          "label": "الترتيب 3",
-          "value": "3",
-          "key": "veloura-v42-order-3-2026"
-        },
-        {
-          "label": "الترتيب 4",
-          "value": "4",
-          "key": "veloura-v42-order-4-2026"
-        },
-        {
-          "label": "الترتيب 5",
-          "value": "5",
-          "key": "veloura-v42-order-5-2026"
-        },
-        {
-          "label": "الترتيب 6",
-          "value": "6",
-          "key": "veloura-v42-order-6-2026"
-        },
-        {
-          "label": "الترتيب 7",
-          "value": "7",
-          "key": "veloura-v42-order-7-2026"
-        },
-        {
-          "label": "الترتيب 8",
-          "value": "8",
-          "key": "veloura-v42-order-8-2026"
-        },
-        {
-          "label": "الترتيب 9",
-          "value": "9",
-          "key": "veloura-v42-order-9-2026"
-        },
-        {
-          "label": "الترتيب 10",
-          "value": "10",
-          "key": "veloura-v42-order-10-2026"
-        }
-      ],
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_product_order_description_2026",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "ترتيب وصف المنتج",
-      "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": false,
-      "value": "5",
-      "default": "5",
-      "selected": [
-        {
-          "label": "الترتيب 5",
-          "value": "5",
-          "key": "veloura-v42-order-5-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "الترتيب 1",
-          "value": "1",
-          "key": "veloura-v42-order-1-2026"
-        },
-        {
-          "label": "الترتيب 2",
-          "value": "2",
-          "key": "veloura-v42-order-2-2026"
-        },
-        {
-          "label": "الترتيب 3",
-          "value": "3",
-          "key": "veloura-v42-order-3-2026"
-        },
-        {
-          "label": "الترتيب 4",
-          "value": "4",
-          "key": "veloura-v42-order-4-2026"
-        },
-        {
-          "label": "الترتيب 5",
-          "value": "5",
-          "key": "veloura-v42-order-5-2026"
-        },
-        {
-          "label": "الترتيب 6",
-          "value": "6",
-          "key": "veloura-v42-order-6-2026"
-        },
-        {
-          "label": "الترتيب 7",
-          "value": "7",
-          "key": "veloura-v42-order-7-2026"
-        },
-        {
-          "label": "الترتيب 8",
-          "value": "8",
-          "key": "veloura-v42-order-8-2026"
-        },
-        {
-          "label": "الترتيب 9",
-          "value": "9",
-          "key": "veloura-v42-order-9-2026"
-        },
-        {
-          "label": "الترتيب 10",
-          "value": "10",
-          "key": "veloura-v42-order-10-2026"
-        }
-      ],
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_product_order_data_2026",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "ترتيب بيانات المنتج والوسوم وعداد الشراء",
-      "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": false,
-      "value": "6",
-      "default": "6",
-      "selected": [
-        {
-          "label": "الترتيب 6",
-          "value": "6",
-          "key": "veloura-v42-order-6-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "الترتيب 1",
-          "value": "1",
-          "key": "veloura-v42-order-1-2026"
-        },
-        {
-          "label": "الترتيب 2",
-          "value": "2",
-          "key": "veloura-v42-order-2-2026"
-        },
-        {
-          "label": "الترتيب 3",
-          "value": "3",
-          "key": "veloura-v42-order-3-2026"
-        },
-        {
-          "label": "الترتيب 4",
-          "value": "4",
-          "key": "veloura-v42-order-4-2026"
-        },
-        {
-          "label": "الترتيب 5",
-          "value": "5",
-          "key": "veloura-v42-order-5-2026"
-        },
-        {
-          "label": "الترتيب 6",
-          "value": "6",
-          "key": "veloura-v42-order-6-2026"
-        },
-        {
-          "label": "الترتيب 7",
-          "value": "7",
-          "key": "veloura-v42-order-7-2026"
-        },
-        {
-          "label": "الترتيب 8",
-          "value": "8",
-          "key": "veloura-v42-order-8-2026"
-        },
-        {
-          "label": "الترتيب 9",
-          "value": "9",
-          "key": "veloura-v42-order-9-2026"
-        },
-        {
-          "label": "الترتيب 10",
-          "value": "10",
-          "key": "veloura-v42-order-10-2026"
-        }
-      ],
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_product_order_extras_2026",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "ترتيب التوفر بالفروع والملفات الرقمية",
-      "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": false,
-      "value": "7",
-      "default": "7",
-      "selected": [
-        {
-          "label": "الترتيب 7",
-          "value": "7",
-          "key": "veloura-v42-order-7-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "الترتيب 1",
-          "value": "1",
-          "key": "veloura-v42-order-1-2026"
-        },
-        {
-          "label": "الترتيب 2",
-          "value": "2",
-          "key": "veloura-v42-order-2-2026"
-        },
-        {
-          "label": "الترتيب 3",
-          "value": "3",
-          "key": "veloura-v42-order-3-2026"
-        },
-        {
-          "label": "الترتيب 4",
-          "value": "4",
-          "key": "veloura-v42-order-4-2026"
-        },
-        {
-          "label": "الترتيب 5",
-          "value": "5",
-          "key": "veloura-v42-order-5-2026"
-        },
-        {
-          "label": "الترتيب 6",
-          "value": "6",
-          "key": "veloura-v42-order-6-2026"
-        },
-        {
-          "label": "الترتيب 7",
-          "value": "7",
-          "key": "veloura-v42-order-7-2026"
-        },
-        {
-          "label": "الترتيب 8",
-          "value": "8",
-          "key": "veloura-v42-order-8-2026"
-        },
-        {
-          "label": "الترتيب 9",
-          "value": "9",
-          "key": "veloura-v42-order-9-2026"
-        },
-        {
-          "label": "الترتيب 10",
-          "value": "10",
-          "key": "veloura-v42-order-10-2026"
-        }
-      ],
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_product_order_options_2026",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "ترتيب الخيارات والسعر والكمية وأزرار الشراء",
-      "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": false,
-      "value": "8",
-      "default": "8",
-      "selected": [
-        {
-          "label": "الترتيب 8",
-          "value": "8",
-          "key": "veloura-v42-order-8-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "الترتيب 1",
-          "value": "1",
-          "key": "veloura-v42-order-1-2026"
-        },
-        {
-          "label": "الترتيب 2",
-          "value": "2",
-          "key": "veloura-v42-order-2-2026"
-        },
-        {
-          "label": "الترتيب 3",
-          "value": "3",
-          "key": "veloura-v42-order-3-2026"
-        },
-        {
-          "label": "الترتيب 4",
-          "value": "4",
-          "key": "veloura-v42-order-4-2026"
-        },
-        {
-          "label": "الترتيب 5",
-          "value": "5",
-          "key": "veloura-v42-order-5-2026"
-        },
-        {
-          "label": "الترتيب 6",
-          "value": "6",
-          "key": "veloura-v42-order-6-2026"
-        },
-        {
-          "label": "الترتيب 7",
-          "value": "7",
-          "key": "veloura-v42-order-7-2026"
-        },
-        {
-          "label": "الترتيب 8",
-          "value": "8",
-          "key": "veloura-v42-order-8-2026"
-        },
-        {
-          "label": "الترتيب 9",
-          "value": "9",
-          "key": "veloura-v42-order-9-2026"
-        },
-        {
-          "label": "الترتيب 10",
-          "value": "10",
-          "key": "veloura-v42-order-10-2026"
-        }
-      ],
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_product_order_quick_2026",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "ترتيب الطلب السريع",
-      "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": false,
-      "value": "9",
-      "default": "9",
-      "selected": [
-        {
-          "label": "الترتيب 9",
-          "value": "9",
-          "key": "veloura-v42-order-9-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "الترتيب 1",
-          "value": "1",
-          "key": "veloura-v42-order-1-2026"
-        },
-        {
-          "label": "الترتيب 2",
-          "value": "2",
-          "key": "veloura-v42-order-2-2026"
-        },
-        {
-          "label": "الترتيب 3",
-          "value": "3",
-          "key": "veloura-v42-order-3-2026"
-        },
-        {
-          "label": "الترتيب 4",
-          "value": "4",
-          "key": "veloura-v42-order-4-2026"
-        },
-        {
-          "label": "الترتيب 5",
-          "value": "5",
-          "key": "veloura-v42-order-5-2026"
-        },
-        {
-          "label": "الترتيب 6",
-          "value": "6",
-          "key": "veloura-v42-order-6-2026"
-        },
-        {
-          "label": "الترتيب 7",
-          "value": "7",
-          "key": "veloura-v42-order-7-2026"
-        },
-        {
-          "label": "الترتيب 8",
-          "value": "8",
-          "key": "veloura-v42-order-8-2026"
-        },
-        {
-          "label": "الترتيب 9",
-          "value": "9",
-          "key": "veloura-v42-order-9-2026"
-        },
-        {
-          "label": "الترتيب 10",
-          "value": "10",
-          "key": "veloura-v42-order-10-2026"
-        }
-      ],
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_product_order_payments_2026",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "ترتيب طرق الدفع والتقسيط",
-      "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": false,
-      "value": "10",
-      "default": "10",
-      "selected": [
-        {
-          "label": "الترتيب 10",
-          "value": "10",
-          "key": "veloura-v42-order-10-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "الترتيب 1",
-          "value": "1",
-          "key": "veloura-v42-order-1-2026"
-        },
-        {
-          "label": "الترتيب 2",
-          "value": "2",
-          "key": "veloura-v42-order-2-2026"
-        },
-        {
-          "label": "الترتيب 3",
-          "value": "3",
-          "key": "veloura-v42-order-3-2026"
-        },
-        {
-          "label": "الترتيب 4",
-          "value": "4",
-          "key": "veloura-v42-order-4-2026"
-        },
-        {
-          "label": "الترتيب 5",
-          "value": "5",
-          "key": "veloura-v42-order-5-2026"
-        },
-        {
-          "label": "الترتيب 6",
-          "value": "6",
-          "key": "veloura-v42-order-6-2026"
-        },
-        {
-          "label": "الترتيب 7",
-          "value": "7",
-          "key": "veloura-v42-order-7-2026"
-        },
-        {
-          "label": "الترتيب 8",
-          "value": "8",
-          "key": "veloura-v42-order-8-2026"
-        },
-        {
-          "label": "الترتيب 9",
-          "value": "9",
-          "key": "veloura-v42-order-9-2026"
-        },
-        {
-          "label": "الترتيب 10",
-          "value": "10",
-          "key": "veloura-v42-order-10-2026"
-        }
-      ],
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
           "operation": "=",
           "value": true
         }
@@ -8020,70 +7269,6 @@
       "selected": [],
       "options": [],
       "maxLength": 10
-    },
-    {
-      "id": "veloura_product_related_desktop_columns_2026",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
-      "label": "عدد منتجات قد تعجبك في الصف — اللابتوب",
-      "description": "يتحكم بعدد البطاقات الظاهرة في الصف داخل قسم منتجات قد تعجبك.",
-      "icon": "sicon-grid",
-      "value": "4",
-      "default": "4",
-      "required": false,
-      "step": "1",
-      "minimum": "2",
-      "maximum": "6",
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_hide_liked_products_2026",
-          "operation": "=",
-          "value": false
-        },
-        {
-          "id": "veloura_product_custom_related_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_product_related_mobile_columns_2026",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
-      "label": "عدد منتجات قد تعجبك في الصف — الجوال",
-      "description": "يتحكم بعدد البطاقات الظاهرة في الصف داخل قسم منتجات قد تعجبك.",
-      "icon": "sicon-grid",
-      "value": "2",
-      "default": "2",
-      "required": false,
-      "step": "1",
-      "minimum": "1",
-      "maximum": "3",
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_hide_liked_products_2026",
-          "operation": "=",
-          "value": false
-        },
-        {
-          "id": "veloura_product_custom_related_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
     },
     {
       "type": "static",
