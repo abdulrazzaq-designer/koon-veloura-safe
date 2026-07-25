@@ -236,6 +236,9 @@
     {% set vpp_purchase_count_enabled = _self.veloura_bool(theme.settings.get('veloura_product_purchase_count_condition_enabled_2026', false), false)|trim == 'true' %}
     {% set vpp_purchase_count_min_raw = _self.veloura_select(theme.settings.get('veloura_product_purchase_count_min_2026', 10), 10)|trim %}
     {% set vpp_purchase_count_min = vpp_purchase_count_min_raw + 0 %}
+    {% set vpp_purchase_count_animated = _self.veloura_bool(theme.settings.get('veloura_product_purchase_count_animated_2026', true), true)|trim == 'true' %}
+
+
     {# ألوان/تدوير عام من الإعدادات العامة #}
     {# الأساسي للعناصر الداخلية / الثانوي للكروت الخارجية #}
     {% set vpp_basic_bg = theme.settings.get('veloura_site_bg_color_2026', '#ffffff') %}
@@ -274,12 +277,11 @@
                 <salla-slider
                         id="details-slider-{{ product.id }}"
                         class="details-slider rounded-md image-slider"
-                        data-veloura-thumbs-layout="{{ vpp_thumbnails_position }}"
                         type="thumbs"
                         loop="false"
-                        {{ vpp_thumbnails_position == 'right_side' ? 'vertical-thumbs' : '' }}
                         {{ vpp_images_height_mode == 'fixed_all' ? '' : 'auto-height' }}
                         listen-to-thumbnails-option
+                        thumbs-position="{{ vpp_thumbnails_position == 'right_side' ? 'right' : 'bottom' }}"
                         show-thumbs-controls="false">
                     <div class="veloura-product-media-actions">
                         <div class="veloura-product-media-actions__left">
@@ -513,13 +515,14 @@
                 %}
 
                 {% if vpp_custom_purchase_count_visible %}
-                    <div class="veloura-product-original-purchase-count"
->
+                    <div class="veloura-product-original-purchase-count {{ vpp_purchase_count_animated ? 'is-animated' : '' }}"
+                         data-veloura-purchase-count
+                         data-count="{{ vpp_purchase_count_value }}">
                         <div class="veloura-product-purchase-count__sold">
                             <i class="sicon-fire"></i>
                             <span>{{ trans('pages.products.sold') }}</span>
                             <strong class="veloura-product-purchase-count__number">
-                                {{ vpp_purchase_count_value }}
+                                {{ vpp_purchase_count_animated ? 0 : vpp_purchase_count_value }}
                             </strong>
                             <span>مرة</span>
                         </div>

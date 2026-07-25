@@ -6517,7 +6517,7 @@
           "value": false
         }
       ],
-      "description": "في اللابتوب: أسفل الصورة أو عمود عمودي على الجانب الأيمن. في الجوال تبقى الصور المصغرة أسفل الصورة."
+      "description": "أسفل الصورة أو على الجانب الأيمن. الجوال يبقى أسفل الصورة"
     },
     {
       "id": "veloura_product_images_height_mode_2026",
@@ -6932,8 +6932,7 @@
           "operation": "=",
           "value": true
         }
-      ],
-      "description": "يظهر صندوق الكوبون داخل تفاصيل المنتج فقط بعد تفعيل الخيار وكتابة كود فعلي في خانة كود الخصم."
+      ]
     },
     {
       "id": "veloura_product_coupon_title_2026",
@@ -6994,8 +6993,7 @@
           "value": true
         }
       ],
-      "placeholder": "مثال: VEL10 — اكتب الكود الفعلي هنا",
-      "description": "هذه الخانة تعرض الكود وتنسخه للعميل فقط. أنشئ الكود نفسه مسبقاً ضمن كوبونات المتجر ليعمل عند الدفع."
+      "placeholder": "مثال: VEL10"
     },
     {
       "type": "boolean",
@@ -7022,6 +7020,28 @@
       "label": "إظهار العداد إذا تجاوز عدد الشراء",
       "value": 10,
       "required": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_purchase_count_condition_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "icon": "sicon-toggle-off",
+      "label": "تفعيل عداد متحرك من الصفر لعدد مرات شراء المنتج",
+      "id": "veloura_product_purchase_count_animated_2026",
+      "format": "switch",
+      "required": false,
+      "value": true,
+      "selected": true,
       "conditions": [
         {
           "id": "veloura_product_page_panel_open_2026",

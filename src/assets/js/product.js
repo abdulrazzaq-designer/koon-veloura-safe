@@ -15,10 +15,9 @@ class Product extends BasePage {
         });
 
         this.initVelouraProductPageState();
+        this.initVelouraProductThumbnails();
         this.initProductOptionValidations();
-        this.initVelouraCouponCopy();
-        this.initVelouraPurchaseCount();
-        this.initVelouraPurchaseButtons();
+        this.initVelouraCouponCopy();        this.initVelouraPurchaseButtons();
         this.initVelouraReadMore();
 
         /* Veloura V38 performance-safe zoom */ const velouraProductPage = document.querySelector('.veloura-product-page'); const velouraZoomControlled = Boolean(velouraProductPage && velouraProductPage.classList.contains('veloura-product-enabled')); const themeZoomEnabled = velouraZoomControlled ? velouraProductPage.classList.contains('veloura-product-zoom-enabled') : (typeof imageZoom !== 'undefined' && imageZoom); const velouraFinePointer = !window.matchMedia || window.matchMedia('(hover: hover) and (pointer: fine)').matches; if (themeZoomEnabled && velouraFinePointer && !this.__velouraZoomInitialized) { this.__velouraZoomInitialized = true; this.initImagesZooming(); }
@@ -42,6 +41,68 @@ class Product extends BasePage {
             'veloura-product-sticky-active',
             stickyEnabled
         );
+    }
+
+    initVelouraProductThumbnails() {
+        const page = document.querySelector('.veloura-product-page');
+        const slider = page?.querySelector('salla-slider.details-slider.image-slider');
+
+        if (!page || !slider || slider.dataset.velouraThumbsReady === '1') {
+            return;
+        }
+
+        slider.dataset.velouraThumbsReady = '1';
+
+        const selectedLayout =
+            slider.getAttribute('data-veloura-thumbs-layout') ||
+            page.getAttribute('data-veloura-v37-thumbs') ||
+            'below_image';
+        const desktopMedia = window.matchMedia('(min-width: 768px)');
+
+        const applyLayout = async () => {
+            const vertical = selectedLayout === 'right_side' && desktopMedia.matches;
+            const thumbsConfig = {
+                direction: vertical ? 'vertical' : 'horizontal',
+                slidesPerView: 'auto',
+                spaceBetween: 12,
+                watchSlidesProgress: true,
+            };
+
+            slider.removeAttribute('thumbs-position');
+            slider.toggleAttribute('vertical-thumbs', vertical);
+            slider.setAttribute('thumbs-config', JSON.stringify(thumbsConfig));
+
+            try {
+                slider.verticalThumbs = vertical;
+                slider.thumbsConfig = thumbsConfig;
+
+                if (typeof slider.update === 'function') {
+                    await slider.update();
+                }
+            } catch (error) {
+                console.warn('Veloura thumbnail layout update failed:', error);
+            }
+        };
+
+        const initialize = () => {
+            applyLayout();
+            window.setTimeout(applyLayout, 120);
+        };
+
+        if (window.customElements?.whenDefined) {
+            window.customElements
+                .whenDefined('salla-slider')
+                .then(initialize)
+                .catch(initialize);
+        } else {
+            initialize();
+        }
+
+        if (typeof desktopMedia.addEventListener === 'function') {
+            desktopMedia.addEventListener('change', applyLayout);
+        } else if (typeof desktopMedia.addListener === 'function') {
+            desktopMedia.addListener(applyLayout);
+        }
     }
 
     initProductOptionValidations() {
@@ -106,58 +167,6 @@ class Product extends BasePage {
         });
     }
 
-
-    initVelouraPurchaseCount() {
-        document
-            .querySelectorAll('[data-veloura-purchase-count]')
-            .forEach((counter) => {
-                if (counter.dataset.velouraCountReady === '1') {
-                    return;
-                }
-
-                counter.dataset.velouraCountReady = '1';
-
-                const number = counter.querySelector(
-                    '.veloura-product-purchase-count__number'
-                );
-
-                const target = Number.parseInt(
-                    counter.getAttribute('data-count') || '0',
-                    10
-                );
-
-                if (!number || !Number.isFinite(target)) {
-                    return;
-                }
-
-                if (!counter.classList.contains('is-animated')) {
-                    number.textContent = String(Math.max(0, target));
-                    return;
-                }
-
-                const finalValue = Math.max(0, target);
-                const duration = 900;
-                const startedAt = performance.now();
-
-                const render = (now) => {
-                    const progress = Math.min(
-                        1,
-                        (now - startedAt) / duration
-                    );
-
-                    const eased = 1 - Math.pow(1 - progress, 3);
-                    number.textContent = String(
-                        Math.round(finalValue * eased)
-                    );
-
-                    if (progress < 1) {
-                        window.requestAnimationFrame(render);
-                    }
-                };
-
-                window.requestAnimationFrame(render);
-            });
-    }
 
     initVelouraPurchaseButtons() {
         const component = document.querySelector(
