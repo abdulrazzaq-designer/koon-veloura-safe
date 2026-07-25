@@ -33,31 +33,25 @@ class Product extends BasePage {
         document.documentElement.classList.add('veloura-is-product-page');
         document.body.classList.add('veloura-is-product-page');
 
-        const rawSticky = page.getAttribute('data-veloura-v41-sticky');
-        const stickyEnabled =
-            rawSticky === 'true' ||
-            (rawSticky !== 'false' && page.classList.contains('veloura-product-mobile-sticky-enabled'));
+        const stickyEnabled = page.classList.contains(
+            'veloura-product-mobile-sticky-enabled'
+        );
 
-        document.body.classList.toggle('veloura-v41-sticky-enabled', stickyEnabled);
-        document.body.classList.toggle('veloura-v41-sticky-disabled', !stickyEnabled);
-        document.body.classList.toggle('veloura-product-sticky-active', stickyEnabled);
-
-        if (!stickyEnabled) {
-            document.body.classList.remove('is-sticky-product-bar');
-        }
+        document.body.classList.toggle(
+            'veloura-product-sticky-active',
+            stickyEnabled
+        );
     }
+
     initVelouraProductThumbnails() {
         const page = document.querySelector('.veloura-product-page');
         const slider = page?.querySelector('salla-slider.details-slider.image-slider');
-        const nativeThumbs = slider?.querySelector(':scope > [slot="thumbs"]');
 
-        if (!page || !slider || !nativeThumbs || slider.dataset.velouraV41ThumbsReady === '1') {
+        if (!page || !slider || slider.dataset.velouraThumbsReady === '1') {
             return;
         }
 
-        slider.dataset.velouraV41ThumbsReady = '1';
         slider.dataset.velouraThumbsReady = '1';
-        nativeThumbs.classList.add('veloura-v41-native-thumbs');
 
         const selectedLayout =
             slider.getAttribute('data-veloura-thumbs-layout') ||
@@ -65,153 +59,43 @@ class Product extends BasePage {
             'below_image';
         const desktopMedia = window.matchMedia('(min-width: 768px)');
 
-        let shell = slider.parentElement;
-        if (!shell?.classList.contains('veloura-v41-gallery-shell')) {
-            shell = document.createElement('div');
-            shell.className = 'veloura-v41-gallery-shell';
-            slider.parentNode.insertBefore(shell, slider);
-            shell.appendChild(slider);
-        }
-
-        let rail = shell.querySelector(':scope > .veloura-v41-thumb-rail');
-        if (!rail) {
-            rail = document.createElement('div');
-            rail.className = 'veloura-v41-thumb-rail';
-            rail.setAttribute('role', 'tablist');
-            rail.setAttribute('aria-label', 'صور المنتج المصغرة');
-            shell.appendChild(rail);
-        }
-
-        const sourceThumbs = Array.from(nativeThumbs.querySelectorAll('.veloura-product-thumb-item'));
-        const buttons = sourceThumbs.map((thumb, index) => {
-            const sourceImage = thumb.querySelector('img');
-            const button = document.createElement('button');
-            button.type = 'button';
-            button.className = 'veloura-v41-thumb-button' + (index === 0 ? ' is-active' : '');
-            button.setAttribute('role', 'tab');
-            button.setAttribute('aria-selected', index === 0 ? 'true' : 'false');
-            button.setAttribute('aria-label', 'عرض صورة المنتج ' + (index + 1));
-
-            if (sourceImage) {
-                const image = document.createElement('img');
-                image.src = sourceImage.currentSrc || sourceImage.src;
-                image.alt = sourceImage.alt || '';
-                image.loading = index < 3 ? 'eager' : 'lazy';
-                button.appendChild(image);
-            }
-
-            button.addEventListener('click', () => {
-                buttons.forEach((item, itemIndex) => {
-                    item.classList.toggle('is-active', itemIndex === index);
-                    item.setAttribute('aria-selected', itemIndex === index ? 'true' : 'false');
-                });
-                if (typeof slider.slideTo === 'function') {
-                    slider.slideTo(index);
-                }
-            });
-
-            rail.appendChild(button);
-            return button;
-        });
-
-        const setActive = (index) => {
-            index = Number.parseInt(index, 10);
-            if (!Number.isFinite(index)) return;
-            buttons.forEach((button, itemIndex) => {
-                const active = itemIndex === index;
-                button.classList.toggle('is-active', active);
-                button.setAttribute('aria-selected', active ? 'true' : 'false');
-                if (active) button.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-            });
-        };
-
-        slider.addEventListener('slideChange', (event) => {
-            const detail = event.detail || {};
-            const index =
-                detail.realIndex ??
-                detail.activeIndex ??
-                detail.swiper?.realIndex ??
-                detail.swiper?.activeIndex;
-            setActive(index);
-        });
-
-        let frame = 0;
-        const measure = () => {
-            frame = 0;
-            if (!shell.classList.contains('is-right-thumbs')) return;
-
-            let height = 0;
-            const shadowSwipers = slider.shadowRoot
-                ? Array.from(slider.shadowRoot.querySelectorAll('.swiper'))
-                : [];
-            shadowSwipers.forEach((element) => {
-                const rect = element.getBoundingClientRect();
-                if (rect.width > 150 && rect.height > height) height = rect.height;
-            });
-
-            if (height < 120) {
-                const item = slider.querySelector('[slot="items"] .swiper-slide');
-                height = item?.getBoundingClientRect().height || slider.getBoundingClientRect().height;
-            }
-
-            if (height < 120) return;
-            const width = Math.max(1, slider.getBoundingClientRect().width);
-            const visibleCount = height >= width * 1.08 ? 3 : 2;
-            shell.style.setProperty('--veloura-v41-gallery-height', height.toFixed(2) + 'px');
-            shell.style.setProperty('--veloura-v41-visible-count', String(visibleCount));
-        };
-
-        const scheduleMeasure = () => {
-            if (frame) cancelAnimationFrame(frame);
-            frame = requestAnimationFrame(measure);
-        };
-
-        const horizontalConfig = {
-            direction: 'horizontal',
-            slidesPerView: 'auto',
-            spaceBetween: 12,
-            watchSlidesProgress: true,
-        };
-
         const applyLayout = async () => {
-            const right = selectedLayout === 'right_side' && desktopMedia.matches;
-            shell.classList.toggle('is-right-thumbs', right);
-            rail.hidden = !right;
-            nativeThumbs.hidden = right;
+            const vertical = selectedLayout === 'right_side' && desktopMedia.matches;
+            const thumbsConfig = {
+                direction: vertical ? 'vertical' : 'horizontal',
+                slidesPerView: 'auto',
+                spaceBetween: 12,
+                watchSlidesProgress: true,
+            };
 
-            slider.removeAttribute('vertical-thumbs');
-            slider.setAttribute('thumbs-config', JSON.stringify(horizontalConfig));
+            slider.removeAttribute('thumbs-position');
+            slider.toggleAttribute('vertical-thumbs', vertical);
+            slider.setAttribute('thumbs-config', JSON.stringify(thumbsConfig));
+
             try {
-                slider.verticalThumbs = false;
-                slider.thumbsConfig = horizontalConfig;
-                if (typeof slider.update === 'function') await slider.update();
+                slider.verticalThumbs = vertical;
+                slider.thumbsConfig = thumbsConfig;
+
+                if (typeof slider.update === 'function') {
+                    await slider.update();
+                }
             } catch (error) {
                 console.warn('Veloura thumbnail layout update failed:', error);
             }
-
-            if (right) {
-                scheduleMeasure();
-                window.setTimeout(scheduleMeasure, 120);
-                window.setTimeout(scheduleMeasure, 500);
-            } else {
-                shell.style.removeProperty('--veloura-v41-gallery-height');
-                shell.style.removeProperty('--veloura-v41-visible-count');
-            }
         };
 
-        if (window.ResizeObserver) {
-            const resizeObserver = new ResizeObserver(scheduleMeasure);
-            resizeObserver.observe(slider);
-        }
-
-        slider.querySelectorAll('[slot="items"] img').forEach((image) => {
-            if (!image.complete) image.addEventListener('load', scheduleMeasure, { once: true });
-        });
+        const initialize = () => {
+            applyLayout();
+            window.setTimeout(applyLayout, 120);
+        };
 
         if (window.customElements?.whenDefined) {
-            window.customElements.whenDefined('salla-slider').then(applyLayout).catch(applyLayout);
+            window.customElements
+                .whenDefined('salla-slider')
+                .then(initialize)
+                .catch(initialize);
         } else {
-            applyLayout();
+            initialize();
         }
 
         if (typeof desktopMedia.addEventListener === 'function') {
@@ -220,6 +104,7 @@ class Product extends BasePage {
             desktopMedia.addListener(applyLayout);
         }
     }
+
     initProductOptionValidations() {
         document.querySelector('.product-form')?.addEventListener('change', function () {
             this.reportValidity() && salla.product.getPrice(new FormData(this));
