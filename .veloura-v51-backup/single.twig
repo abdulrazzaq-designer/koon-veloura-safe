@@ -326,17 +326,7 @@
                         loop="false"
                         {{ vpp_images_height_mode == 'fixed_all' ? '' : 'auto-height' }}
                         listen-to-thumbnails-option
-                        show-thumbs-controls="true"
-                        thumbs-config='{
-                          "slidesPerView": 4,
-                          "spaceBetween": 10,
-                          "freeMode": true,
-                          "watchSlidesProgress": true,
-                          "allowTouchMove": true,
-                          "breakpoints": {
-                            "768": {"slidesPerView": 5, "spaceBetween": 12}
-                          }
-                        }'>
+                        show-thumbs-controls="false">
                     <div class="veloura-product-media-actions">
                         <div class="veloura-product-media-actions__left">
                             <button type="button"
@@ -402,7 +392,7 @@
                     </div>
 
                     {% if has_many_images and not (vpp_enabled and vpp_hide_thumbnails) %}
-                        <div slot="thumbs" class="veloura-product-native-thumbs">
+                        <div slot="thumbs" class="veloura-v42-native-thumbs">
                             {% for image in product.images %}
                                 <div class="slide--one-fourth veloura-product-thumb-item {{ image.video_url?'video-entry':'' }} {{ image.three_d_image_url?'model-entry':'' }}" data-caption="{{ image.alt }}">
                                     {% if loop.index < 5 %}
