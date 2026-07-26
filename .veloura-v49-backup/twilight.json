@@ -1897,11 +1897,6 @@
           "id": "veloura_top_enabled_2026",
           "operation": "=",
           "value": true
-        },
-        {
-          "id": "veloura_product_details_order_enabled_2026",
-          "operation": "=",
-          "value": true
         }
       ]
     },
@@ -6998,6 +6993,20 @@
       ]
     },
     {
+      "id": "veloura_product_details_order_title_2026",
+      "type": "static",
+      "format": "title",
+      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:14px;background:#eef2ff;color:#3730a3;text-align:right;font-weight:800;border-right:4px solid #6366f1\"><span>ترتيب تفاصيل المنتج</span><div style=\"font-size:12px;font-weight:500;opacity:.8;margin-top:4px\">اختر ترتيب كل مجموعة من 1 إلى 10</div></div>",
+      "variant": "h6",
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "id": "veloura_product_details_order_intro_2026",
       "type": "static",
       "format": "description",
@@ -7013,26 +7022,12 @@
       ]
     },
     {
-      "id": "veloura_product_details_order_title_2026",
-      "type": "static",
-      "format": "title",
-      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:14px;background:#eef2ff;color:#3730a3;text-align:right;font-weight:800;border-right:4px solid #6366f1\"><span>ترتيب تفاصيل المنتج</span><div style=\"font-size:12px;font-weight:500;opacity:.8;margin-top:4px\">اختر ترتيب كل مجموعة من 1 إلى 10</div></div>",
-      "variant": "h6",
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "id": "veloura_product_details_order_enabled_2026",
       "type": "boolean",
       "format": "switch",
       "icon": "sicon-toggle-off",
       "label": "تفعيل تخصيص ترتيب عناصر تفاصيل المنتج",
-      "description": "عند إغلاقه يرجع ترتيب تفاصيل المنتج الأصلي بالكامل، وعند تفعيله تظهر خيارات الترتيب المخصصة.",
+      "description": "عند إيقافه يُلغى تأثير الترتيب فورًا وتعود الصفحة إلى ترتيبها الأصلي.",
       "required": false,
       "value": false,
       "selected": false,
@@ -7042,8 +7037,7 @@
           "operation": "=",
           "value": true
         }
-      ],
-      "wide": true
+      ]
     },
     {
       "id": "veloura_product_order_title_2026",
