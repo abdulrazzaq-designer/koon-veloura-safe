@@ -359,14 +359,24 @@
                 {% set has_many_images = product.images|length > 1 %}
                 <salla-slider
                         id="details-slider-{{ product.id }}"
-                        class="details-slider image-slider"
+                        class="details-slider rounded-md image-slider"
                         type="thumbs"
                         loop="false"
                         {{ vpp_images_height_mode == 'fixed_all' ? '' : 'auto-height' }}
                         listen-to-thumbnails-option
-                                show-thumbs-controls="false"
-                                thumbs-config='{"slidesPerView":4,"slidesPerGroup":1,"spaceBetween":12,"freeMode":true,"watchSlidesProgress":true,"allowTouchMove":true}'
-                                style="--veloura-v55-radius: var(--veloura-product-radius, 0px);">
+                thumbs-config='{
+                  "slidesPerView": 4,
+                  "slidesPerGroup": 1,
+                  "spaceBetween": 10,
+                  "freeMode": true,
+                  "watchSlidesProgress": true,
+                  "allowTouchMove": true,
+                  "roundLengths": true,
+                  "breakpoints": {
+                    "768": {"slidesPerView": 5, "slidesPerGroup": 1, "spaceBetween": 12}
+                  }
+                }'
+                show-thumbs-controls="false">
                     <div class="veloura-product-media-actions">
                         <div class="veloura-product-media-actions__left">
                             <button type="button"
@@ -434,22 +444,19 @@
                     {% if has_many_images and not (vpp_enabled and vpp_hide_thumbnails) %}
                         <div slot="thumbs" class="veloura-product-native-thumbs">
                             {% for image in product.images %}
-                                <div class="slide--one-fourth veloura-product-thumb-item {{ image.video_url?'video-entry':'' }} {{ image.three_d_image_url?'model-entry':'' }}" data-caption="{{ image.alt }}"
-                                style="border-radius: var(--veloura-product-radius, 0px) !important; overflow: hidden !important;">
+                                <div class="slide--one-fourth veloura-product-thumb-item {{ image.video_url?'video-entry':'' }} {{ image.three_d_image_url?'model-entry':'' }}" data-caption="{{ image.alt }}">
                                     {% if loop.index < 5 %}
                                         <img src="{{ image.url }}"
                                              loading="eager"
                                              class="object-contain w-full h-full bg-gray-100 overflow-hidden"
                                              title="{{ image.alt }}"
-                                             alt="{{ image.alt }}"
-                                style="border-radius: var(--veloura-product-radius, 0px) !important;"/>
+                                             alt="{{ image.alt }}"/>
                                     {% else %}
                                         <img src="{{ image.url }}"
                                              loading="lazy"
                                              class="object-contain w-full h-full bg-gray-100 overflow-hidden"
                                              title="{{ image.alt }}"
-                                             alt="{{ image.alt }}"
-                                style="border-radius: var(--veloura-product-radius, 0px) !important;"/>
+                                             alt="{{ image.alt }}"/>
                                     {% endif %}
                                 </div>
                             {% endfor %}
@@ -575,8 +582,7 @@
                            class="veloura-product-read-more link--primary cursor-pointer"
                            aria-expanded="false"
                            data-more-text="{{ trans('pages.products.read_more') }}"
-                           data-less-text="عرض أقل"
-                                style="border-radius: var(--veloura-product-radius, 0px) !important; overflow: hidden !important;">
+                           data-less-text="عرض أقل">
                             <span class="veloura-product-read-more__text">{{ trans('pages.products.read_more') }}</span>
                         </a>
                     {% endif %}
@@ -703,8 +709,7 @@
                         </section>
                     {% endif %}
 
-                    <section class="sticky-product-bar veloura-product-sticky-bar bg-white p-5" data-veloura-purchase-bar
-                                style="border-radius: var(--veloura-product-radius, 0px) !important;">
+                    <section class="sticky-product-bar veloura-product-sticky-bar bg-white p-5" data-veloura-purchase-bar>
                         {# Live price inside purchase card: below quantity, above buttons #}
                         <div class="veloura-product-cart-price-row">
                             <span class="veloura-product-cart-price-row__label">{{ trans('pages.products.price') }}</span>
@@ -746,15 +751,14 @@
                                 product-id="{{ product.id }}"
                                 loader-position="end"
                                 type="submit"
+                                width="wide"
                                 {# Notify availability props#}
                                 {% if product.notify_availability %}
                                     {{ product.notify_availability.subscribed ? 'is-subscribed' : '' }}
                                     channels="{{ product.notify_availability.channels|join(',') }}"
                                     subscribed-options="{{ product.notify_availability.subscribed_options|json_encode|e('html_attr') }}"
                                     {{ product.notify_availability.options ? 'notify-options-availability' : '' }}
-                                {% endif %}
-                                width="wide"
-                                style="--button-border-radius: var(--veloura-product-radius, 0px); --salla-fast-checkout-button-border-radius: var(--veloura-product-radius, 0px); --salla-fast-checkout-button-width: 100%; border-radius: var(--veloura-product-radius, 0px) !important; overflow: hidden !important;">
+                                {% endif %}>
 
                             {{ product.add_to_cart_label }}
                         </salla-add-product-button>
