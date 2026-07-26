@@ -160,43 +160,6 @@
         {{ fallback }}
       {% endif %}
     {% endmacro %}
-
-{# Veloura V52 text normalizer start #}
-{% macro veloura_text(raw, fallback) %}
-  {# Text fields may arrive in value or selected. Use the first non-empty saved value. #}
-  {% set candidate = null %}
-  {% if raw.value is defined %}
-    {% if raw.value.value is defined %}
-      {% set candidate = raw.value.value %}
-    {% elseif raw.value is iterable and raw.value[0] is defined and raw.value[0].value is defined %}
-      {% set candidate = raw.value[0].value %}
-    {% elseif raw.value is iterable and raw.value[0] is defined %}
-      {% set candidate = raw.value[0] %}
-    {% else %}
-      {% set candidate = raw.value %}
-    {% endif %}
-  {% endif %}
-  {% if not candidate and candidate != 0 and candidate != '0' and raw.selected is defined %}
-    {% if raw.selected.value is defined %}
-      {% set candidate = raw.selected.value %}
-    {% elseif raw.selected is iterable and raw.selected[0] is defined and raw.selected[0].value is defined %}
-      {% set candidate = raw.selected[0].value %}
-    {% elseif raw.selected is iterable and raw.selected[0] is defined %}
-      {% set candidate = raw.selected[0] %}
-    {% else %}
-      {% set candidate = raw.selected %}
-    {% endif %}
-  {% endif %}
-  {% if not candidate and candidate != 0 and candidate != '0' and (raw or raw == 0 or raw == '0') and raw is not iterable %}
-    {% set candidate = raw %}
-  {% endif %}
-  {% if candidate or candidate == 0 or candidate == '0' %}
-    {{ candidate }}
-  {% else %}
-    {{ fallback }}
-  {% endif %}
-{% endmacro %}
-{# Veloura V52 text normalizer end #}
 {# Veloura Product Settings Normalizers V37 end #}
 
     {% set vpp_enabled = _self.veloura_bool(theme.settings.get('veloura_product_page_enabled_2026', true), true)|trim == 'true' %}
@@ -226,14 +189,14 @@
     {% set vpp_mobile_buttons_compact = _self.veloura_bool(theme.settings.get('veloura_product_mobile_buttons_compact_2026', true), true)|trim == 'true' %}
 
     {% set vpp_coupon_enabled = _self.veloura_bool(theme.settings.get('veloura_product_coupon_enabled_2026', false), false)|trim == 'true' %}
-    {% set vpp_coupon_title = _self.veloura_text(theme.settings.get('veloura_product_coupon_title_2026', 'خصم إضافي 10%'), 'خصم إضافي 10%')|trim %}
-    {% set vpp_coupon_subtitle = _self.veloura_text(theme.settings.get('veloura_product_coupon_subtitle_2026', 'انسخ الكود واحصل على خصم إضافي عند الدفع'), 'انسخ الكود واحصل على خصم إضافي عند الدفع')|trim %}
-    {% set vpp_coupon_code = _self.veloura_text(theme.settings.get('veloura_product_coupon_code_2026', ''), '')|trim %}
+    {% set vpp_coupon_title = _self.veloura_select(theme.settings.get('veloura_product_coupon_title_2026', 'خصم إضافي 10%'), 'خصم إضافي 10%')|trim %}
+    {% set vpp_coupon_subtitle = _self.veloura_select(theme.settings.get('veloura_product_coupon_subtitle_2026', 'انسخ الكود واحصل على خصم إضافي عند الدفع'), 'انسخ الكود واحصل على خصم إضافي عند الدفع')|trim %}
+    {% set vpp_coupon_code = _self.veloura_select(theme.settings.get('veloura_product_coupon_code_2026', ''), '')|trim %}
 
     {% set vpp_tags_enabled = _self.veloura_bool(theme.settings.get('veloura_product_tags_enabled_2026', true), true)|trim == 'true' %}
     {% set vpp_hide_tags_visual_only = _self.veloura_bool(theme.settings.get('veloura_product_hide_tags_visual_only_2026', false), false)|trim == 'true' %}
     {% set vpp_hide_liked_products = _self.veloura_bool(theme.settings.get('veloura_product_hide_liked_products_2026', false), false)|trim == 'true' %}
-    {% set vpp_liked_title = _self.veloura_text(theme.settings.get('veloura_product_liked_title_2026', trans('pages.products.similar_products')), trans('pages.products.similar_products'))|trim %}
+    {% set vpp_liked_title = theme.settings.get('veloura_product_liked_title_2026', trans('pages.products.similar_products')) ?: trans('pages.products.similar_products') %}
 
     {% set vpp_related_desktop_columns_raw = _self.veloura_select(theme.settings.get('veloura_related_desktop_columns', 4), 4)|trim %}
     {% set vpp_related_desktop_columns = vpp_related_desktop_columns_raw + 0 %}
@@ -363,17 +326,15 @@
                         loop="false"
                         {{ vpp_images_height_mode == 'fixed_all' ? '' : 'auto-height' }}
                         listen-to-thumbnails-option
-                        show-thumbs-controls="false"
+                        show-thumbs-controls="true"
                         thumbs-config='{
                           "slidesPerView": 4,
-                          "slidesPerGroup": 1,
                           "spaceBetween": 10,
                           "freeMode": true,
                           "watchSlidesProgress": true,
                           "allowTouchMove": true,
-                          "roundLengths": true,
                           "breakpoints": {
-                            "768": {"slidesPerView": 5, "slidesPerGroup": 1, "spaceBetween": 12}
+                            "768": {"slidesPerView": 5, "spaceBetween": 12}
                           }
                         }'>
                     <div class="veloura-product-media-actions">
@@ -868,33 +829,20 @@
 
         
 
-        <div class="container veloura-product-related-products {{ vpp_related_center_title ? 'is-title-centered' : '' }} {{ vpp_related_hide_arrows ? 'is-arrows-hidden' : '' }}">
+        <div class="container veloura-product-related-products">
             <salla-products-slider
                 data-veloura-related-slider
-                data-veloura-related-snap="one"
                 data-veloura-related-mobile="{{ vpp_related_mobile_columns }}"
                 data-veloura-related-desktop="{{ vpp_related_desktop_columns }}"
                 data-veloura-related-hide-arrows="{{ vpp_related_hide_arrows ? 'true' : 'false' }}"
                 data-veloura-related-center-title="{{ vpp_related_center_title ? 'true' : 'false' }}"
                 slider-config='{
                   "slidesPerView": {{ vpp_related_mobile_columns|default(2) }},
-                  "slidesPerGroup": 1,
                   "spaceBetween": 12,
-                  "centeredSlides": false,
-                  "freeMode": false,
-                  "roundLengths": true,
-                  "slidesOffsetBefore": 0,
-                  "slidesOffsetAfter": 0,
                   "breakpoints": {
                     "768": {
                       "slidesPerView": {{ vpp_related_desktop_columns|default(4) }},
-                      "slidesPerGroup": 1,
-                      "spaceBetween": 16,
-                      "centeredSlides": false,
-                      "freeMode": false,
-                      "roundLengths": true,
-                      "slidesOffsetBefore": 0,
-                      "slidesOffsetAfter": 0
+                      "spaceBetween": 16
                     }
                   }
                 }'
