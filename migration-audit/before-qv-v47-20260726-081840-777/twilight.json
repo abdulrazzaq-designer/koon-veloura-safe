@@ -6993,21 +6993,6 @@
       ]
     },
     {
-      "id": "veloura_product_details_order_enabled_2026",
-      "type": "boolean",
-      "format": "switch",
-      "label": "تفعيل تخصيص ترتيب عناصر تفاصيل المنتج",
-      "description": "مغلق افتراضيًا. عند إيقافه يرجع ترتيب صفحة المنتج الأصلي مباشرة.",
-      "value": false,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "type": "static",
       "format": "title",
       "id": "veloura_product_details_order_title_2026",
@@ -7016,11 +7001,6 @@
       "conditions": [
         {
           "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_details_order_enabled_2026",
           "operation": "=",
           "value": true
         }
@@ -7101,11 +7081,6 @@
           "id": "veloura_product_page_panel_open_2026",
           "operation": "=",
           "value": true
-        },
-        {
-          "id": "veloura_product_details_order_enabled_2026",
-          "operation": "=",
-          "value": true
         }
       ]
     },
@@ -7182,11 +7157,6 @@
       "conditions": [
         {
           "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_details_order_enabled_2026",
           "operation": "=",
           "value": true
         }
@@ -7267,11 +7237,6 @@
           "id": "veloura_product_page_panel_open_2026",
           "operation": "=",
           "value": true
-        },
-        {
-          "id": "veloura_product_details_order_enabled_2026",
-          "operation": "=",
-          "value": true
         }
       ]
     },
@@ -7348,11 +7313,6 @@
       "conditions": [
         {
           "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_details_order_enabled_2026",
           "operation": "=",
           "value": true
         }
@@ -7433,11 +7393,6 @@
           "id": "veloura_product_page_panel_open_2026",
           "operation": "=",
           "value": true
-        },
-        {
-          "id": "veloura_product_details_order_enabled_2026",
-          "operation": "=",
-          "value": true
         }
       ]
     },
@@ -7514,11 +7469,6 @@
       "conditions": [
         {
           "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_details_order_enabled_2026",
           "operation": "=",
           "value": true
         }
@@ -7599,11 +7549,6 @@
           "id": "veloura_product_page_panel_open_2026",
           "operation": "=",
           "value": true
-        },
-        {
-          "id": "veloura_product_details_order_enabled_2026",
-          "operation": "=",
-          "value": true
         }
       ]
     },
@@ -7680,11 +7625,6 @@
       "conditions": [
         {
           "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_details_order_enabled_2026",
           "operation": "=",
           "value": true
         }
@@ -7765,11 +7705,6 @@
           "id": "veloura_product_page_panel_open_2026",
           "operation": "=",
           "value": true
-        },
-        {
-          "id": "veloura_product_details_order_enabled_2026",
-          "operation": "=",
-          "value": true
         }
       ]
     },
@@ -7846,11 +7781,6 @@
       "conditions": [
         {
           "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_details_order_enabled_2026",
           "operation": "=",
           "value": true
         }
@@ -7999,22 +7929,6 @@
       "step": "1",
       "minimum": "1",
       "maximum": "6"
-    },
-    {
-      "id": "veloura_related_hide_arrows_2026",
-      "type": "boolean",
-      "format": "switch",
-      "label": "إخفاء أسهم التنقل في منتجات قد تعجبك",
-      "description": "يخفي سهمي السابق والتالي مع بقاء السحب باللمس أو الماوس.",
-      "value": false
-    },
-    {
-      "id": "veloura_related_center_title_2026",
-      "type": "boolean",
-      "format": "switch",
-      "label": "توسيط عنوان منتجات قد تعجبك",
-      "description": "يوسّط عنوان القسم دون تغيير محاذاة بطاقات المنتجات.",
-      "value": false
     },
     {
       "id": "veloura_product_custom_related_source_2026",

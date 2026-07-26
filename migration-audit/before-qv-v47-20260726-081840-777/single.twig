@@ -206,8 +206,6 @@
     {% set vpp_related_mobile_columns = vpp_related_mobile_columns_raw + 0 %}
     {% if vpp_related_mobile_columns < 1 %}{% set vpp_related_mobile_columns = 1 %}{% endif %}
     {% if vpp_related_mobile_columns > 3 %}{% set vpp_related_mobile_columns = 3 %}{% endif %}
-    {% set vpp_related_hide_arrows = _self.veloura_bool(theme.settings.get('veloura_related_hide_arrows_2026', false), false)|trim == 'true' %}
-    {% set vpp_related_center_title = _self.veloura_bool(theme.settings.get('veloura_related_center_title_2026', false), false)|trim == 'true' %}
 
     {% set vpp_custom_related_enabled = _self.veloura_bool(theme.settings.get('veloura_product_custom_related_enabled_2026', false), false)|trim == 'true' %}
     {% set vpp_custom_related_source = _self.veloura_select(theme.settings.get('veloura_product_custom_related_source_2026', 'selected'), 'selected')|trim %}
@@ -248,7 +246,6 @@
     {% set vpp_purchase_count_min_raw = _self.veloura_select(theme.settings.get('veloura_product_purchase_count_min_2026', 10), 10)|trim %}
     {% set vpp_purchase_count_min = vpp_purchase_count_min_raw + 0 %}
 
-    {% set vpp_details_order_enabled = _self.veloura_bool(theme.settings.get('veloura_product_details_order_enabled_2026', false), false)|trim == 'true' %}
     {# Veloura V42 sortable product-details groups #}
     {% set vpp_order_title_raw = _self.veloura_select(theme.settings.get('veloura_product_order_title_2026', 1), 1)|trim %}
     {% set vpp_order_price_raw = _self.veloura_select(theme.settings.get('veloura_product_order_price_2026', 2), 2)|trim %}
@@ -304,7 +301,7 @@
      data-v42-order-extras="{{ vpp_order_extras }}"
      data-v42-order-options="{{ vpp_order_options }}"
      data-v42-order-quick="{{ vpp_order_quick }}"
-     data-v42-order-payments="{{ vpp_order_payments }}" data-v42-order-enabled="{{ vpp_details_order_enabled ? 'true' : 'false' }}" data-veloura-product-build="v20-marketing-related" data-veloura-v37-stock-radar="{{ vpp_show_stock_radar ? 'pulse' : 'simple' }}" data-veloura-v37-images-zoom="{{ vpp_images_zoom ? 'true' : 'false' }}" data-veloura-quantity-style="{{ vpp_mobile_quantity_style }}" class="container veloura-product-page {{ vpp_enabled ? 'veloura-product-enabled' : '' }} {{ vpp_hide_breadcrumb ? 'veloura-product-hide-breadcrumb' : '' }} {{ vpp_hide_thumbnails ? 'veloura-product-hide-thumbs' : '' }} veloura-product-images-{{ vpp_images_height_mode }} {{ vpp_images_zoom ? 'veloura-product-zoom-enabled' : '' }} {{ vpp_enabled and vpp_hide_short_description ? 'veloura-product-desc-collapsed' : '' }} {{ vpp_mobile_sticky_cart ? 'veloura-product-mobile-sticky-enabled' : 'veloura-product-mobile-sticky-disabled' }} {{ vpp_mobile_sticky_price ? 'veloura-product-mobile-sticky-price' : '' }} veloura-product-qty-{{ vpp_mobile_quantity_style }} {{ vpp_mobile_buttons_compact ? 'veloura-product-buttons-compact' : '' }} {{ vpp_hide_discount_value ? 'veloura-product-hide-discount' : '' }} {{ vpp_hide_tags_visual_only ? 'veloura-product-tags-visual-hidden' : '' }}" style="--veloura-product-bg-inline: {{ vpp_basic_bg }}; --veloura-product-secondary-bg-inline: {{ vpp_second_bg }}; --veloura-product-dark-bg-inline: {{ vpp_dark_basic_bg }}; --veloura-product-dark-secondary-bg-inline: {{ vpp_dark_second_bg }}; --veloura-product-radius: {{ vpp_general_radius }};" >
+     data-v42-order-payments="{{ vpp_order_payments }}" data-veloura-product-build="v20-marketing-related" data-veloura-v37-stock-radar="{{ vpp_show_stock_radar ? 'pulse' : 'simple' }}" data-veloura-v37-images-zoom="{{ vpp_images_zoom ? 'true' : 'false' }}" data-veloura-quantity-style="{{ vpp_mobile_quantity_style }}" class="container veloura-product-page {{ vpp_enabled ? 'veloura-product-enabled' : '' }} {{ vpp_hide_breadcrumb ? 'veloura-product-hide-breadcrumb' : '' }} {{ vpp_hide_thumbnails ? 'veloura-product-hide-thumbs' : '' }} veloura-product-images-{{ vpp_images_height_mode }} {{ vpp_images_zoom ? 'veloura-product-zoom-enabled' : '' }} {{ vpp_enabled and vpp_hide_short_description ? 'veloura-product-desc-collapsed' : '' }} {{ vpp_mobile_sticky_cart ? 'veloura-product-mobile-sticky-enabled' : 'veloura-product-mobile-sticky-disabled' }} {{ vpp_mobile_sticky_price ? 'veloura-product-mobile-sticky-price' : '' }} veloura-product-qty-{{ vpp_mobile_quantity_style }} {{ vpp_mobile_buttons_compact ? 'veloura-product-buttons-compact' : '' }} {{ vpp_hide_discount_value ? 'veloura-product-hide-discount' : '' }} {{ vpp_hide_tags_visual_only ? 'veloura-product-tags-visual-hidden' : '' }}" style="--veloura-product-bg-inline: {{ vpp_basic_bg }}; --veloura-product-secondary-bg-inline: {{ vpp_second_bg }}; --veloura-product-dark-bg-inline: {{ vpp_dark_basic_bg }}; --veloura-product-dark-secondary-bg-inline: {{ vpp_dark_second_bg }}; --veloura-product-radius: {{ vpp_general_radius }};" >
 
         {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
         {% if not (vpp_enabled and vpp_hide_breadcrumb) %}
@@ -818,10 +815,6 @@
         <div class="container veloura-product-related-products">
             <salla-products-slider
                 data-veloura-related-slider
-                data-veloura-related-mobile="{{ vpp_related_mobile_columns }}"
-                data-veloura-related-desktop="{{ vpp_related_desktop_columns }}"
-                data-veloura-related-hide-arrows="{{ vpp_related_hide_arrows ? 'true' : 'false' }}"
-                data-veloura-related-center-title="{{ vpp_related_center_title ? 'true' : 'false' }}"
                 slider-config='{
                   "slidesPerView": {{ vpp_related_mobile_columns|default(2) }},
                   "spaceBetween": 12,
