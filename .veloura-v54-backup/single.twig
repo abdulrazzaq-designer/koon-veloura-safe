@@ -364,6 +364,7 @@
                         loop="false"
                         {{ vpp_images_height_mode == 'fixed_all' ? '' : 'auto-height' }}
                         listen-to-thumbnails-option
+                show-thumbs-controls="false"
                 thumbs-config='{
                   "slidesPerView": 4,
                   "slidesPerGroup": 1,
@@ -375,8 +376,7 @@
                   "breakpoints": {
                     "768": {"slidesPerView": 5, "slidesPerGroup": 1, "spaceBetween": 12}
                   }
-                }'
-                show-thumbs-controls="false">
+                }'>
                     <div class="veloura-product-media-actions">
                         <div class="veloura-product-media-actions__left">
                             <button type="button"
@@ -448,13 +448,13 @@
                                     {% if loop.index < 5 %}
                                         <img src="{{ image.url }}"
                                              loading="eager"
-                                             class="object-contain w-full h-full bg-gray-100 overflow-hidden"
+                                             class="object-contain w-full h-full bg-gray-100 rounded-md overflow-hidden"
                                              title="{{ image.alt }}"
                                              alt="{{ image.alt }}"/>
                                     {% else %}
                                         <img src="{{ image.url }}"
                                              loading="lazy"
-                                             class="object-contain w-full h-full bg-gray-100 overflow-hidden"
+                                             class="object-contain w-full h-full bg-gray-100 rounded-md overflow-hidden"
                                              title="{{ image.alt }}"
                                              alt="{{ image.alt }}"/>
                                     {% endif %}
@@ -709,7 +709,7 @@
                         </section>
                     {% endif %}
 
-                    <section class="sticky-product-bar veloura-product-sticky-bar veloura-glass-surface veloura-glass-sticky-product bg-white p-5">
+                    <section class="sticky-product-bar veloura-product-sticky-bar veloura-glass-surface veloura-glass-sticky-product bg-white p-5 rounded-md">
                         {# Live price inside purchase card: below quantity, above buttons #}
                         <div class="veloura-product-cart-price-row">
                             <span class="veloura-product-cart-price-row__label">{{ trans('pages.products.price') }}</span>
