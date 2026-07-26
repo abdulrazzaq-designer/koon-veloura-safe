@@ -51,16 +51,15 @@ class Product extends BasePage {
         const slider = page?.querySelector('salla-slider.details-slider.image-slider');
         const nativeThumbs = slider?.querySelector(':scope > [slot="thumbs"]');
 
-        if (!page || !slider || !nativeThumbs || slider.dataset.velouraV48ThumbsReady === '1') {
+        if (!page || !slider || !nativeThumbs || slider.dataset.velouraV42ThumbsReady === '1') {
             return;
         }
 
-        slider.dataset.velouraV48ThumbsReady = '1';
         slider.dataset.velouraV42ThumbsReady = '1';
         slider.dataset.velouraThumbsReady = '1';
         nativeThumbs.hidden = false;
         nativeThumbs.classList.remove('veloura-v41-native-thumbs');
-        nativeThumbs.classList.add('veloura-v42-native-thumbs', 'veloura-v48-scrollable-thumbs');
+        nativeThumbs.classList.add('veloura-v42-native-thumbs');
 
         slider.removeAttribute('vertical-thumbs');
         slider.removeAttribute('thumbs-position');
@@ -71,88 +70,22 @@ class Product extends BasePage {
             slidesPerView: 'auto',
             spaceBetween: 12,
             watchSlidesProgress: true,
-            slideToClickedSlide: true,
-            allowTouchMove: true,
-            freeMode: { enabled: true, sticky: false },
         };
 
         slider.setAttribute('thumbs-config', JSON.stringify(horizontalConfig));
-        nativeThumbs.style.setProperty('display', 'flex', 'important');
-        nativeThumbs.style.setProperty('flex-wrap', 'nowrap', 'important');
-        nativeThumbs.style.setProperty('gap', '12px', 'important');
-        nativeThumbs.style.setProperty('width', '100%', 'important');
-        nativeThumbs.style.setProperty('max-width', '100%', 'important');
-        nativeThumbs.style.setProperty('overflow-x', 'auto', 'important');
-        nativeThumbs.style.setProperty('overflow-y', 'hidden', 'important');
-        nativeThumbs.style.setProperty('touch-action', 'pan-x', 'important');
-        nativeThumbs.style.setProperty('scroll-behavior', 'smooth', 'important');
-        nativeThumbs.style.setProperty('-webkit-overflow-scrolling', 'touch', 'important');
-        Array.from(nativeThumbs.children).forEach((thumb) => {
-            thumb.style.setProperty('flex', '0 0 auto', 'important');
-            thumb.style.removeProperty('transform');
-        });
-
-        let pointerDown = false;
-        let moved = false;
-        let startX = 0;
-        let startScroll = 0;
-        nativeThumbs.addEventListener('pointerdown', (event) => {
-            if (event.pointerType === 'mouse' && event.button !== 0) return;
-            pointerDown = true;
-            moved = false;
-            startX = event.clientX;
-            startScroll = nativeThumbs.scrollLeft;
-            try { nativeThumbs.setPointerCapture(event.pointerId); } catch (error) {}
-        });
-        nativeThumbs.addEventListener('pointermove', (event) => {
-            if (!pointerDown) return;
-            const delta = event.clientX - startX;
-            if (Math.abs(delta) > 4) moved = true;
-            if (moved) nativeThumbs.scrollLeft = startScroll - delta;
-        });
-        const release = () => { pointerDown = false; };
-        nativeThumbs.addEventListener('pointerup', release);
-        nativeThumbs.addEventListener('pointercancel', release);
-        nativeThumbs.addEventListener('pointerleave', release);
-        nativeThumbs.addEventListener('click', (event) => {
-            if (moved) { event.preventDefault(); event.stopPropagation(); moved = false; }
-        }, true);
 
         const apply = () => {
             try {
                 slider.verticalThumbs = false;
                 slider.thumbsConfig = horizontalConfig;
-                const root = slider.shadowRoot;
-                const candidates = root ? root.querySelectorAll('.swiper, [class*="thumb"] .swiper, .swiper-thumbs') : [];
-                candidates.forEach((node) => {
-                    const swiper = node.swiper;
-                    if (!swiper || !swiper.params) return;
-                    swiper.allowTouchMove = true;
-                    swiper.params.allowTouchMove = true;
-                    swiper.params.watchOverflow = false;
-                    swiper.params.slidesPerView = 'auto';
-                    swiper.params.spaceBetween = 12;
-                    swiper.params.freeMode = { enabled: true, sticky: false };
-                    if (swiper.originalParams) {
-                        swiper.originalParams.allowTouchMove = true;
-                        swiper.originalParams.watchOverflow = false;
-                        swiper.originalParams.slidesPerView = 'auto';
-                        swiper.originalParams.spaceBetween = 12;
-                        swiper.originalParams.freeMode = { enabled: true, sticky: false };
-                    }
-                    if (typeof swiper.update === 'function') swiper.update();
-                });
+                if (typeof slider.update === 'function') slider.update();
             } catch (error) {
-                console.warn('Veloura horizontal thumbnails recovery failed:', error);
+                console.warn('Veloura thumbnail reset failed:', error);
             }
         };
 
         if (window.customElements?.whenDefined) {
-            window.customElements.whenDefined('salla-slider').then(() => {
-                apply();
-                window.setTimeout(apply, 160);
-                window.setTimeout(apply, 650);
-            }).catch(apply);
+            window.customElements.whenDefined('salla-slider').then(apply).catch(apply);
         } else {
             apply();
         }
@@ -225,54 +158,43 @@ class Product extends BasePage {
             '.veloura-product-page salla-add-product-button.sticky-product-bar__btn'
         );
 
-        if (!component || component.dataset.velouraV48PurchaseReady === '1') {
+        if (!component) {
             return;
         }
-        component.dataset.velouraV48PurchaseReady = '1';
 
-        let frame = 0;
         const normalize = () => {
-            frame = 0;
-            const root = component.shadowRoot || component;
-            const main = root.querySelector('.s-add-product-button-main');
-            if (!main) return;
+            const main = component.querySelector('.s-add-product-button-main');
 
-            const children = Array.from(main.children).filter((child) => {
-                const style = window.getComputedStyle(child);
-                return !child.hidden && style.display !== 'none';
-            });
-            const columns = Math.max(1, children.length);
+            if (!main) {
+                return;
+            }
 
-            main.style.setProperty('display', 'grid', 'important');
-            main.style.setProperty('grid-template-columns', 'repeat(' + columns + ', minmax(0, 1fr))', 'important');
-            main.style.setProperty('align-items', 'stretch', 'important');
+            main.style.setProperty('display', 'flex', 'important');
             main.style.setProperty('width', '100%', 'important');
-            main.style.setProperty('gap', '10px', 'important');
+            main.style.setProperty('gap', '12px', 'important');
             main.style.setProperty('direction', 'rtl', 'important');
 
-            children.forEach((child) => {
-                child.style.removeProperty('flex');
-                child.style.setProperty('width', '100%', 'important');
+            Array.from(main.children).forEach((child) => {
+                child.style.setProperty('flex', '1 1 0', 'important');
+                child.style.setProperty('width', '0', 'important');
                 child.style.setProperty('min-width', '0', 'important');
-                child.style.setProperty('max-width', '100%', 'important');
-                child.style.setProperty('opacity', '1', 'important');
-                child.style.setProperty('visibility', 'visible', 'important');
+                child.style.setProperty('max-width', 'none', 'important');
             });
-        };
 
-        const schedule = () => {
-            if (frame) return;
-            frame = window.requestAnimationFrame(normalize);
+            component.querySelectorAll('salla-mini-checkout-widget').forEach((widget) => {
+                widget.style.setProperty('--salla-fast-checkout-button-height', '46px');
+                widget.style.setProperty('--salla-fast-checkout-button-width', '100%');
+                widget.style.setProperty('--salla-fast-checkout-button-border-radius', '9999px');
+            });
         };
 
         normalize();
-        window.setTimeout(normalize, 120);
-        window.setTimeout(normalize, 500);
-        window.setTimeout(normalize, 1200);
 
-        const observeRoot = component.shadowRoot || component;
-        const observer = new MutationObserver(schedule);
-        observer.observe(observeRoot, { childList: true, subtree: true });
+        const observer = new MutationObserver(normalize);
+        observer.observe(component, { childList: true, subtree: true });
+
+        window.setTimeout(normalize, 250);
+        window.setTimeout(normalize, 800);
     }
 
     initVelouraReadMore() {
