@@ -237,6 +237,35 @@ class Product extends BasePage {
             const main = root.querySelector('.s-add-product-button-main');
             if (!main) return;
 
+            const page = component.closest('.veloura-product-page');
+            const pageStyles = page ? window.getComputedStyle(page) : null;
+            const radius = (
+                pageStyles?.getPropertyValue('--veloura-product-radius-final') ||
+                pageStyles?.getPropertyValue('--veloura-product-radius') ||
+                '28px'
+            ).trim();
+
+            const applyRadius = (target) => {
+                if (!target?.style) return;
+                target.style.setProperty('border-radius', radius, 'important');
+                target.style.setProperty('--salla-fast-checkout-button-border-radius', radius, 'important');
+                target.style.setProperty('--salla-button-border-radius', radius, 'important');
+            };
+
+            const applyRadiusInside = (scope) => {
+                if (!scope?.querySelectorAll) return;
+                scope.querySelectorAll(
+                    '.s-add-product-button-main > *, salla-button, salla-mini-checkout-widget, .s-button-wrap, .s-button-element, .s-button-btn, button, a'
+                ).forEach((target) => {
+                    applyRadius(target);
+                    if (target.shadowRoot) applyRadiusInside(target.shadowRoot);
+                });
+            };
+
+            applyRadius(component);
+            applyRadius(main);
+            applyRadiusInside(root);
+
             const children = Array.from(main.children).filter((child) => {
                 const style = window.getComputedStyle(child);
                 return !child.hidden && style.display !== 'none';

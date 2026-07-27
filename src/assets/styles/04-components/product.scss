@@ -1680,7 +1680,7 @@ html.veloura-dark .veloura-product-page {
   align-items: center !important;
   justify-content: center !important;
   line-height: 1 !important;
-  border-radius: 9999px !important;
+  border-radius: var(--veloura-product-radius-final, 28px) !important;
   box-sizing: border-box !important;
   overflow: hidden !important;
 }
@@ -1689,7 +1689,7 @@ html.veloura-dark .veloura-product-page {
 .veloura-product-page .s-add-product-button-mini-checkout {
   --salla-fast-checkout-button-height: 46px !important;
   --salla-fast-checkout-button-width: 100% !important;
-  --salla-fast-checkout-button-border-radius: 9999px !important;
+  --salla-fast-checkout-button-border-radius: var(--veloura-product-radius-final, 28px) !important;
   width: 100% !important;
   min-width: 0 !important;
   height: 46px !important;
@@ -2199,7 +2199,7 @@ html.veloura-dark .veloura-product-page {
 
   margin: 0 !important;
   padding: 0 !important;
-  border-radius: 24px !important;
+  border-radius: var(--veloura-product-radius-final, 28px) !important;
   overflow: hidden !important;
   background: var(--veloura-product-inner-bg, #fff) !important;
   box-shadow: none !important;
@@ -2242,7 +2242,7 @@ html.veloura-dark .veloura-product-page {
     height: 102px !important;
     min-height: 102px !important;
     max-height: 102px !important;
-    border-radius: 22px !important;
+    border-radius: var(--veloura-product-radius-final, 28px) !important;
   }
 }
 
@@ -2324,7 +2324,7 @@ html.veloura-dark .veloura-product-page {
 
   margin: 0 !important;
   padding: 0 !important;
-  border-radius: 24px !important;
+  border-radius: var(--veloura-product-radius-final, 28px) !important;
   overflow: hidden !important;
   background: var(--veloura-product-inner-bg, #fff) !important;
   box-shadow: none !important;
@@ -2372,7 +2372,7 @@ html.veloura-dark .veloura-product-page {
     height: 102px !important;
     min-height: 102px !important;
     max-height: 102px !important;
-    border-radius: 22px !important;
+    border-radius: var(--veloura-product-radius-final, 28px) !important;
   }
 }
 
@@ -2471,3 +2471,31 @@ html.veloura-dark .veloura-product-page {
   }
 }
 
+
+
+/* Veloura Step 1 — product details radius and normal purchase-card surface */
+.veloura-product-page .veloura-product-purchase-card {
+  background: var(--veloura-product-secondary-bg, var(--veloura-product-card-bg, #f8fafc)) !important;
+  background-color: var(--veloura-product-secondary-bg, var(--veloura-product-card-bg, #f8fafc)) !important;
+  background-image: none !important;
+  border-radius: var(--veloura-product-radius-final, 28px) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
+}
+
+.veloura-product-page salla-add-product-button.sticky-product-bar__btn {
+  --salla-fast-checkout-button-border-radius: var(--veloura-product-radius-final, 28px) !important;
+  --salla-button-border-radius: var(--veloura-product-radius-final, 28px) !important;
+}
+
+.veloura-product-page .details-slider.image-slider > [slot="thumbs"] .swiper-slide-thumb-active,
+.veloura-product-page .details-slider.image-slider > [slot="thumbs"] .swiper-slide-thumb-active img,
+.veloura-product-page .details-slider.image-slider .s-slider-thumbs .swiper-slide-thumb-active,
+.veloura-product-page .details-slider.image-slider .s-slider-thumbs .swiper-slide-thumb-active img,
+.veloura-product-page .details-slider.image-slider .s-slider-thumbs-wrapper .swiper-slide-thumb-active,
+.veloura-product-page .details-slider.image-slider .s-slider-thumbs-wrapper .swiper-slide-thumb-active img,
+.veloura-product-page .veloura-product-thumb-item[aria-current="true"],
+.veloura-product-page .veloura-product-thumb-item[aria-current="true"] img {
+  border-radius: var(--veloura-product-radius-final, 28px) !important;
+}
