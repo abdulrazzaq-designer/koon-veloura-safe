@@ -10052,7 +10052,7 @@
           "id": "hide_section",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل1111",
           "description": "سيتم إخفاء القسم كامل من الصفحة الرئيسية، ويمكنك إظهاره لاحقًا في أي وقت",
           "labelHTML": null,
           "icon": "sicon-toggle-off",
