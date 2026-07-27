@@ -247,11 +247,6 @@
     {% set vpp_related_hide_arrows = _self.veloura_bool(theme.settings.get('veloura_related_hide_arrows_2026', false), false)|trim == 'true' %}
     {% set vpp_related_center_title = _self.veloura_bool(theme.settings.get('veloura_related_center_title_2026', false), false)|trim == 'true' %}
 
-    {# Veloura V57 recently viewed settings start #}
-    {% set vpp_recent_products_enabled = _self.veloura_bool(theme.settings.get('veloura_recent_products_enabled_2026', false), false)|trim == 'true' %}
-    {% set vpp_recent_products_inherit_related = _self.veloura_bool(theme.settings.get('veloura_recent_products_inherit_related_2026', true), true)|trim == 'true' %}
-    {# Veloura V57 recently viewed settings end #}
-
     {% set vpp_custom_related_enabled = _self.veloura_bool(theme.settings.get('veloura_product_custom_related_enabled_2026', false), false)|trim == 'true' %}
     {% set vpp_custom_related_source = _self.veloura_select(theme.settings.get('veloura_product_custom_related_source_2026', 'selected'), 'selected')|trim %}
 
@@ -708,7 +703,7 @@
                         </section>
                     {% endif %}
 
-                    <section class="sticky-product-bar veloura-product-sticky-bar bg-white p-5" data-veloura-purchase-bar
+                    <section class="sticky-product-bar veloura-product-sticky-bar bg-white p-5 veloura-glass-surface veloura-glass-sticky-product" data-veloura-purchase-bar
                                 style="border-radius: var(--veloura-product-radius, 0px) !important;">
                         {# Live price inside purchase card: below quantity, above buttons #}
                         <div class="veloura-product-cart-price-row">
@@ -759,7 +754,7 @@
                                     {{ product.notify_availability.options ? 'notify-options-availability' : '' }}
                                 {% endif %}
                                 width="wide"
-                                style="--button-border-radius: var(--veloura-product-radius, 0px); --salla-fast-checkout-button-border-radius: var(--veloura-product-radius, 0px); --salla-fast-checkout-button-width: 100%; border-radius: var(--veloura-product-radius, 0px) !important; overflow: visible !important;">
+                                style="--button-border-radius: var(--veloura-product-radius, 0px); --salla-fast-checkout-button-border-radius: var(--veloura-product-radius, 0px); --salla-fast-checkout-button-width: 100%; border-radius: var(--veloura-product-radius, 0px) !important; overflow: hidden !important;">
 
                             {{ product.add_to_cart_label }}
                         </salla-add-product-button>
@@ -913,28 +908,6 @@
             </salla-products-slider>
         </div>
     {% endif %}
-
-    {# Veloura V57 recently viewed products section start #}
-    {% if vpp_enabled and vpp_recent_products_enabled %}
-        {% set vpp_recent_mobile_columns = vpp_recent_products_inherit_related ? vpp_related_mobile_columns : 2 %}
-        {% set vpp_recent_desktop_columns = vpp_recent_products_inherit_related ? vpp_related_desktop_columns : 4 %}
-        {% set vpp_recent_hide_arrows = vpp_recent_products_inherit_related ? vpp_related_hide_arrows : false %}
-        {% set vpp_recent_center_title = vpp_recent_products_inherit_related ? vpp_related_center_title : false %}
-
-        <div hidden
-             class="container veloura-product-recent-products {{ vpp_recent_center_title ? 'is-title-centered' : '' }} {{ vpp_recent_hide_arrows ? 'is-arrows-hidden' : '' }}"
-             data-veloura-recent-products
-             data-current-product-id="{{ product.id }}"
-             data-mobile-columns="{{ vpp_recent_mobile_columns }}"
-             data-desktop-columns="{{ vpp_recent_desktop_columns }}"
-             data-inherit-related="{{ vpp_recent_products_inherit_related ? 'true' : 'false' }}">
-            <div class="veloura-product-related-heading">
-                <h2 class="veloura-product-related-title">منتجات شاهدتها مؤخراً</h2>
-            </div>
-            <div data-veloura-recent-slider-host></div>
-        </div>
-    {% endif %}
-    {# Veloura V57 recently viewed products section end #}
 {% endblock %}
 
 {% block scripts %}

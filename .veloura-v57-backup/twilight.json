@@ -8036,47 +8036,6 @@
       "value": false
     },
     {
-      "id": "veloura_recent_products_enabled_2026",
-      "type": "boolean",
-      "format": "switch",
-      "icon": "sicon-history",
-      "label": "تفعيل منتجات شاهدتها مؤخراً",
-      "description": "يعرض آخر المنتجات التي فتحها الزائر أسفل منتجات قد تعجبك.",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_recent_products_inherit_related_2026",
-      "type": "boolean",
-      "format": "switch",
-      "icon": "sicon-link",
-      "label": "ربطها بإعدادات منتجات قد تعجبك",
-      "description": "تستخدم نفس عدد المنتجات في الجوال والكمبيوتر، الأسهم، توسيط العنوان وتنسيق بطاقات المنتجات.",
-      "required": false,
-      "value": true,
-      "selected": true,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_recent_products_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "id": "veloura_product_custom_related_source_2026",
       "type": "items",
       "format": "dropdown-list",
