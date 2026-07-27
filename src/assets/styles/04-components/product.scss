@@ -2499,3 +2499,57 @@ html.veloura-dark .veloura-product-page {
 .veloura-product-page .veloura-product-thumb-item[aria-current="true"] img {
   border-radius: var(--veloura-product-radius-final, 28px) !important;
 }
+
+/* ======================================================
+   Veloura Step 2 — radius only
+   No position, transform, transition, dimensions, or click behavior changes.
+====================================================== */
+
+/* Read-more button: inherit only the global product-details radius. */
+.veloura-product-page #btn-show-more.veloura-product-read-more,
+.veloura-product-page #btn-show-more.veloura-product-read-more:hover,
+.veloura-product-page #btn-show-more.veloura-product-read-more:focus,
+.veloura-product-page #btn-show-more.veloura-product-read-more:active,
+.veloura-product-page #btn-show-more.veloura-product-read-more.is-expanded {
+  border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+}
+
+/* Thumbnail and the selected-thumbnail frame: inherit only the same radius. */
+.veloura-product-page .veloura-product-thumb-item,
+.veloura-product-page .veloura-product-thumb-item img,
+.veloura-product-page .details-slider.image-slider > [slot="thumbs"] .slide--one-fourth,
+.veloura-product-page .details-slider.image-slider > [slot="thumbs"] .slide--one-fourth img,
+.veloura-product-page .details-slider.image-slider .s-slider-thumbs .swiper-slide,
+.veloura-product-page .details-slider.image-slider .s-slider-thumbs .swiper-slide img,
+.veloura-product-page .details-slider.image-slider .s-slider-thumbs-wrapper .swiper-slide,
+.veloura-product-page .details-slider.image-slider .s-slider-thumbs-wrapper .swiper-slide img,
+.veloura-product-page .details-slider.image-slider > [slot="thumbs"] .swiper-slide-thumb-active,
+.veloura-product-page .details-slider.image-slider > [slot="thumbs"] .swiper-slide-thumb-active img,
+.veloura-product-page .details-slider.image-slider .s-slider-thumbs .swiper-slide-thumb-active,
+.veloura-product-page .details-slider.image-slider .s-slider-thumbs .swiper-slide-thumb-active img,
+.veloura-product-page .details-slider.image-slider .s-slider-thumbs-wrapper .swiper-slide-thumb-active,
+.veloura-product-page .details-slider.image-slider .s-slider-thumbs-wrapper .swiper-slide-thumb-active img,
+.veloura-product-page .veloura-product-thumb-item.swiper-slide-thumb-active,
+.veloura-product-page .veloura-product-thumb-item.swiper-slide-thumb-active img,
+.veloura-product-page .veloura-product-thumb-item[aria-current="true"],
+.veloura-product-page .veloura-product-thumb-item[aria-current="true"] img,
+.veloura-product-page .veloura-product-thumb-item.is-active,
+.veloura-product-page .veloura-product-thumb-item.is-active img {
+  border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+}
+
+/* Salla/Swiper may paint the active outline on a pseudo-element. */
+.veloura-product-page .details-slider.image-slider > [slot="thumbs"] .swiper-slide-thumb-active::before,
+.veloura-product-page .details-slider.image-slider > [slot="thumbs"] .swiper-slide-thumb-active::after,
+.veloura-product-page .details-slider.image-slider .s-slider-thumbs .swiper-slide-thumb-active::before,
+.veloura-product-page .details-slider.image-slider .s-slider-thumbs .swiper-slide-thumb-active::after,
+.veloura-product-page .details-slider.image-slider .s-slider-thumbs-wrapper .swiper-slide-thumb-active::before,
+.veloura-product-page .details-slider.image-slider .s-slider-thumbs-wrapper .swiper-slide-thumb-active::after,
+.veloura-product-page .veloura-product-thumb-item.swiper-slide-thumb-active::before,
+.veloura-product-page .veloura-product-thumb-item.swiper-slide-thumb-active::after,
+.veloura-product-page .veloura-product-thumb-item[aria-current="true"]::before,
+.veloura-product-page .veloura-product-thumb-item[aria-current="true"]::after,
+.veloura-product-page .veloura-product-thumb-item.is-active::before,
+.veloura-product-page .veloura-product-thumb-item.is-active::after {
+  border-radius: inherit !important;
+}
