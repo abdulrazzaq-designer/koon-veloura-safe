@@ -247,12 +247,10 @@
     {% set vpp_related_hide_arrows = _self.veloura_bool(theme.settings.get('veloura_related_hide_arrows_2026', false), false)|trim == 'true' %}
     {% set vpp_related_center_title = _self.veloura_bool(theme.settings.get('veloura_related_center_title_2026', false), false)|trim == 'true' %}
 
-    {# Veloura V58 recently viewed settings start #}
+    {# Veloura V57 recently viewed settings start #}
     {% set vpp_recent_products_enabled = _self.veloura_bool(theme.settings.get('veloura_recent_products_enabled_2026', false), false)|trim == 'true' %}
     {% set vpp_recent_products_inherit_related = _self.veloura_bool(theme.settings.get('veloura_recent_products_inherit_related_2026', true), true)|trim == 'true' %}
-    {# Veloura V58 recently viewed settings end #}
-
-
+    {# Veloura V57 recently viewed settings end #}
 
     {% set vpp_custom_related_enabled = _self.veloura_bool(theme.settings.get('veloura_product_custom_related_enabled_2026', false), false)|trim == 'true' %}
     {% set vpp_custom_related_source = _self.veloura_select(theme.settings.get('veloura_product_custom_related_source_2026', 'selected'), 'selected')|trim %}
@@ -879,7 +877,6 @@
                 </div>
             {% endif %}
             <salla-products-slider
-                product-card-component="custom-salla-product-card"
                 source="{{ veloura_related_source }}"
                 source-value="{{ veloura_related_source_value_attr|e('html_attr') }}"
                 display-all-url
@@ -917,9 +914,7 @@
         </div>
     {% endif %}
 
-
-
-    {# Veloura V58 recently viewed products section start #}
+    {# Veloura V57 recently viewed products section start #}
     {% if vpp_enabled and vpp_recent_products_enabled %}
         {% set vpp_recent_mobile_columns = vpp_recent_products_inherit_related ? vpp_related_mobile_columns : 2 %}
         {% set vpp_recent_desktop_columns = vpp_recent_products_inherit_related ? vpp_related_desktop_columns : 4 %}
@@ -939,7 +934,7 @@
             <div data-veloura-recent-slider-host></div>
         </div>
     {% endif %}
-    {# Veloura V58 recently viewed products section end #}
+    {# Veloura V57 recently viewed products section end #}
 {% endblock %}
 
 {% block scripts %}
