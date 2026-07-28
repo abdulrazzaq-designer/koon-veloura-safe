@@ -1897,6 +1897,11 @@
           "id": "veloura_top_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_product_details_order_enabled_2026",
+          "operation": "=",
+          "value": true
         }
       ]
     },

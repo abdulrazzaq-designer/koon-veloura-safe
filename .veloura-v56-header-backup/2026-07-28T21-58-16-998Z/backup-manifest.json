@@ -1,0 +1,21 @@
+{
+  "version": "Veloura V56 container, dropdown and logo fix",
+  "target": "D:\\salla-theme\\koon-veloura-safe",
+  "files": [
+    {
+      "file": "twilight.json",
+      "existed": true,
+      "hash": "dd050c2651cfaa8e1c9da8a163840d7048ce62d0f0784dd7bc8e926f6d5c8888"
+    },
+    {
+      "file": "src/assets/styles/app.scss",
+      "existed": true,
+      "hash": "a3a826454086cc928bbf61b40c933fb04ed2959f73f5171efe8141f5eb5807e2"
+    },
+    {
+      "file": "src/assets/styles/05-utilities/_veloura-header-container-menu-v56.scss",
+      "existed": false,
+      "hash": null
+    }
+  ]
+}
