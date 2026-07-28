@@ -123,6 +123,12 @@ const VELOURA_CARD_CONTRACT_CSS = `
 .s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-content-main {
   flex: 0 0 auto !important;
 }
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-content-sub {
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  margin-top: auto !important;
+  box-sizing: border-box !important;
+}
 .s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-content-title,
 .s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-content-title a {
   font-size: var(--veloura-product-title-size, 15px) !important;
@@ -176,12 +182,22 @@ const VELOURA_CARD_CONTRACT_CSS = `
   flex: 0 0 auto !important;
   align-items: stretch !important;
   justify-content: center !important;
-  width: calc(100% - (var(--veloura-product-button-margin-x, 0px) * 2)) !important;
-  max-width: calc(100% - (var(--veloura-product-button-margin-x, 0px) * 2)) !important;
+  width: auto !important;
+  max-width: none !important;
   min-width: 0 !important;
-  margin-inline: auto !important;
-  margin-top: auto !important;
-  margin-bottom: var(--veloura-product-button-margin-bottom, 0px) !important;
+  margin-top: 0 !important;
+  margin-right: calc(
+    var(--veloura-product-button-margin-x, 0px) -
+    var(--veloura-card-content-padding-right, 0px)
+  ) !important;
+  margin-left: calc(
+    var(--veloura-product-button-margin-x, 0px) -
+    var(--veloura-card-content-padding-left, 0px)
+  ) !important;
+  margin-bottom: calc(
+    var(--veloura-product-button-margin-bottom, 0px) -
+    var(--veloura-card-content-padding-bottom, 0px)
+  ) !important;
   padding: 0 !important;
   box-sizing: border-box !important;
 }
@@ -483,6 +499,25 @@ function styleVelouraActionComponent(component, depth = 0) {
   }
 }
 
+function captureVelouraCardContentPadding(card) {
+  if (!card || card.__velouraContentPaddingCaptured || !window.getComputedStyle) return;
+
+  const content = card.querySelector('.s-product-card-content');
+  if (!content) return;
+
+  const computed = window.getComputedStyle(content);
+  const normalise = (value, fallback = '0px') => {
+    const number = Number.parseFloat(value);
+    return Number.isFinite(number) ? `${number}px` : fallback;
+  };
+
+  card.style.setProperty('--veloura-card-content-padding-top', normalise(computed.paddingTop));
+  card.style.setProperty('--veloura-card-content-padding-right', normalise(computed.paddingRight));
+  card.style.setProperty('--veloura-card-content-padding-bottom', normalise(computed.paddingBottom));
+  card.style.setProperty('--veloura-card-content-padding-left', normalise(computed.paddingLeft));
+  card.__velouraContentPaddingCaptured = true;
+}
+
 function markVelouraCardNativeParts(card) {
   const image = card.querySelector('.s-product-card-image');
   if (image) image.classList.add('veloura-pc-image-actions-host');
@@ -509,6 +544,7 @@ function applyVelouraProductCard(card) {
     return;
   }
 
+  captureVelouraCardContentPadding(card);
   const root = card.getRootNode ? card.getRootNode() : document;
   ensureVelouraCardContractStyle(root);
   card.classList.add('veloura-card-contract');

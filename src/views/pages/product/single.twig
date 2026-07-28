@@ -248,6 +248,19 @@
     {% set vpp_related_center_title = _self.veloura_bool(theme.settings.get('veloura_related_center_title_2026', false), false)|trim == 'true' %}
     {% set vpp_recent_hide = _self.veloura_bool(theme.settings.get('veloura_recently_viewed_hide_2026', false), false)|trim == 'true' %}
     {% set vpp_recent_inherit = _self.veloura_bool(theme.settings.get('veloura_recently_viewed_inherit_related_2026', false), false)|trim == 'true' %}
+    {% set vpp_recent_mobile_columns_raw = _self.veloura_select(theme.settings.get('veloura_recently_viewed_mobile_columns_2026', 2), 2)|trim %}
+    {% set vpp_recent_mobile_columns = vpp_recent_mobile_columns_raw + 0 %}
+    {% if vpp_recent_mobile_columns < 1 %}{% set vpp_recent_mobile_columns = 1 %}{% endif %}
+    {% if vpp_recent_mobile_columns > 3 %}{% set vpp_recent_mobile_columns = 3 %}{% endif %}
+    {% set vpp_recent_desktop_columns_raw = _self.veloura_select(theme.settings.get('veloura_recently_viewed_desktop_columns_2026', 4), 4)|trim %}
+    {% set vpp_recent_desktop_columns = vpp_recent_desktop_columns_raw + 0 %}
+    {% if vpp_recent_desktop_columns < 1 %}{% set vpp_recent_desktop_columns = 1 %}{% endif %}
+    {% if vpp_recent_desktop_columns > 6 %}{% set vpp_recent_desktop_columns = 6 %}{% endif %}
+    {% set vpp_recent_center_title = _self.veloura_bool(theme.settings.get('veloura_recently_viewed_center_title_2026', false), false)|trim == 'true' %}
+    {% set vpp_recent_effective_mobile_columns = vpp_recent_inherit ? vpp_related_mobile_columns : vpp_recent_mobile_columns %}
+    {% set vpp_recent_effective_desktop_columns = vpp_recent_inherit ? vpp_related_desktop_columns : vpp_recent_desktop_columns %}
+    {% set vpp_recent_effective_center_title = vpp_recent_inherit ? vpp_related_center_title : vpp_recent_center_title %}
+    {% set vpp_recent_effective_hide_arrows = vpp_recent_inherit ? vpp_related_hide_arrows : false %}
 
     {% set vpp_custom_related_enabled = _self.veloura_bool(theme.settings.get('veloura_product_custom_related_enabled_2026', false), false)|trim == 'true' %}
     {% set vpp_custom_related_source = _self.veloura_select(theme.settings.get('veloura_product_custom_related_source_2026', 'selected'), 'selected')|trim %}
@@ -920,26 +933,24 @@
 {% block scripts %}
 
     <script defer src="{{ 'product.js' | asset }}"></script>
-    {# Veloura Step 7: apply the related-products layout contract to the actual recently-viewed slider. #}
-    <script data-veloura-step7-recent-layout>
+    {# Veloura Step 8 Current: stable recently-viewed layout with inherited or independent controls. #}
+    <script data-veloura-step8-current-recent-layout>
       (function () {
         'use strict';
 
         var config = {
           hide: {{ vpp_recent_hide ? 'true' : 'false' }},
           inherit: {{ vpp_recent_inherit ? 'true' : 'false' }},
-          mobileColumns: {{ vpp_related_mobile_columns|default(2) }},
-          desktopColumns: {{ vpp_related_desktop_columns|default(4) }},
-          centerTitle: {{ vpp_related_center_title|default(false) ? 'true' : 'false' }},
-          hideArrows: {{ vpp_related_hide_arrows|default(false) ? 'true' : 'false' }}
+          mobileColumns: {{ vpp_recent_effective_mobile_columns|default(2) }},
+          desktopColumns: {{ vpp_recent_effective_desktop_columns|default(4) }},
+          centerTitle: {{ vpp_recent_effective_center_title|default(false) ? 'true' : 'false' }},
+          hideArrows: {{ vpp_recent_effective_hide_arrows|default(false) ? 'true' : 'false' }}
         };
 
-        if (!config.hide && !config.inherit) return;
-
-        var STYLE_ID = 'veloura-step7-recent-layout-style';
+        var STYLE_ID = 'veloura-step8-current-recent-style';
         var observer = null;
-        var stopTimer = 0;
-        var appliedComponents = [];
+        var records = [];
+        var media = window.matchMedia ? window.matchMedia('(min-width: 768px)') : null;
 
         function cleanText(value) {
           return String(value || '')
@@ -951,17 +962,25 @@
 
         function isRecentText(value) {
           var text = cleanText(value);
-          return text.indexOf('شاهدتها مؤخ') !== -1 || text.indexOf('recently viewed') !== -1;
+          return text.indexOf('شاهدتها مؤخ') !== -1 ||
+            text.indexOf('recently viewed') !== -1 ||
+            text.indexOf('recently-viewed') !== -1;
         }
 
-        function collectRoots(start, maxDepth) {
-          var roots = [];
+        function clamp(value, minimum, maximum, fallback) {
+          var number = Number(value);
+          if (!Number.isFinite(number)) number = fallback;
+          return Math.max(minimum, Math.min(maximum, number));
+        }
+
+        function collectRoots(start, maximumDepth) {
+          var result = [];
           var seen = [];
 
           function visit(root, depth) {
-            if (!root || depth > maxDepth || seen.indexOf(root) !== -1) return;
+            if (!root || depth > maximumDepth || seen.indexOf(root) !== -1) return;
             seen.push(root);
-            roots.push(root);
+            result.push(root);
             if (!root.querySelectorAll) return;
             root.querySelectorAll('*').forEach(function (node) {
               if (node.shadowRoot) visit(node.shadowRoot, depth + 1);
@@ -969,7 +988,7 @@
           }
 
           visit(start || document, 0);
-          return roots;
+          return result;
         }
 
         function deepAll(selector, start) {
@@ -990,100 +1009,122 @@
           return root && root.host ? root.host : null;
         }
 
-        function composedClosest(node, selector) {
-          var current = node;
-          for (var index = 0; current && index < 12; index += 1) {
-            if (current.matches && current.matches(selector)) return current;
+        function componentIdentity(component) {
+          if (!component || !component.getAttribute) return '';
+          return [
+            component.id,
+            component.className,
+            component.getAttribute('source'),
+            component.getAttribute('source-value'),
+            component.getAttribute('block-title'),
+            component.getAttribute('title'),
+            component.getAttribute('sub-title'),
+            component.getAttribute('data-title'),
+            component.getAttribute('data-source')
+          ].filter(Boolean).join(' ');
+        }
+
+        function recentHeadings() {
+          return deepAll(
+            'h1,h2,h3,h4,h5,h6,.s-block__title,.s-slider-block__title,[class*="title"],[class*="Title"]',
+            document
+          ).filter(function (heading) {
+            return isRecentText(heading.textContent);
+          });
+        }
+
+        function nearestComponentForHeading(heading, components) {
+          var current = heading;
+          for (var depth = 0; current && depth < 12; depth += 1) {
+            if (current.matches && current.matches('salla-products-slider,salla-products-list')) return current;
+            if (current.querySelectorAll) {
+              var inside = deepAll('salla-products-slider,salla-products-list', current);
+              if (inside.length) return inside[0];
+            }
             current = composedParent(current);
           }
-          return null;
-        }
 
-        function componentTitle(component) {
-          if (!component) return '';
-          var attributes = [
-            component.getAttribute && component.getAttribute('block-title'),
-            component.getAttribute && component.getAttribute('title'),
-            component.getAttribute && component.getAttribute('sub-title'),
-            component.getAttribute && component.getAttribute('data-title')
-          ].filter(Boolean).join(' ');
-
-          if (isRecentText(attributes)) return attributes;
-
-          var roots = collectRoots(component, 5);
-          for (var index = 0; index < roots.length; index += 1) {
-            var root = roots[index];
-            if (!root.querySelectorAll) continue;
-            var headings = root.querySelectorAll('h1,h2,h3,h4,h5,h6,.s-block__title,.s-slider-block__title,[class*="title"],[class*="Title"]');
-            for (var item = 0; item < headings.length; item += 1) {
-              if (isRecentText(headings[item].textContent)) return headings[item].textContent;
-            }
-          }
-
-          return '';
-        }
-
-        function findRecentHeading(component) {
-          var headings = deepAll('h1,h2,h3,h4,h5,h6,.s-block__title,.s-slider-block__title,[class*="title"],[class*="Title"]', component || document);
-          for (var index = 0; index < headings.length; index += 1) {
-            if (isRecentText(headings[index].textContent)) return headings[index];
-          }
-          return null;
-        }
-
-        function findRecentComponents() {
-          var result = [];
-          var components = deepAll('salla-products-slider,salla-products-list', document);
+          if (!heading.getBoundingClientRect) return null;
+          var headingRect = heading.getBoundingClientRect();
+          var best = null;
+          var bestScore = Number.POSITIVE_INFINITY;
 
           components.forEach(function (component) {
-            if (componentTitle(component) && result.indexOf(component) === -1) result.push(component);
-          });
-
-          if (result.length) return result;
-
-          var headings = deepAll('h1,h2,h3,h4,h5,h6,.s-block__title,.s-slider-block__title,[class*="title"],[class*="Title"]', document);
-          headings.forEach(function (heading) {
-            if (!isRecentText(heading.textContent)) return;
-            var component = composedClosest(heading, 'salla-products-slider,salla-products-list');
-            if (!component) {
-              var parent = composedParent(heading);
-              if (parent) {
-                component = deepAll('salla-products-slider,salla-products-list', parent)[0] || null;
-              }
+            if (!component.getBoundingClientRect) return;
+            var rect = component.getBoundingClientRect();
+            var vertical = rect.top - headingRect.bottom;
+            if (vertical < -60) return;
+            var horizontal = Math.abs(
+              ((rect.left + rect.right) / 2) - ((headingRect.left + headingRect.right) / 2)
+            );
+            var score = vertical + (horizontal * 0.03);
+            if (score < bestScore) {
+              bestScore = score;
+              best = component;
             }
-            if (component && result.indexOf(component) === -1) result.push(component);
           });
 
-          return result;
+          return best;
         }
 
-        function clamp(value, minimum, maximum, fallback) {
-          var number = Number(value);
-          if (!Number.isFinite(number)) number = fallback;
-          return Math.max(minimum, Math.min(maximum, number));
+        function sectionFor(heading, component) {
+          var current = heading;
+          for (var depth = 0; current && depth < 12; depth += 1) {
+            if (current.contains && current.contains(component)) return current;
+            current = composedParent(current);
+          }
+          return component && component.parentElement ? component.parentElement : null;
         }
 
-        function desiredSliderConfig() {
+        function findRecords() {
+          var components = deepAll('salla-products-slider,salla-products-list', document);
+          var found = [];
+
+          components.forEach(function (component) {
+            if (!isRecentText(componentIdentity(component))) return;
+            found.push({ component: component, heading: null, section: component.parentElement });
+          });
+
+          recentHeadings().forEach(function (heading) {
+            var component = nearestComponentForHeading(heading, components);
+            if (!component) return;
+            var existing = found.find(function (record) { return record.component === component; });
+            if (existing) {
+              existing.heading = existing.heading || heading;
+              existing.section = existing.section || sectionFor(heading, component);
+              return;
+            }
+            found.push({ component: component, heading: heading, section: sectionFor(heading, component) });
+          });
+
+          return found;
+        }
+
+        function desiredConfig() {
+          var mobile = clamp(config.mobileColumns, 1, 3, 2);
+          var desktop = clamp(config.desktopColumns, 1, 6, 4);
           return {
-            slidesPerView: clamp(config.mobileColumns, 1, 6, 2),
+            slidesPerView: mobile,
             slidesPerGroup: 1,
             spaceBetween: 12,
             centeredSlides: false,
             centeredSlidesBounds: false,
             centerInsufficientSlides: false,
             freeMode: false,
+            watchOverflow: true,
             roundLengths: true,
             slidesOffsetBefore: 0,
             slidesOffsetAfter: 0,
             breakpoints: {
               768: {
-                slidesPerView: clamp(config.desktopColumns, 1, 8, 4),
+                slidesPerView: desktop,
                 slidesPerGroup: 1,
                 spaceBetween: 16,
                 centeredSlides: false,
                 centeredSlidesBounds: false,
                 centerInsufficientSlides: false,
                 freeMode: false,
+                watchOverflow: true,
                 roundLengths: true,
                 slidesOffsetBefore: 0,
                 slidesOffsetAfter: 0
@@ -1092,20 +1133,30 @@
           };
         }
 
+        function currentColumns() {
+          return media && media.matches
+            ? clamp(config.desktopColumns, 1, 6, 4)
+            : clamp(config.mobileColumns, 1, 3, 2);
+        }
+
+        function currentGap() {
+          return media && media.matches ? 16 : 12;
+        }
+
         function layoutCss() {
-          var mobile = clamp(config.mobileColumns, 1, 6, 2);
-          var desktop = clamp(config.desktopColumns, 1, 8, 4);
-          var mobileGap = 12;
-          var desktopGap = 16;
-          var hideArrows = config.hideArrows
+          var mobile = clamp(config.mobileColumns, 1, 3, 2);
+          var desktop = clamp(config.desktopColumns, 1, 6, 4);
+          var arrowCss = config.hideArrows
             ? '.s-slider-next,.s-slider-prev,[class*="slider-next"],[class*="slider-prev"],[class*="swiper-button-next"],[class*="swiper-button-prev"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}'
             : '';
 
           return [
             ':host{display:block!important;width:100%!important;max-width:100%!important}',
-            '@media(max-width:767px){.swiper-wrapper>.swiper-slide,.swiper-slide{flex:0 0 calc((100% - (', mobileGap, 'px * ', String(mobile - 1), ')) / ', String(mobile), ')!important;width:calc((100% - (', mobileGap, 'px * ', String(mobile - 1), ')) / ', String(mobile), ')!important;max-width:calc((100% - (', mobileGap, 'px * ', String(mobile - 1), ')) / ', String(mobile), ')!important}}',
-            '@media(min-width:768px){.swiper-wrapper>.swiper-slide,.swiper-slide{flex:0 0 calc((100% - (', desktopGap, 'px * ', String(desktop - 1), ')) / ', String(desktop), ')!important;width:calc((100% - (', desktopGap, 'px * ', String(desktop - 1), ')) / ', String(desktop), ')!important;max-width:calc((100% - (', desktopGap, 'px * ', String(desktop - 1), ')) / ', String(desktop), ')!important}}',
-            hideArrows
+            '.swiper-wrapper{align-items:stretch!important}',
+            '.swiper-slide>custom-salla-product-card,.swiper-slide>.s-product-card-entry{height:100%!important}',
+            '@media(max-width:767px){.swiper-wrapper>.swiper-slide,.swiper-slide{flex:0 0 calc((100% - (12px * ', String(mobile - 1), ')) / ', String(mobile), ')!important;width:calc((100% - (12px * ', String(mobile - 1), ')) / ', String(mobile), ')!important;max-width:calc((100% - (12px * ', String(mobile - 1), ')) / ', String(mobile), ')!important}}',
+            '@media(min-width:768px){.swiper-wrapper>.swiper-slide,.swiper-slide{flex:0 0 calc((100% - (16px * ', String(desktop - 1), ')) / ', String(desktop), ')!important;width:calc((100% - (16px * ', String(desktop - 1), ')) / ', String(desktop), ')!important;max-width:calc((100% - (16px * ', String(desktop - 1), ')) / ', String(desktop), ')!important}}',
+            arrowCss
           ].join('');
         }
 
@@ -1121,45 +1172,68 @@
           style.textContent = layoutCss();
         }
 
-        function applyHeading(component) {
-          var heading = findRecentHeading(component);
+        function applyHeading(heading) {
           if (!heading) return;
+          var alignment = config.centerTitle ? 'center' : 'right';
+          var justification = config.centerTitle ? 'center' : 'flex-start';
 
           heading.style.setProperty('display', 'block', 'important');
           heading.style.setProperty('width', '100%', 'important');
           heading.style.setProperty('max-width', '100%', 'important');
-          heading.style.setProperty('text-align', config.centerTitle ? 'center' : 'right', 'important');
-          heading.style.setProperty('justify-content', config.centerTitle ? 'center' : 'flex-start', 'important');
+          heading.style.setProperty('text-align', alignment, 'important');
+          heading.style.setProperty('justify-content', justification, 'important');
 
           if (heading.parentElement) {
             heading.parentElement.style.setProperty('width', '100%', 'important');
             heading.parentElement.style.setProperty('max-width', '100%', 'important');
-            heading.parentElement.style.setProperty('text-align', config.centerTitle ? 'center' : 'right', 'important');
-            heading.parentElement.style.setProperty('justify-content', config.centerTitle ? 'center' : 'flex-start', 'important');
+            heading.parentElement.style.setProperty('text-align', alignment, 'important');
+            heading.parentElement.style.setProperty('justify-content', justification, 'important');
           }
         }
 
-        function updateSwiper(root) {
-          if (!root || !root.querySelectorAll) return;
-          root.querySelectorAll('salla-slider').forEach(function (slider) {
-            var settings = desiredSliderConfig();
-            try { slider.sliderConfig = settings; } catch (error) {}
-            slider.setAttribute('slider-config', JSON.stringify(settings));
+        function applySwiperInstance(swiper) {
+          if (!swiper) return;
+          var settings = desiredConfig();
+          var columns = currentColumns();
+          var gap = currentGap();
 
-            var update = function () {
-              var swiper = slider.swiper || slider.slider || slider.swiperInstance;
-              if (swiper && typeof swiper.update === 'function') swiper.update();
-            };
-
-            update();
-            if (typeof slider.componentOnReady === 'function') {
-              slider.componentOnReady().then(update).catch(function () {});
-            }
+          [swiper.params, swiper.originalParams, swiper.passedParams].forEach(function (params) {
+            if (!params) return;
+            params.slidesPerView = columns;
+            params.slidesPerGroup = 1;
+            params.spaceBetween = gap;
+            params.centeredSlides = false;
+            params.centeredSlidesBounds = false;
+            params.centerInsufficientSlides = false;
+            params.freeMode = false;
+            params.breakpoints = settings.breakpoints;
           });
 
-          root.querySelectorAll('.swiper').forEach(function (node) {
-            if (node.swiper && typeof node.swiper.update === 'function') node.swiper.update();
-          });
+          try { if (typeof swiper.setBreakpoint === 'function') swiper.setBreakpoint(); } catch (error) {}
+          try { if (typeof swiper.updateSize === 'function') swiper.updateSize(); } catch (error) {}
+          try { if (typeof swiper.updateSlides === 'function') swiper.updateSlides(); } catch (error) {}
+          try { if (typeof swiper.updateProgress === 'function') swiper.updateProgress(); } catch (error) {}
+          try { if (typeof swiper.updateSlidesClasses === 'function') swiper.updateSlidesClasses(); } catch (error) {}
+          try { if (typeof swiper.update === 'function') swiper.update(); } catch (error) {}
+        }
+
+        function applySlider(slider) {
+          if (!slider) return;
+          var settings = desiredConfig();
+          var columns = currentColumns();
+
+          slider.setAttribute('slides-per-view', String(columns));
+          slider.setAttribute('slider-config', JSON.stringify(settings));
+          try { slider.slidesPerView = columns; } catch (error) {}
+          try { slider.sliderConfig = settings; } catch (error) {}
+
+          applySwiperInstance(slider.swiper || slider.slider || slider.swiperInstance);
+
+          if (typeof slider.componentOnReady === 'function') {
+            slider.componentOnReady().then(function () {
+              applySwiperInstance(slider.swiper || slider.slider || slider.swiperInstance);
+            }).catch(function () {});
+          }
         }
 
         function applyCardContract(component) {
@@ -1171,81 +1245,102 @@
           }
         }
 
-        function applyComponent(component) {
-          if (!component) return false;
+        function applyRecord(record) {
+          if (!record || !record.component) return false;
+          var component = record.component;
+          var section = record.section;
 
           component.setAttribute('data-veloura-recent-section', 'true');
 
           if (config.hide) {
             component.hidden = true;
             component.style.setProperty('display', 'none', 'important');
-            return true;
-          }
-
-          if (!config.inherit) {
-            applyCardContract(component);
+            if (record.heading) record.heading.style.setProperty('display', 'none', 'important');
             return true;
           }
 
           component.hidden = false;
           component.style.removeProperty('display');
+          component.style.setProperty('display', 'block', 'important');
           component.style.setProperty('width', '100%', 'important');
           component.style.setProperty('max-width', '100%', 'important');
           component.style.setProperty('min-width', '0', 'important');
           component.setAttribute('product-card-component', 'custom-salla-product-card');
+          component.setAttribute('slider-config', JSON.stringify(desiredConfig()));
+          try { component.sliderConfig = desiredConfig(); } catch (error) {}
 
-          var settings = desiredSliderConfig();
-          try { component.sliderConfig = settings; } catch (error) {}
-          component.setAttribute('slider-config', JSON.stringify(settings));
-
-          applyHeading(component);
-          collectRoots(component, 8).forEach(ensureStyle);
-          collectRoots(component, 8).forEach(updateSwiper);
-          applyCardContract(component);
-
-          var finalise = function () {
-            applyHeading(component);
-            collectRoots(component, 8).forEach(ensureStyle);
-            collectRoots(component, 8).forEach(updateSwiper);
-            applyCardContract(component);
-            component.setAttribute('data-veloura-recent-layout-applied', 'true');
-          };
-
-          finalise();
-          requestAnimationFrame(function () {
-            requestAnimationFrame(finalise);
-          });
-
-          if (typeof component.componentOnReady === 'function') {
-            component.componentOnReady().then(finalise).catch(function () {});
+          if (section && section.style) {
+            section.style.setProperty('width', '100%', 'important');
+            section.style.setProperty('max-width', '100%', 'important');
+            section.style.setProperty('min-width', '0', 'important');
           }
 
-          return true;
+          applyHeading(record.heading);
+
+          var roots = collectRoots(component, 8);
+          roots.forEach(ensureStyle);
+          roots.forEach(function (root) {
+            if (!root.querySelectorAll) return;
+            root.querySelectorAll('salla-slider').forEach(applySlider);
+            root.querySelectorAll('.swiper').forEach(function (node) {
+              applySwiperInstance(node.swiper || node.swiperInstance);
+            });
+          });
+
+          applySwiperInstance(component.swiper || component.slider || component.swiperInstance);
+          applyCardContract(component);
+          component.setAttribute('data-veloura-recent-layout-applied', 'true');
+
+          if (typeof component.componentOnReady === 'function') {
+            component.componentOnReady().then(function () {
+              collectRoots(component, 8).forEach(ensureStyle);
+              collectRoots(component, 8).forEach(function (root) {
+                if (!root.querySelectorAll) return;
+                root.querySelectorAll('salla-slider').forEach(applySlider);
+                root.querySelectorAll('.swiper').forEach(function (node) {
+                  applySwiperInstance(node.swiper || node.swiperInstance);
+                });
+              });
+              applyCardContract(component);
+            }).catch(function () {});
+          }
+
+          return roots.some(function (root) {
+            return root.querySelector && root.querySelector('salla-slider,.swiper');
+          });
         }
 
         function scan() {
-          var components = findRecentComponents();
-          components.forEach(function (component) {
-            if (appliedComponents.indexOf(component) === -1) appliedComponents.push(component);
-            applyComponent(component);
+          records = findRecords();
+          var complete = false;
+          records.forEach(function (record) {
+            if (applyRecord(record)) complete = true;
           });
-          return components.length > 0;
+
+          if (complete && observer) {
+            observer.disconnect();
+            observer = null;
+          }
+
+          return complete;
         }
 
         function registerHooks() {
           var api = window.Salla || window.salla;
           if (!api || !api.hooks || typeof api.hooks.registerHook !== 'function') return;
-          if (window.__velouraStep7RecentHookRegistered) return;
+          if (window.__velouraStep8CurrentRecentHooks) return;
 
           try {
-            api.hooks.registerHook('salla-products-slider', 'componentDidLoad', function (component) {
-              if (componentTitle(component)) applyComponent(component);
-            });
-            api.hooks.registerHook('salla-products-list', 'componentDidLoad', function (component) {
-              if (componentTitle(component)) applyComponent(component);
-            });
-            window.__velouraStep7RecentHookRegistered = true;
+            api.hooks.registerHook('salla-products-slider', 'componentDidLoad', scan);
+            api.hooks.registerHook('salla-products-list', 'componentDidLoad', scan);
+            api.hooks.registerHook('salla-slider', 'componentDidLoad', scan);
+            window.__velouraStep8CurrentRecentHooks = true;
           } catch (error) {}
+        }
+
+        function reapply() {
+          if (!records.length) records = findRecords();
+          records.forEach(applyRecord);
         }
 
         function start() {
@@ -1253,7 +1348,9 @@
           if (api && typeof api.onReady === 'function') {
             try {
               var ready = api.onReady(registerHooks);
-              if (ready && typeof ready.then === 'function') ready.then(registerHooks).catch(function () {});
+              if (ready && typeof ready.then === 'function') {
+                ready.then(registerHooks).catch(function () {});
+              }
             } catch (error) {
               registerHooks();
             }
@@ -1261,17 +1358,26 @@
             registerHooks();
           }
 
-          scan();
+          if (!scan() && window.MutationObserver && document.body) {
+            observer = new MutationObserver(function (mutations) {
+              var added = mutations.some(function (mutation) {
+                return mutation.addedNodes && mutation.addedNodes.length;
+              });
+              if (added) scan();
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+            window.setTimeout(function () {
+              if (observer) {
+                observer.disconnect();
+                observer = null;
+              }
+            }, 15000);
+          }
 
-          if (!window.MutationObserver || !document.body) return;
-          observer = new MutationObserver(function (records) {
-            var hasAddedNodes = records.some(function (record) { return record.addedNodes && record.addedNodes.length; });
-            if (hasAddedNodes) scan();
-          });
-          observer.observe(document.body, { childList: true, subtree: true });
-          stopTimer = window.setTimeout(function () {
-            if (observer) observer.disconnect();
-          }, 12000);
+          if (media) {
+            if (typeof media.addEventListener === 'function') media.addEventListener('change', reapply);
+            else if (typeof media.addListener === 'function') media.addListener(reapply);
+          }
         }
 
         if (document.readyState === 'loading') {
@@ -1280,7 +1386,7 @@
           start();
         }
 
-        window.addEventListener('pageshow', scan, { passive: true });
+        window.addEventListener('pageshow', reapply, { passive: true });
       }());
     </script>
     {% if product.has_3d_image %}
