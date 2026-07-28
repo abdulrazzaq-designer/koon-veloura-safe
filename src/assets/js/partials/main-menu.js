@@ -152,26 +152,36 @@ class NavigationMenu extends HTMLElement {
     * Initialize responsive menu functionality
     */
     initializeResponsiveMenu() {
-        if (window.innerWidth < 1024) return; // Only for desktop
-
         const mainMenu = this.querySelector('.main-menu');
         if (!mainMenu) return;
 
-        // Check if more menu is enabled from global window variable set in master.twig
-        const isMoreMenuEnabled = window.enable_more_menu;
-        if (!isMoreMenuEnabled) {
-            // If disabled, keep the menu behavior as original (no More dropdown / overflow handling)
-            return;
-        }
+        this.dataset.velouraMenuReady = 'true';
 
-        this.checkMenuOverflow();
+        const parseBoolean = (value, fallback = false) => {
+            if (value === undefined || value === null || value === '') return fallback;
+            if (typeof value === 'boolean') return value;
+            if (typeof value === 'number') return value === 1;
+            return ['true', '1', 'on', 'yes'].includes(String(value).trim().toLowerCase());
+        };
 
-        // Re-check on window resize
-        const resizeHandler = this.debounce(() => {
+        this._velouraMoreMenuEnabled = parseBoolean(window.enable_more_menu, true);
+        const host = this.closest('.veloura-menu-links-wrap');
+        host?.classList.toggle('veloura-menu-more-enabled', this._velouraMoreMenuEnabled);
+        host?.classList.toggle('veloura-menu-more-disabled', !this._velouraMoreMenuEnabled);
+
+        const update = () => {
+            if (window.innerWidth < 1024) return;
             this.checkMenuOverflow();
-        }, 250);
+        };
 
-        window.addEventListener('resize', resizeHandler);
+        // Run after the browser has calculated the dedicated menu row width.
+        requestAnimationFrame(() => requestAnimationFrame(update));
+        document.fonts?.ready?.then(update).catch(() => {});
+
+        const resizeHandler = this.debounce(update, 180);
+        window.addEventListener('resize', resizeHandler, { passive: true });
+
+        this._velouraResizeHandler = resizeHandler;
     }
 
     /**
@@ -179,63 +189,62 @@ class NavigationMenu extends HTMLElement {
     */
     checkMenuOverflow() {
         const mainMenu = this.querySelector('.main-menu');
-        if (!mainMenu) return;
+        const host = this.closest('.veloura-menu-links-wrap') || this;
 
-        const container = mainMenu.closest('.container');
-        if (!container) return;
+        if (!mainMenu || !host) return;
 
-        // Reset menus
+        const existingMore = mainMenu.querySelector('#more-menu-dropdown');
+        if (existingMore) existingMore.remove();
+
+        const menuItems = Array.from(
+            mainMenu.querySelectorAll(':scope > .root-level[data-menu-item]')
+        );
+
+        menuItems.forEach(item => {
+            item.style.removeProperty('display');
+            item.hidden = false;
+        });
+
         this.visibleMenus = [...this.menus];
         this.overflowMenus = [];
 
-        // Remove existing more dropdown
-        const existingMore = mainMenu.querySelector('#more-menu-dropdown');
-        if (existingMore) {
-            existingMore.remove();
+        // The links mode has a dedicated full-width row. If "More" is disabled,
+        // keep every category visible and let the row scroll only when necessary.
+        if (!this._velouraMoreMenuEnabled) {
+            return;
         }
 
-        // Show all menu items first
-        const menuItems = mainMenu.querySelectorAll('.root-level[data-menu-item]');
-        menuItems.forEach(item => {
-            item.style.display = '';
-        });
+        const availableWidth = Math.floor(host.getBoundingClientRect().width || 0);
 
-        // Calculate available width
-        const containerWidth = container.offsetWidth;
-        const otherElements = container.querySelector('.flex').children;
+        // During the first hydration frame the row may still report zero width.
+        // Never hide categories in that state.
+        if (availableWidth < 160) {
+            return;
+        }
+
+        const moreReserve = 92;
         let usedWidth = 0;
-
-        // Calculate width used by logo and other elements
-        Array.from(otherElements).forEach(element => {
-            if (!element.contains(mainMenu)) {
-                usedWidth += element.offsetWidth;
-            }
-        });
-
-        const availableWidth = containerWidth - usedWidth - 300; // 300px buffer for More dropdown
-        let currentWidth = 0;
         let visibleCount = 0;
 
-        // Check each menu item
         menuItems.forEach((item, index) => {
-            const itemWidth = item.offsetWidth;
+            const itemWidth = Math.ceil(item.getBoundingClientRect().width || item.scrollWidth || 0);
+            const reserve = index < menuItems.length - 1 ? moreReserve : 0;
 
-            if (currentWidth + itemWidth <= availableWidth && index < this.menus.length) {
-                currentWidth += itemWidth;
-                visibleCount++;
-            } else {
-                // Hide overflow items
-                item.style.setProperty('display', 'none', 'important');
-                if (index < this.menus.length) {
-                    this.overflowMenus.push(this.menus[index]);
-                }
+            if (usedWidth + itemWidth + reserve <= availableWidth) {
+                usedWidth += itemWidth;
+                visibleCount += 1;
+                return;
+            }
+
+            item.style.setProperty('display', 'none', 'important');
+
+            if (index < this.menus.length) {
+                this.overflowMenus.push(this.menus[index]);
             }
         });
 
-        // Update visible menus
         this.visibleMenus = this.menus.slice(0, visibleCount);
 
-        // Add More dropdown if needed
         if (this.overflowMenus.length > 0) {
             mainMenu.insertAdjacentHTML('beforeend', this.createMoreDropdown());
         }
@@ -257,6 +266,13 @@ class NavigationMenu extends HTMLElement {
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
+    }
+
+    disconnectedCallback() {
+        if (this._velouraResizeHandler) {
+            window.removeEventListener('resize', this._velouraResizeHandler);
+            this._velouraResizeHandler = null;
+        }
     }
 
     /**

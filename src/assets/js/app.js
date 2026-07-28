@@ -562,6 +562,58 @@ const initVelouraGlobalGlass = (() => {
   return init;
 })();
 
+
+/* ========================================================================
+   Veloura Header Controls
+   - Opens the single official Salla localization component from the mobile icon.
+   - Uses the documented open() method instead of clicking the web-component host.
+   ======================================================================== */
+const initVelouraHeaderControls = (() => {
+  let eventsBound = false;
+
+  const openLocalization = async trigger => {
+    const modal = document.querySelector('salla-localization-modal');
+
+    if (!modal) {
+      trigger?.setAttribute('aria-disabled', 'true');
+      return;
+    }
+
+    try {
+      if (window.customElements?.whenDefined) {
+        await window.customElements.whenDefined('salla-localization-modal');
+      }
+
+      if (typeof modal.open === 'function') {
+        await modal.open();
+        return;
+      }
+
+      const nativeTrigger = modal.shadowRoot?.querySelector(
+        'button, [role="button"], [part~="trigger"]'
+      );
+
+      nativeTrigger?.click();
+    } catch (error) {
+      salla.logger?.error?.('veloura-header::localization-open', error);
+    }
+  };
+
+  return () => {
+    if (eventsBound) return;
+    eventsBound = true;
+
+    document.addEventListener('click', event => {
+      const trigger = event.target.closest('[data-veloura-localization-trigger]');
+      if (!trigger) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      openLocalization(trigger);
+    }, true);
+  };
+})();
+
 class App extends AppHelpers {
   constructor() {
     super();
@@ -572,6 +624,7 @@ class App extends AppHelpers {
     this.commonThings();
     initVelouraFooter();
     initVelouraGlobalGlass();
+    initVelouraHeaderControls();
     this.initiateNotifier();
     this.initiateMobileMenu();
     // V4: initialize the whole header system even when sticky is disabled,

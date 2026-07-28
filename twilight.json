@@ -275,7 +275,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_general_subtitle_logo_2026",
-      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:14px;background:#eff6ff;color:#1e3a8a;text-align:right;font-weight:800;border-right:4px solid #3b82f6;box-shadow:inset 0 0 0 1px rgba(15,23,42,.06);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:999px;background:#3b82f6;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الشعار العام</span></div>",
+      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الشعار العام</span></div>",
       "variant": "h6",
       "conditions": [
         {
@@ -318,7 +318,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_general_subtitle_background_2026",
-      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:14px;background:#ecfdf5;color:#065f46;text-align:right;font-weight:800;border-right:4px solid #10b981;box-shadow:inset 0 0 0 1px rgba(15,23,42,.06);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:999px;background:#10b981;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>خلفية الموقع</span></div>",
+      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>خلفية الموقع</span></div>",
       "variant": "h6",
       "conditions": [
         {
@@ -332,7 +332,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_global_shape_title_2026",
-      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:14px;background:#fff7ed;color:#9a3412;text-align:right;font-weight:800;border-right:4px solid #f97316;box-shadow:inset 0 0 0 1px rgba(15,23,42,.06);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:999px;background:#f97316;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الشكل العام للعناصر</span></div>",
+      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الشكل العام للعناصر</span></div>",
       "variant": "h6",
       "icon": "sicon-magic",
       "conditions": [
@@ -485,7 +485,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_general_subtitle_spacing_2026",
-      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:14px;background:#f5f3ff;color:#5b21b6;text-align:right;font-weight:800;border-right:4px solid #8b5cf6;box-shadow:inset 0 0 0 1px rgba(15,23,42,.06);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:999px;background:#8b5cf6;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>المسافات والحاويات</span></div>",
+      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(139,92,246,.40);border-right:4px solid #8b5cf6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>المسافات والحاويات</span></div>",
       "variant": "h6",
       "conditions": [
         {
@@ -559,7 +559,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_general_subtitle_classes_2026",
-      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:14px;background:#fdf2f8;color:#9d174d;text-align:right;font-weight:800;border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(15,23,42,.06);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:999px;background:#ec4899;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الكلاسات والأوضاع الخاصة</span></div>",
+      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الكلاسات والأوضاع الخاصة</span></div>",
       "variant": "h6",
       "conditions": [
         {
@@ -671,7 +671,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_loader_logo_title_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#f8fafc;color:#0f172a;text-align:right;font-weight:900;border-right:4px solid #64748b\">الشعار داخل صفحة التحميل</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;text-align:right;font-weight:900;border:1px solid rgba(100,116,139,.40);border-right:4px solid #64748b;box-shadow:none;\">الشعار داخل صفحة التحميل</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -867,7 +867,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_loader_bg_title_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#ecfeff;color:#164e63;text-align:right;font-weight:900;border-right:4px solid #06b6d4\">خلفية صفحة التحميل</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:900;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:none;\">خلفية صفحة التحميل</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -1042,7 +1042,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_loader_text_title_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#fefce8;color:#713f12;text-align:right;font-weight:900;border-right:4px solid #eab308\">النصوص داخل صفحة التحميل</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(234,179,8,.20),rgba(234,179,8,.10));color:inherit;text-align:right;font-weight:900;border:1px solid rgba(234,179,8,.40);border-right:4px solid #eab308;box-shadow:none;\">النصوص داخل صفحة التحميل</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -1149,7 +1149,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_loader_timing_title_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#f5f3ff;color:#4c1d95;text-align:right;font-weight:900;border-right:4px solid #8b5cf6\">التوقيت والاختفاء</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;text-align:right;font-weight:900;border:1px solid rgba(139,92,246,.40);border-right:4px solid #8b5cf6;box-shadow:none;\">التوقيت والاختفاء</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -1580,7 +1580,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_top_subtitle_logo_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#f1fafb;color:#004d65;text-align:right;font-weight:800;border-right:4px solid #00a6a6\">الشعار وتموضع الهيدر</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(0,166,166,.20),rgba(0,166,166,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(0,166,166,.40);border-right:4px solid #00a6a6;box-shadow:none;\">الشعار وتموضع الهيدر</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -1654,7 +1654,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_top_subtitle_floating_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#ecfeff;color:#155e75;text-align:right;font-weight:800;border-right:4px solid #06b6d4\">الهيدر العائم والبلوري</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:none;\">الهيدر العائم والبلوري</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -1781,7 +1781,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_top_subtitle_colors_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#fff7ed;color:#9a3412;text-align:right;font-weight:800;border-right:4px solid #fb923c\">الألوان والحواف</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:none;\">الألوان والحواف</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -1909,7 +1909,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_top_subtitle_icons_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#f0fdf4;color:#166534;text-align:right;font-weight:800;border-right:4px solid #22c55e\">الأيقونات والعملة والسلة</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(34,197,94,.40);border-right:4px solid #22c55e;box-shadow:none;\">الأيقونات والعملة والسلة</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -1989,12 +1989,37 @@
     },
     {
       "id": "veloura_top_login_icon_2026",
-      "type": "string",
-      "format": "icon",
+      "type": "items",
+      "format": "dropdown-list",
       "label": "أيقونة تسجيل الدخول",
-      "description": "اختر أيقونة خاصة بزر تسجيل الدخول / حساب العميل",
+      "description": "اختر من أيقونات الحساب المناسبة فقط.",
       "icon": "sicon-user-circle",
-      "value": "sicon-user-circle",
+      "source": "Manual",
+      "required": true,
+      "selected": [
+        {
+          "label": "حساب دائري",
+          "value": "sicon-user-circle",
+          "key": "veloura-login-icon-user-circle"
+        }
+      ],
+      "options": [
+        {
+          "label": "حساب دائري",
+          "value": "sicon-user-circle",
+          "key": "veloura-login-icon-user-circle"
+        },
+        {
+          "label": "مستخدم",
+          "value": "sicon-user",
+          "key": "veloura-login-icon-user"
+        },
+        {
+          "label": "محفظة العميل",
+          "value": "sicon-wallet",
+          "key": "veloura-login-icon-wallet"
+        }
+      ],
       "conditions": [
         {
           "id": "veloura_top_enabled_2026",
@@ -2005,12 +2030,47 @@
     },
     {
       "id": "veloura_top_cart_icon_2026",
-      "type": "string",
-      "format": "icon",
+      "type": "items",
+      "format": "dropdown-list",
       "label": "أيقونة السلة",
-      "description": "اختر أيقونة خاصة بسلة المنتجات في القسم العلوي",
+      "description": "اختر من أيقونات التسوق المناسبة فقط.",
       "icon": "sicon-shopping-bag",
-      "value": "sicon-shopping-bag",
+      "source": "Manual",
+      "required": true,
+      "selected": [
+        {
+          "label": "حقيبة تسوق",
+          "value": "sicon-shopping-bag",
+          "key": "veloura-cart-icon-shopping-bag"
+        }
+      ],
+      "options": [
+        {
+          "label": "حقيبة تسوق",
+          "value": "sicon-shopping-bag",
+          "key": "veloura-cart-icon-shopping-bag"
+        },
+        {
+          "label": "عربة تسوق",
+          "value": "sicon-luggage-cart",
+          "key": "veloura-cart-icon-luggage-cart"
+        },
+        {
+          "label": "صندوق",
+          "value": "sicon-box",
+          "key": "veloura-cart-icon-box"
+        },
+        {
+          "label": "طرد",
+          "value": "sicon-packed-box",
+          "key": "veloura-cart-icon-packed-box"
+        },
+        {
+          "label": "هدية",
+          "value": "sicon-gift",
+          "key": "veloura-cart-icon-gift"
+        }
+      ],
       "conditions": [
         {
           "id": "veloura_top_enabled_2026",
@@ -2021,12 +2081,47 @@
     },
     {
       "id": "veloura_top_menu_icon_2026",
-      "type": "string",
-      "format": "icon",
+      "type": "items",
+      "format": "dropdown-list",
       "label": "أيقونة القائمة",
-      "description": "اختر أيقونة خاصة بقائمة الجوال",
+      "description": "اختر من أيقونات القائمة المناسبة فقط.",
       "icon": "sicon-menu",
-      "value": "sicon-menu",
+      "source": "Manual",
+      "required": true,
+      "selected": [
+        {
+          "label": "قائمة خطوط",
+          "value": "sicon-menu",
+          "key": "veloura-menu-icon-lines"
+        }
+      ],
+      "options": [
+        {
+          "label": "قائمة خطوط",
+          "value": "sicon-menu",
+          "key": "veloura-menu-icon-lines"
+        },
+        {
+          "label": "قائمة عناصر",
+          "value": "sicon-list",
+          "key": "veloura-menu-icon-list"
+        },
+        {
+          "label": "شبكة",
+          "value": "sicon-grid",
+          "key": "veloura-menu-icon-grid"
+        },
+        {
+          "label": "تطبيقات",
+          "value": "sicon-apps",
+          "key": "veloura-menu-icon-apps"
+        },
+        {
+          "label": "شبكة مربعات",
+          "value": "sicon-layout-grid",
+          "key": "veloura-menu-icon-layout-grid"
+        }
+      ],
       "conditions": [
         {
           "id": "veloura_top_enabled_2026",
@@ -2079,7 +2174,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_top_subtitle_search_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#eef2ff;color:#3730a3;text-align:right;font-weight:800;border-right:4px solid #6366f1\">البحث والعرض المتجاوب</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:none;\">البحث والعرض المتجاوب</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -2171,6 +2266,24 @@
           "key": "veloura-desktop-search-bar-sticky-icon-2026"
         }
       ],
+      "conditions": [
+        {
+          "id": "veloura_top_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "icon": "sicon-search",
+      "label": "فصل شريط البحث المستطيل عن الهيدر",
+      "description": "يعمل مع نمط شريط البحث المستطيل أو الشريط الذي يتحول إلى أيقونة عند النزول. عند التفعيل يظهر حقل البحث أسفل الهيدر بمسافة 10px.",
+      "id": "veloura_top_search_detached_2026",
+      "format": "switch",
+      "required": false,
+      "value": false,
+      "selected": false,
       "conditions": [
         {
           "id": "veloura_top_enabled_2026",
@@ -2387,7 +2500,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_footer_subtitle_logo_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#f1f5f9;color:#0f172a;text-align:right;font-weight:800;border-right:4px solid #334155\">الشعار والخلفية</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(51,65,85,.20),rgba(51,65,85,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(51,65,85,.40);border-right:4px solid #334155;box-shadow:none;\">الشعار والخلفية</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -2506,7 +2619,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_footer_subtitle_texts_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#ecfeff;color:#155e75;text-align:right;font-weight:800;border-right:4px solid #06b6d4\">العناوين والنصوص</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:none;\">العناوين والنصوص</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -2592,7 +2705,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_footer_subtitle_colors_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#fff7ed;color:#9a3412;text-align:right;font-weight:800;border-right:4px solid #fb923c\">الألوان</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:none;\">الألوان</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -2711,7 +2824,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_footer_subtitle_shape_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#f0fdf4;color:#166534;text-align:right;font-weight:800;border-right:4px solid #22c55e\">الشكل العام</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(34,197,94,.40);border-right:4px solid #22c55e;box-shadow:none;\">الشكل العام</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -2967,7 +3080,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_footer_subtitle_contact_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#eef2ff;color:#3730a3;text-align:right;font-weight:800;border-right:4px solid #6366f1\">وسائل الاتصال والسوشيال</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:none;\">وسائل الاتصال والسوشيال</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -3054,7 +3167,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_footer_subtitle_apps_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#f0f9ff;color:#075985;text-align:right;font-weight:800;border-right:4px solid #38bdf8\">تطبيق الجوال والروابط</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(56,189,248,.20),rgba(56,189,248,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(56,189,248,.40);border-right:4px solid #38bdf8;box-shadow:none;\">تطبيق الجوال والروابط</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -3124,7 +3237,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_footer_subtitle_bottom_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#fdf2f8;color:#9d174d;text-align:right;font-weight:800;border-right:4px solid #ec4899\">الشريط السفلي وحقوق المتجر</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:none;\">الشريط السفلي وحقوق المتجر</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -3217,7 +3330,7 @@
       "type": "static",
       "format": "title",
       "label": "الإعدادات العامة",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#eff6ff;color:#1d4ed8;text-align:right;font-weight:800;border-right:4px solid #3b82f6;box-shadow:inset 0 0 0 1px rgba(59,130,246,.10)\">الإعدادات العامة للقائمة الجانبية</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:inset 0 0 0 1px rgba(59,130,246,.10)\">الإعدادات العامة للقائمة الجانبية</div>",
       "icon": "sicon-sliders",
       "conditions": [
         {
@@ -3274,7 +3387,7 @@
       "type": "static",
       "format": "title",
       "label": "الألوان والحواف",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#fdf2f8;color:#9d174d;text-align:right;font-weight:800;border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(236,72,153,.08)\">الألوان والحواف</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(236,72,153,.08)\">الألوان والحواف</div>",
       "icon": "sicon-paint-brush",
       "conditions": [
         {
@@ -3391,7 +3504,7 @@
       "type": "static",
       "format": "title",
       "label": "صور الأقسام الخاصة",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#fff7ed;color:#c2410c;text-align:right;font-weight:800;border-right:4px solid #f97316;box-shadow:inset 0 0 0 1px rgba(249,115,22,.10)\">صور الأقسام الخاصة</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;box-shadow:inset 0 0 0 1px rgba(249,115,22,.10)\">صور الأقسام الخاصة</div>",
       "icon": "sicon-image",
       "conditions": [
         {
@@ -3438,7 +3551,7 @@
       "type": "static",
       "format": "title",
       "label": "النصوص والصور",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#eef2ff;color:#3730a3;text-align:right;font-weight:800;border-right:4px solid #6366f1;box-shadow:inset 0 0 0 1px rgba(99,102,241,.10)\">النصوص والصور داخل القائمة</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:inset 0 0 0 1px rgba(99,102,241,.10)\">النصوص والصور داخل القائمة</div>",
       "icon": "sicon-font",
       "conditions": [
         {
@@ -3665,7 +3778,7 @@
       "type": "static",
       "format": "title",
       "label": "الروابط والأقسام الإضافية",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#ecfdf5;color:#047857;text-align:right;font-weight:800;border-right:4px solid #10b981;box-shadow:inset 0 0 0 1px rgba(16,185,129,.10)\">الروابط والأقسام الإضافية</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:inset 0 0 0 1px rgba(16,185,129,.10)\">الروابط والأقسام الإضافية</div>",
       "icon": "sicon-link",
       "conditions": [
         {
@@ -3752,7 +3865,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_category_subtitle_navigation_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#eef2ff;color:#3730a3;text-align:right;font-weight:800;border-right:4px solid #6366f1;box-shadow:inset 0 0 0 1px rgba(99,102,241,.07)\">المسار والقائمة الجانبية</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:inset 0 0 0 1px rgba(99,102,241,.07)\">المسار والقائمة الجانبية</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -3870,7 +3983,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_category_subtitle_products_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#f0fdf4;color:#166534;text-align:right;font-weight:800;border-right:4px solid #22c55e;box-shadow:inset 0 0 0 1px rgba(34,197,94,.07)\">خيارات المنتجات داخل التصنيف</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(34,197,94,.40);border-right:4px solid #22c55e;box-shadow:inset 0 0 0 1px rgba(34,197,94,.07)\">خيارات المنتجات داخل التصنيف</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -3920,7 +4033,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_category_subtitle_images_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#fff7ed;color:#9a3412;text-align:right;font-weight:800;border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(251,146,60,.07)\">صور صفحات التصنيفات</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(251,146,60,.07)\">صور صفحات التصنيفات</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -4082,7 +4195,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_category_subtitle_style_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#ecfeff;color:#155e75;text-align:right;font-weight:800;border-right:4px solid #06b6d4;box-shadow:inset 0 0 0 1px rgba(6,182,212,.06)\">شكل الصور والعناوين</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:inset 0 0 0 1px rgba(6,182,212,.06)\">شكل الصور والعناوين</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -4876,7 +4989,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_card_subtitle_general_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#eef2ff;color:#3730a3;text-align:right;font-weight:800;border-right:4px solid #6366f1;box-shadow:inset 0 0 0 1px rgba(99,102,241,.07)\">الشكل العام للبطاقة</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:inset 0 0 0 1px rgba(99,102,241,.07)\">الشكل العام للبطاقة</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -4984,7 +5097,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_pc_title_visibility_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#f8fafc;color:#0f172a;text-align:right;font-weight:800;border-right:4px solid #64748b;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">إظهار وإخفاء عناصر بطاقة المنتج</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(100,116,139,.40);border-right:4px solid #64748b;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">إظهار وإخفاء عناصر بطاقة المنتج</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -5052,7 +5165,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_card_subtitle_image_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#ecfeff;color:#155e75;text-align:right;font-weight:800;border-right:4px solid #06b6d4;box-shadow:inset 0 0 0 1px rgba(6,182,212,.08)\">صورة المنتج</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:inset 0 0 0 1px rgba(6,182,212,.08)\">صورة المنتج</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -5264,7 +5377,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_pc_title_promo_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#fef2f2;color:#991b1b;text-align:right;font-weight:800;border-right:4px solid #ef4444;box-shadow:inset 0 0 0 1px rgba(239,68,68,.10)\">العنوان الترويجي داخل بطاقة المنتج</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(239,68,68,.20),rgba(239,68,68,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(239,68,68,.40);border-right:4px solid #ef4444;box-shadow:inset 0 0 0 1px rgba(239,68,68,.10)\">العنوان الترويجي داخل بطاقة المنتج</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -5475,7 +5588,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_card_subtitle_quick_view_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#fdf2f8;color:#9d174d;text-align:right;font-weight:800;border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(236,72,153,.08)\">العرض السريع داخل بطاقة المنتج</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(236,72,153,.08)\">العرض السريع داخل بطاقة المنتج</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -5869,7 +5982,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_card_subtitle_quick_view_modal_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#f5f3ff;color:#5b21b6;text-align:right;font-weight:800;border-right:4px solid #8b5cf6;box-shadow:inset 0 0 0 1px rgba(139,92,246,.08)\">نافذة العرض السريع</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(139,92,246,.40);border-right:4px solid #8b5cf6;box-shadow:inset 0 0 0 1px rgba(139,92,246,.08)\">نافذة العرض السريع</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -6090,7 +6203,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_card_subtitle_texts_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#f0fdf4;color:#166534;text-align:right;font-weight:800;border-right:4px solid #22c55e;box-shadow:inset 0 0 0 1px rgba(34,197,94,.08)\">النصوص والمسافات</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(34,197,94,.40);border-right:4px solid #22c55e;box-shadow:inset 0 0 0 1px rgba(34,197,94,.08)\">النصوص والمسافات</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -6245,7 +6358,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_card_subtitle_button_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#fff7ed;color:#9a3412;text-align:right;font-weight:800;border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(251,146,60,.08)\">زر أضف للسلة</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(251,146,60,.08)\">زر أضف للسلة</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -6436,7 +6549,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_page_subtitle_images_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#f8fafc;color:#0f172a;text-align:right;font-weight:800;border-right:4px solid #64748b;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">الصور والمسار</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(100,116,139,.40);border-right:4px solid #64748b;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">الصور والمسار</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -6541,7 +6654,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_page_subtitle_info_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#ecfeff;color:#155e75;text-align:right;font-weight:800;border-right:4px solid #06b6d4;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">معلومات المنتج الأساسية</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">معلومات المنتج الأساسية</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -6723,7 +6836,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_page_subtitle_content_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#f0f9ff;color:#075985;text-align:right;font-weight:800;border-right:4px solid #38bdf8;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">الوصف والمحتوى</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(56,189,248,.20),rgba(56,189,248,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(56,189,248,.40);border-right:4px solid #38bdf8;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">الوصف والمحتوى</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -6755,7 +6868,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_page_subtitle_sticky_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#f0fdf4;color:#166534;text-align:right;font-weight:800;border-right:4px solid #22c55e;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">الشريط المثبت أسفل الجوال</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(34,197,94,.40);border-right:4px solid #22c55e;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">الشريط المثبت أسفل الجوال</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -6869,7 +6982,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_page_subtitle_marketing_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#fff7ed;color:#9a3412;text-align:right;font-weight:800;border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">العروض والتفاعل داخل صفحة المنتج</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">العروض والتفاعل داخل صفحة المنتج</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -7016,7 +7129,7 @@
       "id": "veloura_product_details_order_title_2026",
       "type": "static",
       "format": "title",
-      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:14px;background:#eef2ff;color:#3730a3;text-align:right;font-weight:800;border-right:4px solid #6366f1\"><span>ترتيب تفاصيل المنتج</span><div style=\"font-size:12px;font-weight:500;opacity:.8;margin-top:4px\">اختر ترتيب كل مجموعة من 1 إلى 10</div></div>",
+      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:none;\"><span>ترتيب تفاصيل المنتج</span><div style=\"font-size:12px;font-weight:500;opacity:.8;margin-top:4px\">اختر ترتيب كل مجموعة من 1 إلى 10</div></div>",
       "variant": "h6",
       "conditions": [
         {
@@ -7879,7 +7992,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_page_subtitle_tags_related_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#fdf2f8;color:#9d174d;text-align:right;font-weight:800;border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">الوسوم والمنتجات المقترحة</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">الوسوم والمنتجات المقترحة</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -8309,7 +8422,7 @@
       "type": "static",
       "format": "title",
       "label": "الإعدادات العامة",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#eff6ff;color:#1d4ed8;text-align:right;font-weight:800;border-right:4px solid #3b82f6;box-shadow:inset 0 0 0 1px rgba(59,130,246,.10)\">الإعدادات العامة للقائمة العائمة</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:inset 0 0 0 1px rgba(59,130,246,.10)\">الإعدادات العامة للقائمة العائمة</div>",
       "icon": "sicon-sliders",
       "conditions": [
         {
@@ -8383,7 +8496,7 @@
       "type": "static",
       "format": "title",
       "label": "الشكل الاحترافي",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#eef2ff;color:#3730a3;text-align:right;font-weight:800;border-right:4px solid #6366f1;box-shadow:inset 0 0 0 1px rgba(99,102,241,.10)\">الشكل الاحترافي والعنصر النشط</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:inset 0 0 0 1px rgba(99,102,241,.10)\">الشكل الاحترافي والعنصر النشط</div>",
       "icon": "sicon-magic-wand",
       "conditions": [
         {
@@ -8564,7 +8677,7 @@
       "type": "static",
       "format": "title",
       "label": "الألوان والحواف",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#fdf2f8;color:#9d174d;text-align:right;font-weight:800;border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(236,72,153,.08)\">الألوان والحواف</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(236,72,153,.08)\">الألوان والحواف</div>",
       "icon": "sicon-paint-brush",
       "conditions": [
         {
@@ -8698,7 +8811,7 @@
       "type": "static",
       "format": "title",
       "label": "عناصر القائمة",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#ecfdf5;color:#047857;text-align:right;font-weight:800;border-right:4px solid #10b981;box-shadow:inset 0 0 0 1px rgba(16,185,129,.10)\">العناصر الافتراضية والإضافية</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:inset 0 0 0 1px rgba(16,185,129,.10)\">العناصر الافتراضية والإضافية</div>",
       "icon": "sicon-grid",
       "conditions": [
         {
@@ -8793,7 +8906,7 @@
       "type": "static",
       "format": "title",
       "label": "عناصر مخصصة",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#fff7ed;color:#c2410c;text-align:right;font-weight:800;border-right:4px solid #f97316;box-shadow:inset 0 0 0 1px rgba(249,115,22,.10)\">إضافة عناصر مخصصة للقائمة</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;box-shadow:inset 0 0 0 1px rgba(249,115,22,.10)\">إضافة عناصر مخصصة للقائمة</div>",
       "icon": "sicon-plus",
       "conditions": [
         {
@@ -8932,7 +9045,7 @@
       "type": "static",
       "format": "title",
       "label": "تسميات الأزرار",
-      "value": "<div style=\"padding:10px 14px;border-radius:12px;background:#fff7ed;color:#c2410c;text-align:right;font-weight:800;border-right:4px solid #f97316;box-shadow:inset 0 0 0 1px rgba(249,115,22,.10)\">تسميات الأزرار</div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;box-shadow:inset 0 0 0 1px rgba(249,115,22,.10)\">تسميات الأزرار</div>",
       "icon": "sicon-font",
       "conditions": [
         {

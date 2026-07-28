@@ -582,3 +582,141 @@ html.veloura-viewport-resizing .veloura-mobile-floating-menu * {
     transition: none !important;
   }
 }
+
+/* ========================================================================
+   Veloura Header Stack — container, detached search and full hide fixes
+   ======================================================================== */
+
+/* The desktop width switch is independent from floating/non-floating mode. */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack--container-desktop > .veloura-header-tabs-stack__container {
+    width: 100% !important;
+    max-width: var(--veloura-global-container, 1280px) !important;
+    margin-inline: auto !important;
+    padding-inline: var(--veloura-global-spacing, 12px) !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .veloura-header-tabs-stack--full-width-desktop > .veloura-header-tabs-stack__container {
+    width: 100% !important;
+    max-width: none !important;
+    margin-inline: 0 !important;
+    padding-inline: 0 !important;
+  }
+
+  html body .veloura-header-tabs-stack--container-desktop .store-header .veloura-header-container {
+    width: 100% !important;
+    max-width: none !important;
+    padding-inline: 0 !important;
+  }
+
+  html body .veloura-header-tabs-stack--full-width-desktop .store-header .veloura-header-container {
+    width: 100% !important;
+    max-width: none !important;
+    padding-inline: 32px !important;
+  }
+}
+
+/* A detached rectangular search is a sibling of the header surface, so the
+   10px gap shows the actual page background rather than the header color. */
+html body .veloura-detached-search-shell {
+  display: block;
+  width: 100%;
+  margin: 10px 0 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body .veloura-detached-search {
+  display: none;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+html body .veloura-detached-search salla-search {
+  display: block;
+  width: 100%;
+}
+
+@media (max-width: 1023px) {
+  html body .veloura-detached-search-shell {
+    padding-inline: 14px !important;
+  }
+
+  html body .veloura-detached-search-shell.veloura-detached-mobile-bar .veloura-detached-search--mobile,
+  html body .veloura-detached-search-shell.veloura-detached-mobile-bar_sticky_icon .veloura-detached-search--mobile {
+    display: block !important;
+  }
+
+  html body .veloura-header-tabs-stack.veloura-stack-is-scrolled
+    .veloura-detached-search-shell.veloura-detached-mobile-bar_sticky_icon
+    .veloura-detached-search--mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  html body .veloura-detached-search--desktop {
+    width: min(620px, 100%);
+    max-width: 620px;
+  }
+
+  html body .veloura-detached-search-shell.veloura-detached-desktop-bar .veloura-detached-search--desktop,
+  html body .veloura-detached-search-shell.veloura-detached-desktop-bar_sticky_icon .veloura-detached-search--desktop {
+    display: block !important;
+  }
+
+  html body .veloura-header-tabs-stack.veloura-stack-is-scrolled
+    .veloura-detached-search-shell.veloura-detached-desktop-bar_sticky_icon
+    .veloura-detached-search--desktop {
+    display: none !important;
+  }
+}
+
+/* Header hidden on scroll: hide the detached field with it. */
+html body .veloura-header-tabs-stack.veloura-hide-header-now .veloura-detached-search-shell {
+  display: none !important;
+}
+
+/* If there are no home tabs, collapse the complete sticky surface. This
+   removes the one-pixel border/glass remnant that used to stay on screen. */
+html body .veloura-header-tabs-stack.veloura-hide-header-now:not(.veloura-header-tabs-stack--has-tabs) {
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  padding-top: 0 !important;
+  border: 0 !important;
+}
+
+html body .veloura-header-tabs-stack.veloura-hide-header-now:not(.veloura-header-tabs-stack--has-tabs)
+  > .veloura-header-tabs-stack__container {
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  overflow: hidden !important;
+}
+
+html body .veloura-header-tabs-stack.veloura-hide-header-now:not(.veloura-header-tabs-stack--has-tabs)
+  .veloura-header-tabs-stack__surface {
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  overflow: hidden !important;
+}
+
+
+/* When home tabs remain visible while the header is hidden, remove the
+   separator that otherwise looks like a stray one-pixel white line. */
+html body .veloura-header-tabs-stack.veloura-hide-header-now.veloura-header-tabs-stack--has-tabs
+  .veloura-home-tabs {
+  border-top: 0 !important;
+}

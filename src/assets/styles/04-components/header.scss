@@ -1868,3 +1868,236 @@ html[dir="ltr"] .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul.mm-spn--parent {
     }
   }
 }
+
+/* ========================================================================
+   Veloura Header — focused navigation/search/icon fixes (2026)
+   This block intentionally comes last so it only resolves the current header
+   contract without changing product, cart or page components.
+   ======================================================================== */
+
+/* Smaller, practical glyph sizes. The clickable controls keep their native
+   hit area; only the glyph is scaled. */
+.store-header.veloura-top-enabled.veloura-top-icons-small {
+  .veloura-header-icon,
+  .veloura-search-toggle,
+  .veloura-cart-summary,
+  .veloura-cart-custom-icon,
+  .veloura-cart-custom-icon i,
+  .veloura-cart-summary i[slot='icon'] {
+    font-size: 18px !important;
+  }
+}
+
+.store-header.veloura-top-enabled.veloura-top-icons-medium {
+  .veloura-header-icon,
+  .veloura-search-toggle,
+  .veloura-cart-summary,
+  .veloura-cart-custom-icon,
+  .veloura-cart-custom-icon i,
+  .veloura-cart-summary i[slot='icon'] {
+    font-size: 21px !important;
+  }
+}
+
+.store-header.veloura-top-enabled.veloura-top-icons-large {
+  .veloura-header-icon,
+  .veloura-search-toggle,
+  .veloura-cart-summary,
+  .veloura-cart-custom-icon,
+  .veloura-cart-custom-icon i,
+  .veloura-cart-summary i[slot='icon'] {
+    font-size: 24px !important;
+  }
+}
+
+.store-header.veloura-top-enabled {
+  .veloura-header-icon,
+  .veloura-search-toggle {
+    min-width: 34px !important;
+    min-height: 34px !important;
+  }
+
+  /* Connected rectangular search keeps breathing room under the field. */
+  .veloura-mobile-search-bar,
+  .veloura-desktop-search-bar {
+    margin-top: 8px !important;
+    margin-bottom: 12px !important;
+  }
+}
+
+/* ------------------------------------------------------------------------
+   Logo positioning
+   - centered switch ON: the current true-center three-column layout.
+   - centered switch OFF: logo returns to the RTL-leading/right position.
+   - "no center on laptop" applies the second layout only on desktop.
+   ------------------------------------------------------------------------ */
+.store-header.veloura-top-enabled.veloura-top-logo-centered {
+  .veloura-header-grid {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+    grid-template-areas: 'left logo right' !important;
+  }
+
+  .veloura-header-logo {
+    justify-self: center !important;
+  }
+}
+
+.store-header.veloura-top-enabled:not(.veloura-top-logo-centered) {
+  .veloura-header-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, auto) auto !important;
+    grid-template-areas: 'left right logo' !important;
+  }
+
+  .veloura-header-logo {
+    justify-self: end !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .store-header.veloura-top-enabled.veloura-top-logo-centered.veloura-top-logo-no-center-laptop {
+    .veloura-header-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, auto) auto !important;
+      grid-template-areas: 'left right logo' !important;
+    }
+
+    .veloura-header-logo {
+      justify-self: end !important;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------------
+   Desktop categories as actual links
+   The menu now owns a dedicated full-width row, so the legacy overflow
+   calculation cannot hide every category inside one half of the header.
+   ------------------------------------------------------------------------ */
+@media (min-width: 1024px) {
+  .store-header.veloura-top-enabled.veloura-desktop-menu-links {
+    .veloura-header-grid {
+      grid-auto-rows: auto !important;
+    }
+
+    .veloura-menu-links-wrap {
+      grid-area: auto !important;
+      grid-column: 1 / -1 !important;
+      grid-row: 2 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      height: auto !important;
+      max-height: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      position: relative !important;
+      overflow: visible !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      clip: auto !important;
+      clip-path: none !important;
+      white-space: normal !important;
+    }
+
+    .veloura-menu-links-wrap custom-main-menu {
+      display: block !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      min-height: 0 !important;
+    }
+
+    .veloura-menu-links-wrap .main-menu {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 2px !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 0 12px !important;
+      overflow-x: auto !important;
+      overflow-y: visible !important;
+      scrollbar-width: none;
+    }
+
+    .veloura-menu-links-wrap .main-menu::-webkit-scrollbar {
+      display: none;
+    }
+
+    .veloura-menu-links-wrap .main-menu > li.root-level {
+      display: inline-flex !important;
+      flex: 0 0 auto !important;
+      margin: 0 !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+
+    .veloura-menu-links-wrap .main-menu > li.root-level > a {
+      padding: 8px 12px !important;
+      white-space: nowrap !important;
+    }
+
+    /* When both links and a connected search bar are active, search becomes
+       the third row instead of occupying the same row as categories. */
+    &.veloura-desktop-search-bar,
+    &.veloura-desktop-search-bar_sticky_icon {
+      .veloura-desktop-search-bar {
+        grid-area: auto !important;
+        grid-column: 1 / -1 !important;
+        grid-row: 3 !important;
+      }
+    }
+  }
+
+  .store-header.veloura-top-enabled:not(.veloura-desktop-menu-links) {
+    &.veloura-desktop-search-bar,
+    &.veloura-desktop-search-bar_sticky_icon {
+      .veloura-desktop-search-bar {
+        grid-area: auto !important;
+        grid-column: 1 / -1 !important;
+        grid-row: 2 !important;
+      }
+    }
+  }
+}
+
+@media (max-width: 1023px) {
+  .store-header.veloura-top-enabled.veloura-mobile-search-bar,
+  .store-header.veloura-top-enabled.veloura-mobile-search-bar_sticky_icon {
+    .veloura-mobile-search-bar {
+      grid-area: auto !important;
+      grid-column: 1 / -1 !important;
+      grid-row: 2 !important;
+    }
+  }
+}
+
+
+/* Localization modal host stays mounted and callable while both custom
+   desktop/mobile triggers remain ordinary header controls. */
+.store-header.veloura-top-enabled > .veloura-localization-modal-host {
+  position: absolute !important;
+  inset: 0 auto auto 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: visible !important;
+}
+
+@media (min-width: 1024px) {
+  .store-header.veloura-top-enabled.veloura-desktop-menu-links {
+    .veloura-menu-links-wrap.veloura-menu-more-enabled .main-menu {
+      flex-wrap: nowrap !important;
+      overflow: visible !important;
+    }
+
+    .veloura-menu-links-wrap.veloura-menu-more-disabled .main-menu {
+      flex-wrap: wrap !important;
+      overflow: visible !important;
+      row-gap: 2px !important;
+    }
+  }
+}
