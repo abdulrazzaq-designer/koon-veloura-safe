@@ -205,11 +205,22 @@ const VELOURA_CARD_CONTRACT_CSS = `
   align-items: stretch !important;
   justify-content: center !important;
   gap: 8px !important;
-  width: calc(100% - (var(--veloura-product-button-margin-x, 0px) * 2)) !important;
-  max-width: calc(100% - (var(--veloura-product-button-margin-x, 0px) * 2)) !important;
+  width: calc(
+    100% + var(--veloura-card-content-padding-start, 0px) +
+    var(--veloura-card-content-padding-end, 0px) -
+    (var(--veloura-product-button-margin-x, 0px) * 2)
+  ) !important;
+  max-width: none !important;
   min-width: 0 !important;
-  margin-inline: auto !important;
-  margin-top: 0 !important;
+  margin-inline-start: calc(
+    0px - var(--veloura-card-content-padding-start, 0px) +
+    var(--veloura-product-button-margin-x, 0px)
+  ) !important;
+  margin-inline-end: calc(
+    0px - var(--veloura-card-content-padding-end, 0px) +
+    var(--veloura-product-button-margin-x, 0px)
+  ) !important;
+  margin-top: 10px !important;
   margin-bottom: var(--veloura-product-button-margin-bottom, 0px) !important;
   padding: 0 !important;
   box-sizing: border-box !important;
@@ -517,6 +528,26 @@ function styleVelouraActionComponent(component, depth = 0) {
   }
 }
 
+function captureVelouraCardContentInsets(card) {
+  if (!card || !window.getComputedStyle) return;
+  const content = card.querySelector('.s-product-card-content');
+  if (!content) return;
+
+  const measure = () => {
+    const styles = window.getComputedStyle(content);
+    const start = parseFloat(styles.paddingInlineStart || styles.paddingLeft || '0') || 0;
+    const end = parseFloat(styles.paddingInlineEnd || styles.paddingRight || '0') || 0;
+    card.style.setProperty('--veloura-card-content-padding-start', `${start}px`);
+    card.style.setProperty('--veloura-card-content-padding-end', `${end}px`);
+  };
+
+  measure();
+  if (card.dataset.velouraCardInsetsMeasured !== '1') {
+    card.dataset.velouraCardInsetsMeasured = '1';
+    requestAnimationFrame(measure);
+  }
+}
+
 function markVelouraCardNativeParts(card) {
   const image = card.querySelector('.s-product-card-image');
   if (image) {
@@ -556,6 +587,7 @@ function applyVelouraProductCard(card) {
   ensureVelouraCardContractStyle(root);
   card.classList.add('veloura-card-contract');
   markVelouraCardNativeParts(card);
+  captureVelouraCardContentInsets(card);
 
   const footer = card.querySelector('.s-product-card-content-footer');
   if (footer) footer.classList.add('veloura-card-action-row');

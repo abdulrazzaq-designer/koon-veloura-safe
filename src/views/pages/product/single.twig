@@ -247,7 +247,7 @@
     {% set vpp_related_hide_arrows = _self.veloura_bool(theme.settings.get('veloura_related_hide_arrows_2026', false), false)|trim == 'true' %}
     {% set vpp_related_center_title = _self.veloura_bool(theme.settings.get('veloura_related_center_title_2026', false), false)|trim == 'true' %}
     {% set vpp_recent_hide = _self.veloura_bool(theme.settings.get('veloura_recently_viewed_hide_2026', false), false)|trim == 'true' %}
-    {% set vpp_recent_inherit = _self.veloura_bool(theme.settings.get('veloura_recently_viewed_inherit_related_2026', false), false)|trim == 'true' %}
+    {% set vpp_recent_customize = _self.veloura_bool(theme.settings.get('veloura_recently_viewed_customize_2026', false), false)|trim == 'true' %}
     {% set vpp_recent_mobile_columns_raw = _self.veloura_select(theme.settings.get('veloura_recently_viewed_mobile_columns_2026', 2), 2)|trim %}
     {% set vpp_recent_mobile_columns = vpp_recent_mobile_columns_raw + 0 %}
     {% if vpp_recent_mobile_columns < 1 %}{% set vpp_recent_mobile_columns = 1 %}{% endif %}
@@ -257,10 +257,6 @@
     {% if vpp_recent_desktop_columns < 1 %}{% set vpp_recent_desktop_columns = 1 %}{% endif %}
     {% if vpp_recent_desktop_columns > 6 %}{% set vpp_recent_desktop_columns = 6 %}{% endif %}
     {% set vpp_recent_center_title = _self.veloura_bool(theme.settings.get('veloura_recently_viewed_center_title_2026', false), false)|trim == 'true' %}
-    {% set vpp_recent_effective_mobile_columns = vpp_recent_inherit ? vpp_related_mobile_columns : vpp_recent_mobile_columns %}
-    {% set vpp_recent_effective_desktop_columns = vpp_recent_inherit ? vpp_related_desktop_columns : vpp_recent_desktop_columns %}
-    {% set vpp_recent_effective_center_title = vpp_recent_inherit ? vpp_related_center_title : vpp_recent_center_title %}
-    {% set vpp_recent_effective_hide_arrows = vpp_recent_inherit ? vpp_related_hide_arrows : false %}
 
     {% set vpp_custom_related_enabled = _self.veloura_bool(theme.settings.get('veloura_product_custom_related_enabled_2026', false), false)|trim == 'true' %}
     {% set vpp_custom_related_source = _self.veloura_select(theme.settings.get('veloura_product_custom_related_source_2026', 'selected'), 'selected')|trim %}
@@ -959,40 +955,25 @@
         'use strict';
 
         var related = document.querySelector('[data-veloura-related-slider]');
+        var tracked = [];
         var relatedConfig = {
           mobileColumns: {{ vpp_related_mobile_columns|default(2) }},
           desktopColumns: {{ vpp_related_desktop_columns|default(4) }},
           centerTitle: {{ vpp_related_center_title|default(false) ? 'true' : 'false' }},
-          hideArrows: {{ vpp_related_hide_arrows|default(false) ? 'true' : 'false' }}
+          hideArrows: {{ vpp_related_hide_arrows|default(false) ? 'true' : 'false' }},
+          customize: true
         };
         var recentConfig = {
           hide: {{ vpp_recent_hide ? 'true' : 'false' }},
-          mobileColumns: {{ vpp_recent_effective_mobile_columns|default(2) }},
-          desktopColumns: {{ vpp_recent_effective_desktop_columns|default(4) }},
-          centerTitle: {{ vpp_recent_effective_center_title|default(false) ? 'true' : 'false' }},
-          hideArrows: {{ vpp_recent_effective_hide_arrows|default(false) ? 'true' : 'false' }}
+          customize: {{ vpp_recent_customize ? 'true' : 'false' }},
+          mobileColumns: {{ vpp_recent_mobile_columns|default(2) }},
+          desktopColumns: {{ vpp_recent_desktop_columns|default(4) }},
+          centerTitle: {{ vpp_recent_center_title|default(false) ? 'true' : 'false' }},
+          hideArrows: false
         };
 
         function clean(value) {
           return String(value || '').replace(/\s+/g, ' ').trim().toLowerCase();
-        }
-
-        function isRecent(component) {
-          if (!component) return false;
-          var values = [
-            component.id,
-            component.className,
-            component.getAttribute && component.getAttribute('title'),
-            component.getAttribute && component.getAttribute('block-title'),
-            component.getAttribute && component.getAttribute('sub-title'),
-            component.getAttribute && component.getAttribute('source'),
-            component.getAttribute && component.getAttribute('data-title'),
-            component.textContent
-          ].filter(Boolean).join(' ');
-          var text = clean(values);
-          return text.indexOf('شاهدتها مؤخ') !== -1 ||
-            text.indexOf('recently viewed') !== -1 ||
-            text.indexOf('recently-viewed') !== -1;
         }
 
         function composedParent(node) {
@@ -1000,9 +981,30 @@
           return node.parentNode || (node.getRootNode && node.getRootNode().host) || null;
         }
 
+        function recentText(node) {
+          if (!node) return '';
+          return clean([
+            node.id,
+            node.className,
+            node.getAttribute && node.getAttribute('title'),
+            node.getAttribute && node.getAttribute('block-title'),
+            node.getAttribute && node.getAttribute('sub-title'),
+            node.getAttribute && node.getAttribute('data-title'),
+            node.textContent
+          ].filter(Boolean).join(' '));
+        }
+
+        function isRecent(node) {
+          var text = recentText(node);
+          return text.indexOf('شاهدتها مؤخ') !== -1 ||
+            text.indexOf('recently viewed') !== -1 ||
+            text.indexOf('recently-viewed') !== -1;
+        }
+
         function findSection(component) {
+          if (component && component.__velouraRecentSection) return component.__velouraRecentSection;
           var current = component;
-          for (var depth = 0; current && depth < 8; depth += 1) {
+          for (var depth = 0; current && depth < 10; depth += 1) {
             if (current.matches && current.matches('.veloura-product-related-products')) return current;
             if (isRecent(current)) return current;
             current = composedParent(current);
@@ -1010,15 +1012,31 @@
           return component.parentElement || component;
         }
 
-        function sliderConfig(config) {
+        function activeColumns(config) {
+          var desktop = window.matchMedia && window.matchMedia('(min-width: 768px)').matches;
+          var max = desktop ? 6 : 3;
+          var fallback = desktop ? 4 : 2;
+          var value = desktop ? config.desktopColumns : config.mobileColumns;
+          return Math.max(1, Math.min(max, Number(value) || fallback));
+        }
+
+        function activeGap() {
+          return window.matchMedia && window.matchMedia('(min-width: 768px)').matches ? 16 : 12;
+        }
+
+        function sliderValue(config) {
           return {
-            slidesPerView: Math.max(1, Math.min(3, Number(config.mobileColumns) || 2)),
+            slidesPerView: activeColumns(config),
             slidesPerGroup: 1,
-            spaceBetween: 12,
+            spaceBetween: activeGap(),
+            centeredSlides: false,
+            centeredSlidesBounds: false,
+            centerInsufficientSlides: false,
+            freeMode: false,
             allowTouchMove: true,
             simulateTouch: true,
             grabCursor: true,
-            threshold: 4,
+            threshold: 5,
             touchRatio: 1,
             touchStartPreventDefault: false,
             touchMoveStopPropagation: false,
@@ -1030,40 +1048,70 @@
             longSwipesRatio: 0.35,
             preventInteractionOnTransition: false,
             watchOverflow: true,
-            roundLengths: true,
             observer: false,
             observeParents: false,
             observeSlideChildren: false,
-            breakpoints: {
-              768: {
-                slidesPerView: Math.max(1, Math.min(6, Number(config.desktopColumns) || 4)),
-                slidesPerGroup: 1,
-                spaceBetween: 16
-              }
-            }
+            roundLengths: true
           };
         }
 
-        function installRootStyle(root, config, id) {
-          if (!root || !root.querySelector || root.querySelector('#' + id)) return;
-          var style = document.createElement('style');
-          style.id = id;
+        function installSliderStyle(root, config, id) {
+          if (!root || !root.querySelector) return;
+          var columns = activeColumns(config);
+          var gap = activeGap();
+          var style = root.querySelector('#' + id);
+          if (!style) {
+            style = document.createElement('style');
+            style.id = id;
+            root.appendChild(style);
+          }
           style.textContent = [
             ':host{display:block!important;width:100%!important;max-width:100%!important}',
             '.swiper-wrapper{align-items:stretch!important}',
+            '.swiper-slide{width:calc((100% - ' + ((columns - 1) * gap) + 'px) / ' + columns + ')!important}',
             '.swiper-slide>custom-salla-product-card,.swiper-slide>.s-product-card-entry{height:100%!important}',
             config.hideArrows ? '.s-slider-next,.s-slider-prev,[class*="swiper-button"]{display:none!important;visibility:hidden!important}' : ''
           ].join('');
-          root.appendChild(style);
+        }
+
+        function findSwiper(inner) {
+          if (!inner) return null;
+          return inner.swiper || inner.slider || inner.swiperInstance ||
+            (inner.shadowRoot && inner.shadowRoot.querySelector('.swiper') && inner.shadowRoot.querySelector('.swiper').swiper) ||
+            null;
+        }
+
+        function syncSwiper(inner, config) {
+          if (!inner || !config.customize) return;
+          var value = sliderValue(config);
+          var columns = activeColumns(config);
+
+          inner.setAttribute('slides-per-view', String(columns));
+          inner.setAttribute('slider-config', JSON.stringify(value));
+          try { inner.slidesPerView = String(columns); } catch (error) {}
+          try { inner.sliderConfig = value; } catch (error) {}
+          installSliderStyle(inner.shadowRoot, config, 'veloura-stable-inner-slider-style');
+
+          var swiper = findSwiper(inner);
+          if (!swiper || !swiper.params) return;
+          Object.assign(swiper.params, value);
+          if (swiper.originalParams) Object.assign(swiper.originalParams, value);
+          if (typeof swiper.updateSize === 'function') swiper.updateSize();
+          if (typeof swiper.updateSlides === 'function') swiper.updateSlides();
+          if (typeof swiper.updateProgress === 'function') swiper.updateProgress();
+          if (typeof swiper.updateSlidesClasses === 'function') swiper.updateSlidesClasses();
+          if (typeof swiper.update === 'function') swiper.update();
         }
 
         function centerHeading(section, enabled) {
-          if (!section || !enabled) return;
-          section.classList && section.classList.add('is-title-centered');
-          var heading = section.querySelector && section.querySelector(
+          if (!section || !section.querySelector) return;
+          var heading = section.querySelector(
             '.veloura-product-related-heading,.veloura-product-related-title,h1,h2,h3,h4,.s-block__title,.s-slider-block__title'
           );
           if (!heading || !heading.style) return;
+          heading.style.setProperty('margin-bottom', '18px', 'important');
+          if (!enabled) return;
+          section.classList && section.classList.add('is-title-centered');
           heading.style.setProperty('width', '100%', 'important');
           heading.style.setProperty('text-align', 'center', 'important');
           heading.style.setProperty('justify-content', 'center', 'important');
@@ -1071,32 +1119,12 @@
           heading.style.setProperty('margin-inline', 'auto', 'important');
         }
 
-        function updateInnerSlider(inner, config) {
-          if (!inner || inner.dataset.velouraStableSliderReady === '1') return;
-          inner.dataset.velouraStableSliderReady = '1';
-          var value = sliderConfig(config);
-          try { inner.sliderConfig = value; } catch (error) {}
-          inner.setAttribute('slider-config', JSON.stringify(value));
-
-          var finish = function () {
-            installRootStyle(inner.shadowRoot, config, 'veloura-stable-inner-slider-style');
-            var swiper = inner.swiper || inner.slider || inner.swiperInstance;
-            if (!swiper || !swiper.params) return;
-            Object.assign(swiper.params, value);
-            if (swiper.originalParams) Object.assign(swiper.originalParams, value);
-            if (typeof swiper.update === 'function') swiper.update();
-          };
-
-          finish();
-          if (typeof inner.componentOnReady === 'function') {
-            inner.componentOnReady().then(finish).catch(function () {});
-          }
-        }
-
-        function apply(component, config, type) {
-          if (!component || component.dataset.velouraStableProductSlider === type) return;
-          component.dataset.velouraStableProductSlider = type;
+        function configureComponent(component, config, type) {
+          if (!component) return;
           var section = findSection(component);
+          if (type === 'recent' && section && section.classList) {
+            section.classList.add('veloura-recent-stable-section');
+          }
 
           if (type === 'recent' && config.hide) {
             if (section && section.style) section.style.setProperty('display', 'none', 'important');
@@ -1105,20 +1133,32 @@
 
           component.setAttribute('product-card-component', 'custom-salla-product-card');
           try { component.productCardComponent = 'custom-salla-product-card'; } catch (error) {}
+          centerHeading(section, type === 'related' ? config.centerTitle : (config.customize && config.centerTitle));
 
-          var value = sliderConfig(config);
-          component.setAttribute('slider-config', JSON.stringify(value));
-          try { component.sliderConfig = value; } catch (error) {}
-          centerHeading(section, config.centerTitle);
+          if (config.customize) {
+            var value = sliderValue(config);
+            component.setAttribute('slider-config', JSON.stringify(value));
+            try { component.sliderConfig = value; } catch (error) {}
+          }
+
+          var record = tracked.find(function (item) { return item.component === component; });
+          if (!record) {
+            tracked.push({ component: component, config: config, type: type });
+          } else {
+            record.config = config;
+          }
 
           var finish = function () {
             var root = component.shadowRoot || component;
-            installRootStyle(component.shadowRoot, config, 'veloura-stable-products-slider-style');
             if (window.VelouraProductCardContract && typeof window.VelouraProductCardContract.applyTree === 'function') {
               window.VelouraProductCardContract.applyTree(root);
             }
-            root.querySelectorAll && root.querySelectorAll('salla-slider').forEach(function (inner) {
-              updateInnerSlider(inner, config);
+            if (!config.customize || !root.querySelectorAll) return;
+            root.querySelectorAll('salla-slider').forEach(function (inner) {
+              syncSwiper(inner, config);
+              if (typeof inner.componentOnReady === 'function') {
+                inner.componentOnReady().then(function () { syncSwiper(inner, config); }).catch(function () {});
+              }
             });
           };
 
@@ -1131,27 +1171,64 @@
         function route(component) {
           if (!component) return;
           if (component === related || component.matches && component.matches('[data-veloura-related-slider]')) {
-            apply(component, relatedConfig, 'related');
-          } else if (isRecent(component)) {
-            apply(component, recentConfig, 'recent');
+            configureComponent(component, relatedConfig, 'related');
+            return;
+          }
+          if (isRecent(component) || isRecent(findSection(component))) {
+            configureComponent(component, recentConfig, 'recent');
           }
         }
 
+        function routeRecentHeadings() {
+          document.querySelectorAll('h1,h2,h3,h4,.s-block__title,.s-slider-block__title').forEach(function (heading) {
+            if (!isRecent(heading)) return;
+            var section = heading.closest('section,.container,[class*="recent"],[class*="slider"]') || heading.parentElement;
+            var component = section && section.querySelector('salla-products-slider,salla-products-list');
+            if (component) {
+              component.__velouraRecentSection = section;
+              configureComponent(component, recentConfig, 'recent');
+            }
+          });
+        }
+
         function registerHooks() {
-          if (window.__velouraStableProductSliderHooks) return;
+          if (window.__velouraStableProductSliderHooksV2) return;
           var api = window.Salla || window.salla;
           if (!api || !api.hooks || typeof api.hooks.registerHook !== 'function') return;
-          window.__velouraStableProductSliderHooks = true;
+          window.__velouraStableProductSliderHooksV2 = true;
           api.hooks.registerHook('salla-products-slider', 'componentDidLoad', route);
           api.hooks.registerHook('salla-products-list', 'componentDidLoad', route);
+          api.hooks.registerHook('salla-slider', 'componentDidLoad', function (inner) {
+            tracked.forEach(function (item) {
+              var root = item.component.shadowRoot || item.component;
+              if (root && root.contains && root.contains(inner)) syncSwiper(inner, item.config);
+            });
+          });
+        }
+
+        function refreshTracked() {
+          tracked.forEach(function (item) {
+            if (!item.config.customize) return;
+            var root = item.component.shadowRoot || item.component;
+            root.querySelectorAll && root.querySelectorAll('salla-slider').forEach(function (inner) {
+              syncSwiper(inner, item.config);
+            });
+          });
         }
 
         function start() {
           if (related) route(related);
           document.querySelectorAll('salla-products-slider,salla-products-list').forEach(route);
+          routeRecentHeadings();
           var api = window.Salla || window.salla;
           if (api && typeof api.onReady === 'function') api.onReady(registerHooks);
           else registerHooks();
+
+          var resizeFrame = 0;
+          window.addEventListener('resize', function () {
+            cancelAnimationFrame(resizeFrame);
+            resizeFrame = requestAnimationFrame(refreshTracked);
+          }, { passive: true });
         }
 
         if (document.readyState === 'loading') {

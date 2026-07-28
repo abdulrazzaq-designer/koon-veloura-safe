@@ -8054,12 +8054,12 @@
       ]
     },
     {
-      "id": "veloura_recently_viewed_inherit_related_2026",
+      "id": "veloura_recently_viewed_customize_2026",
       "type": "boolean",
       "format": "switch",
-      "icon": "sicon-toggle-off",
-      "label": "ربط شاهدتها مؤخرًا بإعدادات منتجات قد تعجبك",
-      "description": "عند التفعيل يرث القسم عدد الأعمدة في الجوال والكمبيوتر وتوسيط العنوان وإخفاء الأسهم من منتجات قد تعجبك. عند التعطيل تظهر إعداداته المستقلة أدناه.",
+      "icon": "sicon-settings",
+      "label": "تخصيص قسم شاهدتها مؤخرًا",
+      "description": "عند التفعيل تظهر خيارات عدد الأعمدة في الجوال والكمبيوتر وتوسيط عنوان القسم.",
       "required": false,
       "value": false,
       "selected": false,
@@ -8068,6 +8068,11 @@
           "id": "veloura_product_page_panel_open_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_recently_viewed_hide_2026",
+          "operation": "=",
+          "value": false
         }
       ]
     },
@@ -8077,7 +8082,7 @@
       "format": "slider",
       "inputType": "range",
       "label": "عدد منتجات شاهدتها مؤخرًا في الجوال",
-      "description": "يعمل عندما يكون ربط القسم بمنتجات قد تعجبك معطلاً.",
+      "description": "يظهر ويعمل عند تفعيل تخصيص قسم شاهدتها مؤخرًا.",
       "icon": "sicon-pin",
       "value": "2",
       "required": false,
@@ -8096,9 +8101,9 @@
           "value": false
         },
         {
-          "id": "veloura_recently_viewed_inherit_related_2026",
+          "id": "veloura_recently_viewed_customize_2026",
           "operation": "=",
-          "value": false
+          "value": true
         }
       ]
     },
@@ -8108,7 +8113,7 @@
       "format": "slider",
       "inputType": "range",
       "label": "عدد منتجات شاهدتها مؤخرًا في الكمبيوتر",
-      "description": "يعمل عندما يكون ربط القسم بمنتجات قد تعجبك معطلاً.",
+      "description": "يظهر ويعمل عند تفعيل تخصيص قسم شاهدتها مؤخرًا.",
       "icon": "sicon-pin",
       "value": "4",
       "required": false,
@@ -8127,9 +8132,9 @@
           "value": false
         },
         {
-          "id": "veloura_recently_viewed_inherit_related_2026",
+          "id": "veloura_recently_viewed_customize_2026",
           "operation": "=",
-          "value": false
+          "value": true
         }
       ]
     },
@@ -8139,7 +8144,7 @@
       "format": "switch",
       "icon": "sicon-align-center",
       "label": "توسيط عنوان شاهدتها مؤخرًا",
-      "description": "يعمل عندما يكون ربط القسم بمنتجات قد تعجبك معطلاً.",
+      "description": "يظهر ويعمل عند تفعيل تخصيص قسم شاهدتها مؤخرًا.",
       "required": false,
       "value": false,
       "selected": false,
@@ -8155,9 +8160,9 @@
           "value": false
         },
         {
-          "id": "veloura_recently_viewed_inherit_related_2026",
+          "id": "veloura_recently_viewed_customize_2026",
           "operation": "=",
-          "value": false
+          "value": true
         }
       ]
     },

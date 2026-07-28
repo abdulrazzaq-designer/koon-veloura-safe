@@ -2619,15 +2619,9 @@ html.veloura-dark .veloura-product-page {
 }
 
 /* ======================================================
-   Veloura Final Code Repair 2026
-   - Card price/button bottom group without extra gap
-   - Related title alignment
-   - Product detail purchase button surfaces
-   - Smooth manual product slider drag
-   - Remove invalid image placeholder overlay
+   Veloura Card + Product Sliders — Stable Layout 2026
 ====================================================== */
 
-/* Keep price and add-to-cart as one bottom block. */
 body.veloura-product-card-enabled .s-product-card-entry .veloura-card-bottom {
   display: flex !important;
   flex: 0 0 auto !important;
@@ -2635,22 +2629,35 @@ body.veloura-product-card-enabled .s-product-card-entry .veloura-card-bottom {
   width: 100% !important;
   margin-top: auto !important;
   padding: 0 !important;
+  overflow: visible !important;
 }
 
 body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content {
   padding-bottom: 0 !important;
+  overflow: visible !important;
 }
 
-body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-sub,
-body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer {
-  margin-top: 0 !important;
+body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-sub {
+  margin: 0 !important;
   padding-bottom: 0 !important;
 }
 
 body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer {
-  width: calc(100% - (var(--veloura-product-button-margin-x, 0px) * 2)) !important;
-  max-width: calc(100% - (var(--veloura-product-button-margin-x, 0px) * 2)) !important;
-  margin-inline: auto !important;
+  width: calc(
+    100% + var(--veloura-card-content-padding-start, 0px) +
+    var(--veloura-card-content-padding-end, 0px) -
+    (var(--veloura-product-button-margin-x, 0px) * 2)
+  ) !important;
+  max-width: none !important;
+  margin-inline-start: calc(
+    0px - var(--veloura-card-content-padding-start, 0px) +
+    var(--veloura-product-button-margin-x, 0px)
+  ) !important;
+  margin-inline-end: calc(
+    0px - var(--veloura-card-content-padding-end, 0px) +
+    var(--veloura-product-button-margin-x, 0px)
+  ) !important;
+  margin-top: 10px !important;
   margin-bottom: var(--veloura-product-button-margin-bottom, 0px) !important;
   padding: 0 !important;
 }
@@ -2664,9 +2671,14 @@ body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-
   margin: 0 !important;
 }
 
-/* Related-products heading follows the editor alignment option. */
+.veloura-product-related-heading,
+.veloura-product-related-title {
+  margin-bottom: 18px !important;
+}
+
 .veloura-product-related-products.is-title-centered .veloura-product-related-heading,
-.veloura-product-related-products.is-title-centered .veloura-product-related-title {
+.veloura-product-related-products.is-title-centered .veloura-product-related-title,
+.veloura-recent-stable-section.is-title-centered :is(h1,h2,h3,h4,.s-block__title,.s-slider-block__title) {
   display: flex !important;
   width: 100% !important;
   align-items: center !important;
@@ -2675,7 +2687,6 @@ body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-
   text-align: center !important;
 }
 
-/* Product details: both purchase actions keep equal columns and global radius. */
 .veloura-product-page salla-add-product-button.sticky-product-bar__btn {
   display: block !important;
   width: 100% !important;
@@ -2688,7 +2699,6 @@ body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-
   --salla-fast-checkout-button-border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
 }
 
-/* Do not show an empty/broken-image symbol above a valid product image. */
 body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image::before,
 body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image::after {
   content: none !important;
@@ -2701,7 +2711,6 @@ body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image im
   display: none !important;
 }
 
-/* Swiper owns horizontal movement; avoid competing CSS scrolling/selection. */
 .veloura-product-related-products salla-products-slider,
 .veloura-recent-stable-section salla-products-slider,
 .veloura-recent-stable-section salla-products-list {
