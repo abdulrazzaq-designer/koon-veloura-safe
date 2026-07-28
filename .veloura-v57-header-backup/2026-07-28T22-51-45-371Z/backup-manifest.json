@@ -1,0 +1,26 @@
+{
+  "version": "Veloura V57 header spacing, dropdown and glass-search polish",
+  "target": "D:\\salla-theme\\koon-veloura-safe",
+  "files": [
+    {
+      "file": "src/views/components/header/header.twig",
+      "existed": true,
+      "hash": "79a8c3442b0c0510beea03edbc463023a77ab9aabdb29bf07cec717e763590f5"
+    },
+    {
+      "file": "src/views/layouts/master.twig",
+      "existed": true,
+      "hash": "4b954689f5c6c1234cc956e49fbee98b72dd1bbee97df21315b08486097a4062"
+    },
+    {
+      "file": "src/assets/styles/app.scss",
+      "existed": true,
+      "hash": "67f92893c3e87549a70222fa29dd37fbbfe5a4e30fd4a0019749230215052f58"
+    },
+    {
+      "file": "src/assets/styles/05-utilities/_veloura-header-polish-glass-v57.scss",
+      "existed": false,
+      "hash": null
+    }
+  ]
+}
