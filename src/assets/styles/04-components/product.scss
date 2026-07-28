@@ -2727,3 +2727,41 @@ body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image im
   -webkit-user-drag: none !important;
   user-select: none !important;
 }
+
+/* ======================================================
+   Veloura stable product sliders + persistent purchase actions
+   Scoped to the product page; no manual slide widths.
+====================================================== */
+.veloura-product-related-products,
+.veloura-recent-stable-section {
+  --veloura-products-slider-gap-mobile: 12px;
+  --veloura-products-slider-gap-desktop: 16px;
+}
+
+.veloura-product-related-products .veloura-product-related-heading,
+.veloura-product-related-products .veloura-product-related-title,
+.veloura-recent-stable-section :is(h1, h2, h3, h4, .s-block__title, .s-slider-block__title) {
+  margin-top: 0 !important;
+  margin-bottom: 18px !important;
+}
+
+.veloura-product-related-products salla-products-slider,
+.veloura-recent-stable-section salla-products-slider,
+.veloura-recent-stable-section salla-products-list,
+.veloura-product-related-products salla-slider,
+.veloura-recent-stable-section salla-slider {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-top: 0 !important;
+  touch-action: pan-y !important;
+  overscroll-behavior-inline: contain;
+}
+
+.veloura-product-page salla-add-product-button.sticky-product-bar__btn,
+.veloura-product-page salla-add-product-button.sticky-product-bar__btn::part(button) {
+  width: 100% !important;
+  min-width: 0 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+}

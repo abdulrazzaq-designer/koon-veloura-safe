@@ -223,13 +223,18 @@ class Product extends BasePage {
 
     initVelouraPurchaseButtons() {
         const page = document.querySelector('.veloura-product-page');
-        const component = page?.querySelector(
-            'salla-add-product-button.sticky-product-bar__btn'
-        );
 
-        if (!page || !component) {
+        if (!page) {
             return;
         }
+
+        const state = window.__velouraStablePurchaseButtons || {
+            roots: new WeakMap(),
+            documentObserver: null,
+            frame: 0,
+            hooksReady: false,
+        };
+        window.__velouraStablePurchaseButtons = state;
 
         const getTokens = () => {
             const styles = window.getComputedStyle(page);
@@ -249,28 +254,60 @@ class Product extends BasePage {
                     styles.getPropertyValue('--color-primary-reverse') ||
                     '#ffffff'
                 ).trim(),
-                height: '46px'
+                height: '46px',
             };
         };
 
-        const ensureStyle = (root, id, css) => {
-            if (!root?.querySelector || root.querySelector('#' + id)) {
-                return;
-            }
-
-            const style = document.createElement('style');
-            style.id = id;
-            style.textContent = css;
-            root.appendChild(style);
+        const composedParent = (node) => {
+            if (!node) return null;
+            if (node.parentElement) return node.parentElement;
+            const root = node.getRootNode?.();
+            return root?.host || null;
         };
 
-        const styleButtonRoot = (button, kind, tokens) => {
-            if (!button) return;
+        const findPurchaseHost = (node) => {
+            let current = node;
+            for (let depth = 0; current && depth < 12; depth += 1) {
+                if (current.matches?.('salla-add-product-button.sticky-product-bar__btn')) {
+                    return current;
+                }
+                current = composedParent(current);
+            }
+            return null;
+        };
 
+        const ensureStyle = (root, id, css) => {
+            if (!root?.querySelector) return;
+            let style = root.querySelector(`#${id}`);
+            if (!style) {
+                style = document.createElement('style');
+                style.id = id;
+                root.appendChild(style);
+            }
+            if (style.textContent !== css) {
+                style.textContent = css;
+            }
+        };
+
+        const observeRoot = (root, callback) => {
+            if (!root || state.roots.has(root)) return;
+            const observer = new MutationObserver(() => {
+                window.requestAnimationFrame(callback);
+            });
+            observer.observe(root, { childList: true, subtree: true });
+            state.roots.set(root, observer);
+        };
+
+        const styleButtonRoot = (button, kind, tokens, seen = new WeakSet()) => {
+            if (!button || seen.has(button)) return;
+            seen.add(button);
+
+            button.style.setProperty('display', 'block', 'important');
             button.style.setProperty('width', '100%', 'important');
             button.style.setProperty('min-width', '0', 'important');
             button.style.setProperty('height', tokens.height, 'important');
             button.style.setProperty('min-height', tokens.height, 'important');
+            button.style.setProperty('max-height', tokens.height, 'important');
             button.style.setProperty('border-radius', tokens.radius, 'important');
             button.style.setProperty('--salla-button-border-radius', tokens.radius, 'important');
             button.style.setProperty('--salla-fast-checkout-button-border-radius', tokens.radius, 'important');
@@ -289,72 +326,86 @@ class Product extends BasePage {
             const root = button.shadowRoot;
             if (!root) return;
 
-            ensureStyle(
-                root,
-                'veloura-product-purchase-button-style-2026',
-                `
-                  :host {
-                    display: block !important;
-                    width: 100% !important;
-                    min-width: 0 !important;
-                    height: ${tokens.height} !important;
-                    min-height: ${tokens.height} !important;
-                    border-radius: ${tokens.radius} !important;
-                    overflow: hidden !important;
-                  }
-                  button,
-                  a,
-                  .s-button-wrap,
-                  .s-button-element,
-                  .s-button-btn,
-                  [part~="button"] {
-                    display: flex !important;
-                    width: 100% !important;
-                    min-width: 0 !important;
-                    height: ${tokens.height} !important;
-                    min-height: ${tokens.height} !important;
-                    align-items: center !important;
-                    justify-content: center !important;
-                    box-sizing: border-box !important;
-                    border-radius: ${tokens.radius} !important;
-                  }
-                  ${kind === 'cart' ? `
-                  button,
-                  .s-button-element,
-                  .s-button-btn,
-                  [part~="button"] {
-                    background: ${tokens.primary} !important;
-                    background-color: ${tokens.primary} !important;
-                    border-color: ${tokens.primary} !important;
-                    color: ${tokens.primaryText} !important;
-                  }
-                  button *,
-                  .s-button-element *,
-                  .s-button-btn * {
-                    color: ${tokens.primaryText} !important;
-                    fill: ${tokens.primaryText} !important;
-                    stroke: currentColor !important;
-                  }
-                  ` : ''}
-                `
-            );
+            const css = `
+              :host {
+                display: block !important;
+                width: 100% !important;
+                min-width: 0 !important;
+                height: ${tokens.height} !important;
+                min-height: ${tokens.height} !important;
+                max-height: ${tokens.height} !important;
+                border-radius: ${tokens.radius} !important;
+                overflow: hidden !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+              }
+              button,
+              a,
+              .s-button-wrap,
+              .s-button-element,
+              .s-button-btn,
+              [part~="button"] {
+                display: flex !important;
+                width: 100% !important;
+                min-width: 0 !important;
+                height: ${tokens.height} !important;
+                min-height: ${tokens.height} !important;
+                max-height: ${tokens.height} !important;
+                align-items: center !important;
+                justify-content: center !important;
+                box-sizing: border-box !important;
+                border-radius: ${tokens.radius} !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+              }
+              ${kind === 'cart' ? `
+              button,
+              .s-button-wrap,
+              .s-button-element,
+              .s-button-btn,
+              [part~="button"] {
+                background: ${tokens.primary} !important;
+                background-color: ${tokens.primary} !important;
+                border-color: ${tokens.primary} !important;
+                color: ${tokens.primaryText} !important;
+              }
+              button *,
+              .s-button-wrap *,
+              .s-button-element *,
+              .s-button-btn * {
+                color: ${tokens.primaryText} !important;
+                fill: ${tokens.primaryText} !important;
+                stroke: currentColor !important;
+              }
+              ` : ''}
+            `;
 
-            root.querySelectorAll('salla-button').forEach((inner) => {
-                styleButtonRoot(inner, kind, tokens);
+            ensureStyle(root, 'veloura-product-purchase-button-style-2026', css);
+            root.querySelectorAll('salla-button, salla-quick-buy, salla-mini-checkout-widget').forEach((inner) => {
+                styleButtonRoot(inner, kind, tokens, seen);
+            });
+            observeRoot(root, () => {
+                const owner = findPurchaseHost(button) || findPurchaseHost(root.host);
+                if (owner) apply(owner);
             });
         };
 
-        const apply = (target = component) => {
-            if (!target) return;
+        const apply = (target) => {
+            if (!target?.isConnected) return;
 
             const tokens = getTokens();
             const root = target.shadowRoot || target;
-            const main = root.querySelector('.s-add-product-button-main');
+            const main = root.querySelector?.('.s-add-product-button-main');
 
             target.style.setProperty('display', 'block', 'important');
             target.style.setProperty('width', '100%', 'important');
             target.style.setProperty('min-width', '0', 'important');
             target.style.setProperty('border-radius', tokens.radius, 'important');
+            target.style.setProperty('overflow', 'hidden', 'important');
+
+            if (target.shadowRoot) {
+                observeRoot(target.shadowRoot, () => apply(target));
+            }
 
             if (!main) return;
 
@@ -371,57 +422,78 @@ class Product extends BasePage {
                 return !child.hidden && style.display !== 'none';
             });
 
-            if (children.length < 2) {
-                main.style.setProperty('grid-template-columns', 'minmax(0, 1fr)', 'important');
-            }
+            main.style.setProperty(
+                'grid-template-columns',
+                children.length > 1 ? 'repeat(2, minmax(0, 1fr))' : 'minmax(0, 1fr)',
+                'important'
+            );
 
             children.forEach((child, index) => {
+                child.style.setProperty('display', 'block', 'important');
                 child.style.setProperty('width', '100%', 'important');
                 child.style.setProperty('min-width', '0', 'important');
                 child.style.setProperty('max-width', '100%', 'important');
                 child.style.setProperty('margin', '0', 'important');
                 child.style.setProperty('opacity', '1', 'important');
                 child.style.setProperty('visibility', 'visible', 'important');
+                child.hidden = false;
                 styleButtonRoot(child, index === 0 ? 'cart' : 'quick', tokens);
             });
         };
 
-        const applyWhenReady = (target) => {
-            apply(target);
-            if (typeof target?.componentOnReady === 'function') {
-                target.componentOnReady().then(() => apply(target)).catch(() => {});
-            }
+        const applyAll = () => {
+            page.querySelectorAll('salla-add-product-button.sticky-product-bar__btn').forEach((target) => {
+                apply(target);
+                if (typeof target.componentOnReady === 'function') {
+                    Promise.resolve(target.componentOnReady()).then(() => apply(target)).catch(() => {});
+                }
+            });
         };
 
-        applyWhenReady(component);
+        const scheduleApply = () => {
+            window.cancelAnimationFrame(state.frame);
+            state.frame = window.requestAnimationFrame(applyAll);
+        };
+
+        if (!state.documentObserver) {
+            const form = page;
+            state.documentObserver = new MutationObserver((records) => {
+                const relevant = records.some((record) => Array.from(record.addedNodes).some((node) =>
+                    node.nodeType === 1 && (
+                        node.matches?.('salla-add-product-button, salla-button, salla-quick-buy, salla-mini-checkout-widget') ||
+                        node.querySelector?.('salla-add-product-button, salla-button, salla-quick-buy, salla-mini-checkout-widget')
+                    )
+                ));
+                if (relevant) scheduleApply();
+            });
+            state.documentObserver.observe(form, { childList: true, subtree: true });
+        }
 
         const registerHooks = () => {
-            if (window.__velouraPurchaseButtonsHooked) return;
+            if (state.hooksReady) return;
             const api = window.Salla || window.salla;
             if (!api?.hooks?.registerHook) return;
 
-            window.__velouraPurchaseButtonsHooked = true;
-            api.hooks.registerHook(
-                'salla-add-product-button',
-                'componentDidLoad',
-                (target) => {
-                    if (target.matches?.('.sticky-product-bar__btn')) {
-                        applyWhenReady(target);
-                    }
-                }
-            );
+            state.hooksReady = true;
+            ['salla-add-product-button', 'salla-button', 'salla-quick-buy', 'salla-mini-checkout-widget']
+                .forEach((tag) => {
+                    api.hooks.registerHook(tag, 'componentDidLoad', (target) => {
+                        const host = findPurchaseHost(target);
+                        if (host) window.requestAnimationFrame(() => apply(host));
+                    });
+                });
         };
 
         const api = window.Salla || window.salla;
-        if (api?.onReady) {
-            api.onReady(registerHooks);
-        } else {
-            registerHooks();
-        }
+        if (api?.onReady) api.onReady(registerHooks);
+        else registerHooks();
 
-        salla.product.event.onPriceUpdated(() => {
-            window.requestAnimationFrame(() => apply(component));
-        });
+        page.addEventListener('change', scheduleApply, true);
+        page.addEventListener('salla-product-options::changed', scheduleApply);
+        document.addEventListener('theme::ready', scheduleApply);
+        salla.product.event.onPriceUpdated(scheduleApply);
+
+        applyAll();
     }
 
     initVelouraReadMore() {
