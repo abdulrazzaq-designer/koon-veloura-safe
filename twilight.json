@@ -2121,7 +2121,7 @@
           "key": "veloura-mobile-search-bar-2026"
         },
         {
-          "label": "شريط بالأعلى وأيقونة عند النزول1111s",
+          "label": "شريط بالأعلى وأيقونة عند النزول",
           "value": "bar_sticky_icon",
           "key": "veloura-mobile-search-bar-sticky-icon-2026"
         }
@@ -3288,7 +3288,7 @@
       "id": "veloura_side_categories_glass_2026",
       "type": "boolean",
       "format": "switch",
-      "label": "تفعيل التأثير البلوري للقائمة الجانبية11",
+      "label": "تفعيل التأثير البلوري للقائمة الجانبية",
       "description": "يعطي القائمة الجانبية تأثير زجاجي شبيه بتأثير الآيفون والقائمة العائمة",
       "icon": "sicon-magic",
       "value": false,
@@ -10088,7 +10088,7 @@
           "id": "hide_section",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل11111",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل",
           "description": "سيتم إخفاء القسم كامل من الصفحة الرئيسية، ويمكنك إظهاره لاحقًا في أي وقت",
           "labelHTML": null,
           "icon": "sicon-toggle-off",

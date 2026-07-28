@@ -920,8 +920,8 @@
 {% block scripts %}
 
     <script defer src="{{ 'product.js' | asset }}"></script>
-    {# Veloura Step 5: activate recently-viewed hide/inheritance without continuous layout observers. #}
-    <script data-veloura-step5-recent-inheritance>
+    {# Veloura Step 6: recent products inherit layout only; card styling is centralized in product-card.js. #}
+    <script data-veloura-step6-recent-layout>
       (function () {
         'use strict';
 
@@ -938,8 +938,7 @@
 
         var observer = null;
         var stopTimer = 0;
-        var completed = false;
-        var styleSerial = 0;
+        var done = false;
 
         function cleanText(value) {
           return String(value || '')
@@ -947,11 +946,6 @@
             .replace(/\s+/g, ' ')
             .trim()
             .toLowerCase();
-        }
-
-        function isRecentHeading(element) {
-          var text = cleanText(element && element.textContent);
-          return text.indexOf('شاهدتها مؤخ') !== -1 || text.indexOf('recently viewed') !== -1;
         }
 
         function composedParent(node) {
@@ -990,6 +984,11 @@
           return result;
         }
 
+        function isRecentHeading(element) {
+          var text = cleanText(element && element.textContent);
+          return text.indexOf('شاهدتها مؤخ') !== -1 || text.indexOf('recently viewed') !== -1;
+        }
+
         function findRecentHeading() {
           var selectors = 'h1,h2,h3,h4,h5,h6,.s-block__title,.s-slider-block__title,[class*="title"],[class*="Title"]';
           var headings = deepAll(selectors, document);
@@ -1019,132 +1018,14 @@
           return fallback;
         }
 
-        function ensureStyle(root, id, css) {
-          if (!root || !root.querySelector) return;
-          var style = root.querySelector('#' + id);
-          if (!style) {
-            style = document.createElement('style');
-            style.id = id;
-            if (root === document) document.head.appendChild(style);
-            else root.appendChild(style);
-          }
-          if (style.textContent !== css) style.textContent = css;
-        }
-
-        function rootValue(name, fallback) {
-          var value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-          return value || fallback;
-        }
-
-        function cardCss() {
-          var centered = document.body.classList.contains('veloura-product-card-center-text');
-          var hideCart = document.body.classList.contains('veloura-pc-hide-cart');
-          var alignment = centered
-            ? '.s-product-card-content,.s-product-card-content-main,.s-product-card-content-title,.s-product-card-content-title a,.s-product-card-content-subtitle,.s-product-card-content-sub,.s-product-card-price,.s-product-card-sale-price{width:100%!important;text-align:center!important;justify-content:center!important;align-items:center!important}'
-            : '.s-product-card-content,.s-product-card-content-main,.s-product-card-content-title,.s-product-card-content-title a,.s-product-card-content-subtitle,.s-product-card-content-sub,.s-product-card-price,.s-product-card-sale-price{width:100%!important;text-align:right!important;justify-content:flex-start!important;align-items:flex-start!important;direction:rtl!important}';
-          var cartVisibility = hideCart
-            ? '.s-product-card-content-footer,salla-add-product-button{display:none!important}'
-            : '';
-
-          return [
-            '.s-product-card-entry{background:var(--veloura-product-card-bg,#fff)!important;border-radius:var(--veloura-product-card-radius,16px)!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;height:100%!important;min-height:100%!important;box-sizing:border-box!important}',
-            '.s-product-card-image{margin-top:var(--veloura-product-image-padding-top,0px)!important;margin-inline:auto!important;margin-bottom:0!important;width:calc(100% - (var(--veloura-product-image-padding-x,0px) * 2))!important;border-radius:var(--veloura-product-image-radius,16px)!important;overflow:hidden!important}',
-            '.s-product-card-image a,.s-product-card-image img,.s-product-card-image .s-product-card-image-cover{border-radius:inherit!important}',
-            '.s-product-card-content{display:flex!important;flex-direction:column!important;flex:1 1 auto!important;width:100%!important;min-height:0!important;box-sizing:border-box!important}',
-            '.s-product-card-content-title,.s-product-card-content-title a{font-size:var(--veloura-product-title-size,15px)!important}',
-            '.s-product-card-price,.s-product-card-sale-price,.s-product-card-content-sub{font-size:var(--veloura-product-price-size,15px)!important}',
-            '.s-product-card-content-footer{display:flex!important;align-items:stretch!important;justify-content:center!important;width:calc(100% - (var(--veloura-product-button-margin-x,0px) * 2))!important;max-width:calc(100% - (var(--veloura-product-button-margin-x,0px) * 2))!important;margin-inline:var(--veloura-product-button-margin-x,0px)!important;margin-top:auto!important;margin-bottom:var(--veloura-product-button-margin-bottom,0px)!important;padding:0!important;box-sizing:border-box!important}',
-            '.s-product-card-content-footer>salla-add-product-button,.s-product-card-content-footer>*{width:100%!important;max-width:100%!important;margin:0!important}',
-            alignment,
-            cartVisibility
-          ].join('');
-        }
-
-        function columnCss() {
-          var mobile = Math.max(1, Math.min(3, Number(config.mobileColumns) || 2));
-          var desktop = Math.max(1, Math.min(6, Number(config.desktopColumns) || 4));
-          var arrows = config.hideArrows
-            ? '.s-slider-next,.s-slider-prev,[class*="slider-next"],[class*="slider-prev"],[class*="swiper-button-next"],[class*="swiper-button-prev"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}'
-            : '';
-
-          return [
-            '@media(max-width:767px){.swiper-slide{width:calc((100% - (12px * ', String(mobile - 1), ')) / ', String(mobile), ')!important;max-width:calc((100% - (12px * ', String(mobile - 1), ')) / ', String(mobile), ')!important}}',
-            '@media(min-width:768px){.swiper-slide{width:calc((100% - (16px * ', String(desktop - 1), ')) / ', String(desktop), ')!important;max-width:calc((100% - (16px * ', String(desktop - 1), ')) / ', String(desktop), ')!important}}',
-            arrows
-          ].join('');
-        }
-
-        function styleActionComponent(component, depth) {
-          if (!component || depth > 4) return;
-
-          var bg = rootValue('--veloura-product-button-bg', '#004d65');
-          var fg = rootValue('--veloura-product-button-text', '#ffffff');
-          var radius = rootValue('--veloura-product-button-radius', '16px');
-          var height = rootValue('--veloura-product-button-height', '44px');
-
-          component.setAttribute('width', 'wide');
-          try { component.width = 'wide'; } catch (error) {}
-          component.style.setProperty('--color-primary', bg, 'important');
-          component.style.setProperty('--color-primary-reverse', fg, 'important');
-          component.style.setProperty('--button-background-color', bg, 'important');
-          component.style.setProperty('--button-border-color', bg, 'important');
-          component.style.setProperty('--button-text-color', fg, 'important');
-          component.style.setProperty('width', '100%', 'important');
-          component.style.setProperty('max-width', '100%', 'important');
-          component.style.setProperty('border-radius', radius, 'important');
-          component.style.setProperty('overflow', 'hidden', 'important');
-
-          function applyShadow() {
-            if (!component.shadowRoot) return;
-            ensureStyle(
-              component.shadowRoot,
-              'veloura-step5-action-style',
-              ':host{display:flex!important;width:100%!important;max-width:100%!important;border-radius:' + radius + '!important;overflow:hidden!important;' +
-              '--color-primary:' + bg + '!important;--color-primary-reverse:' + fg + '!important;' +
-              '--button-background-color:' + bg + '!important;--button-border-color:' + bg + '!important;--button-text-color:' + fg + '!important}' +
-              'button,.s-button-element,.s-button-btn,[part~="button"]{display:flex!important;width:100%!important;max-width:100%!important;min-width:0!important;' +
-              'height:' + height + '!important;min-height:' + height + '!important;align-items:center!important;justify-content:center!important;gap:7px!important;' +
-              'box-sizing:border-box!important;background:' + bg + '!important;background-color:' + bg + '!important;border:1px solid ' + bg + '!important;' +
-              'border-radius:' + radius + '!important;color:' + fg + '!important;opacity:1!important;visibility:visible!important}' +
-              'button *,.s-button-element *,.s-button-btn *{color:' + fg + '!important;fill:' + fg + '!important;stroke:currentColor!important}'
-            );
-
-            component.shadowRoot.querySelectorAll('salla-button,salla-quick-buy,salla-mini-checkout-widget').forEach(function (child) {
-              styleActionComponent(child, depth + 1);
-            });
-          }
-
-          applyShadow();
-          if (typeof component.componentOnReady === 'function') {
-            component.componentOnReady().then(applyShadow).catch(function () {});
-          }
-        }
-
-        function styleRecentCards(section) {
-          var roots = collectRoots(section, 7);
-          roots.forEach(function (root, index) {
-            ensureStyle(root, 'veloura-step5-recent-card-' + index, cardCss() + columnCss());
-          });
-
-          deepAll('.s-product-card-entry', section).forEach(function (card) {
-            card.classList.add('veloura-v35-card', 'veloura-v54-card');
-            var content = card.querySelector('.s-product-card-content');
-            var footer = card.querySelector('.s-product-card-content-footer');
-            if (content) content.classList.add('veloura-v35-content');
-            if (footer) footer.classList.add('veloura-v35-action-row', 'veloura-v54-card-action-row');
-          });
-
-          var buttons = deepAll('salla-add-product-button', section);
-          buttons.forEach(function (button) { styleActionComponent(button, 0); });
-          return buttons.length;
-        }
-
-        function configureComponents(section) {
-          var sliderConfig = {
+        function sliderConfig() {
+          return {
             slidesPerView: Math.max(1, Math.min(3, Number(config.mobileColumns) || 2)),
             slidesPerGroup: 1,
             spaceBetween: 12,
             centeredSlides: false,
+            centeredSlidesBounds: false,
+            centerInsufficientSlides: false,
             freeMode: false,
             roundLengths: true,
             breakpoints: {
@@ -1158,41 +1039,85 @@
               }
             }
           };
+        }
 
-          deepAll('salla-products-slider,salla-products-list', section).forEach(function (component) {
-            component.setAttribute('product-card-component', 'custom-salla-product-card');
-            try { component.productCardComponent = 'custom-salla-product-card'; } catch (error) {}
-            if (component.matches('salla-products-slider')) {
-              component.setAttribute('slider-config', JSON.stringify(sliderConfig));
-              try { component.sliderConfig = sliderConfig; } catch (error) {}
+        function layoutCss(scoped) {
+          var mobile = Math.max(1, Math.min(3, Number(config.mobileColumns) || 2));
+          var desktop = Math.max(1, Math.min(6, Number(config.desktopColumns) || 4));
+          var prefix = scoped ? '[data-veloura-recent-section="true"] ' : '';
+          var arrows = config.hideArrows
+            ? prefix + '.s-slider-next,' + prefix + '.s-slider-prev,' + prefix + '[class*="slider-next"],' + prefix + '[class*="slider-prev"],' + prefix + '[class*="swiper-button-next"],' + prefix + '[class*="swiper-button-prev"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}'
+            : '';
+
+          return [
+            '@media(max-width:767px){', prefix, '.swiper-slide{width:calc((100% - (12px * ', String(mobile - 1), ')) / ', String(mobile), ')!important;max-width:calc((100% - (12px * ', String(mobile - 1), ')) / ', String(mobile), ')!important}}',
+            '@media(min-width:768px){', prefix, '.swiper-slide{width:calc((100% - (16px * ', String(desktop - 1), ')) / ', String(desktop), ')!important;max-width:calc((100% - (16px * ', String(desktop - 1), ')) / ', String(desktop), ')!important}}',
+            arrows
+          ].join('');
+        }
+
+        function ensureLayoutStyles(section) {
+          collectRoots(section, 7).forEach(function (root, index) {
+            var container = root === document ? document.head : root;
+            if (!container || !container.querySelector) return;
+            var id = 'veloura-step6-recent-layout-' + index;
+            var style = container.querySelector('#' + id);
+            if (!style) {
+              style = document.createElement('style');
+              style.id = id;
+              container.appendChild(style);
             }
+            style.textContent = layoutCss(root === document);
           });
         }
 
-        function hideArrows(section) {
-          if (!config.hideArrows) return;
-          deepAll('.s-slider-next,.s-slider-prev,[class*="slider-next"],[class*="slider-prev"],[class*="swiper-button-next"],[class*="swiper-button-prev"]', section).forEach(function (arrow) {
-            arrow.style.setProperty('display', 'none', 'important');
-            arrow.style.setProperty('visibility', 'hidden', 'important');
-            arrow.style.setProperty('pointer-events', 'none', 'important');
+        function rebuildComponent(component) {
+          if (!component || component.getAttribute('data-veloura-step6-rebuilt') === 'true') return component;
+
+          var tag = component.tagName.toLowerCase();
+          var replacement = document.createElement(tag);
+
+          Array.prototype.slice.call(component.attributes || []).forEach(function (attribute) {
+            replacement.setAttribute(attribute.name, attribute.value);
           });
+
+          replacement.setAttribute('product-card-component', 'custom-salla-product-card');
+          replacement.setAttribute('data-veloura-step6-rebuilt', 'true');
+
+          if (tag === 'salla-products-slider') {
+            replacement.setAttribute('slider-config', JSON.stringify(sliderConfig()));
+          }
+
+          component.replaceWith(replacement);
+          return replacement;
+        }
+
+        function applyCardContract(scope) {
+          if (
+            window.VelouraProductCardContract &&
+            typeof window.VelouraProductCardContract.applyTree === 'function'
+          ) {
+            window.VelouraProductCardContract.applyTree(scope || document);
+          }
         }
 
         function finish() {
-          if (completed) return;
-          completed = true;
+          if (done) return;
+          done = true;
           if (observer) observer.disconnect();
           clearTimeout(stopTimer);
         }
 
         function apply() {
-          if (completed) return;
+          if (done) return;
+
           var heading = findRecentHeading();
           if (!heading) return;
 
           var section = findRecentSection(heading);
           if (!section) return;
 
+          if (observer) observer.disconnect();
           section.setAttribute('data-veloura-recent-section', 'true');
 
           if (config.hide) {
@@ -1203,30 +1128,72 @@
           }
 
           if (!config.inherit) {
+            applyCardContract(section);
             finish();
             return;
           }
 
-          section.classList.add('veloura-recent-inherit-related');
-          heading.style.setProperty('text-align', config.centerTitle ? 'center' : 'right', 'important');
           heading.style.setProperty('width', '100%', 'important');
+          heading.style.setProperty('text-align', config.centerTitle ? 'center' : 'right', 'important');
 
-          configureComponents(section);
-          hideArrows(section);
-          var styledButtons = styleRecentCards(section);
+          var components = deepAll('salla-products-slider,salla-products-list', section);
+          var readyTasks = [];
 
-          if (styledButtons > 0) {
-            requestAnimationFrame(function () {
-              styleRecentCards(section);
-              finish();
-            });
-          }
+          components.forEach(function (component) {
+            var configured = rebuildComponent(component);
+            if (!configured) return;
+
+            var waitUntilReady = function () {
+              if (typeof configured.componentOnReady === 'function') {
+                return configured.componentOnReady();
+              }
+
+              return new Promise(function (resolve) {
+                requestAnimationFrame(function () {
+                  requestAnimationFrame(resolve);
+                });
+              });
+            };
+
+            if (window.customElements && typeof customElements.whenDefined === 'function') {
+              readyTasks.push(
+                customElements.whenDefined(configured.tagName.toLowerCase())
+                  .then(waitUntilReady)
+                  .then(function () {
+                    ensureLayoutStyles(section);
+                    applyCardContract(configured.shadowRoot || configured);
+                  })
+                  .catch(function () {})
+              );
+            } else {
+              readyTasks.push(
+                waitUntilReady()
+                  .then(function () {
+                    ensureLayoutStyles(section);
+                    applyCardContract(configured.shadowRoot || configured);
+                  })
+                  .catch(function () {})
+              );
+            }
+          });
+
+          ensureLayoutStyles(section);
+          applyCardContract(section);
+
+          Promise.all(readyTasks).then(function () {
+            ensureLayoutStyles(section);
+            applyCardContract(section);
+            finish();
+          });
+
+          if (!readyTasks.length) finish();
         }
 
         function start() {
           apply();
-          if (completed || !window.MutationObserver || !document.body) return;
-          observer = new MutationObserver(function () { apply(); });
+          if (done || !window.MutationObserver || !document.body) return;
+
+          observer = new MutationObserver(apply);
           observer.observe(document.body, { childList: true, subtree: true });
           stopTimer = window.setTimeout(finish, 12000);
         }
