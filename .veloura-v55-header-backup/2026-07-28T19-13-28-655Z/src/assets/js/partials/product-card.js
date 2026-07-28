@@ -480,58 +480,6 @@ function ensureVelouraShadowStyle(root) {
   }
 }
 
-
-const velouraActionObserverState = new WeakMap();
-
-function scheduleVelouraActionStabilize(component) {
-  if (!component || !component.isConnected) return;
-
-  let state = velouraActionObserverState.get(component);
-  if (!state) {
-    state = { frame: 0, timers: [], hostObserver: null, shadowObserver: null };
-    velouraActionObserverState.set(component, state);
-  }
-
-  if (state.frame) cancelAnimationFrame(state.frame);
-  state.frame = requestAnimationFrame(() => {
-    state.frame = 0;
-    if (component.isConnected) styleVelouraActionComponent(component);
-  });
-
-  state.timers.forEach(clearTimeout);
-  state.timers = [90, 260].map((delay) => setTimeout(() => {
-    if (component.isConnected) styleVelouraActionComponent(component);
-  }, delay));
-}
-
-function observeVelouraActionComponent(component) {
-  if (!component || typeof MutationObserver !== 'function') return;
-
-  let state = velouraActionObserverState.get(component);
-  if (!state) {
-    state = { frame: 0, timers: [], hostObserver: null, shadowObserver: null };
-    velouraActionObserverState.set(component, state);
-  }
-
-  if (!state.hostObserver) {
-    state.hostObserver = new MutationObserver(() => scheduleVelouraActionStabilize(component));
-    state.hostObserver.observe(component, { childList: true, subtree: true });
-  }
-
-  const attachShadowObserver = () => {
-    const root = component.shadowRoot;
-    if (!root || state.shadowObserver) return;
-
-    state.shadowObserver = new MutationObserver(() => scheduleVelouraActionStabilize(component));
-    state.shadowObserver.observe(root, { childList: true, subtree: true });
-  };
-
-  attachShadowObserver();
-  if (typeof component.componentOnReady === 'function') {
-    component.componentOnReady().then(attachShadowObserver).catch(() => {});
-  }
-}
-
 function styleVelouraActionComponent(component, depth = 0) {
   if (!component || depth > 5) return;
 
@@ -578,8 +526,6 @@ function styleVelouraActionComponent(component, depth = 0) {
   if (typeof component.componentOnReady === 'function') {
     component.componentOnReady().then(applyShadow).catch(() => {});
   }
-
-  observeVelouraActionComponent(component);
 }
 
 function captureVelouraCardContentInsets(card) {
@@ -699,39 +645,14 @@ function registerVelouraCardLifecycle() {
   window.__velouraCardContractRegistered = true;
 
   const applyVisibleCards = (root = document) => {
-    if (!root) return;
-    if (root.matches?.('.s-product-card-entry')) applyVelouraProductCard(root);
-    if (!root.querySelectorAll) return;
+    if (!root || !root.querySelectorAll) return;
     root.querySelectorAll('.s-product-card-entry').forEach(applyVelouraProductCard);
   };
 
-  let refreshFrame = 0;
-  let refreshTimers = [];
-  const queueVisibleCardRefresh = () => {
-    if (refreshFrame) cancelAnimationFrame(refreshFrame);
-    refreshFrame = requestAnimationFrame(() => {
-      refreshFrame = 0;
-      applyVisibleCards(document);
-    });
-
-    refreshTimers.forEach(clearTimeout);
-    refreshTimers = [100, 320].map((delay) => setTimeout(() => {
-      applyVisibleCards(document);
-    }, delay));
-  };
-
   const installSallaHooks = () => {
-    const api = window.Salla || window.salla;
-    if (!api) return;
-
-    if (!window.__velouraCardCartEventsRegistered && api.cart?.event) {
-      api.cart.event.onUpdated?.(queueVisibleCardRefresh);
-      api.cart.event.onItemAdded?.(queueVisibleCardRefresh);
-      window.__velouraCardCartEventsRegistered = true;
-    }
-
     if (window.__velouraCardSallaHooksRegistered) return;
-    if (!api.hooks || typeof api.hooks.registerHook !== 'function') return;
+    const api = window.Salla || window.salla;
+    if (!api || !api.hooks || typeof api.hooks.registerHook !== 'function') return;
 
     try {
       api.hooks.registerHook('salla-add-product-button', 'componentDidLoad', (button) => {
@@ -785,12 +706,6 @@ function registerVelouraCardLifecycle() {
   } else {
     start();
   }
-
-  document.addEventListener('veloura:product-card:ready', (event) => {
-    const card = event.detail?.card;
-    if (card) applyVelouraProductCard(card);
-    queueVisibleCardRefresh();
-  });
 
   document.addEventListener('afterInit', (event) => {
     const target = event.target;

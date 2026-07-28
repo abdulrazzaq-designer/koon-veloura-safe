@@ -2300,8 +2300,8 @@
       "id": "veloura_top_full_width_desktop_2026",
       "format": "switch",
       "required": false,
-      "value": false,
-      "selected": false,
+      "value": true,
+      "selected": true,
       "conditions": [
         {
           "id": "veloura_top_enabled_2026",

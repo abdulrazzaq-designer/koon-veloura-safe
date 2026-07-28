@@ -20,34 +20,13 @@ class NavigationMenu extends HTMLElement {
                 this.visibleMenus = [];
                 this.overflowMenus = [];
 
-                return this.fetchMenusWithRetry();
-            })
-            .then((data) => {
-                this.menus = Array.isArray(data) ? data : [];
-                this.render();
-                this.initializeResponsiveMenu();
-            })
-            .catch((error) => {
-                salla.logger.error('salla-menu::Error fetching menus after retry', error);
-                this.renderUnavailableState();
-            });
-    }
-
-    /**
-     * Fetch the menu with a bounded retry. Preview/hydration can expose the
-     * component a few milliseconds before the menu endpoint is ready. This
-     * retries only twice and never creates a background polling loop.
-     * @param {Number} attempt
-     * @returns {Promise<Array>}
-     */
-    fetchMenusWithRetry(attempt = 0) {
-        return salla.api.component.getMenus()
-            .then(({ data }) => Array.isArray(data) ? data : [])
-            .catch((error) => {
-                if (attempt >= 2) throw error;
-                const delay = attempt === 0 ? 450 : 1100;
-                return new Promise(resolve => setTimeout(resolve, delay))
-                    .then(() => this.fetchMenusWithRetry(attempt + 1));
+                return salla.api.component.getMenus()
+                .then(({ data }) => {
+                    this.menus = data;
+                    return this.render()
+                }).then(() => {
+                    this.initializeResponsiveMenu();
+                }).catch((error) => salla.logger.error('salla-menu::Error fetching menus', error));
             });
     }
 
@@ -76,7 +55,7 @@ class NavigationMenu extends HTMLElement {
     * @returns {String}
     */
     getDesktopClasses(menu, isRootMenu) {
-        return `${isRootMenu ? 'root-level' : 'relative'} ${menu.products ? ' mega-menu' : ''}
+        return `!hidden lg:!block ${isRootMenu ? 'root-level lg:!inline-block' : 'relative'} ${menu.products ? ' mega-menu' : ''}
         ${this.hasChildren(menu) ? ' has-children' : ''}`
     }
 
@@ -90,7 +69,7 @@ class NavigationMenu extends HTMLElement {
         const menuImage = menu.image ? `<img src="${menu.image}" class="rounded-full" width="48" height="48" alt="${menu.title}" />` : '';
 
         return `
-        <li class="text-sm font-bold veloura-mobile-menu-item" ${menu.attrs}>
+        <li class="lg:hidden text-sm font-bold" ${menu.attrs}>
             ${!this.hasChildren(menu) ? `
                 <a href="${menu.url}" aria-label="${menu.title || 'category'}" class="text-gray-500 ${menu.image ? '!py-3' : ''}" ${menu.link_attrs}>
                     ${menuImage}
@@ -149,14 +128,6 @@ class NavigationMenu extends HTMLElement {
         `).join('\n');
     }
 
-    getDesktopMenus() {
-        return this.menus.map((menu) => this.getDesktopMenu(menu, true)).join('\n');
-    }
-
-    getMobileMenus() {
-        return this.menus.map((menu) => this.getMobileMenu(menu, this.displayAllText)).join('\n');
-    }
-
     /**
     * Create More dropdown menu
     * @returns {String}
@@ -181,7 +152,7 @@ class NavigationMenu extends HTMLElement {
     * Initialize responsive menu functionality
     */
     initializeResponsiveMenu() {
-        const mainMenu = this.querySelector('.veloura-main-menu-desktop');
+        const mainMenu = this.querySelector('.main-menu');
         if (!mainMenu) return;
 
         this.dataset.velouraMenuReady = 'true';
@@ -211,19 +182,13 @@ class NavigationMenu extends HTMLElement {
         window.addEventListener('resize', resizeHandler, { passive: true });
 
         this._velouraResizeHandler = resizeHandler;
-
-        requestAnimationFrame(() => {
-            document.dispatchEvent(new CustomEvent('veloura:menu:ready', {
-                detail: { menu: this }
-            }));
-        });
     }
 
     /**
     * Check if menu items overflow and move them to More dropdown
     */
     checkMenuOverflow() {
-        const mainMenu = this.querySelector('.veloura-main-menu-desktop');
+        const mainMenu = this.querySelector('.main-menu');
         const host = this.closest('.veloura-menu-links-wrap') || this;
 
         if (!mainMenu || !host) return;
@@ -314,34 +279,12 @@ class NavigationMenu extends HTMLElement {
     * Render the header menu
     */
     render() {
-        this.innerHTML = `
-        <nav class="veloura-desktop-main-menu" aria-label="${this.displayAllText || ''}">
-            <ul class="main-menu veloura-main-menu-desktop">${this.getDesktopMenus()}</ul>
-        </nav>
-        <nav id="mobile-menu" class="mobile-menu veloura-mobile-main-menu">
-            <ul class="main-menu veloura-main-menu-mobile">${this.getMobileMenus()}</ul>
-            <button class="btn--close close-mobile-menu sicon-cancel" aria-label="close"></button>
+        this.innerHTML =  `
+        <nav id="mobile-menu" class="mobile-menu">
+            <ul class="main-menu">${this.getMenus()}</ul>
+            <button class="btn--close close-mobile-menu sicon-cancel lg:hidden"></button>
         </nav>
         <button class="btn--close-sm close-mobile-menu sicon-cancel hidden"></button>`;
-    }
-
-    renderUnavailableState() {
-        this.innerHTML = `
-        <nav class="veloura-desktop-main-menu" aria-label="menu">
-            <ul class="main-menu veloura-main-menu-desktop">
-                <li class="root-level"><a href="/">الرئيسية</a></li>
-            </ul>
-        </nav>
-        <nav id="mobile-menu" class="mobile-menu veloura-mobile-main-menu">
-            <ul class="main-menu veloura-main-menu-mobile">
-                <li class="text-sm font-bold veloura-mobile-menu-item"><a href="/">الرئيسية</a></li>
-            </ul>
-            <button class="btn--close close-mobile-menu sicon-cancel" aria-label="close"></button>
-        </nav>`;
-
-        document.dispatchEvent(new CustomEvent('veloura:menu:ready', {
-            detail: { menu: this, fallback: true }
-        }));
     }
 }
 
