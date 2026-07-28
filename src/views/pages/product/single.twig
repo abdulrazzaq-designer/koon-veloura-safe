@@ -933,414 +933,189 @@
 {% block scripts %}
 
     <script defer src="{{ 'product.js' | asset }}"></script>
-    {# Veloura Step 8 Current: stable recently-viewed layout with inherited or independent controls. #}
-    <script data-veloura-step8-current-recent-layout>
+    {# Veloura Final Recent Bridge 2026: hooks only, no resize or document mutation loops. #}
+    <script data-veloura-recent-stable>
       (function () {
         'use strict';
 
         var config = {
           hide: {{ vpp_recent_hide ? 'true' : 'false' }},
-          inherit: {{ vpp_recent_inherit ? 'true' : 'false' }},
           mobileColumns: {{ vpp_recent_effective_mobile_columns|default(2) }},
           desktopColumns: {{ vpp_recent_effective_desktop_columns|default(4) }},
           centerTitle: {{ vpp_recent_effective_center_title|default(false) ? 'true' : 'false' }},
           hideArrows: {{ vpp_recent_effective_hide_arrows|default(false) ? 'true' : 'false' }}
         };
 
-        var STYLE_ID = 'veloura-step8-current-recent-style';
-        var observer = null;
-        var records = [];
-        var media = window.matchMedia ? window.matchMedia('(min-width: 768px)') : null;
-
-        function cleanText(value) {
-          return String(value || '')
-            .replace(/[\u0640\u064B-\u065F\u0670]/g, '')
-            .replace(/\s+/g, ' ')
-            .trim()
-            .toLowerCase();
+        function clean(value) {
+          return String(value || '').replace(/\s+/g, ' ').trim().toLowerCase();
         }
 
-        function isRecentText(value) {
-          var text = cleanText(value);
+        function isRecent(value) {
+          var text = clean(value);
           return text.indexOf('شاهدتها مؤخ') !== -1 ||
             text.indexOf('recently viewed') !== -1 ||
             text.indexOf('recently-viewed') !== -1;
         }
 
-        function clamp(value, minimum, maximum, fallback) {
-          var number = Number(value);
-          if (!Number.isFinite(number)) number = fallback;
-          return Math.max(minimum, Math.min(maximum, number));
-        }
-
-        function collectRoots(start, maximumDepth) {
-          var result = [];
-          var seen = [];
-
-          function visit(root, depth) {
-            if (!root || depth > maximumDepth || seen.indexOf(root) !== -1) return;
-            seen.push(root);
-            result.push(root);
-            if (!root.querySelectorAll) return;
-            root.querySelectorAll('*').forEach(function (node) {
-              if (node.shadowRoot) visit(node.shadowRoot, depth + 1);
-            });
-          }
-
-          visit(start || document, 0);
-          return result;
-        }
-
-        function deepAll(selector, start) {
-          var result = [];
-          collectRoots(start || document, 8).forEach(function (root) {
-            if (!root.querySelectorAll) return;
-            root.querySelectorAll(selector).forEach(function (node) {
-              if (result.indexOf(node) === -1) result.push(node);
-            });
-          });
-          return result;
-        }
-
         function composedParent(node) {
           if (!node) return null;
-          if (node.parentElement) return node.parentElement;
-          var root = node.getRootNode && node.getRootNode();
-          return root && root.host ? root.host : null;
+          return node.parentNode || (node.getRootNode && node.getRootNode().host) || null;
         }
 
-        function componentIdentity(component) {
-          if (!component || !component.getAttribute) return '';
-          return [
+        function identity(component) {
+          var parts = [
             component.id,
             component.className,
-            component.getAttribute('source'),
-            component.getAttribute('source-value'),
-            component.getAttribute('block-title'),
-            component.getAttribute('title'),
-            component.getAttribute('sub-title'),
-            component.getAttribute('data-title'),
-            component.getAttribute('data-source')
-          ].filter(Boolean).join(' ');
-        }
+            component.getAttribute && component.getAttribute('title'),
+            component.getAttribute && component.getAttribute('block-title'),
+            component.getAttribute && component.getAttribute('sub-title'),
+            component.getAttribute && component.getAttribute('source'),
+            component.getAttribute && component.getAttribute('data-title')
+          ];
 
-        function recentHeadings() {
-          return deepAll(
-            'h1,h2,h3,h4,h5,h6,.s-block__title,.s-slider-block__title,[class*="title"],[class*="Title"]',
-            document
-          ).filter(function (heading) {
-            return isRecentText(heading.textContent);
-          });
-        }
-
-        function nearestComponentForHeading(heading, components) {
-          var current = heading;
-          for (var depth = 0; current && depth < 12; depth += 1) {
-            if (current.matches && current.matches('salla-products-slider,salla-products-list')) return current;
-            if (current.querySelectorAll) {
-              var inside = deepAll('salla-products-slider,salla-products-list', current);
-              if (inside.length) return inside[0];
-            }
+          var current = component;
+          for (var depth = 0; current && depth < 5; depth += 1) {
+            if (current.textContent) parts.push(current.textContent.slice(0, 300));
             current = composedParent(current);
           }
 
-          if (!heading.getBoundingClientRect) return null;
-          var headingRect = heading.getBoundingClientRect();
-          var best = null;
-          var bestScore = Number.POSITIVE_INFINITY;
-
-          components.forEach(function (component) {
-            if (!component.getBoundingClientRect) return;
-            var rect = component.getBoundingClientRect();
-            var vertical = rect.top - headingRect.bottom;
-            if (vertical < -60) return;
-            var horizontal = Math.abs(
-              ((rect.left + rect.right) / 2) - ((headingRect.left + headingRect.right) / 2)
-            );
-            var score = vertical + (horizontal * 0.03);
-            if (score < bestScore) {
-              bestScore = score;
-              best = component;
-            }
-          });
-
-          return best;
+          return parts.filter(Boolean).join(' ');
         }
 
-        function sectionFor(heading, component) {
-          var current = heading;
-          for (var depth = 0; current && depth < 12; depth += 1) {
-            if (current.contains && current.contains(component)) return current;
+        function findSection(component) {
+          var current = component;
+          for (var depth = 0; current && depth < 8; depth += 1) {
+            if (isRecent(current.textContent)) return current;
             current = composedParent(current);
           }
-          return component && component.parentElement ? component.parentElement : null;
+          return component.parentElement || component;
         }
 
-        function findRecords() {
-          var components = deepAll('salla-products-slider,salla-products-list', document);
-          var found = [];
+        function installStyle(root, id) {
+          if (!root || !root.querySelector) return;
+          if (root.querySelector('#' + id)) return;
 
-          components.forEach(function (component) {
-            if (!isRecentText(componentIdentity(component))) return;
-            found.push({ component: component, heading: null, section: component.parentElement });
-          });
-
-          recentHeadings().forEach(function (heading) {
-            var component = nearestComponentForHeading(heading, components);
-            if (!component) return;
-            var existing = found.find(function (record) { return record.component === component; });
-            if (existing) {
-              existing.heading = existing.heading || heading;
-              existing.section = existing.section || sectionFor(heading, component);
-              return;
-            }
-            found.push({ component: component, heading: heading, section: sectionFor(heading, component) });
-          });
-
-          return found;
-        }
-
-        function desiredConfig() {
-          var mobile = clamp(config.mobileColumns, 1, 3, 2);
-          var desktop = clamp(config.desktopColumns, 1, 6, 4);
-          return {
-            slidesPerView: mobile,
-            slidesPerGroup: 1,
-            spaceBetween: 12,
-            centeredSlides: false,
-            centeredSlidesBounds: false,
-            centerInsufficientSlides: false,
-            freeMode: false,
-            watchOverflow: true,
-            roundLengths: true,
-            slidesOffsetBefore: 0,
-            slidesOffsetAfter: 0,
-            breakpoints: {
-              768: {
-                slidesPerView: desktop,
-                slidesPerGroup: 1,
-                spaceBetween: 16,
-                centeredSlides: false,
-                centeredSlidesBounds: false,
-                centerInsufficientSlides: false,
-                freeMode: false,
-                watchOverflow: true,
-                roundLengths: true,
-                slidesOffsetBefore: 0,
-                slidesOffsetAfter: 0
-              }
-            }
-          };
-        }
-
-        function currentColumns() {
-          return media && media.matches
-            ? clamp(config.desktopColumns, 1, 6, 4)
-            : clamp(config.mobileColumns, 1, 3, 2);
-        }
-
-        function currentGap() {
-          return media && media.matches ? 16 : 12;
-        }
-
-        function layoutCss() {
-          var mobile = clamp(config.mobileColumns, 1, 3, 2);
-          var desktop = clamp(config.desktopColumns, 1, 6, 4);
-          var arrowCss = config.hideArrows
-            ? '.s-slider-next,.s-slider-prev,[class*="slider-next"],[class*="slider-prev"],[class*="swiper-button-next"],[class*="swiper-button-prev"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}'
-            : '';
-
-          return [
+          var mobile = Math.max(1, Math.min(3, Number(config.mobileColumns) || 2));
+          var desktop = Math.max(1, Math.min(6, Number(config.desktopColumns) || 4));
+          var style = document.createElement('style');
+          style.id = id;
+          style.textContent = [
             ':host{display:block!important;width:100%!important;max-width:100%!important}',
             '.swiper-wrapper{align-items:stretch!important}',
             '.swiper-slide>custom-salla-product-card,.swiper-slide>.s-product-card-entry{height:100%!important}',
-            '@media(max-width:767px){.swiper-wrapper>.swiper-slide,.swiper-slide{flex:0 0 calc((100% - (12px * ', String(mobile - 1), ')) / ', String(mobile), ')!important;width:calc((100% - (12px * ', String(mobile - 1), ')) / ', String(mobile), ')!important;max-width:calc((100% - (12px * ', String(mobile - 1), ')) / ', String(mobile), ')!important}}',
-            '@media(min-width:768px){.swiper-wrapper>.swiper-slide,.swiper-slide{flex:0 0 calc((100% - (16px * ', String(desktop - 1), ')) / ', String(desktop), ')!important;width:calc((100% - (16px * ', String(desktop - 1), ')) / ', String(desktop), ')!important;max-width:calc((100% - (16px * ', String(desktop - 1), ')) / ', String(desktop), ')!important}}',
-            arrowCss
+            '@media(max-width:767px){.swiper-wrapper>.swiper-slide,.swiper-slide{flex:0 0 calc((100% - (12px * ' + (mobile - 1) + ')) / ' + mobile + ')!important;width:calc((100% - (12px * ' + (mobile - 1) + ')) / ' + mobile + ')!important;max-width:calc((100% - (12px * ' + (mobile - 1) + ')) / ' + mobile + ')!important}}',
+            '@media(min-width:768px){.swiper-wrapper>.swiper-slide,.swiper-slide{flex:0 0 calc((100% - (16px * ' + (desktop - 1) + ')) / ' + desktop + ')!important;width:calc((100% - (16px * ' + (desktop - 1) + ')) / ' + desktop + ')!important;max-width:calc((100% - (16px * ' + (desktop - 1) + ')) / ' + desktop + ')!important}}',
+            config.hideArrows ? '.s-slider-next,.s-slider-prev,[class*="swiper-button"]{display:none!important;visibility:hidden!important}' : '',
+            config.centerTitle ? '.s-slider-block__title,.s-block__title,[class*="title"]{text-align:center!important;justify-content:center!important;width:100%!important}' : ''
           ].join('');
+          root.appendChild(style);
         }
 
-        function ensureStyle(root) {
-          if (!root || !root.querySelector) return;
-          var container = root === document ? document.head : root;
-          var style = container.querySelector('#' + STYLE_ID);
-          if (!style) {
-            style = document.createElement('style');
-            style.id = STYLE_ID;
-            container.appendChild(style);
-          }
-          style.textContent = layoutCss();
-        }
+        function apply(component) {
+          if (!component || component.dataset.velouraRecentStable === 'true') return;
+          if (!isRecent(identity(component))) return;
 
-        function applyHeading(heading) {
-          if (!heading) return;
-          var alignment = config.centerTitle ? 'center' : 'right';
-          var justification = config.centerTitle ? 'center' : 'flex-start';
-
-          heading.style.setProperty('display', 'block', 'important');
-          heading.style.setProperty('width', '100%', 'important');
-          heading.style.setProperty('max-width', '100%', 'important');
-          heading.style.setProperty('text-align', alignment, 'important');
-          heading.style.setProperty('justify-content', justification, 'important');
-
-          if (heading.parentElement) {
-            heading.parentElement.style.setProperty('width', '100%', 'important');
-            heading.parentElement.style.setProperty('max-width', '100%', 'important');
-            heading.parentElement.style.setProperty('text-align', alignment, 'important');
-            heading.parentElement.style.setProperty('justify-content', justification, 'important');
-          }
-        }
-
-        function applySwiperInstance(swiper) {
-          if (!swiper) return;
-          var settings = desiredConfig();
-          var columns = currentColumns();
-          var gap = currentGap();
-
-          [swiper.params, swiper.originalParams, swiper.passedParams].forEach(function (params) {
-            if (!params) return;
-            params.slidesPerView = columns;
-            params.slidesPerGroup = 1;
-            params.spaceBetween = gap;
-            params.centeredSlides = false;
-            params.centeredSlidesBounds = false;
-            params.centerInsufficientSlides = false;
-            params.freeMode = false;
-            params.breakpoints = settings.breakpoints;
-          });
-
-          try { if (typeof swiper.setBreakpoint === 'function') swiper.setBreakpoint(); } catch (error) {}
-          try { if (typeof swiper.updateSize === 'function') swiper.updateSize(); } catch (error) {}
-          try { if (typeof swiper.updateSlides === 'function') swiper.updateSlides(); } catch (error) {}
-          try { if (typeof swiper.updateProgress === 'function') swiper.updateProgress(); } catch (error) {}
-          try { if (typeof swiper.updateSlidesClasses === 'function') swiper.updateSlidesClasses(); } catch (error) {}
-          try { if (typeof swiper.update === 'function') swiper.update(); } catch (error) {}
-        }
-
-        function applySlider(slider) {
-          if (!slider) return;
-          var settings = desiredConfig();
-          var columns = currentColumns();
-
-          slider.setAttribute('slides-per-view', String(columns));
-          slider.setAttribute('slider-config', JSON.stringify(settings));
-          try { slider.slidesPerView = columns; } catch (error) {}
-          try { slider.sliderConfig = settings; } catch (error) {}
-
-          applySwiperInstance(slider.swiper || slider.slider || slider.swiperInstance);
-
-          if (typeof slider.componentOnReady === 'function') {
-            slider.componentOnReady().then(function () {
-              applySwiperInstance(slider.swiper || slider.slider || slider.swiperInstance);
-            }).catch(function () {});
-          }
-        }
-
-        function applyCardContract(component) {
-          if (
-            window.VelouraProductCardContract &&
-            typeof window.VelouraProductCardContract.applyTree === 'function'
-          ) {
-            window.VelouraProductCardContract.applyTree(component.shadowRoot || component);
-          }
-        }
-
-        function applyRecord(record) {
-          if (!record || !record.component) return false;
-          var component = record.component;
-          var section = record.section;
-
-          component.setAttribute('data-veloura-recent-section', 'true');
+          component.dataset.velouraRecentStable = 'true';
+          var section = findSection(component);
 
           if (config.hide) {
-            component.hidden = true;
-            component.style.setProperty('display', 'none', 'important');
-            if (record.heading) record.heading.style.setProperty('display', 'none', 'important');
-            return true;
+            if (section && section.style) section.style.setProperty('display', 'none', 'important');
+            return;
           }
 
-          component.hidden = false;
-          component.style.removeProperty('display');
-          component.style.setProperty('display', 'block', 'important');
-          component.style.setProperty('width', '100%', 'important');
-          component.style.setProperty('max-width', '100%', 'important');
-          component.style.setProperty('min-width', '0', 'important');
+          var previousCardComponent = component.getAttribute('product-card-component');
+          var needsCardReload = previousCardComponent !== 'custom-salla-product-card';
           component.setAttribute('product-card-component', 'custom-salla-product-card');
-          component.setAttribute('slider-config', JSON.stringify(desiredConfig()));
-          try { component.sliderConfig = desiredConfig(); } catch (error) {}
+          try { component.productCardComponent = 'custom-salla-product-card'; } catch (error) {}
 
-          if (section && section.style) {
-            section.style.setProperty('width', '100%', 'important');
-            section.style.setProperty('max-width', '100%', 'important');
-            section.style.setProperty('min-width', '0', 'important');
+          var sliderConfig = {
+            slidesPerView: Math.max(1, Math.min(3, Number(config.mobileColumns) || 2)),
+            slidesPerGroup: 1,
+            spaceBetween: 12,
+            watchOverflow: true,
+            roundLengths: true,
+            breakpoints: {
+              768: {
+                slidesPerView: Math.max(1, Math.min(6, Number(config.desktopColumns) || 4)),
+                slidesPerGroup: 1,
+                spaceBetween: 16,
+                watchOverflow: true,
+                roundLengths: true
+              }
+            }
+          };
+
+          try { component.sliderConfig = sliderConfig; } catch (error) {}
+          component.setAttribute('slider-config', JSON.stringify(sliderConfig));
+
+          if (section && section.classList) {
+            section.classList.add('veloura-recent-stable-section');
+            if (config.centerTitle) section.classList.add('is-title-centered');
+            if (config.hideArrows) section.classList.add('is-arrows-hidden');
+
+            var heading = section.querySelector('h1,h2,h3,h4,h5,h6,.s-block__title,.s-slider-block__title');
+            if (heading && config.centerTitle) {
+              heading.style.setProperty('text-align', 'center', 'important');
+              heading.style.setProperty('justify-content', 'center', 'important');
+              heading.style.setProperty('width', '100%', 'important');
+            }
           }
 
-          applyHeading(record.heading);
+          var finish = function () {
+            installStyle(component.shadowRoot, 'veloura-recent-component-style');
 
-          var roots = collectRoots(component, 8);
-          roots.forEach(ensureStyle);
-          roots.forEach(function (root) {
-            if (!root.querySelectorAll) return;
-            root.querySelectorAll('salla-slider').forEach(applySlider);
-            root.querySelectorAll('.swiper').forEach(function (node) {
-              applySwiperInstance(node.swiper || node.swiperInstance);
-            });
-          });
+            if (component.shadowRoot) {
+              component.shadowRoot.querySelectorAll('salla-slider').forEach(function (slider) {
+                try { slider.sliderConfig = sliderConfig; } catch (error) {}
+                slider.setAttribute('slider-config', JSON.stringify(sliderConfig));
 
-          applySwiperInstance(component.swiper || component.slider || component.swiperInstance);
-          applyCardContract(component);
-          component.setAttribute('data-veloura-recent-layout-applied', 'true');
-
-          if (typeof component.componentOnReady === 'function') {
-            component.componentOnReady().then(function () {
-              collectRoots(component, 8).forEach(ensureStyle);
-              collectRoots(component, 8).forEach(function (root) {
-                if (!root.querySelectorAll) return;
-                root.querySelectorAll('salla-slider').forEach(applySlider);
-                root.querySelectorAll('.swiper').forEach(function (node) {
-                  applySwiperInstance(node.swiper || node.swiperInstance);
-                });
+                if (typeof slider.componentOnReady === 'function') {
+                  slider.componentOnReady().then(function () {
+                    installStyle(slider.shadowRoot, 'veloura-recent-slider-style');
+                    var swiper = slider.swiper || slider.slider || slider.swiperInstance;
+                    if (swiper && typeof swiper.update === 'function') swiper.update();
+                  }).catch(function () {});
+                } else {
+                  installStyle(slider.shadowRoot, 'veloura-recent-slider-style');
+                }
               });
-              applyCardContract(component);
-            }).catch(function () {});
+            }
+
+            if (window.VelouraProductCardContract && typeof window.VelouraProductCardContract.applyTree === 'function') {
+              window.VelouraProductCardContract.applyTree(component.shadowRoot || component);
+            }
+          };
+
+          finish();
+          if (typeof component.componentOnReady === 'function') {
+            component.componentOnReady().then(finish).catch(function () {});
           }
 
-          return roots.some(function (root) {
-            return root.querySelector && root.querySelector('salla-slider,.swiper');
-          });
+          if (needsCardReload && typeof component.reload === 'function' && !component.__velouraRecentReloaded) {
+            component.__velouraRecentReloaded = true;
+            try {
+              var reloadResult = component.reload();
+              if (reloadResult && typeof reloadResult.then === 'function') {
+                reloadResult.then(finish).catch(function () {});
+              }
+            } catch (error) {}
+          }
         }
 
-        function scan() {
-          records = findRecords();
-          var complete = false;
-          records.forEach(function (record) {
-            if (applyRecord(record)) complete = true;
-          });
-
-          if (complete && observer) {
-            observer.disconnect();
-            observer = null;
-          }
-
-          return complete;
+        function scanLightDom() {
+          document.querySelectorAll('salla-products-slider,salla-products-list').forEach(apply);
         }
 
         function registerHooks() {
+          if (window.__velouraRecentStableHooks) return;
           var api = window.Salla || window.salla;
           if (!api || !api.hooks || typeof api.hooks.registerHook !== 'function') return;
-          if (window.__velouraStep8CurrentRecentHooks) return;
 
           try {
-            api.hooks.registerHook('salla-products-slider', 'componentDidLoad', scan);
-            api.hooks.registerHook('salla-products-list', 'componentDidLoad', scan);
-            api.hooks.registerHook('salla-slider', 'componentDidLoad', scan);
-            window.__velouraStep8CurrentRecentHooks = true;
+            api.hooks.registerHook('salla-products-slider', 'componentDidLoad', apply);
+            api.hooks.registerHook('salla-products-list', 'componentDidLoad', apply);
+            window.__velouraRecentStableHooks = true;
           } catch (error) {}
-        }
-
-        function reapply() {
-          if (!records.length) records = findRecords();
-          records.forEach(applyRecord);
         }
 
         function start() {
@@ -1348,9 +1123,7 @@
           if (api && typeof api.onReady === 'function') {
             try {
               var ready = api.onReady(registerHooks);
-              if (ready && typeof ready.then === 'function') {
-                ready.then(registerHooks).catch(function () {});
-              }
+              if (ready && typeof ready.then === 'function') ready.then(registerHooks).catch(function () {});
             } catch (error) {
               registerHooks();
             }
@@ -1358,26 +1131,7 @@
             registerHooks();
           }
 
-          if (!scan() && window.MutationObserver && document.body) {
-            observer = new MutationObserver(function (mutations) {
-              var added = mutations.some(function (mutation) {
-                return mutation.addedNodes && mutation.addedNodes.length;
-              });
-              if (added) scan();
-            });
-            observer.observe(document.body, { childList: true, subtree: true });
-            window.setTimeout(function () {
-              if (observer) {
-                observer.disconnect();
-                observer = null;
-              }
-            }, 15000);
-          }
-
-          if (media) {
-            if (typeof media.addEventListener === 'function') media.addEventListener('change', reapply);
-            else if (typeof media.addListener === 'function') media.addListener(reapply);
-          }
+          scanLightDom();
         }
 
         if (document.readyState === 'loading') {
@@ -1386,7 +1140,12 @@
           start();
         }
 
-        window.addEventListener('pageshow', reapply, { passive: true });
+        document.addEventListener('afterInit', function (event) {
+          var target = event.target;
+          if (target && target.matches && target.matches('salla-products-slider,salla-products-list')) {
+            apply(target);
+          }
+        });
       }());
     </script>
     {% if product.has_3d_image %}
