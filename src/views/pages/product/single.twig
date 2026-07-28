@@ -920,8 +920,8 @@
 {% block scripts %}
 
     <script defer src="{{ 'product.js' | asset }}"></script>
-    {# Veloura Step 6: recent products inherit layout only; card styling is centralized in product-card.js. #}
-    <script data-veloura-step6-recent-layout>
+    {# Veloura Step 7: apply the related-products layout contract to the actual recently-viewed slider. #}
+    <script data-veloura-step7-recent-layout>
       (function () {
         'use strict';
 
@@ -936,9 +936,10 @@
 
         if (!config.hide && !config.inherit) return;
 
+        var STYLE_ID = 'veloura-step7-recent-layout-style';
         var observer = null;
         var stopTimer = 0;
-        var done = false;
+        var appliedComponents = [];
 
         function cleanText(value) {
           return String(value || '')
@@ -948,24 +949,22 @@
             .toLowerCase();
         }
 
-        function composedParent(node) {
-          if (!node) return null;
-          if (node.parentElement) return node.parentElement;
-          var root = node.getRootNode && node.getRootNode();
-          return root && root.host ? root.host : null;
+        function isRecentText(value) {
+          var text = cleanText(value);
+          return text.indexOf('شاهدتها مؤخ') !== -1 || text.indexOf('recently viewed') !== -1;
         }
 
-        function collectRoots(start, depth) {
+        function collectRoots(start, maxDepth) {
           var roots = [];
           var seen = [];
 
-          function visit(root, level) {
-            if (!root || level > depth || seen.indexOf(root) !== -1) return;
+          function visit(root, depth) {
+            if (!root || depth > maxDepth || seen.indexOf(root) !== -1) return;
             seen.push(root);
             roots.push(root);
             if (!root.querySelectorAll) return;
             root.querySelectorAll('*').forEach(function (node) {
-              if (node.shadowRoot) visit(node.shadowRoot, level + 1);
+              if (node.shadowRoot) visit(node.shadowRoot, depth + 1);
             });
           }
 
@@ -975,7 +974,7 @@
 
         function deepAll(selector, start) {
           var result = [];
-          collectRoots(start || document, 7).forEach(function (root) {
+          collectRoots(start || document, 8).forEach(function (root) {
             if (!root.querySelectorAll) return;
             root.querySelectorAll(selector).forEach(function (node) {
               if (result.indexOf(node) === -1) result.push(node);
@@ -984,43 +983,89 @@
           return result;
         }
 
-        function isRecentHeading(element) {
-          var text = cleanText(element && element.textContent);
-          return text.indexOf('شاهدتها مؤخ') !== -1 || text.indexOf('recently viewed') !== -1;
+        function composedParent(node) {
+          if (!node) return null;
+          if (node.parentElement) return node.parentElement;
+          var root = node.getRootNode && node.getRootNode();
+          return root && root.host ? root.host : null;
         }
 
-        function findRecentHeading() {
-          var selectors = 'h1,h2,h3,h4,h5,h6,.s-block__title,.s-slider-block__title,[class*="title"],[class*="Title"]';
-          var headings = deepAll(selectors, document);
-          for (var i = 0; i < headings.length; i++) {
-            if (isRecentHeading(headings[i])) return headings[i];
+        function composedClosest(node, selector) {
+          var current = node;
+          for (var index = 0; current && index < 12; index += 1) {
+            if (current.matches && current.matches(selector)) return current;
+            current = composedParent(current);
           }
           return null;
         }
 
-        function hasProducts(node) {
-          if (!node) return false;
-          if (node.matches && node.matches('salla-products-slider,salla-products-list,salla-slider')) return true;
-          return deepAll('salla-products-slider,salla-products-list,salla-slider,custom-salla-product-card,salla-product-card,.s-product-card-entry', node).length > 0;
-        }
+        function componentTitle(component) {
+          if (!component) return '';
+          var attributes = [
+            component.getAttribute && component.getAttribute('block-title'),
+            component.getAttribute && component.getAttribute('title'),
+            component.getAttribute && component.getAttribute('sub-title'),
+            component.getAttribute && component.getAttribute('data-title')
+          ].filter(Boolean).join(' ');
 
-        function findRecentSection(heading) {
-          var current = heading;
-          var fallback = composedParent(heading) || heading;
+          if (isRecentText(attributes)) return attributes;
 
-          for (var i = 0; current && i < 9; i++) {
-            if (current !== document.body && current !== document.documentElement && hasProducts(current)) {
-              return current;
+          var roots = collectRoots(component, 5);
+          for (var index = 0; index < roots.length; index += 1) {
+            var root = roots[index];
+            if (!root.querySelectorAll) continue;
+            var headings = root.querySelectorAll('h1,h2,h3,h4,h5,h6,.s-block__title,.s-slider-block__title,[class*="title"],[class*="Title"]');
+            for (var item = 0; item < headings.length; item += 1) {
+              if (isRecentText(headings[item].textContent)) return headings[item].textContent;
             }
-            current = composedParent(current);
           }
 
-          return fallback;
+          return '';
         }
 
-        function sliderConfig() {
+        function findRecentHeading(component) {
+          var headings = deepAll('h1,h2,h3,h4,h5,h6,.s-block__title,.s-slider-block__title,[class*="title"],[class*="Title"]', component || document);
+          for (var index = 0; index < headings.length; index += 1) {
+            if (isRecentText(headings[index].textContent)) return headings[index];
+          }
+          return null;
+        }
+
+        function findRecentComponents() {
+          var result = [];
+          var components = deepAll('salla-products-slider,salla-products-list', document);
+
+          components.forEach(function (component) {
+            if (componentTitle(component) && result.indexOf(component) === -1) result.push(component);
+          });
+
+          if (result.length) return result;
+
+          var headings = deepAll('h1,h2,h3,h4,h5,h6,.s-block__title,.s-slider-block__title,[class*="title"],[class*="Title"]', document);
+          headings.forEach(function (heading) {
+            if (!isRecentText(heading.textContent)) return;
+            var component = composedClosest(heading, 'salla-products-slider,salla-products-list');
+            if (!component) {
+              var parent = composedParent(heading);
+              if (parent) {
+                component = deepAll('salla-products-slider,salla-products-list', parent)[0] || null;
+              }
+            }
+            if (component && result.indexOf(component) === -1) result.push(component);
+          });
+
+          return result;
+        }
+
+        function clamp(value, minimum, maximum, fallback) {
+          var number = Number(value);
+          if (!Number.isFinite(number)) number = fallback;
+          return Math.max(minimum, Math.min(maximum, number));
+        }
+
+        function desiredSliderConfig() {
           return {
-            slidesPerView: Math.max(1, Math.min(3, Number(config.mobileColumns) || 2)),
+            slidesPerView: clamp(config.mobileColumns, 1, 6, 2),
             slidesPerGroup: 1,
             spaceBetween: 12,
             centeredSlides: false,
@@ -1028,174 +1073,205 @@
             centerInsufficientSlides: false,
             freeMode: false,
             roundLengths: true,
+            slidesOffsetBefore: 0,
+            slidesOffsetAfter: 0,
             breakpoints: {
               768: {
-                slidesPerView: Math.max(1, Math.min(6, Number(config.desktopColumns) || 4)),
+                slidesPerView: clamp(config.desktopColumns, 1, 8, 4),
                 slidesPerGroup: 1,
                 spaceBetween: 16,
                 centeredSlides: false,
+                centeredSlidesBounds: false,
+                centerInsufficientSlides: false,
                 freeMode: false,
-                roundLengths: true
+                roundLengths: true,
+                slidesOffsetBefore: 0,
+                slidesOffsetAfter: 0
               }
             }
           };
         }
 
-        function layoutCss(scoped) {
-          var mobile = Math.max(1, Math.min(3, Number(config.mobileColumns) || 2));
-          var desktop = Math.max(1, Math.min(6, Number(config.desktopColumns) || 4));
-          var prefix = scoped ? '[data-veloura-recent-section="true"] ' : '';
-          var arrows = config.hideArrows
-            ? prefix + '.s-slider-next,' + prefix + '.s-slider-prev,' + prefix + '[class*="slider-next"],' + prefix + '[class*="slider-prev"],' + prefix + '[class*="swiper-button-next"],' + prefix + '[class*="swiper-button-prev"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}'
+        function layoutCss() {
+          var mobile = clamp(config.mobileColumns, 1, 6, 2);
+          var desktop = clamp(config.desktopColumns, 1, 8, 4);
+          var mobileGap = 12;
+          var desktopGap = 16;
+          var hideArrows = config.hideArrows
+            ? '.s-slider-next,.s-slider-prev,[class*="slider-next"],[class*="slider-prev"],[class*="swiper-button-next"],[class*="swiper-button-prev"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}'
             : '';
 
           return [
-            '@media(max-width:767px){', prefix, '.swiper-slide{width:calc((100% - (12px * ', String(mobile - 1), ')) / ', String(mobile), ')!important;max-width:calc((100% - (12px * ', String(mobile - 1), ')) / ', String(mobile), ')!important}}',
-            '@media(min-width:768px){', prefix, '.swiper-slide{width:calc((100% - (16px * ', String(desktop - 1), ')) / ', String(desktop), ')!important;max-width:calc((100% - (16px * ', String(desktop - 1), ')) / ', String(desktop), ')!important}}',
-            arrows
+            ':host{display:block!important;width:100%!important;max-width:100%!important}',
+            '@media(max-width:767px){.swiper-wrapper>.swiper-slide,.swiper-slide{flex:0 0 calc((100% - (', mobileGap, 'px * ', String(mobile - 1), ')) / ', String(mobile), ')!important;width:calc((100% - (', mobileGap, 'px * ', String(mobile - 1), ')) / ', String(mobile), ')!important;max-width:calc((100% - (', mobileGap, 'px * ', String(mobile - 1), ')) / ', String(mobile), ')!important}}',
+            '@media(min-width:768px){.swiper-wrapper>.swiper-slide,.swiper-slide{flex:0 0 calc((100% - (', desktopGap, 'px * ', String(desktop - 1), ')) / ', String(desktop), ')!important;width:calc((100% - (', desktopGap, 'px * ', String(desktop - 1), ')) / ', String(desktop), ')!important;max-width:calc((100% - (', desktopGap, 'px * ', String(desktop - 1), ')) / ', String(desktop), ')!important}}',
+            hideArrows
           ].join('');
         }
 
-        function ensureLayoutStyles(section) {
-          collectRoots(section, 7).forEach(function (root, index) {
-            var container = root === document ? document.head : root;
-            if (!container || !container.querySelector) return;
-            var id = 'veloura-step6-recent-layout-' + index;
-            var style = container.querySelector('#' + id);
-            if (!style) {
-              style = document.createElement('style');
-              style.id = id;
-              container.appendChild(style);
-            }
-            style.textContent = layoutCss(root === document);
-          });
-        }
-
-        function rebuildComponent(component) {
-          if (!component || component.getAttribute('data-veloura-step6-rebuilt') === 'true') return component;
-
-          var tag = component.tagName.toLowerCase();
-          var replacement = document.createElement(tag);
-
-          Array.prototype.slice.call(component.attributes || []).forEach(function (attribute) {
-            replacement.setAttribute(attribute.name, attribute.value);
-          });
-
-          replacement.setAttribute('product-card-component', 'custom-salla-product-card');
-          replacement.setAttribute('data-veloura-step6-rebuilt', 'true');
-
-          if (tag === 'salla-products-slider') {
-            replacement.setAttribute('slider-config', JSON.stringify(sliderConfig()));
+        function ensureStyle(root) {
+          if (!root || !root.querySelector) return;
+          var container = root === document ? document.head : root;
+          var style = container.querySelector('#' + STYLE_ID);
+          if (!style) {
+            style = document.createElement('style');
+            style.id = STYLE_ID;
+            container.appendChild(style);
           }
-
-          component.replaceWith(replacement);
-          return replacement;
+          style.textContent = layoutCss();
         }
 
-        function applyCardContract(scope) {
+        function applyHeading(component) {
+          var heading = findRecentHeading(component);
+          if (!heading) return;
+
+          heading.style.setProperty('display', 'block', 'important');
+          heading.style.setProperty('width', '100%', 'important');
+          heading.style.setProperty('max-width', '100%', 'important');
+          heading.style.setProperty('text-align', config.centerTitle ? 'center' : 'right', 'important');
+          heading.style.setProperty('justify-content', config.centerTitle ? 'center' : 'flex-start', 'important');
+
+          if (heading.parentElement) {
+            heading.parentElement.style.setProperty('width', '100%', 'important');
+            heading.parentElement.style.setProperty('max-width', '100%', 'important');
+            heading.parentElement.style.setProperty('text-align', config.centerTitle ? 'center' : 'right', 'important');
+            heading.parentElement.style.setProperty('justify-content', config.centerTitle ? 'center' : 'flex-start', 'important');
+          }
+        }
+
+        function updateSwiper(root) {
+          if (!root || !root.querySelectorAll) return;
+          root.querySelectorAll('salla-slider').forEach(function (slider) {
+            var settings = desiredSliderConfig();
+            try { slider.sliderConfig = settings; } catch (error) {}
+            slider.setAttribute('slider-config', JSON.stringify(settings));
+
+            var update = function () {
+              var swiper = slider.swiper || slider.slider || slider.swiperInstance;
+              if (swiper && typeof swiper.update === 'function') swiper.update();
+            };
+
+            update();
+            if (typeof slider.componentOnReady === 'function') {
+              slider.componentOnReady().then(update).catch(function () {});
+            }
+          });
+
+          root.querySelectorAll('.swiper').forEach(function (node) {
+            if (node.swiper && typeof node.swiper.update === 'function') node.swiper.update();
+          });
+        }
+
+        function applyCardContract(component) {
           if (
             window.VelouraProductCardContract &&
             typeof window.VelouraProductCardContract.applyTree === 'function'
           ) {
-            window.VelouraProductCardContract.applyTree(scope || document);
+            window.VelouraProductCardContract.applyTree(component.shadowRoot || component);
           }
         }
 
-        function finish() {
-          if (done) return;
-          done = true;
-          if (observer) observer.disconnect();
-          clearTimeout(stopTimer);
-        }
+        function applyComponent(component) {
+          if (!component) return false;
 
-        function apply() {
-          if (done) return;
-
-          var heading = findRecentHeading();
-          if (!heading) return;
-
-          var section = findRecentSection(heading);
-          if (!section) return;
-
-          if (observer) observer.disconnect();
-          section.setAttribute('data-veloura-recent-section', 'true');
+          component.setAttribute('data-veloura-recent-section', 'true');
 
           if (config.hide) {
-            section.hidden = true;
-            section.style.setProperty('display', 'none', 'important');
-            finish();
-            return;
+            component.hidden = true;
+            component.style.setProperty('display', 'none', 'important');
+            return true;
           }
 
           if (!config.inherit) {
-            applyCardContract(section);
-            finish();
-            return;
+            applyCardContract(component);
+            return true;
           }
 
-          heading.style.setProperty('width', '100%', 'important');
-          heading.style.setProperty('text-align', config.centerTitle ? 'center' : 'right', 'important');
+          component.hidden = false;
+          component.style.removeProperty('display');
+          component.style.setProperty('width', '100%', 'important');
+          component.style.setProperty('max-width', '100%', 'important');
+          component.style.setProperty('min-width', '0', 'important');
+          component.setAttribute('product-card-component', 'custom-salla-product-card');
 
-          var components = deepAll('salla-products-slider,salla-products-list', section);
-          var readyTasks = [];
+          var settings = desiredSliderConfig();
+          try { component.sliderConfig = settings; } catch (error) {}
+          component.setAttribute('slider-config', JSON.stringify(settings));
 
+          applyHeading(component);
+          collectRoots(component, 8).forEach(ensureStyle);
+          collectRoots(component, 8).forEach(updateSwiper);
+          applyCardContract(component);
+
+          var finalise = function () {
+            applyHeading(component);
+            collectRoots(component, 8).forEach(ensureStyle);
+            collectRoots(component, 8).forEach(updateSwiper);
+            applyCardContract(component);
+            component.setAttribute('data-veloura-recent-layout-applied', 'true');
+          };
+
+          finalise();
+          requestAnimationFrame(function () {
+            requestAnimationFrame(finalise);
+          });
+
+          if (typeof component.componentOnReady === 'function') {
+            component.componentOnReady().then(finalise).catch(function () {});
+          }
+
+          return true;
+        }
+
+        function scan() {
+          var components = findRecentComponents();
           components.forEach(function (component) {
-            var configured = rebuildComponent(component);
-            if (!configured) return;
-
-            var waitUntilReady = function () {
-              if (typeof configured.componentOnReady === 'function') {
-                return configured.componentOnReady();
-              }
-
-              return new Promise(function (resolve) {
-                requestAnimationFrame(function () {
-                  requestAnimationFrame(resolve);
-                });
-              });
-            };
-
-            if (window.customElements && typeof customElements.whenDefined === 'function') {
-              readyTasks.push(
-                customElements.whenDefined(configured.tagName.toLowerCase())
-                  .then(waitUntilReady)
-                  .then(function () {
-                    ensureLayoutStyles(section);
-                    applyCardContract(configured.shadowRoot || configured);
-                  })
-                  .catch(function () {})
-              );
-            } else {
-              readyTasks.push(
-                waitUntilReady()
-                  .then(function () {
-                    ensureLayoutStyles(section);
-                    applyCardContract(configured.shadowRoot || configured);
-                  })
-                  .catch(function () {})
-              );
-            }
+            if (appliedComponents.indexOf(component) === -1) appliedComponents.push(component);
+            applyComponent(component);
           });
+          return components.length > 0;
+        }
 
-          ensureLayoutStyles(section);
-          applyCardContract(section);
+        function registerHooks() {
+          var api = window.Salla || window.salla;
+          if (!api || !api.hooks || typeof api.hooks.registerHook !== 'function') return;
+          if (window.__velouraStep7RecentHookRegistered) return;
 
-          Promise.all(readyTasks).then(function () {
-            ensureLayoutStyles(section);
-            applyCardContract(section);
-            finish();
-          });
-
-          if (!readyTasks.length) finish();
+          try {
+            api.hooks.registerHook('salla-products-slider', 'componentDidLoad', function (component) {
+              if (componentTitle(component)) applyComponent(component);
+            });
+            api.hooks.registerHook('salla-products-list', 'componentDidLoad', function (component) {
+              if (componentTitle(component)) applyComponent(component);
+            });
+            window.__velouraStep7RecentHookRegistered = true;
+          } catch (error) {}
         }
 
         function start() {
-          apply();
-          if (done || !window.MutationObserver || !document.body) return;
+          var api = window.Salla || window.salla;
+          if (api && typeof api.onReady === 'function') {
+            try {
+              var ready = api.onReady(registerHooks);
+              if (ready && typeof ready.then === 'function') ready.then(registerHooks).catch(function () {});
+            } catch (error) {
+              registerHooks();
+            }
+          } else {
+            registerHooks();
+          }
 
-          observer = new MutationObserver(apply);
+          scan();
+
+          if (!window.MutationObserver || !document.body) return;
+          observer = new MutationObserver(function (records) {
+            var hasAddedNodes = records.some(function (record) { return record.addedNodes && record.addedNodes.length; });
+            if (hasAddedNodes) scan();
+          });
           observer.observe(document.body, { childList: true, subtree: true });
-          stopTimer = window.setTimeout(finish, 12000);
+          stopTimer = window.setTimeout(function () {
+            if (observer) observer.disconnect();
+          }, 12000);
         }
 
         if (document.readyState === 'loading') {
@@ -1203,6 +1279,8 @@
         } else {
           start();
         }
+
+        window.addEventListener('pageshow', scan, { passive: true });
       }());
     </script>
     {% if product.has_3d_image %}

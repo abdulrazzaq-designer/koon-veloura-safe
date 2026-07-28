@@ -9,6 +9,34 @@ const VELOURA_CARD_BODY_CLASS_PREFIXES = [
   'veloura-quick-view-position-'
 ];
 
+const VELOURA_CARD_VARIABLE_NAMES = [
+  '--veloura-product-card-bg',
+  '--veloura-product-card-radius',
+  '--veloura-product-image-radius',
+  '--veloura-product-image-padding-top',
+  '--veloura-product-image-padding-x',
+  '--veloura-product-image-outside-offset',
+  '--veloura-product-title-size',
+  '--veloura-product-price-size',
+  '--veloura-product-button-radius',
+  '--veloura-product-button-margin-x',
+  '--veloura-product-button-margin-bottom',
+  '--veloura-product-button-height',
+  '--veloura-product-button-bg',
+  '--veloura-product-button-text',
+  '--veloura-pc-promo-bg',
+  '--veloura-pc-promo-text',
+  '--veloura-pc-promo-size',
+  '--veloura-pc-promo-radius',
+  '--veloura-pc-overlay-offset',
+  '--veloura-pc-actions-gap',
+  '--veloura-product-action-size',
+  '--veloura-quick-view-button-bg',
+  '--veloura-quick-view-button-text',
+  '--veloura-quick-view-button-radius',
+  '--veloura-quick-view-button-height'
+];
+
 const VELOURA_CARD_CONTRACT_CSS = `
 .s-product-card-entry.veloura-card-contract.veloura-product-card-enabled {
   position: relative !important;
@@ -166,17 +194,36 @@ const VELOURA_CARD_CONTRACT_CSS = `
 }
 .s-product-card-entry.veloura-card-contract.veloura-product-card-enabled salla-add-product-button.veloura-card-add-button {
   display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   width: 100% !important;
   max-width: 100% !important;
   min-width: 0 !important;
+  height: var(--veloura-product-button-height, 42px) !important;
   min-height: var(--veloura-product-button-height, 42px) !important;
+  padding: 0 14px !important;
+  box-sizing: border-box !important;
+  background: var(--veloura-product-button-bg, #004d65) !important;
+  background-color: var(--veloura-product-button-bg, #004d65) !important;
+  border: 1px solid var(--veloura-product-button-bg, #004d65) !important;
   border-radius: var(--veloura-product-button-radius, 16px) !important;
+  color: var(--veloura-product-button-text, #fff) !important;
+  line-height: 1 !important;
   overflow: hidden !important;
+  opacity: 1 !important;
+  visibility: visible !important;
   --color-primary: var(--veloura-product-button-bg, #004d65) !important;
   --color-primary-reverse: var(--veloura-product-button-text, #fff) !important;
   --button-background-color: var(--veloura-product-button-bg, #004d65) !important;
   --button-border-color: var(--veloura-product-button-bg, #004d65) !important;
   --button-text-color: var(--veloura-product-button-text, #fff) !important;
+}
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled salla-add-product-button.veloura-card-add-button > span,
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled salla-add-product-button.veloura-card-add-button > i,
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled salla-add-product-button.veloura-card-add-button svg {
+  color: inherit !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
 }
 .s-product-card-entry.veloura-card-contract.veloura-product-card-enabled.veloura-pc-hide-cart .s-product-card-content-footer,
 .s-product-card-entry.veloura-card-contract.veloura-product-card-enabled.veloura-pc-hide-cart salla-add-product-button {
@@ -311,6 +358,18 @@ function ensureVelouraCardContractStyle(root) {
   }
 }
 
+function syncVelouraCardVariables(target) {
+  if (!target || !target.style || !window.getComputedStyle) return;
+
+  const rootStyle = window.getComputedStyle(document.documentElement);
+  const bodyStyle = document.body ? window.getComputedStyle(document.body) : null;
+
+  VELOURA_CARD_VARIABLE_NAMES.forEach((name) => {
+    const value = (bodyStyle && bodyStyle.getPropertyValue(name)) || rootStyle.getPropertyValue(name);
+    if (value && value.trim()) target.style.setProperty(name, value.trim());
+  });
+}
+
 function copyVelouraCardClasses(card) {
   if (!card || !document.body) return;
   const previous = card.__velouraCopiedBodyClasses || [];
@@ -377,17 +436,37 @@ function ensureVelouraShadowStyle(root) {
 }
 
 function styleVelouraActionComponent(component, depth = 0) {
-  if (!component || depth > 4) return;
+  if (!component || depth > 5) return;
 
-  component.setAttribute('width', 'wide');
-  if (component.tagName && component.tagName.toLowerCase() === 'salla-add-product-button') {
-    component.setAttribute('fill', 'solid');
-  }
+  const tagName = component.tagName ? component.tagName.toLowerCase() : '';
+  const card = component.closest ? component.closest('.s-product-card-entry') : null;
+  if (card) syncVelouraCardVariables(card);
+  syncVelouraCardVariables(component);
+
+  component.style.setProperty('display', 'flex', 'important');
+  component.style.setProperty('align-items', 'center', 'important');
+  component.style.setProperty('justify-content', 'center', 'important');
   component.style.setProperty('width', '100%', 'important');
   component.style.setProperty('max-width', '100%', 'important');
   component.style.setProperty('min-width', '0', 'important');
+  component.style.setProperty('height', 'var(--veloura-product-button-height, 42px)', 'important');
+  component.style.setProperty('min-height', 'var(--veloura-product-button-height, 42px)', 'important');
+  component.style.setProperty('box-sizing', 'border-box', 'important');
+  component.style.setProperty('background', 'var(--veloura-product-button-bg, #004d65)', 'important');
+  component.style.setProperty('background-color', 'var(--veloura-product-button-bg, #004d65)', 'important');
+  component.style.setProperty('border', '1px solid var(--veloura-product-button-bg, #004d65)', 'important');
   component.style.setProperty('border-radius', 'var(--veloura-product-button-radius, 16px)', 'important');
+  component.style.setProperty('color', 'var(--veloura-product-button-text, #fff)', 'important');
   component.style.setProperty('overflow', 'hidden', 'important');
+  component.style.setProperty('opacity', '1', 'important');
+  component.style.setProperty('visibility', 'visible', 'important');
+
+  // fill/width belong to the inner salla-button, not to salla-add-product-button.
+  if (tagName === 'salla-button') {
+    component.setAttribute('fill', 'solid');
+    component.setAttribute('width', 'wide');
+    component.setAttribute('color', 'primary');
+  }
 
   const applyShadow = () => {
     if (!component.shadowRoot) return;
@@ -402,8 +481,6 @@ function styleVelouraActionComponent(component, depth = 0) {
   if (typeof component.componentOnReady === 'function') {
     component.componentOnReady().then(applyShadow).catch(() => {});
   }
-
-  requestAnimationFrame(applyShadow);
 }
 
 function markVelouraCardNativeParts(card) {
@@ -422,6 +499,7 @@ function applyVelouraProductCard(card) {
   if (!card || !card.classList) return;
 
   copyVelouraCardClasses(card);
+  syncVelouraCardVariables(card);
 
   if (!card.classList.contains('veloura-product-card-enabled')) {
     card.classList.remove('veloura-card-contract');
@@ -510,30 +588,47 @@ function registerVelouraCardLifecycle() {
     }
   });
 
-  const registerSallaHooks = () => {
+  const installSallaHooks = () => {
     if (window.__velouraCardSallaHooksRegistered) return;
-    if (!window.salla || !salla.hooks || typeof salla.hooks.registerHook !== 'function') return;
+    const api = window.Salla || window.salla;
+    if (!api || !api.hooks || typeof api.hooks.registerHook !== 'function') return;
 
     try {
-      salla.hooks.registerHook('salla-add-product-button', 'componentDidLoad', (button) => {
-        if (button.classList && button.classList.contains('veloura-card-add-button')) {
-          styleVelouraActionComponent(button);
-        }
+      api.hooks.registerHook('salla-add-product-button', 'componentDidLoad', (button) => {
+        const card = button && button.closest ? button.closest('.s-product-card-entry') : null;
+        if (!card || !card.classList.contains('veloura-product-card-enabled')) return;
+        button.classList.add('veloura-card-add-button');
+        styleVelouraActionComponent(button);
       });
-      salla.hooks.registerHook('salla-products-slider', 'componentDidLoad', (slider) => {
+      api.hooks.registerHook('salla-products-slider', 'componentDidLoad', (slider) => {
         applyVelouraProductCardsIn(slider.shadowRoot || slider);
       });
-      salla.hooks.registerHook('salla-products-list', 'componentDidLoad', (list) => {
+      api.hooks.registerHook('salla-products-list', 'componentDidLoad', (list) => {
         applyVelouraProductCardsIn(list.shadowRoot || list);
       });
       window.__velouraCardSallaHooksRegistered = true;
     } catch (error) {
-      // Salla hooks differ between CLI releases; direct lifecycle calls remain active.
+      // Direct lifecycle handling remains active if hooks differ between CLI releases.
     }
+  };
+
+  const registerSallaHooks = () => {
+    const api = window.Salla || window.salla;
+    if (api && typeof api.onReady === 'function') {
+      try {
+        const readyResult = api.onReady(installSallaHooks);
+        if (readyResult && typeof readyResult.then === 'function') {
+          readyResult.then(installSallaHooks).catch(() => {});
+        }
+        return;
+      } catch (error) {}
+    }
+    installSallaHooks();
   };
 
   registerSallaHooks();
   document.addEventListener('theme::ready', registerSallaHooks, { once: true });
+
 
   window.VelouraProductCardContract = {
     applyCard: applyVelouraProductCard,
@@ -835,7 +930,7 @@ class ProductCard extends HTMLElement {
 
           ${!this.hideAddBtn ?
             `<div class="s-product-card-content-footer veloura-card-action-row gap-2">
-              <salla-add-product-button class="veloura-card-add-button" fill="solid" width="wide"
+              <salla-add-product-button class="veloura-card-add-button"
                 product-id="${this.product.id}"
                 product-status="${this.product.status}"
                 product-type="${this.product.type}">
