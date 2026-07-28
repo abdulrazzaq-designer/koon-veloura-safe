@@ -909,6 +909,19 @@
                   "centeredSlidesBounds": false,
                   "centerInsufficientSlides": false,
                   "freeMode": false,
+                  "allowTouchMove": true,
+                  "simulateTouch": true,
+                  "grabCursor": true,
+                  "threshold": 4,
+                  "touchStartPreventDefault": false,
+                  "touchMoveStopPropagation": false,
+                  "touchReleaseOnEdges": true,
+                  "resistance": true,
+                  "resistanceRatio": 0.85,
+                  "preventInteractionOnTransition": false,
+                  "observer": false,
+                  "observeParents": false,
+                  "observeSlideChildren": false,
                   "roundLengths": true,
                   "slidesOffsetBefore": 0,
                   "slidesOffsetAfter": 0,
@@ -919,6 +932,13 @@
                       "spaceBetween": 16,
                       "centeredSlides": false,
                       "freeMode": false,
+                      "allowTouchMove": true,
+                      "simulateTouch": true,
+                      "grabCursor": true,
+                      "threshold": 4,
+                      "touchReleaseOnEdges": true,
+                      "resistance": true,
+                      "resistanceRatio": 0.85,
                       "roundLengths": true,
                       "slidesOffsetBefore": 0,
                       "slidesOffsetAfter": 0
@@ -933,12 +953,19 @@
 {% block scripts %}
 
     <script defer src="{{ 'product.js' | asset }}"></script>
-    {# Veloura Final Recent Bridge 2026: hooks only, no resize or document mutation loops. #}
-    <script data-veloura-recent-stable>
+    {# Veloura stable product sliders: one-time component hooks, no DOM observers or forced slide widths. #}
+    <script data-veloura-product-sliders-stable>
       (function () {
         'use strict';
 
-        var config = {
+        var related = document.querySelector('[data-veloura-related-slider]');
+        var relatedConfig = {
+          mobileColumns: {{ vpp_related_mobile_columns|default(2) }},
+          desktopColumns: {{ vpp_related_desktop_columns|default(4) }},
+          centerTitle: {{ vpp_related_center_title|default(false) ? 'true' : 'false' }},
+          hideArrows: {{ vpp_related_hide_arrows|default(false) ? 'true' : 'false' }}
+        };
+        var recentConfig = {
           hide: {{ vpp_recent_hide ? 'true' : 'false' }},
           mobileColumns: {{ vpp_recent_effective_mobile_columns|default(2) }},
           desktopColumns: {{ vpp_recent_effective_desktop_columns|default(4) }},
@@ -950,8 +977,19 @@
           return String(value || '').replace(/\s+/g, ' ').trim().toLowerCase();
         }
 
-        function isRecent(value) {
-          var text = clean(value);
+        function isRecent(component) {
+          if (!component) return false;
+          var values = [
+            component.id,
+            component.className,
+            component.getAttribute && component.getAttribute('title'),
+            component.getAttribute && component.getAttribute('block-title'),
+            component.getAttribute && component.getAttribute('sub-title'),
+            component.getAttribute && component.getAttribute('source'),
+            component.getAttribute && component.getAttribute('data-title'),
+            component.textContent
+          ].filter(Boolean).join(' ');
+          var text = clean(values);
           return text.indexOf('شاهدتها مؤخ') !== -1 ||
             text.indexOf('recently viewed') !== -1 ||
             text.indexOf('recently-viewed') !== -1;
@@ -962,176 +1000,158 @@
           return node.parentNode || (node.getRootNode && node.getRootNode().host) || null;
         }
 
-        function identity(component) {
-          var parts = [
-            component.id,
-            component.className,
-            component.getAttribute && component.getAttribute('title'),
-            component.getAttribute && component.getAttribute('block-title'),
-            component.getAttribute && component.getAttribute('sub-title'),
-            component.getAttribute && component.getAttribute('source'),
-            component.getAttribute && component.getAttribute('data-title')
-          ];
-
-          var current = component;
-          for (var depth = 0; current && depth < 5; depth += 1) {
-            if (current.textContent) parts.push(current.textContent.slice(0, 300));
-            current = composedParent(current);
-          }
-
-          return parts.filter(Boolean).join(' ');
-        }
-
         function findSection(component) {
           var current = component;
           for (var depth = 0; current && depth < 8; depth += 1) {
-            if (isRecent(current.textContent)) return current;
+            if (current.matches && current.matches('.veloura-product-related-products')) return current;
+            if (isRecent(current)) return current;
             current = composedParent(current);
           }
           return component.parentElement || component;
         }
 
-        function installStyle(root, id) {
-          if (!root || !root.querySelector) return;
-          if (root.querySelector('#' + id)) return;
+        function sliderConfig(config) {
+          return {
+            slidesPerView: Math.max(1, Math.min(3, Number(config.mobileColumns) || 2)),
+            slidesPerGroup: 1,
+            spaceBetween: 12,
+            allowTouchMove: true,
+            simulateTouch: true,
+            grabCursor: true,
+            threshold: 4,
+            touchRatio: 1,
+            touchStartPreventDefault: false,
+            touchMoveStopPropagation: false,
+            touchReleaseOnEdges: true,
+            resistance: true,
+            resistanceRatio: 0.85,
+            shortSwipes: true,
+            longSwipes: true,
+            longSwipesRatio: 0.35,
+            preventInteractionOnTransition: false,
+            watchOverflow: true,
+            roundLengths: true,
+            observer: false,
+            observeParents: false,
+            observeSlideChildren: false,
+            breakpoints: {
+              768: {
+                slidesPerView: Math.max(1, Math.min(6, Number(config.desktopColumns) || 4)),
+                slidesPerGroup: 1,
+                spaceBetween: 16
+              }
+            }
+          };
+        }
 
-          var mobile = Math.max(1, Math.min(3, Number(config.mobileColumns) || 2));
-          var desktop = Math.max(1, Math.min(6, Number(config.desktopColumns) || 4));
+        function installRootStyle(root, config, id) {
+          if (!root || !root.querySelector || root.querySelector('#' + id)) return;
           var style = document.createElement('style');
           style.id = id;
           style.textContent = [
             ':host{display:block!important;width:100%!important;max-width:100%!important}',
             '.swiper-wrapper{align-items:stretch!important}',
             '.swiper-slide>custom-salla-product-card,.swiper-slide>.s-product-card-entry{height:100%!important}',
-            '@media(max-width:767px){.swiper-wrapper>.swiper-slide,.swiper-slide{flex:0 0 calc((100% - (12px * ' + (mobile - 1) + ')) / ' + mobile + ')!important;width:calc((100% - (12px * ' + (mobile - 1) + ')) / ' + mobile + ')!important;max-width:calc((100% - (12px * ' + (mobile - 1) + ')) / ' + mobile + ')!important}}',
-            '@media(min-width:768px){.swiper-wrapper>.swiper-slide,.swiper-slide{flex:0 0 calc((100% - (16px * ' + (desktop - 1) + ')) / ' + desktop + ')!important;width:calc((100% - (16px * ' + (desktop - 1) + ')) / ' + desktop + ')!important;max-width:calc((100% - (16px * ' + (desktop - 1) + ')) / ' + desktop + ')!important}}',
-            config.hideArrows ? '.s-slider-next,.s-slider-prev,[class*="swiper-button"]{display:none!important;visibility:hidden!important}' : '',
-            config.centerTitle ? '.s-slider-block__title,.s-block__title,[class*="title"]{text-align:center!important;justify-content:center!important;width:100%!important}' : ''
+            config.hideArrows ? '.s-slider-next,.s-slider-prev,[class*="swiper-button"]{display:none!important;visibility:hidden!important}' : ''
           ].join('');
           root.appendChild(style);
         }
 
-        function apply(component) {
-          if (!component || component.dataset.velouraRecentStable === 'true') return;
-          if (!isRecent(identity(component))) return;
+        function centerHeading(section, enabled) {
+          if (!section || !enabled) return;
+          section.classList && section.classList.add('is-title-centered');
+          var heading = section.querySelector && section.querySelector(
+            '.veloura-product-related-heading,.veloura-product-related-title,h1,h2,h3,h4,.s-block__title,.s-slider-block__title'
+          );
+          if (!heading || !heading.style) return;
+          heading.style.setProperty('width', '100%', 'important');
+          heading.style.setProperty('text-align', 'center', 'important');
+          heading.style.setProperty('justify-content', 'center', 'important');
+          heading.style.setProperty('align-items', 'center', 'important');
+          heading.style.setProperty('margin-inline', 'auto', 'important');
+        }
 
-          component.dataset.velouraRecentStable = 'true';
+        function updateInnerSlider(inner, config) {
+          if (!inner || inner.dataset.velouraStableSliderReady === '1') return;
+          inner.dataset.velouraStableSliderReady = '1';
+          var value = sliderConfig(config);
+          try { inner.sliderConfig = value; } catch (error) {}
+          inner.setAttribute('slider-config', JSON.stringify(value));
+
+          var finish = function () {
+            installRootStyle(inner.shadowRoot, config, 'veloura-stable-inner-slider-style');
+            var swiper = inner.swiper || inner.slider || inner.swiperInstance;
+            if (!swiper || !swiper.params) return;
+            Object.assign(swiper.params, value);
+            if (swiper.originalParams) Object.assign(swiper.originalParams, value);
+            if (typeof swiper.update === 'function') swiper.update();
+          };
+
+          finish();
+          if (typeof inner.componentOnReady === 'function') {
+            inner.componentOnReady().then(finish).catch(function () {});
+          }
+        }
+
+        function apply(component, config, type) {
+          if (!component || component.dataset.velouraStableProductSlider === type) return;
+          component.dataset.velouraStableProductSlider = type;
           var section = findSection(component);
 
-          if (config.hide) {
+          if (type === 'recent' && config.hide) {
             if (section && section.style) section.style.setProperty('display', 'none', 'important');
             return;
           }
 
-          var previousCardComponent = component.getAttribute('product-card-component');
-          var needsCardReload = previousCardComponent !== 'custom-salla-product-card';
           component.setAttribute('product-card-component', 'custom-salla-product-card');
           try { component.productCardComponent = 'custom-salla-product-card'; } catch (error) {}
 
-          var sliderConfig = {
-            slidesPerView: Math.max(1, Math.min(3, Number(config.mobileColumns) || 2)),
-            slidesPerGroup: 1,
-            spaceBetween: 12,
-            watchOverflow: true,
-            roundLengths: true,
-            breakpoints: {
-              768: {
-                slidesPerView: Math.max(1, Math.min(6, Number(config.desktopColumns) || 4)),
-                slidesPerGroup: 1,
-                spaceBetween: 16,
-                watchOverflow: true,
-                roundLengths: true
-              }
-            }
-          };
-
-          try { component.sliderConfig = sliderConfig; } catch (error) {}
-          component.setAttribute('slider-config', JSON.stringify(sliderConfig));
-
-          if (section && section.classList) {
-            section.classList.add('veloura-recent-stable-section');
-            if (config.centerTitle) section.classList.add('is-title-centered');
-            if (config.hideArrows) section.classList.add('is-arrows-hidden');
-
-            var heading = section.querySelector('h1,h2,h3,h4,h5,h6,.s-block__title,.s-slider-block__title');
-            if (heading && config.centerTitle) {
-              heading.style.setProperty('text-align', 'center', 'important');
-              heading.style.setProperty('justify-content', 'center', 'important');
-              heading.style.setProperty('width', '100%', 'important');
-            }
-          }
+          var value = sliderConfig(config);
+          component.setAttribute('slider-config', JSON.stringify(value));
+          try { component.sliderConfig = value; } catch (error) {}
+          centerHeading(section, config.centerTitle);
 
           var finish = function () {
-            installStyle(component.shadowRoot, 'veloura-recent-component-style');
-
-            if (component.shadowRoot) {
-              component.shadowRoot.querySelectorAll('salla-slider').forEach(function (slider) {
-                try { slider.sliderConfig = sliderConfig; } catch (error) {}
-                slider.setAttribute('slider-config', JSON.stringify(sliderConfig));
-
-                if (typeof slider.componentOnReady === 'function') {
-                  slider.componentOnReady().then(function () {
-                    installStyle(slider.shadowRoot, 'veloura-recent-slider-style');
-                    var swiper = slider.swiper || slider.slider || slider.swiperInstance;
-                    if (swiper && typeof swiper.update === 'function') swiper.update();
-                  }).catch(function () {});
-                } else {
-                  installStyle(slider.shadowRoot, 'veloura-recent-slider-style');
-                }
-              });
-            }
-
+            var root = component.shadowRoot || component;
+            installRootStyle(component.shadowRoot, config, 'veloura-stable-products-slider-style');
             if (window.VelouraProductCardContract && typeof window.VelouraProductCardContract.applyTree === 'function') {
-              window.VelouraProductCardContract.applyTree(component.shadowRoot || component);
+              window.VelouraProductCardContract.applyTree(root);
             }
+            root.querySelectorAll && root.querySelectorAll('salla-slider').forEach(function (inner) {
+              updateInnerSlider(inner, config);
+            });
           };
 
           finish();
           if (typeof component.componentOnReady === 'function') {
             component.componentOnReady().then(finish).catch(function () {});
           }
-
-          if (needsCardReload && typeof component.reload === 'function' && !component.__velouraRecentReloaded) {
-            component.__velouraRecentReloaded = true;
-            try {
-              var reloadResult = component.reload();
-              if (reloadResult && typeof reloadResult.then === 'function') {
-                reloadResult.then(finish).catch(function () {});
-              }
-            } catch (error) {}
-          }
         }
 
-        function scanLightDom() {
-          document.querySelectorAll('salla-products-slider,salla-products-list').forEach(apply);
+        function route(component) {
+          if (!component) return;
+          if (component === related || component.matches && component.matches('[data-veloura-related-slider]')) {
+            apply(component, relatedConfig, 'related');
+          } else if (isRecent(component)) {
+            apply(component, recentConfig, 'recent');
+          }
         }
 
         function registerHooks() {
-          if (window.__velouraRecentStableHooks) return;
+          if (window.__velouraStableProductSliderHooks) return;
           var api = window.Salla || window.salla;
           if (!api || !api.hooks || typeof api.hooks.registerHook !== 'function') return;
-
-          try {
-            api.hooks.registerHook('salla-products-slider', 'componentDidLoad', apply);
-            api.hooks.registerHook('salla-products-list', 'componentDidLoad', apply);
-            window.__velouraRecentStableHooks = true;
-          } catch (error) {}
+          window.__velouraStableProductSliderHooks = true;
+          api.hooks.registerHook('salla-products-slider', 'componentDidLoad', route);
+          api.hooks.registerHook('salla-products-list', 'componentDidLoad', route);
         }
 
         function start() {
+          if (related) route(related);
+          document.querySelectorAll('salla-products-slider,salla-products-list').forEach(route);
           var api = window.Salla || window.salla;
-          if (api && typeof api.onReady === 'function') {
-            try {
-              var ready = api.onReady(registerHooks);
-              if (ready && typeof ready.then === 'function') ready.then(registerHooks).catch(function () {});
-            } catch (error) {
-              registerHooks();
-            }
-          } else {
-            registerHooks();
-          }
-
-          scanLightDom();
+          if (api && typeof api.onReady === 'function') api.onReady(registerHooks);
+          else registerHooks();
         }
 
         if (document.readyState === 'loading') {
@@ -1139,13 +1159,6 @@
         } else {
           start();
         }
-
-        document.addEventListener('afterInit', function (event) {
-          var target = event.target;
-          if (target && target.matches && target.matches('salla-products-slider,salla-products-list')) {
-            apply(target);
-          }
-        });
       }());
     </script>
     {% if product.has_3d_image %}

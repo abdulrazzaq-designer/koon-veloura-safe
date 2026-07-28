@@ -3354,30 +3354,29 @@ document.addEventListener('DOMContentLoaded', function () {
     else document.addEventListener('DOMContentLoaded', fn);
   }
 
+  function registerNativeActionHooks() {
+    if (window.__velouraNativeActionHooks) return;
+    var api = window.Salla || window.salla;
+    if (!api || !api.hooks || typeof api.hooks.registerHook !== 'function') return;
+
+    window.__velouraNativeActionHooks = true;
+    ['salla-products-slider', 'salla-products-list'].forEach(function (tagName) {
+      api.hooks.registerHook(tagName, 'componentDidLoad', syncAll);
+    });
+  }
+
   ready(function () {
     syncAll();
-    setTimeout(syncAll, 250);
-    setTimeout(syncAll, 800);
-    setTimeout(syncAll, 1600);
-
-    var timer = null;
-    var observer = new MutationObserver(function () {
-      clearTimeout(timer);
-      timer = setTimeout(syncAll, 80);
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['class']
-    });
+    var api = window.Salla || window.salla;
+    if (api && typeof api.onReady === 'function') api.onReady(registerNativeActionHooks);
+    else registerNativeActionHooks();
   });
 
-  document.addEventListener('theme::ready', function () {
-    syncAll();
-    setTimeout(syncAll, 300);
+  document.addEventListener('veloura:product-card:ready', function (event) {
+    var card = event.detail && event.detail.card;
+    if (card) syncCard(card);
   });
+  document.addEventListener('theme::ready', syncAll);
 })();
 </script>
 
@@ -3566,26 +3565,46 @@ document.addEventListener('DOMContentLoaded', function () {
     else document.addEventListener('DOMContentLoaded', fn);
   }
 
+  function syncRoot(root) {
+    ensureStyle();
+    setAlignClass();
+    if (!root || !root.querySelectorAll) return;
+    root.querySelectorAll('.s-product-card-entry, product-card').forEach(function (node) {
+      var card = node.classList && node.classList.contains('s-product-card-entry')
+        ? node
+        : (node.querySelector && node.querySelector('.s-product-card-entry')) || getCard(node);
+      syncCard(card);
+    });
+  }
+
+  function registerSallaHooks() {
+    if (window.__velouraQuickViewStableHooks) return;
+    var api = window.Salla || window.salla;
+    if (!api || !api.hooks || typeof api.hooks.registerHook !== 'function') return;
+
+    window.__velouraQuickViewStableHooks = true;
+    ['salla-products-slider', 'salla-products-list'].forEach(function (tagName) {
+      api.hooks.registerHook(tagName, 'componentDidLoad', function (component) {
+        syncRoot(component.shadowRoot || component);
+      });
+    });
+  }
+
   ready(function () {
     syncAll();
-    [120, 350, 850, 1600, 2600].forEach(function (ms) { setTimeout(syncAll, ms); });
-
-    var timer = null;
-    var observer = new MutationObserver(function () {
-      clearTimeout(timer);
-      timer = setTimeout(syncAll, 80);
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['class']
-    });
+    var api = window.Salla || window.salla;
+    if (api && typeof api.onReady === 'function') api.onReady(registerSallaHooks);
+    else registerSallaHooks();
   });
 
+  document.addEventListener('veloura:product-card:ready', function (event) {
+    var card = event.detail && event.detail.card;
+    if (card) syncCard(card);
+  });
   document.addEventListener('theme::ready', syncAll);
-  document.addEventListener('salla::product.cards::loaded', syncAll);
+  document.addEventListener('salla::product.cards::loaded', function (event) {
+    syncRoot((event && event.target && (event.target.shadowRoot || event.target)) || document);
+  });
 })();
 </script>
 

@@ -2617,3 +2617,104 @@ html.veloura-dark .veloura-product-page {
     border-end-end-radius: 0 !important;
   }
 }
+
+/* ======================================================
+   Veloura Final Code Repair 2026
+   - Card price/button bottom group without extra gap
+   - Related title alignment
+   - Product detail purchase button surfaces
+   - Smooth manual product slider drag
+   - Remove invalid image placeholder overlay
+====================================================== */
+
+/* Keep price and add-to-cart as one bottom block. */
+body.veloura-product-card-enabled .s-product-card-entry .veloura-card-bottom {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  margin-top: auto !important;
+  padding: 0 !important;
+}
+
+body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content {
+  padding-bottom: 0 !important;
+}
+
+body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-sub,
+body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer {
+  margin-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer {
+  width: calc(100% - (var(--veloura-product-button-margin-x, 0px) * 2)) !important;
+  max-width: calc(100% - (var(--veloura-product-button-margin-x, 0px) * 2)) !important;
+  margin-inline: auto !important;
+  margin-bottom: var(--veloura-product-button-margin-bottom, 0px) !important;
+  padding: 0 !important;
+}
+
+body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer > salla-add-product-button,
+.veloura-product-related-products .s-product-card-entry .s-product-card-content-footer > salla-add-product-button {
+  display: flex !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+
+/* Related-products heading follows the editor alignment option. */
+.veloura-product-related-products.is-title-centered .veloura-product-related-heading,
+.veloura-product-related-products.is-title-centered .veloura-product-related-title {
+  display: flex !important;
+  width: 100% !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-inline: auto !important;
+  text-align: center !important;
+}
+
+/* Product details: both purchase actions keep equal columns and global radius. */
+.veloura-product-page salla-add-product-button.sticky-product-bar__btn {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+  overflow: hidden !important;
+  --salla-button-border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+  --salla-fast-checkout-button-border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+}
+
+/* Do not show an empty/broken-image symbol above a valid product image. */
+body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image::before,
+body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image::after {
+  content: none !important;
+  display: none !important;
+}
+
+body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image img:not([src]),
+body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image img[src=""],
+body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image img[src="#"] {
+  display: none !important;
+}
+
+/* Swiper owns horizontal movement; avoid competing CSS scrolling/selection. */
+.veloura-product-related-products salla-products-slider,
+.veloura-recent-stable-section salla-products-slider,
+.veloura-recent-stable-section salla-products-list {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  touch-action: pan-y !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+.veloura-product-related-products img,
+.veloura-recent-stable-section img {
+  -webkit-user-drag: none !important;
+  user-select: none !important;
+}

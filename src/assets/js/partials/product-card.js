@@ -61,6 +61,16 @@ const VELOURA_CARD_CONTRACT_CSS = `
   overflow: hidden !important;
   box-sizing: border-box !important;
 }
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-image::before,
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-image::after {
+  content: none !important;
+  display: none !important;
+}
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-image img:not([src]),
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-image img[src=""],
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-image img[src="#"] {
+  display: none !important;
+}
 .s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-image > a,
 .s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-image img,
 .s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-image .s-product-card-image-cover {
@@ -119,15 +129,26 @@ const VELOURA_CARD_CONTRACT_CSS = `
   flex-direction: column !important;
   width: 100% !important;
   min-height: 0 !important;
+  padding-bottom: 0 !important;
   box-sizing: border-box !important;
 }
 .s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-content-main {
   flex: 0 0 auto !important;
 }
+.s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .veloura-card-bottom {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  margin-top: auto !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
 .s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-content-sub {
   flex: 0 0 auto !important;
   width: 100% !important;
-  margin-top: auto !important;
+  margin: 0 !important;
+  padding-bottom: 0 !important;
   box-sizing: border-box !important;
 }
 .s-product-card-entry.veloura-card-contract.veloura-product-card-enabled .s-product-card-content-title,
@@ -498,7 +519,16 @@ function styleVelouraActionComponent(component, depth = 0) {
 
 function markVelouraCardNativeParts(card) {
   const image = card.querySelector('.s-product-card-image');
-  if (image) image.classList.add('veloura-pc-image-actions-host');
+  if (image) {
+    image.classList.add('veloura-pc-image-actions-host');
+    image.querySelectorAll('img').forEach((img) => {
+      if (img.dataset.velouraImageErrorReady === '1') return;
+      img.dataset.velouraImageErrorReady = '1';
+      img.addEventListener('error', () => {
+        img.style.setProperty('display', 'none', 'important');
+      }, { once: true });
+    });
+  }
 
   const wishlist = card.querySelector('.s-product-card-wishlist-btn');
   if (wishlist) wishlist.classList.add('veloura-pc-native-wish');
@@ -948,51 +978,51 @@ class ProductCard extends HTMLElement {
               : ``}
           </div>`
             : ''}
-          <div class="s-product-card-content-sub ${this.isSpecial ? 's-product-card-content-extra-padding' : ''}">
-            ${this.product?.donation?.can_donate ? '' : this.getProductPrice()}
-            ${this.product?.rating?.stars ?
-              `<div class="s-product-card-rating">
-                <i class="sicon-star2 before:text-orange-300"></i>
-                <span>${this.product.rating.stars}</span>
+          <div class="veloura-card-bottom">
+            <div class="s-product-card-content-sub ${this.isSpecial ? 's-product-card-content-extra-padding' : ''}">
+              ${this.product?.donation?.can_donate ? '' : this.getProductPrice()}
+              ${this.product?.rating?.stars ?
+                `<div class="s-product-card-rating">
+                  <i class="sicon-star2 before:text-orange-300"></i>
+                  <span>${this.product.rating.stars}</span>
+                </div>`
+                 : ``}
+            </div>
+
+            ${this.isSpecial && this.product.discount_ends
+              ? `<salla-count-down date="${this.formatDate(this.product.discount_ends)}" end-of-day=${true} boxed=${true}
+                labeled=${true} />`
+              : ``}
+
+            ${!this.hideAddBtn ?
+              `<div class="s-product-card-content-footer veloura-card-action-row gap-2">
+                <salla-add-product-button class="veloura-card-add-button"
+                  product-id="${this.product.id}"
+                  product-status="${this.product.status}"
+                  product-type="${this.product.type}">
+                  ${this.product.status == 'sale' ? 
+                      `<i class="text-base sicon-${ this.product.type == 'booking' ? 'calendar-time' : 'shopping-bag'}"></i>` : ``
+                    }
+                  <span>${this.product.add_to_cart_label ? this.product.add_to_cart_label : this.getAddButtonLabel() }</span>
+                </salla-add-product-button>
+
+                ${this.horizontal || this.fullImage ?
+                  `<salla-button 
+                    shape="icon" 
+                    fill="outline" 
+                    color="light" 
+                    id="card-wishlist-btn-${this.product.id}-horizontal"
+                    aria-label="Add or remove to wishlist"
+                    class="s-product-card-wishlist-btn veloura-pc-native-wish animated ${this.isInWishlist ? 's-product-card-wishlist-added pulse-anime' : 'not-added un-favorited'}"
+                    onclick="salla.wishlist.toggle(${this.product.id})"
+                    data-id="${this.product.id}">
+                    <i class="sicon-heart"></i> 
+                  </salla-button>`
+                  : ``}
               </div>`
-               : ``}
+              : ``}
           </div>
-
-          ${this.isSpecial && this.product.discount_ends
-            ? `<salla-count-down date="${this.formatDate(this.product.discount_ends)}" end-of-day=${true} boxed=${true}
-              labeled=${true} />`
-            : ``}
-
-
         </div>
-
-          ${!this.hideAddBtn ?
-            `<div class="s-product-card-content-footer veloura-card-action-row gap-2">
-              <salla-add-product-button class="veloura-card-add-button"
-                product-id="${this.product.id}"
-                product-status="${this.product.status}"
-                product-type="${this.product.type}">
-                ${this.product.status == 'sale' ? 
-                    `<i class="text-base sicon-${ this.product.type == 'booking' ? 'calendar-time' : 'shopping-bag'}"></i>` : ``
-                  }
-                <span>${this.product.add_to_cart_label ? this.product.add_to_cart_label : this.getAddButtonLabel() }</span>
-              </salla-add-product-button>
-
-              ${this.horizontal || this.fullImage ?
-                `<salla-button 
-                  shape="icon" 
-                  fill="outline" 
-                  color="light" 
-                  id="card-wishlist-btn-${this.product.id}-horizontal"
-                  aria-label="Add or remove to wishlist"
-                  class="s-product-card-wishlist-btn veloura-pc-native-wish animated ${this.isInWishlist ? 's-product-card-wishlist-added pulse-anime' : 'not-added un-favorited'}"
-                  onclick="salla.wishlist.toggle(${this.product.id})"
-                  data-id="${this.product.id}">
-                  <i class="sicon-heart"></i> 
-                </salla-button>`
-                : ``}
-            </div>`
-            : ``}
       `
 
       this.querySelectorAll('[name="donating_amount"]').forEach((element)=>{
