@@ -246,6 +246,8 @@
     {% if vpp_related_mobile_columns > 3 %}{% set vpp_related_mobile_columns = 3 %}{% endif %}
     {% set vpp_related_hide_arrows = _self.veloura_bool(theme.settings.get('veloura_related_hide_arrows_2026', false), false)|trim == 'true' %}
     {% set vpp_related_center_title = _self.veloura_bool(theme.settings.get('veloura_related_center_title_2026', false), false)|trim == 'true' %}
+    {% set vpp_recent_hide = _self.veloura_bool(theme.settings.get('veloura_recently_viewed_hide_2026', false), false)|trim == 'true' %}
+    {% set vpp_recent_inherit = _self.veloura_bool(theme.settings.get('veloura_recently_viewed_inherit_related_2026', false), false)|trim == 'true' %}
 
     {% set vpp_custom_related_enabled = _self.veloura_bool(theme.settings.get('veloura_product_custom_related_enabled_2026', false), false)|trim == 'true' %}
     {% set vpp_custom_related_source = _self.veloura_select(theme.settings.get('veloura_product_custom_related_source_2026', 'selected'), 'selected')|trim %}
@@ -918,31 +920,322 @@
 {% block scripts %}
 
     <script defer src="{{ 'product.js' | asset }}"></script>
-    {# Veloura Step 4: one-time product card component binding; no observers or timers. #}
-    <script data-veloura-step4-product-cards>
+    {# Veloura Step 5: activate recently-viewed hide/inheritance without continuous layout observers. #}
+    <script data-veloura-step5-recent-inheritance>
       (function () {
         'use strict';
-        var cardComponent = 'custom-salla-product-card';
 
-        function applyProductCardComponent() {
-          document.querySelectorAll('salla-products-slider, salla-products-list').forEach(function (component) {
-            if (component.getAttribute('product-card-component') !== cardComponent) {
-              component.setAttribute('product-card-component', cardComponent);
+        var config = {
+          hide: {{ vpp_recent_hide ? 'true' : 'false' }},
+          inherit: {{ vpp_recent_inherit ? 'true' : 'false' }},
+          mobileColumns: {{ vpp_related_mobile_columns|default(2) }},
+          desktopColumns: {{ vpp_related_desktop_columns|default(4) }},
+          centerTitle: {{ vpp_related_center_title|default(false) ? 'true' : 'false' }},
+          hideArrows: {{ vpp_related_hide_arrows|default(false) ? 'true' : 'false' }}
+        };
+
+        if (!config.hide && !config.inherit) return;
+
+        var observer = null;
+        var stopTimer = 0;
+        var completed = false;
+        var styleSerial = 0;
+
+        function cleanText(value) {
+          return String(value || '')
+            .replace(/[\u0640\u064B-\u065F\u0670]/g, '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .toLowerCase();
+        }
+
+        function isRecentHeading(element) {
+          var text = cleanText(element && element.textContent);
+          return text.indexOf('شاهدتها مؤخ') !== -1 || text.indexOf('recently viewed') !== -1;
+        }
+
+        function composedParent(node) {
+          if (!node) return null;
+          if (node.parentElement) return node.parentElement;
+          var root = node.getRootNode && node.getRootNode();
+          return root && root.host ? root.host : null;
+        }
+
+        function collectRoots(start, depth) {
+          var roots = [];
+          var seen = [];
+
+          function visit(root, level) {
+            if (!root || level > depth || seen.indexOf(root) !== -1) return;
+            seen.push(root);
+            roots.push(root);
+            if (!root.querySelectorAll) return;
+            root.querySelectorAll('*').forEach(function (node) {
+              if (node.shadowRoot) visit(node.shadowRoot, level + 1);
+            });
+          }
+
+          visit(start || document, 0);
+          return roots;
+        }
+
+        function deepAll(selector, start) {
+          var result = [];
+          collectRoots(start || document, 7).forEach(function (root) {
+            if (!root.querySelectorAll) return;
+            root.querySelectorAll(selector).forEach(function (node) {
+              if (result.indexOf(node) === -1) result.push(node);
+            });
+          });
+          return result;
+        }
+
+        function findRecentHeading() {
+          var selectors = 'h1,h2,h3,h4,h5,h6,.s-block__title,.s-slider-block__title,[class*="title"],[class*="Title"]';
+          var headings = deepAll(selectors, document);
+          for (var i = 0; i < headings.length; i++) {
+            if (isRecentHeading(headings[i])) return headings[i];
+          }
+          return null;
+        }
+
+        function hasProducts(node) {
+          if (!node) return false;
+          if (node.matches && node.matches('salla-products-slider,salla-products-list,salla-slider')) return true;
+          return deepAll('salla-products-slider,salla-products-list,salla-slider,custom-salla-product-card,salla-product-card,.s-product-card-entry', node).length > 0;
+        }
+
+        function findRecentSection(heading) {
+          var current = heading;
+          var fallback = composedParent(heading) || heading;
+
+          for (var i = 0; current && i < 9; i++) {
+            if (current !== document.body && current !== document.documentElement && hasProducts(current)) {
+              return current;
             }
+            current = composedParent(current);
+          }
 
-            if (component.productCardComponent !== cardComponent) {
-              component.productCardComponent = cardComponent;
+          return fallback;
+        }
+
+        function ensureStyle(root, id, css) {
+          if (!root || !root.querySelector) return;
+          var style = root.querySelector('#' + id);
+          if (!style) {
+            style = document.createElement('style');
+            style.id = id;
+            if (root === document) document.head.appendChild(style);
+            else root.appendChild(style);
+          }
+          if (style.textContent !== css) style.textContent = css;
+        }
+
+        function rootValue(name, fallback) {
+          var value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+          return value || fallback;
+        }
+
+        function cardCss() {
+          var centered = document.body.classList.contains('veloura-product-card-center-text');
+          var hideCart = document.body.classList.contains('veloura-pc-hide-cart');
+          var alignment = centered
+            ? '.s-product-card-content,.s-product-card-content-main,.s-product-card-content-title,.s-product-card-content-title a,.s-product-card-content-subtitle,.s-product-card-content-sub,.s-product-card-price,.s-product-card-sale-price{width:100%!important;text-align:center!important;justify-content:center!important;align-items:center!important}'
+            : '.s-product-card-content,.s-product-card-content-main,.s-product-card-content-title,.s-product-card-content-title a,.s-product-card-content-subtitle,.s-product-card-content-sub,.s-product-card-price,.s-product-card-sale-price{width:100%!important;text-align:right!important;justify-content:flex-start!important;align-items:flex-start!important;direction:rtl!important}';
+          var cartVisibility = hideCart
+            ? '.s-product-card-content-footer,salla-add-product-button{display:none!important}'
+            : '';
+
+          return [
+            '.s-product-card-entry{background:var(--veloura-product-card-bg,#fff)!important;border-radius:var(--veloura-product-card-radius,16px)!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;height:100%!important;min-height:100%!important;box-sizing:border-box!important}',
+            '.s-product-card-image{margin-top:var(--veloura-product-image-padding-top,0px)!important;margin-inline:auto!important;margin-bottom:0!important;width:calc(100% - (var(--veloura-product-image-padding-x,0px) * 2))!important;border-radius:var(--veloura-product-image-radius,16px)!important;overflow:hidden!important}',
+            '.s-product-card-image a,.s-product-card-image img,.s-product-card-image .s-product-card-image-cover{border-radius:inherit!important}',
+            '.s-product-card-content{display:flex!important;flex-direction:column!important;flex:1 1 auto!important;width:100%!important;min-height:0!important;box-sizing:border-box!important}',
+            '.s-product-card-content-title,.s-product-card-content-title a{font-size:var(--veloura-product-title-size,15px)!important}',
+            '.s-product-card-price,.s-product-card-sale-price,.s-product-card-content-sub{font-size:var(--veloura-product-price-size,15px)!important}',
+            '.s-product-card-content-footer{display:flex!important;align-items:stretch!important;justify-content:center!important;width:calc(100% - (var(--veloura-product-button-margin-x,0px) * 2))!important;max-width:calc(100% - (var(--veloura-product-button-margin-x,0px) * 2))!important;margin-inline:var(--veloura-product-button-margin-x,0px)!important;margin-top:auto!important;margin-bottom:var(--veloura-product-button-margin-bottom,0px)!important;padding:0!important;box-sizing:border-box!important}',
+            '.s-product-card-content-footer>salla-add-product-button,.s-product-card-content-footer>*{width:100%!important;max-width:100%!important;margin:0!important}',
+            alignment,
+            cartVisibility
+          ].join('');
+        }
+
+        function columnCss() {
+          var mobile = Math.max(1, Math.min(3, Number(config.mobileColumns) || 2));
+          var desktop = Math.max(1, Math.min(6, Number(config.desktopColumns) || 4));
+          var arrows = config.hideArrows
+            ? '.s-slider-next,.s-slider-prev,[class*="slider-next"],[class*="slider-prev"],[class*="swiper-button-next"],[class*="swiper-button-prev"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}'
+            : '';
+
+          return [
+            '@media(max-width:767px){.swiper-slide{width:calc((100% - (12px * ', String(mobile - 1), ')) / ', String(mobile), ')!important;max-width:calc((100% - (12px * ', String(mobile - 1), ')) / ', String(mobile), ')!important}}',
+            '@media(min-width:768px){.swiper-slide{width:calc((100% - (16px * ', String(desktop - 1), ')) / ', String(desktop), ')!important;max-width:calc((100% - (16px * ', String(desktop - 1), ')) / ', String(desktop), ')!important}}',
+            arrows
+          ].join('');
+        }
+
+        function styleActionComponent(component, depth) {
+          if (!component || depth > 4) return;
+
+          var bg = rootValue('--veloura-product-button-bg', '#004d65');
+          var fg = rootValue('--veloura-product-button-text', '#ffffff');
+          var radius = rootValue('--veloura-product-button-radius', '16px');
+          var height = rootValue('--veloura-product-button-height', '44px');
+
+          component.setAttribute('width', 'wide');
+          try { component.width = 'wide'; } catch (error) {}
+          component.style.setProperty('--color-primary', bg, 'important');
+          component.style.setProperty('--color-primary-reverse', fg, 'important');
+          component.style.setProperty('--button-background-color', bg, 'important');
+          component.style.setProperty('--button-border-color', bg, 'important');
+          component.style.setProperty('--button-text-color', fg, 'important');
+          component.style.setProperty('width', '100%', 'important');
+          component.style.setProperty('max-width', '100%', 'important');
+          component.style.setProperty('border-radius', radius, 'important');
+          component.style.setProperty('overflow', 'hidden', 'important');
+
+          function applyShadow() {
+            if (!component.shadowRoot) return;
+            ensureStyle(
+              component.shadowRoot,
+              'veloura-step5-action-style',
+              ':host{display:flex!important;width:100%!important;max-width:100%!important;border-radius:' + radius + '!important;overflow:hidden!important;' +
+              '--color-primary:' + bg + '!important;--color-primary-reverse:' + fg + '!important;' +
+              '--button-background-color:' + bg + '!important;--button-border-color:' + bg + '!important;--button-text-color:' + fg + '!important}' +
+              'button,.s-button-element,.s-button-btn,[part~="button"]{display:flex!important;width:100%!important;max-width:100%!important;min-width:0!important;' +
+              'height:' + height + '!important;min-height:' + height + '!important;align-items:center!important;justify-content:center!important;gap:7px!important;' +
+              'box-sizing:border-box!important;background:' + bg + '!important;background-color:' + bg + '!important;border:1px solid ' + bg + '!important;' +
+              'border-radius:' + radius + '!important;color:' + fg + '!important;opacity:1!important;visibility:visible!important}' +
+              'button *,.s-button-element *,.s-button-btn *{color:' + fg + '!important;fill:' + fg + '!important;stroke:currentColor!important}'
+            );
+
+            component.shadowRoot.querySelectorAll('salla-button,salla-quick-buy,salla-mini-checkout-widget').forEach(function (child) {
+              styleActionComponent(child, depth + 1);
+            });
+          }
+
+          applyShadow();
+          if (typeof component.componentOnReady === 'function') {
+            component.componentOnReady().then(applyShadow).catch(function () {});
+          }
+        }
+
+        function styleRecentCards(section) {
+          var roots = collectRoots(section, 7);
+          roots.forEach(function (root, index) {
+            ensureStyle(root, 'veloura-step5-recent-card-' + index, cardCss() + columnCss());
+          });
+
+          deepAll('.s-product-card-entry', section).forEach(function (card) {
+            card.classList.add('veloura-v35-card', 'veloura-v54-card');
+            var content = card.querySelector('.s-product-card-content');
+            var footer = card.querySelector('.s-product-card-content-footer');
+            if (content) content.classList.add('veloura-v35-content');
+            if (footer) footer.classList.add('veloura-v35-action-row', 'veloura-v54-card-action-row');
+          });
+
+          var buttons = deepAll('salla-add-product-button', section);
+          buttons.forEach(function (button) { styleActionComponent(button, 0); });
+          return buttons.length;
+        }
+
+        function configureComponents(section) {
+          var sliderConfig = {
+            slidesPerView: Math.max(1, Math.min(3, Number(config.mobileColumns) || 2)),
+            slidesPerGroup: 1,
+            spaceBetween: 12,
+            centeredSlides: false,
+            freeMode: false,
+            roundLengths: true,
+            breakpoints: {
+              768: {
+                slidesPerView: Math.max(1, Math.min(6, Number(config.desktopColumns) || 4)),
+                slidesPerGroup: 1,
+                spaceBetween: 16,
+                centeredSlides: false,
+                freeMode: false,
+                roundLengths: true
+              }
+            }
+          };
+
+          deepAll('salla-products-slider,salla-products-list', section).forEach(function (component) {
+            component.setAttribute('product-card-component', 'custom-salla-product-card');
+            try { component.productCardComponent = 'custom-salla-product-card'; } catch (error) {}
+            if (component.matches('salla-products-slider')) {
+              component.setAttribute('slider-config', JSON.stringify(sliderConfig));
+              try { component.sliderConfig = sliderConfig; } catch (error) {}
             }
           });
         }
 
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', applyProductCardComponent, { once: true });
-        } else {
-          applyProductCardComponent();
+        function hideArrows(section) {
+          if (!config.hideArrows) return;
+          deepAll('.s-slider-next,.s-slider-prev,[class*="slider-next"],[class*="slider-prev"],[class*="swiper-button-next"],[class*="swiper-button-prev"]', section).forEach(function (arrow) {
+            arrow.style.setProperty('display', 'none', 'important');
+            arrow.style.setProperty('visibility', 'hidden', 'important');
+            arrow.style.setProperty('pointer-events', 'none', 'important');
+          });
         }
 
-        window.addEventListener('load', applyProductCardComponent, { once: true });
+        function finish() {
+          if (completed) return;
+          completed = true;
+          if (observer) observer.disconnect();
+          clearTimeout(stopTimer);
+        }
+
+        function apply() {
+          if (completed) return;
+          var heading = findRecentHeading();
+          if (!heading) return;
+
+          var section = findRecentSection(heading);
+          if (!section) return;
+
+          section.setAttribute('data-veloura-recent-section', 'true');
+
+          if (config.hide) {
+            section.hidden = true;
+            section.style.setProperty('display', 'none', 'important');
+            finish();
+            return;
+          }
+
+          if (!config.inherit) {
+            finish();
+            return;
+          }
+
+          section.classList.add('veloura-recent-inherit-related');
+          heading.style.setProperty('text-align', config.centerTitle ? 'center' : 'right', 'important');
+          heading.style.setProperty('width', '100%', 'important');
+
+          configureComponents(section);
+          hideArrows(section);
+          var styledButtons = styleRecentCards(section);
+
+          if (styledButtons > 0) {
+            requestAnimationFrame(function () {
+              styleRecentCards(section);
+              finish();
+            });
+          }
+        }
+
+        function start() {
+          apply();
+          if (completed || !window.MutationObserver || !document.body) return;
+          observer = new MutationObserver(function () { apply(); });
+          observer.observe(document.body, { childList: true, subtree: true });
+          stopTimer = window.setTimeout(finish, 12000);
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', start, { once: true });
+        } else {
+          start();
+        }
       }());
     </script>
     {% if product.has_3d_image %}
