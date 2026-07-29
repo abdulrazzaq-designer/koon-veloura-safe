@@ -1,0 +1,26 @@
+{
+  "version": "Veloura V58 cart, glass, search and dropdown refinement",
+  "target": "D:\\salla-theme\\koon-veloura-safe",
+  "files": [
+    {
+      "file": "src/views/components/header/header.twig",
+      "existed": true,
+      "hash": "da524ad8486f224d45bce4188eee4f4908e13cdddb1789a849ae5ea9ab28f789"
+    },
+    {
+      "file": "src/views/layouts/master.twig",
+      "existed": true,
+      "hash": "c266161453294b00ad2eb0874790c82ae7302a0507491700c9941f0ca87198c6"
+    },
+    {
+      "file": "src/assets/styles/app.scss",
+      "existed": true,
+      "hash": "391aaf9abef7e6938f5e74c2e542c5c649a66c4a507327844be6898430e0f6aa"
+    },
+    {
+      "file": "src/assets/styles/05-utilities/_veloura-header-glass-search-cart-v58.scss",
+      "existed": false,
+      "hash": null
+    }
+  ]
+}
