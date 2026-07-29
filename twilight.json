@@ -7124,7 +7124,7 @@
       "id": "veloura_product_details_order_title_2026",
       "type": "static",
       "format": "title",
-      "value": "<div style=\"width:100%;padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:none;\"><span>ترتيب تفاصيل المنتج</span><div style=\"font-size:12px;font-weight:500;opacity:.8;margin-top:4px\">اختر ترتيب كل مجموعة من 1 إلى 10</div></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:none;\">ترتيب تفاصيل المنتج</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -8110,7 +8110,14 @@
       "required": false,
       "step": "1",
       "minimum": "1",
-      "maximum": "3"
+      "maximum": "3",
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
     },
     {
       "id": "veloura_related_desktop_columns",
@@ -8125,7 +8132,14 @@
       "required": false,
       "step": "1",
       "minimum": "1",
-      "maximum": "6"
+      "maximum": "6",
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
     },
     {
       "id": "veloura_related_hide_arrows_2026",
@@ -8133,7 +8147,14 @@
       "format": "switch",
       "label": "إخفاء أسهم التنقل في منتجات قد تعجبك",
       "description": "يخفي سهمي السابق والتالي مع بقاء السحب باللمس أو الماوس.",
-      "value": false
+      "value": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
     },
     {
       "id": "veloura_related_center_title_2026",
@@ -8141,7 +8162,14 @@
       "format": "switch",
       "label": "توسيط عنوان منتجات قد تعجبك",
       "description": "يوسّط عنوان القسم دون تغيير محاذاة بطاقات المنتجات.",
-      "value": false
+      "value": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
     },
     {
       "id": "veloura_recently_viewed_hide_2026",
