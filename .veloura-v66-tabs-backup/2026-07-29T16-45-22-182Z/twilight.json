@@ -2397,25 +2397,6 @@
       "description": "يعمل بشكل مستقل عن لون الهيدر عند إيقاف الوضع الزجاجي. عند تشغيل الزجاج يُستخدم لون الزجاج الموحد بدلًا منه."
     },
     {
-      "id": "veloura_home_tabs_text_color_2026",
-      "type": "string",
-      "format": "color",
-      "inputType": "color",
-      "label": "لون نصوص التبويبات غير النشطة",
-      "icon": "sicon-paint-bucket",
-      "value": "#1f2937",
-      "default": "#1f2937",
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_home_tabs_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
-      "description": "يطبق على نصوص وأيقونات التبويبات غير النشطة. يبقى لون التبويب النشط من الخيار التالي."
-    },
-    {
       "id": "veloura_home_tabs_active_bg_2026",
       "type": "string",
       "format": "color",
@@ -2485,7 +2466,7 @@
           "required": false,
           "conditions": [
             {
-              "id": "veloura_home_tabs_items_2026.show_icon",
+              "id": "show_icon",
               "operation": "=",
               "value": true
             }

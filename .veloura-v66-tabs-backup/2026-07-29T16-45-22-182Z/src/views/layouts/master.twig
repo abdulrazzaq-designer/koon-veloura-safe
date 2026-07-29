@@ -2604,10 +2604,6 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 {% set vht_bar_bg = theme.settings.get('veloura_home_tabs_bar_bg_2026', '#ffffff') %}
 {% if vht_bar_bg.value is defined %}{% set vht_bar_bg = vht_bar_bg.value %}{% endif %}
 
-{# V66: configurable color for inactive tab labels and icons. #}
-{% set vht_text_color = theme.settings.get('veloura_home_tabs_text_color_2026', '#1f2937') %}
-{% if vht_text_color.value is defined %}{% set vht_text_color = vht_text_color.value %}{% endif %}
-
 {# V15: the unified glass color is fixed in CSS for consistent rendering. #}
 
 {% set vht_top_border = theme.settings.get('veloura_top_border_style_2026', 'medium') %}
@@ -2682,7 +2678,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
           aria-label="تبويبات الصفحة الرئيسية"
           data-veloura-home-tabs
           data-veloura-tabs-hide-scroll="{{ vht_hide_on_scroll ? 'true' : 'false' }}"
-          style="--veloura-tabs-bar-bg:{{ vht_bar_bg }};--veloura-tabs-text-color:{{ vht_text_color }};--veloura-tabs-active-color:{{ vht_active_color }};"
+          style="--veloura-tabs-bar-bg:{{ vht_bar_bg }};--veloura-tabs-active-color:{{ vht_active_color }};"
         >
           <div class="container">
             <div class="veloura-home-tabs__track" role="tablist" aria-orientation="horizontal">

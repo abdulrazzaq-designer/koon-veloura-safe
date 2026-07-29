@@ -3,7 +3,6 @@
    ======================================================================== */
 
 .veloura-home-tabs {
-  --veloura-tabs-text-color: #1f2937;
   --veloura-tabs-active-color: #003848;
 
   position: relative;
@@ -11,7 +10,7 @@
   width: 100%;
   margin: 0;
   border: 0;
-  color: var(--veloura-tabs-text-color);
+  color: inherit;
   box-shadow: none;
 }
 
@@ -42,7 +41,7 @@ html[dir='ltr'] .veloura-home-tabs__track { direction: ltr; }
   border: 0;
   border-radius: 0;
   background: transparent;
-  color: var(--veloura-tabs-text-color);
+  color: inherit;
   box-shadow: none;
   font-size: clamp(10px, 2.8vw, 14px);
   font-weight: 800;
