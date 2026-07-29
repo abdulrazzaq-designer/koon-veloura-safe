@@ -6916,7 +6916,7 @@
       "id": "veloura_product_mobile_quantity_style_2026",
       "type": "items",
       "format": "dropdown-list",
-      "label": "شكل حقل الكمية في الجوال1111",
+      "label": "شكل حقل الكمية في الجوال",
       "icon": "sicon-list",
       "source": "Manual",
       "required": false,

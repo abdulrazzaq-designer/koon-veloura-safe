@@ -8,6 +8,7 @@
 
 :root {
   --veloura-v60-glass-bg: rgba(242, 242, 244, .70);
+  --veloura-v60-glass-bg-search: rgba(242, 242, 244, .40);
   --veloura-v60-glass-bg-dark: rgba(33, 34, 38, .72);
   --veloura-v60-glass-border: rgba(255, 255, 255, .52);
   --veloura-v60-glass-border-dark: rgba(255, 255, 255, .15);
@@ -41,7 +42,7 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-s
 html body .veloura-header-tabs-stack--blur .veloura-search-surface,
 html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface {
   background: var(--veloura-v60-glass-bg) !important;
-  background-color: var(--veloura-v60-glass-bg) !important;
+  background-color: var(--veloura-v60-glass-bg-search) !important;
   background-image: linear-gradient(145deg, rgba(255, 255, 255, .14), rgba(255, 255, 255, .018)) !important;
   border-color: var(--veloura-v60-glass-border) !important;
   -webkit-backdrop-filter: var(--veloura-v60-glass-filter) !important;
