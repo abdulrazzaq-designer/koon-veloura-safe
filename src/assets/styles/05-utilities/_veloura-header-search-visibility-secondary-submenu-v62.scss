@@ -1,0 +1,172 @@
+/* ========================================================================
+   Veloura V62
+   - Guarantees a single search instance per breakpoint/mode.
+   - Uses a light silver-white search surface at 46% opacity.
+   - Replaces unreliable frosted submenus with the site's secondary color.
+   ======================================================================== */
+
+:root {
+  --veloura-v62-search-bg: rgba(236, 236, 239, .46);
+  --veloura-v62-search-bg-dark: rgba(48, 49, 54, .48);
+  --veloura-v62-search-border: rgba(255, 255, 255, .46);
+  --veloura-v62-search-border-dark: rgba(255, 255, 255, .14);
+  --veloura-v62-search-filter: blur(15px) saturate(106%) contrast(99%);
+}
+
+/* ------------------------------------------------------------------------
+   Search duplication guard.
+
+   V60 gave every .veloura-search-surface display:flex!important. Since the
+   header contains separate mobile and desktop Salla search components, both
+   could become visible together. These rules restore one component only.
+   ------------------------------------------------------------------------ */
+
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--search-detached)
+  .veloura-detached-search-shell {
+  display: none !important;
+}
+
+html body .veloura-header-tabs-stack--search-detached
+  .store-header.veloura-top-enabled
+  .veloura-mobile-search-bar,
+html body .veloura-header-tabs-stack--search-detached
+  .store-header.veloura-top-enabled
+  .veloura-desktop-search-bar {
+  display: none !important;
+}
+
+@media (min-width: 1024px) {
+  html body .store-header.veloura-top-enabled .veloura-mobile-search-bar,
+  html body .veloura-detached-search-shell .veloura-detached-search--mobile {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  html body .store-header.veloura-top-enabled .veloura-desktop-search-bar,
+  html body .veloura-detached-search-shell .veloura-detached-search--desktop {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------------
+   Search material.
+
+   The outer surface owns the silver-white translucent paint. Every Salla
+   layer, including shadow parts, remains transparent so no solid field can
+   cover it after hydration.
+   ------------------------------------------------------------------------ */
+
+html body .veloura-header-tabs-stack .veloura-search-surface {
+  --veloura-v55-search-bg: transparent;
+  --veloura-v55-search-border: transparent;
+  --veloura-v55-search-shadow: none;
+  --veloura-v60-search-inner-bg: transparent;
+  --s-search-input-bg: transparent;
+  --search-input-bg: transparent;
+
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .018)),
+    var(--veloura-v62-search-bg) !important;
+  background-color: var(--veloura-v62-search-bg) !important;
+  border: 1px solid var(--veloura-v62-search-border) !important;
+  border-radius: var(--veloura-v55-search-radius, var(--veloura-v15-radius, 24px)) !important;
+  -webkit-backdrop-filter: var(--veloura-v62-search-filter) !important;
+  backdrop-filter: var(--veloura-v62-search-filter) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .22),
+    0 5px 16px rgba(15, 23, 42, .035) !important;
+}
+
+html.dark body .veloura-header-tabs-stack .veloura-search-surface,
+html body.dark .veloura-header-tabs-stack .veloura-search-surface {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, .055), rgba(255, 255, 255, .008)),
+    var(--veloura-v62-search-bg-dark) !important;
+  background-color: var(--veloura-v62-search-bg-dark) !important;
+  border-color: var(--veloura-v62-search-border-dark) !important;
+}
+
+html body .veloura-header-tabs-stack .veloura-search-surface
+  salla-search.veloura-header-search-component,
+html body .veloura-header-tabs-stack .veloura-search-surface
+  salla-search.veloura-header-search-component .s-search-container,
+html body .veloura-header-tabs-stack .veloura-search-surface
+  salla-search.veloura-header-search-component .s-search-wrapper,
+html body .veloura-header-tabs-stack .veloura-search-surface
+  salla-search.veloura-header-search-component .s-search-input,
+html body .veloura-header-tabs-stack .veloura-search-surface
+  salla-search.veloura-header-search-component form,
+html body .veloura-header-tabs-stack .veloura-search-surface
+  salla-search.veloura-header-search-component input,
+html body .veloura-header-tabs-stack .veloura-search-surface
+  salla-search.veloura-header-search-component [part~='input'],
+html body .veloura-header-tabs-stack .veloura-search-surface
+  salla-search.veloura-header-search-component [part~='form'],
+html body .veloura-header-tabs-stack .veloura-search-surface
+  salla-search.veloura-header-search-component [part~='container'],
+html body .veloura-header-tabs-stack .veloura-search-surface
+  salla-search.veloura-header-search-component::part(input),
+html body .veloura-header-tabs-stack .veloura-search-surface
+  salla-search.veloura-header-search-component::part(form),
+html body .veloura-header-tabs-stack .veloura-search-surface
+  salla-search.veloura-header-search-component::part(container) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* ------------------------------------------------------------------------
+   Desktop submenu surface.
+
+   The browser/Salla composition did not reliably frost a submenu nested
+   inside an already-filtered header. Use the exact secondary site color as
+   a stable opaque surface instead.
+   ------------------------------------------------------------------------ */
+
+@media (min-width: 1024px) {
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-submenu-surface,
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .sub-menu {
+    background: var(--veloura-site-second-bg, #f8fafc) !important;
+    background-color: var(--veloura-site-second-bg, #f8fafc) !important;
+    background-image: none !important;
+    border: 1px solid color-mix(
+      in srgb,
+      var(--veloura-top-text, #1f2937) 12%,
+      transparent
+    ) !important;
+    border-radius: var(--veloura-v15-radius, 24px) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, .12) !important;
+    opacity: 1 !important;
+  }
+
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-submenu-surface > ul,
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-submenu-surface > li,
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-submenu-surface > ul > li,
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-submenu-surface a,
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .sub-menu > ul,
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .sub-menu > li,
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .sub-menu > ul > li,
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .sub-menu a {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+}
