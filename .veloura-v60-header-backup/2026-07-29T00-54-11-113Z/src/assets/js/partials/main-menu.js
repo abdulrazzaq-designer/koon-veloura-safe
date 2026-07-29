@@ -125,7 +125,7 @@ class NavigationMenu extends HTMLElement {
                 <span>${menu.title}</span>
             </a>
             ${this.hasChildren(menu) ? `
-                <div class="sub-menu veloura-submenu-surface ${this.hasProducts(menu) ? 'w-full left-0 flex' : 'w-56'}">
+                <div class="sub-menu ${this.hasProducts(menu) ? 'w-full left-0 flex' : 'w-56'}">
                     <ul class="${this.hasProducts(menu) ? 'w-56 shrink-0 m-8 rtl:ml-0 ltr:mr-0' : ''}">
                         ${menu.children.map((subMenu) => this.getDesktopMenu(subMenu, false)).join('\n')}
                     </ul>
@@ -169,7 +169,7 @@ class NavigationMenu extends HTMLElement {
             <a href="#" aria-label="${this.moreText}">
                 <span>${this.moreText}</span>
             </a>
-            <div class="sub-menu veloura-submenu-surface w-56">
+            <div class="sub-menu w-56">
                 <ul>
                     ${this.overflowMenus.map((menu) => this.getDesktopMenu(menu, false)).join('\n')}
                 </ul>

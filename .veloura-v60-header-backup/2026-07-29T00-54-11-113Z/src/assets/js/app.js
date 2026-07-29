@@ -631,28 +631,21 @@ const initVelouraAdaptiveHeaderLayout = (() => {
       width: 100% !important;
       max-width: none !important;
       min-width: 0 !important;
-      min-height: var(--veloura-v60-search-height, 36px) !important;
-      height: var(--veloura-v60-search-height, 36px) !important;
-      max-height: var(--veloura-v60-search-height, 36px) !important;
       border-radius: var(--veloura-v55-search-radius, 24px) !important;
-      background: transparent !important;
       overflow: visible !important;
     }
     form, .s-search-container, .s-search-wrapper, .s-search-input,
     input, [part~="input"], [part~="form"], [part~="container"] {
       width: 100% !important;
       min-width: 0 !important;
-      min-height: var(--veloura-v60-search-height, 36px) !important;
-      height: var(--veloura-v60-search-height, 36px) !important;
-      max-height: var(--veloura-v60-search-height, 36px) !important;
+      min-height: 42px !important;
       box-sizing: border-box !important;
-      border: 1px solid transparent !important;
+      border: 1px solid var(--veloura-v55-search-border, rgba(31, 41, 55, .13)) !important;
       border-radius: var(--veloura-v55-search-radius, 24px) !important;
-      background: var(--veloura-v60-search-inner-bg, transparent) !important;
-      background-color: var(--veloura-v60-search-inner-bg, transparent) !important;
-      background-image: none !important;
+      background: var(--veloura-v55-search-bg, var(--veloura-site-second-bg, #f4f4f5)) !important;
+      background-color: var(--veloura-v55-search-bg, var(--veloura-site-second-bg, #f4f4f5)) !important;
       color: var(--veloura-top-text, currentColor) !important;
-      box-shadow: none !important;
+      box-shadow: var(--veloura-v55-search-shadow, 0 8px 24px rgba(15, 23, 42, .055)) !important;
     }
     .s-search-results, [part~="results"] {
       border-radius: var(--veloura-v55-search-radius, 24px) !important;
@@ -667,29 +660,20 @@ const initVelouraAdaptiveHeaderLayout = (() => {
       const root = host.shadowRoot;
       if (!root) return;
 
-      root.querySelectorAll('style[data-veloura-search-v55]').forEach(node => node.remove());
-
-      let style = root.querySelector('style[data-veloura-search-v60]');
-      if (!style) {
-        style = document.createElement('style');
-        style.dataset.velouraSearchV60 = 'true';
-        root.appendChild(style);
-      }
-      if (style.textContent !== searchShadowCss) {
+      if (!root.querySelector('style[data-veloura-search-v55]')) {
+        const style = document.createElement('style');
+        style.dataset.velouraSearchV55 = 'true';
         style.textContent = searchShadowCss;
+        root.appendChild(style);
       }
 
       if (!searchObservers.has(host) && typeof MutationObserver === 'function') {
         const observer = new MutationObserver(() => {
-          root.querySelectorAll('style[data-veloura-search-v55]').forEach(node => node.remove());
-          let current = root.querySelector('style[data-veloura-search-v60]');
-          if (!current) {
-            current = document.createElement('style');
-            current.dataset.velouraSearchV60 = 'true';
-            root.appendChild(current);
-          }
-          if (current.textContent !== searchShadowCss) {
-            current.textContent = searchShadowCss;
+          if (!root.querySelector('style[data-veloura-search-v55]')) {
+            const style = document.createElement('style');
+            style.dataset.velouraSearchV55 = 'true';
+            style.textContent = searchShadowCss;
+            root.appendChild(style);
           }
         });
         observer.observe(root, { childList: true });

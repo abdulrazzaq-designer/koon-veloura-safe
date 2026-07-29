@@ -671,7 +671,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_loader_logo_title_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;text-align:right;font-weight:900;border:1px solid rgba(100,116,139,.40);border-right:4px solid #64748b;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الشعار داخل صفحة التحميل</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;text-align:right;font-weight:900;border:1px solid rgba(100,116,139,.40);border-right:4px solid #64748b;box-shadow:none;\">الشعار داخل صفحة التحميل</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -867,7 +867,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_loader_bg_title_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:900;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>خلفية صفحة التحميل</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:900;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:none;\">خلفية صفحة التحميل</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -1042,7 +1042,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_loader_text_title_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(234,179,8,.20),rgba(234,179,8,.10));color:inherit;text-align:right;font-weight:900;border:1px solid rgba(234,179,8,.40);border-right:4px solid #eab308;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(234,179,8,.20),rgba(234,179,8,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>النصوص داخل صفحة التحميل</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(234,179,8,.20),rgba(234,179,8,.10));color:inherit;text-align:right;font-weight:900;border:1px solid rgba(234,179,8,.40);border-right:4px solid #eab308;box-shadow:none;\">النصوص داخل صفحة التحميل</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -1149,7 +1149,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_loader_timing_title_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;text-align:right;font-weight:900;border:1px solid rgba(139,92,246,.40);border-right:4px solid #8b5cf6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>التوقيت والاختفاء</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;text-align:right;font-weight:900;border:1px solid rgba(139,92,246,.40);border-right:4px solid #8b5cf6;box-shadow:none;\">التوقيت والاختفاء</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -1580,7 +1580,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_top_subtitle_logo_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(0,166,166,.20),rgba(0,166,166,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(0,166,166,.40);border-right:4px solid #00a6a6;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(0,166,166,.20),rgba(0,166,166,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الشعار وتموضع الهيدر</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(0,166,166,.20),rgba(0,166,166,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(0,166,166,.40);border-right:4px solid #00a6a6;box-shadow:none;\">الشعار وتموضع الهيدر</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -1654,7 +1654,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_top_subtitle_floating_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الهيدر العائم والبلوري</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:none;\">الهيدر العائم والبلوري</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -1781,7 +1781,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_top_subtitle_colors_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الألوان والحواف</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:none;\">الألوان والحواف</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -1904,7 +1904,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_top_subtitle_icons_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(34,197,94,.40);border-right:4px solid #22c55e;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الأيقونات والعملة والسلة</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(34,197,94,.40);border-right:4px solid #22c55e;box-shadow:none;\">الأيقونات والعملة والسلة</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -2169,7 +2169,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_top_subtitle_search_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>البحث والعرض المتجاوب</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:none;\">البحث والعرض المتجاوب</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -2495,7 +2495,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_footer_subtitle_logo_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(51,65,85,.20),rgba(51,65,85,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(51,65,85,.40);border-right:4px solid #334155;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(51,65,85,.20),rgba(51,65,85,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الشعار والخلفية</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(51,65,85,.20),rgba(51,65,85,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(51,65,85,.40);border-right:4px solid #334155;box-shadow:none;\">الشعار والخلفية</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -2614,7 +2614,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_footer_subtitle_texts_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>العناوين والنصوص</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:none;\">العناوين والنصوص</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -2700,7 +2700,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_footer_subtitle_colors_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الألوان</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:none;\">الألوان</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -2819,7 +2819,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_footer_subtitle_shape_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(34,197,94,.40);border-right:4px solid #22c55e;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الشكل العام</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(34,197,94,.40);border-right:4px solid #22c55e;box-shadow:none;\">الشكل العام</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -3075,7 +3075,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_footer_subtitle_contact_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>وسائل الاتصال والسوشيال</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:none;\">وسائل الاتصال والسوشيال</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -3162,7 +3162,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_footer_subtitle_apps_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(56,189,248,.20),rgba(56,189,248,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(56,189,248,.40);border-right:4px solid #38bdf8;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(56,189,248,.20),rgba(56,189,248,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>تطبيق الجوال والروابط</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(56,189,248,.20),rgba(56,189,248,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(56,189,248,.40);border-right:4px solid #38bdf8;box-shadow:none;\">تطبيق الجوال والروابط</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -3232,7 +3232,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_footer_subtitle_bottom_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الشريط السفلي وحقوق المتجر</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:none;\">الشريط السفلي وحقوق المتجر</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -3325,7 +3325,7 @@
       "type": "static",
       "format": "title",
       "label": "الإعدادات العامة",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:inset 0 0 0 1px rgba(59,130,246,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الإعدادات العامة للقائمة الجانبية</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:inset 0 0 0 1px rgba(59,130,246,.10)\">الإعدادات العامة للقائمة الجانبية</div>",
       "icon": "sicon-sliders",
       "conditions": [
         {
@@ -3382,7 +3382,7 @@
       "type": "static",
       "format": "title",
       "label": "الألوان والحواف",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(236,72,153,.08);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الألوان والحواف</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(236,72,153,.08)\">الألوان والحواف</div>",
       "icon": "sicon-paint-brush",
       "conditions": [
         {
@@ -3499,7 +3499,7 @@
       "type": "static",
       "format": "title",
       "label": "صور الأقسام الخاصة",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;box-shadow:inset 0 0 0 1px rgba(249,115,22,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>صور الأقسام الخاصة</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;box-shadow:inset 0 0 0 1px rgba(249,115,22,.10)\">صور الأقسام الخاصة</div>",
       "icon": "sicon-image",
       "conditions": [
         {
@@ -3546,7 +3546,7 @@
       "type": "static",
       "format": "title",
       "label": "النصوص والصور",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:inset 0 0 0 1px rgba(99,102,241,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>النصوص والصور داخل القائمة</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:inset 0 0 0 1px rgba(99,102,241,.10)\">النصوص والصور داخل القائمة</div>",
       "icon": "sicon-font",
       "conditions": [
         {
@@ -3773,7 +3773,7 @@
       "type": "static",
       "format": "title",
       "label": "الروابط والأقسام الإضافية",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:inset 0 0 0 1px rgba(16,185,129,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الروابط والأقسام الإضافية</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:inset 0 0 0 1px rgba(16,185,129,.10)\">الروابط والأقسام الإضافية</div>",
       "icon": "sicon-link",
       "conditions": [
         {
@@ -3860,7 +3860,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_category_subtitle_navigation_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:inset 0 0 0 1px rgba(99,102,241,.07);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>المسار والقائمة الجانبية</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:inset 0 0 0 1px rgba(99,102,241,.07)\">المسار والقائمة الجانبية</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -3978,7 +3978,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_category_subtitle_products_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(34,197,94,.40);border-right:4px solid #22c55e;box-shadow:inset 0 0 0 1px rgba(34,197,94,.07);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>خيارات المنتجات داخل التصنيف</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(34,197,94,.40);border-right:4px solid #22c55e;box-shadow:inset 0 0 0 1px rgba(34,197,94,.07)\">خيارات المنتجات داخل التصنيف</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -4028,7 +4028,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_category_subtitle_images_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(251,146,60,.07);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>صور صفحات التصنيفات</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(251,146,60,.07)\">صور صفحات التصنيفات</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -4190,7 +4190,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_category_subtitle_style_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:inset 0 0 0 1px rgba(6,182,212,.06);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>شكل الصور والعناوين</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:inset 0 0 0 1px rgba(6,182,212,.06)\">شكل الصور والعناوين</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -4984,7 +4984,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_card_subtitle_general_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:inset 0 0 0 1px rgba(99,102,241,.07);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الشكل العام للبطاقة</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:inset 0 0 0 1px rgba(99,102,241,.07)\">الشكل العام للبطاقة</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -5092,7 +5092,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_pc_title_visibility_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(100,116,139,.40);border-right:4px solid #64748b;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>إظهار وإخفاء عناصر بطاقة المنتج</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(100,116,139,.40);border-right:4px solid #64748b;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">إظهار وإخفاء عناصر بطاقة المنتج</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -5160,7 +5160,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_card_subtitle_image_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:inset 0 0 0 1px rgba(6,182,212,.08);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>صورة المنتج</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:inset 0 0 0 1px rgba(6,182,212,.08)\">صورة المنتج</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -5372,7 +5372,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_pc_title_promo_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(239,68,68,.20),rgba(239,68,68,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(239,68,68,.40);border-right:4px solid #ef4444;box-shadow:inset 0 0 0 1px rgba(239,68,68,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(239,68,68,.20),rgba(239,68,68,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>العنوان الترويجي داخل بطاقة المنتج</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(239,68,68,.20),rgba(239,68,68,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(239,68,68,.40);border-right:4px solid #ef4444;box-shadow:inset 0 0 0 1px rgba(239,68,68,.10)\">العنوان الترويجي داخل بطاقة المنتج</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -5583,7 +5583,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_card_subtitle_quick_view_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(236,72,153,.08);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>العرض السريع داخل بطاقة المنتج</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(236,72,153,.08)\">العرض السريع داخل بطاقة المنتج</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -5977,7 +5977,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_card_subtitle_quick_view_modal_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(139,92,246,.40);border-right:4px solid #8b5cf6;box-shadow:inset 0 0 0 1px rgba(139,92,246,.08);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>نافذة العرض السريع</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(139,92,246,.20),rgba(139,92,246,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(139,92,246,.40);border-right:4px solid #8b5cf6;box-shadow:inset 0 0 0 1px rgba(139,92,246,.08)\">نافذة العرض السريع</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -6198,7 +6198,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_card_subtitle_texts_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(34,197,94,.40);border-right:4px solid #22c55e;box-shadow:inset 0 0 0 1px rgba(34,197,94,.08);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>النصوص والمسافات</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(34,197,94,.40);border-right:4px solid #22c55e;box-shadow:inset 0 0 0 1px rgba(34,197,94,.08)\">النصوص والمسافات</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -6353,7 +6353,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_card_subtitle_button_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(251,146,60,.08);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>زر أضف للسلة</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(251,146,60,.08)\">زر أضف للسلة</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -6544,7 +6544,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_page_subtitle_images_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(100,116,139,.40);border-right:4px solid #64748b;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الصور والمسار</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(100,116,139,.20),rgba(100,116,139,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(100,116,139,.40);border-right:4px solid #64748b;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">الصور والمسار</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -6649,7 +6649,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_page_subtitle_info_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>معلومات المنتج الأساسية</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(6,182,212,.20),rgba(6,182,212,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(6,182,212,.40);border-right:4px solid #06b6d4;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">معلومات المنتج الأساسية</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -6831,7 +6831,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_page_subtitle_content_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(56,189,248,.20),rgba(56,189,248,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(56,189,248,.40);border-right:4px solid #38bdf8;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(56,189,248,.20),rgba(56,189,248,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الوصف والمحتوى</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(56,189,248,.20),rgba(56,189,248,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(56,189,248,.40);border-right:4px solid #38bdf8;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">الوصف والمحتوى</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -6863,7 +6863,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_page_subtitle_sticky_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(34,197,94,.40);border-right:4px solid #22c55e;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الشريط المثبت أسفل الجوال</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(34,197,94,.20),rgba(34,197,94,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(34,197,94,.40);border-right:4px solid #22c55e;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">الشريط المثبت أسفل الجوال</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -6977,7 +6977,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_page_subtitle_marketing_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>العروض والتفاعل داخل صفحة المنتج</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">العروض والتفاعل داخل صفحة المنتج</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -7124,7 +7124,7 @@
       "id": "veloura_product_details_order_title_2026",
       "type": "static",
       "format": "title",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:none;display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>ترتيب تفاصيل المنتج</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:none;\">ترتيب تفاصيل المنتج</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -7987,7 +7987,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_page_subtitle_tags_related_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الوسوم والمنتجات المقترحة</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10)\">الوسوم والمنتجات المقترحة</div>",
       "variant": "h6",
       "conditions": [
         {
@@ -8445,7 +8445,7 @@
       "type": "static",
       "format": "title",
       "label": "الإعدادات العامة",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:inset 0 0 0 1px rgba(59,130,246,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الإعدادات العامة للقائمة العائمة</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(59,130,246,.20),rgba(59,130,246,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(59,130,246,.40);border-right:4px solid #3b82f6;box-shadow:inset 0 0 0 1px rgba(59,130,246,.10)\">الإعدادات العامة للقائمة العائمة</div>",
       "icon": "sicon-sliders",
       "conditions": [
         {
@@ -8519,7 +8519,7 @@
       "type": "static",
       "format": "title",
       "label": "الشكل الاحترافي",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:inset 0 0 0 1px rgba(99,102,241,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الشكل الاحترافي والعنصر النشط</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(99,102,241,.20),rgba(99,102,241,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(99,102,241,.40);border-right:4px solid #6366f1;box-shadow:inset 0 0 0 1px rgba(99,102,241,.10)\">الشكل الاحترافي والعنصر النشط</div>",
       "icon": "sicon-magic-wand",
       "conditions": [
         {
@@ -8700,7 +8700,7 @@
       "type": "static",
       "format": "title",
       "label": "الألوان والحواف",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(236,72,153,.08);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الألوان والحواف</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(236,72,153,.20),rgba(236,72,153,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(236,72,153,.40);border-right:4px solid #ec4899;box-shadow:inset 0 0 0 1px rgba(236,72,153,.08)\">الألوان والحواف</div>",
       "icon": "sicon-paint-brush",
       "conditions": [
         {
@@ -8834,7 +8834,7 @@
       "type": "static",
       "format": "title",
       "label": "عناصر القائمة",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:inset 0 0 0 1px rgba(16,185,129,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>العناصر الافتراضية والإضافية</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:inset 0 0 0 1px rgba(16,185,129,.10)\">العناصر الافتراضية والإضافية</div>",
       "icon": "sicon-grid",
       "conditions": [
         {
@@ -8929,7 +8929,7 @@
       "type": "static",
       "format": "title",
       "label": "عناصر مخصصة",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;box-shadow:inset 0 0 0 1px rgba(249,115,22,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>إضافة عناصر مخصصة للقائمة</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;box-shadow:inset 0 0 0 1px rgba(249,115,22,.10)\">إضافة عناصر مخصصة للقائمة</div>",
       "icon": "sicon-plus",
       "conditions": [
         {
@@ -9068,7 +9068,7 @@
       "type": "static",
       "format": "title",
       "label": "تسميات الأزرار",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;box-shadow:inset 0 0 0 1px rgba(249,115,22,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>تسميات الأزرار</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(249,115,22,.20),rgba(249,115,22,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(249,115,22,.40);border-right:4px solid #f97316;box-shadow:inset 0 0 0 1px rgba(249,115,22,.10)\">تسميات الأزرار</div>",
       "icon": "sicon-font",
       "conditions": [
         {
