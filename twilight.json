@@ -10169,15 +10169,13 @@
               "required": false,
               "minLength": 6,
               "maxLength": 30,
-              "condition": {
-                "field": "ultra_banners.use_image_url",
-                "operator": "=",
-                "value": true
-              },
-              "visibility": {
-                "field": "ultra_banners.use_image_url",
-                "value": true
-              }
+              "conditions": [
+        {
+          "id": "ultra_banners.use_image_url",
+          "operation": "=",
+          "value": true
+        }
+      ]
             },
             {
               "type": "items",
