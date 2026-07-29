@@ -2464,7 +2464,7 @@
           "maxLength": 40
         },
         {
-          "id": "veloura_home_tabs_items_2026.show_icon",
+          "id": "show_icon",
           "type": "boolean",
           "format": "switch",
           "label": "إضافة أيقونة",
@@ -2475,7 +2475,7 @@
           "default": false
         },
         {
-          "id": "veloura_home_tabs_items_2026.icon",
+          "id": "icon",
           "type": "string",
           "format": "icon",
           "label": "الأيقونة",
@@ -10170,12 +10170,12 @@
               "minLength": 6,
               "maxLength": 30,
               "conditions": [
-                {
-                  "id": "ultra_banners.use_image_url",
-                  "operation": "=",
-                  "value": true
-                }
-              ]
+        {
+          "id": "ultra_banners.use_image_url",
+          "operation": "=",
+          "value": true
+        }
+      ]
             },
             {
               "type": "items",
