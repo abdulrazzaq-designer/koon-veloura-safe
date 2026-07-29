@@ -10171,7 +10171,7 @@
               "maxLength": 30,
               "condition": {
                 "field": "ultra_banners.use_image_url",
-                "operator": "==",
+                "operator": "=",
                 "value": true
               },
               "visibility": {
