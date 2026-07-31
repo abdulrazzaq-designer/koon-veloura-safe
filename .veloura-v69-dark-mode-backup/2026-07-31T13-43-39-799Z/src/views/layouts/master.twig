@@ -49,100 +49,10 @@
 | theme.settings.set(settingName, value)             | string   | set global var, then get it {{theme.settings.get('my_var','fallback') }}                                 |
 | theme.settings.get(settingName, default=null)      | mixed    | get theme setting ex `theme.settings.get('my_var', 'fallback')`                                          |
 #}
-{# ======================================================================
-   Veloura V69 — normalized dark-mode settings and no-flash bootstrap.
-   ====================================================================== #}
-{% macro veloura_dm_value(setting, fallback) -%}
-  {%- if setting.selected is defined -%}
-    {%- if setting.selected.value is defined -%}
-      {{- setting.selected.value -}}
-    {%- elseif setting.selected is iterable and setting.selected[0] is defined and setting.selected[0].value is defined -%}
-      {{- setting.selected[0].value -}}
-    {%- else -%}
-      {{- setting.selected -}}
-    {%- endif -%}
-  {%- elseif setting.value is defined -%}
-    {{- setting.value -}}
-  {%- elseif setting is iterable and setting[0] is defined and setting[0].value is defined -%}
-    {{- setting[0].value -}}
-  {%- elseif setting is not null -%}
-    {{- setting -}}
-  {%- else -%}
-    {{- fallback -}}
-  {%- endif -%}
-{%- endmacro %}
-
-{% set vdm_enabled_raw = _self.veloura_dm_value(theme.settings.get('veloura_dark_enabled_2026', false), false)|trim %}
-{% set vdm_enabled = vdm_enabled_raw == true or vdm_enabled_raw == 'true' or vdm_enabled_raw == 1 or vdm_enabled_raw == '1' or vdm_enabled_raw == 'on' %}
-
-{% set vdm_mode = _self.veloura_dm_value(theme.settings.get('veloura_dark_theme_mode_2026', 'light'), 'light')|trim %}
-{% if vdm_mode not in ['auto', 'light', 'dark'] %}{% set vdm_mode = 'light' %}{% endif %}
-
-{% set vdm_toggle_raw = _self.veloura_dm_value(theme.settings.get('veloura_dark_toggle_enabled_2026', true), true)|trim %}
-{% set vdm_toggle_enabled = vdm_toggle_raw == true or vdm_toggle_raw == 'true' or vdm_toggle_raw == 1 or vdm_toggle_raw == '1' or vdm_toggle_raw == 'on' %}
-
-{% set vdm_force_product_raw = _self.veloura_dm_value(theme.settings.get('veloura_dark_force_product_desc_2026', true), true)|trim %}
-{% set vdm_force_product = vdm_force_product_raw == true or vdm_force_product_raw == 'true' or vdm_force_product_raw == 1 or vdm_force_product_raw == '1' or vdm_force_product_raw == 'on' %}
-
-{% set vdm_force_blog_raw = _self.veloura_dm_value(theme.settings.get('veloura_dark_force_blog_desc_2026', true), true)|trim %}
-{% set vdm_force_blog = vdm_force_blog_raw == true or vdm_force_blog_raw == 'true' or vdm_force_blog_raw == 1 or vdm_force_blog_raw == '1' or vdm_force_blog_raw == 'on' %}
-
-{% set vdm_product_sections_raw = _self.veloura_dm_value(theme.settings.get('veloura_dark_product_sections_2026', true), true)|trim %}
-{% set vdm_product_sections = vdm_product_sections_raw == true or vdm_product_sections_raw == 'true' or vdm_product_sections_raw == 1 or vdm_product_sections_raw == '1' or vdm_product_sections_raw == 'on' %}
-
-{% set vdm_initial_dark = vdm_enabled and vdm_mode == 'dark' %}
-
 <!DOCTYPE html>
-<html lang="{{ language.code }}" dir="{{ theme.is_rtl ? 'rtl' : 'ltr' }}" class="{{ vdm_initial_dark ? 'dark' : '' }}" data-theme="{{ vdm_initial_dark ? 'dark' : 'light' }}" data-veloura-dark-enabled="{{ vdm_enabled ? 'true' : 'false' }}" data-veloura-dark-mode="{{ vdm_mode }}">
+<html lang="{{ language.code }}" dir="{{ theme.is_rtl ? 'rtl' : 'ltr' }}">
 <!-- بسم الله الرحمن الرحيم -->
 <head>
-    <script data-veloura-dark-bootstrap>
-      (function () {
-        var root = document.documentElement;
-        var config = {
-          enabled: {{ vdm_enabled ? 'true' : 'false' }},
-          mode: {{ vdm_mode|json_encode|raw }},
-          toggleEnabled: {{ vdm_toggle_enabled ? 'true' : 'false' }},
-          storageKey: 'veloura_dark_mode'
-        };
-
-        function readSavedMode() {
-          if (!config.toggleEnabled) return null;
-          try {
-            var saved = localStorage.getItem(config.storageKey);
-            return saved === 'dark' || saved === 'light' ? saved : null;
-          } catch (error) {
-            return null;
-          }
-        }
-
-        var savedMode = readSavedMode();
-        var systemDark = false;
-
-        try {
-          systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        } catch (error) {}
-
-        var dark = false;
-
-        if (config.enabled) {
-          if (savedMode) {
-            dark = savedMode === 'dark';
-          } else if (config.mode === 'auto') {
-            dark = systemDark;
-          } else {
-            dark = config.mode === 'dark';
-          }
-        }
-
-        root.classList.toggle('dark', dark);
-        root.setAttribute('data-theme', dark ? 'dark' : 'light');
-        root.style.colorScheme = dark ? 'dark' : 'light';
-
-        window.velouraDarkConfig = config;
-        window.__velouraDarkInitial = dark;
-      })();
-    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1094,7 +1004,6 @@
         --veloura-dark-product-card-bg: {{ theme.settings.get('veloura_dark_product_card_bg_2026', '#111111') }};
         --veloura-dark-product-card-text: {{ theme.settings.get('veloura_dark_product_card_text_2026', '#ffffff') }};
         --veloura-dark-product-card-border: {{ theme.settings.get('veloura_dark_product_card_border_2026', '#111111') }};
-        --veloura-dark-glass-tint: {{ theme.settings.get('veloura_dark_glass_tint_2026', '#18181b') }};
 
         --veloura-top-bg: {{ theme.settings.get('veloura_top_bg_color_2026', '#ffffff') }};
         --veloura-top-text: {{ theme.settings.get('veloura_top_text_color_2026', '#004d65') }};
@@ -1801,7 +1710,6 @@
       {% endif %}
 
       {% if theme.settings.get('veloura_dark_store_bg_image_2026') %}
-        html.dark body,
         body.dark {
           background-image: url('{{ theme.settings.get('veloura_dark_store_bg_image_2026') }}') !important;
           background-size: cover;
@@ -2296,10 +2204,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {{ theme.settings.get('footer_is_dark') ? ' footer-is-dark' : ' footer-is-light' }}
   {{ theme.settings.get('topnav_is_dark') ? ' topnav-is-dark' : '' }}
   {{ theme.settings.get('sticky_add_to_cart') ? ' is-sticky-product-bar' : '' }}
-  {{ vdm_initial_dark ? ' dark' : '' }}
-  {{ vdm_force_product ? ' veloura-dark-force-product-desc' : '' }}
-  {{ vdm_force_blog ? ' veloura-dark-force-blog-desc' : '' }}
-  {{ vdm_product_sections ? ' veloura-dark-product-sections' : '' }}
+  {{ theme.settings.get('veloura_dark_enabled_2026') and theme.settings.get('veloura_dark_theme_mode_2026') == 'dark' ? ' dark' : '' }}
 
   veloura-general-enabled
   {{ vpc_enabled ? ' veloura-product-card-enabled' : '' }}
@@ -3110,7 +3015,68 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
 {% block scripts %}{% endblock %}
 
-{# Veloura V69: dark mode is controlled centrally by app.js. #}
+{% if theme.settings.get('veloura_dark_toggle_enabled_2026') %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const buttons = document.querySelectorAll('.veloura-dark-toggle');
+  const logos = document.querySelectorAll('.veloura-store-logo');
+
+  function isDarkMode() {
+    return document.body.classList.contains('dark');
+  }
+
+  function updateLogo() {
+    logos.forEach((logo) => {
+      const lightLogo = logo.dataset.lightLogo;
+      const darkLogo = logo.dataset.darkLogo;
+
+      if (isDarkMode() && darkLogo) {
+        logo.src = darkLogo;
+      } else if (lightLogo) {
+        logo.src = lightLogo;
+      }
+    });
+  }
+
+  function updateDarkIcons() {
+    document.querySelectorAll('.veloura-dark-toggle__icon').forEach((icon) => {
+      icon.classList.remove('sicon-moon', 'sicon-sun');
+      icon.classList.add(isDarkMode() ? 'sicon-sun' : 'sicon-moon');
+    });
+  }
+
+  function updateDarkModeUI() {
+    updateLogo();
+    updateDarkIcons();
+  }
+
+  const savedMode = localStorage.getItem('veloura_dark_mode');
+
+  if (savedMode === 'dark') {
+    document.body.classList.add('dark');
+  }
+
+  if (savedMode === 'light') {
+    document.body.classList.remove('dark');
+  }
+
+  updateDarkModeUI();
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', function () {
+      document.body.classList.toggle('dark');
+
+      localStorage.setItem(
+        'veloura_dark_mode',
+        document.body.classList.contains('dark') ? 'dark' : 'light'
+      );
+
+      updateDarkModeUI();
+    });
+  });
+});
+</script>
+{% endif %}
 
 {# Veloura V4: header scroll state is controlled only by app.js #}
 

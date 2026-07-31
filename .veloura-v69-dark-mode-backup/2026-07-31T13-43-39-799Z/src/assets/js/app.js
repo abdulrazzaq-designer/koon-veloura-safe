@@ -1463,188 +1463,46 @@ setTimeout(initVelouraTitleNextSection, 1500);
 
 
 /* ================================
-   Veloura Dark Mode Controller V69
+   Veloura Dark Icon Switch
 ================================ */
 
-(function initVelouraDarkModeController() {
-  if (window.__velouraDarkModeControllerReady) return;
-  window.__velouraDarkModeControllerReady = true;
+function velouraUpdateDarkIcon() {
+  const isDark =
+    document.documentElement.classList.contains('dark') ||
+    document.body.classList.contains('dark') ||
+    document.documentElement.getAttribute('data-theme') === 'dark' ||
+    document.body.getAttribute('data-theme') === 'dark';
 
-  const root = document.documentElement;
-  const config = Object.assign(
-    {
-      enabled: false,
-      mode: 'light',
-      toggleEnabled: true,
-      storageKey: 'veloura_dark_mode'
-    },
-    window.velouraDarkConfig || {}
-  );
+  document.querySelectorAll('.veloura-dark-toggle__icon').forEach((icon) => {
+    icon.classList.remove('sicon-moon', 'sicon-sun');
+    icon.classList.add(isDark ? 'sicon-sun' : 'sicon-moon');
+  });
+}
 
-  const systemQuery = window.matchMedia
-    ? window.matchMedia('(prefers-color-scheme: dark)')
-    : null;
+document.addEventListener('DOMContentLoaded', () => {
+  velouraUpdateDarkIcon();
 
-  let savedPreference = readPreference();
-  let lastApplied = null;
-
-  function readPreference() {
-    if (!config.toggleEnabled) return null;
-
-    try {
-      const value = localStorage.getItem(config.storageKey);
-      return value === 'dark' || value === 'light' ? value : null;
-    } catch (error) {
-      return null;
-    }
-  }
-
-  function savePreference(value) {
-    savedPreference = value === 'dark' || value === 'light' ? value : null;
-
-    if (!config.toggleEnabled) return;
-
-    try {
-      if (savedPreference) {
-        localStorage.setItem(config.storageKey, savedPreference);
-      } else {
-        localStorage.removeItem(config.storageKey);
-      }
-    } catch (error) {}
-  }
-
-  function resolveDarkState() {
-    if (!config.enabled) return false;
-    if (savedPreference) return savedPreference === 'dark';
-    if (config.mode === 'auto') return Boolean(systemQuery && systemQuery.matches);
-    return config.mode === 'dark';
-  }
-
-  function updateLogos(isDark) {
-    document.querySelectorAll('.veloura-store-logo[data-light-logo]').forEach((logo) => {
-      const lightLogo = logo.dataset.lightLogo;
-      const darkLogo = logo.dataset.darkLogo;
-      const nextLogo = isDark && darkLogo ? darkLogo : lightLogo;
-
-      if (!nextLogo || logo.getAttribute('src') === nextLogo) return;
-
-      logo.setAttribute('src', nextLogo);
-
-      if (logo.tagName === 'VIDEO' && typeof logo.load === 'function') {
-        logo.load();
-        const playPromise = logo.play();
-        if (playPromise && typeof playPromise.catch === 'function') {
-          playPromise.catch(() => {});
-        }
-      }
+  document.querySelectorAll('.veloura-dark-toggle').forEach((button) => {
+    button.addEventListener('click', () => {
+      setTimeout(velouraUpdateDarkIcon, 80);
+      setTimeout(velouraUpdateDarkIcon, 250);
     });
-  }
-
-  function updateButtons(isDark) {
-    document.querySelectorAll('.veloura-dark-toggle').forEach((button) => {
-      button.setAttribute('aria-pressed', isDark ? 'true' : 'false');
-      button.setAttribute(
-        'aria-label',
-        isDark ? 'تفعيل الوضع الفاتح' : 'تفعيل الوضع الداكن'
-      );
-      button.setAttribute(
-        'title',
-        isDark ? 'تفعيل الوضع الفاتح' : 'تفعيل الوضع الداكن'
-      );
-    });
-
-    document.querySelectorAll('.veloura-dark-toggle__icon').forEach((icon) => {
-      icon.classList.remove('sicon-moon', 'sicon-sun');
-      icon.classList.add(isDark ? 'sicon-sun' : 'sicon-moon');
-    });
-  }
-
-  function applyTheme(isDark, reason = 'sync') {
-    const body = document.body;
-
-    root.classList.toggle('dark', isDark);
-    root.setAttribute('data-theme', isDark ? 'dark' : 'light');
-    root.style.colorScheme = isDark ? 'dark' : 'light';
-
-    if (body) {
-      body.classList.toggle('dark', isDark);
-      body.setAttribute('data-theme', isDark ? 'dark' : 'light');
-      body.style.colorScheme = isDark ? 'dark' : 'light';
-    }
-
-    updateLogos(isDark);
-    updateButtons(isDark);
-
-    requestAnimationFrame(() => {
-      root.classList.add('veloura-theme-ready');
-      if (document.body) document.body.classList.add('veloura-theme-ready');
-    });
-
-    if (lastApplied !== isDark) {
-      lastApplied = isDark;
-      window.dispatchEvent(
-        new CustomEvent('veloura:theme-changed', {
-          detail: { theme: isDark ? 'dark' : 'light', reason }
-        })
-      );
-    }
-  }
-
-  function sync(reason = 'sync') {
-    applyTheme(resolveDarkState(), reason);
-  }
-
-  function setPreference(mode) {
-    if (mode !== 'dark' && mode !== 'light' && mode !== 'auto') return;
-
-    savePreference(mode === 'auto' ? null : mode);
-    sync('user');
-  }
-
-  function togglePreference() {
-    if (!config.enabled || !config.toggleEnabled) return;
-    setPreference(resolveDarkState() ? 'light' : 'dark');
-  }
-
-  document.addEventListener('click', (event) => {
-    const button = event.target.closest('.veloura-dark-toggle');
-    if (!button) return;
-
-    event.preventDefault();
-    togglePreference();
   });
 
-  document.addEventListener('DOMContentLoaded', () => sync('dom-ready'));
-  document.addEventListener('theme::ready', () => sync('theme-ready'));
+  const observer = new MutationObserver(() => {
+    velouraUpdateDarkIcon();
+  });
 
-  if (systemQuery) {
-    const onSystemChange = () => {
-      if (config.mode === 'auto' && !savedPreference) sync('system');
-    };
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class', 'data-theme']
+  });
 
-    if (typeof systemQuery.addEventListener === 'function') {
-      systemQuery.addEventListener('change', onSystemChange);
-    } else if (typeof systemQuery.addListener === 'function') {
-      systemQuery.addListener(onSystemChange);
-    }
-  }
-
-  window.velouraDarkMode = {
-    sync,
-    toggle: togglePreference,
-    set: setPreference,
-    reset() {
-      savePreference(null);
-      sync('reset');
-    },
-    isDark: resolveDarkState,
-    getPreference() {
-      return savedPreference || 'auto';
-    }
-  };
-
-  sync('initial');
-})();
+  observer.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['class', 'data-theme']
+  });
+});
 
 
 /* ================================

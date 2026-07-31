@@ -1287,13 +1287,10 @@
       "id": "veloura_dark_theme_mode_2026",
       "type": "items",
       "format": "dropdown-list",
-      "label": "وضع العرض الافتراضي",
-      "description": "اختر الوضع الفاتح أو الداكن، أو اجعله تلقائياً حسب إعدادات جهاز العميل.",
+      "label": "تنسيق الوضع الداكن 2",
       "icon": "sicon-list",
       "source": "Manual",
       "required": true,
-      "value": "light",
-      "default": "light",
       "selected": [
         {
           "label": "الوضع الفاتح",
@@ -1432,24 +1429,6 @@
       "format": "color",
       "label": "لون الخلفية الثانوي في الوضع الداكن",
       "value": "#010612",
-      "conditions": [
-        {
-          "id": "veloura_dark_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_dark_glass_tint_2026",
-      "type": "string",
-      "format": "color",
-      "label": "لون الزجاج والتعتيم في الوضع الداكن",
-      "description": "يستخدم للهيدر والبحث والقوائم والنوافذ الزجاجية في الوضع الداكن.",
-      "icon": "sicon-paint-bucket",
-      "value": "#18181b",
-      "default": "#18181b",
-      "required": false,
       "conditions": [
         {
           "id": "veloura_dark_enabled_2026",

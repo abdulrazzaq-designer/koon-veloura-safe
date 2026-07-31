@@ -285,37 +285,6 @@
   {% set dark_pos = dark_pos[0].value %}
 {% endif %}
 
-{% set dark_enabled_setting = theme.settings.get('veloura_dark_enabled_2026', false) %}
-{% set dark_enabled = dark_enabled_setting %}
-{% if dark_enabled_setting.selected is defined %}
-  {% if dark_enabled_setting.selected.value is defined %}
-    {% set dark_enabled = dark_enabled_setting.selected.value %}
-  {% elseif dark_enabled_setting.selected is iterable and dark_enabled_setting.selected[0] is defined and dark_enabled_setting.selected[0].value is defined %}
-    {% set dark_enabled = dark_enabled_setting.selected[0].value %}
-  {% else %}
-    {% set dark_enabled = dark_enabled_setting.selected %}
-  {% endif %}
-{% elseif dark_enabled_setting.value is defined %}
-  {% set dark_enabled = dark_enabled_setting.value %}
-{% endif %}
-{% set dark_enabled = dark_enabled == true or dark_enabled == 'true' or dark_enabled == 1 or dark_enabled == '1' or dark_enabled == 'on' %}
-
-{% set dark_toggle_setting = theme.settings.get('veloura_dark_toggle_enabled_2026', true) %}
-{% set dark_toggle_enabled = dark_toggle_setting %}
-{% if dark_toggle_setting.selected is defined %}
-  {% if dark_toggle_setting.selected.value is defined %}
-    {% set dark_toggle_enabled = dark_toggle_setting.selected.value %}
-  {% elseif dark_toggle_setting.selected is iterable and dark_toggle_setting.selected[0] is defined and dark_toggle_setting.selected[0].value is defined %}
-    {% set dark_toggle_enabled = dark_toggle_setting.selected[0].value %}
-  {% else %}
-    {% set dark_toggle_enabled = dark_toggle_setting.selected %}
-  {% endif %}
-{% elseif dark_toggle_setting.value is defined %}
-  {% set dark_toggle_enabled = dark_toggle_setting.value %}
-{% endif %}
-{% set dark_toggle_enabled = dark_toggle_enabled == true or dark_toggle_enabled == 'true' or dark_toggle_enabled == 1 or dark_toggle_enabled == '1' or dark_toggle_enabled == 'on' %}
-
-
 {% set top_login_icon = theme.settings.get('veloura_top_login_icon_2026', 'sicon-user-circle') %}
 {% if top_login_icon.selected is defined %}
   {% if top_login_icon.selected.value is defined %}
@@ -428,7 +397,7 @@
               </a>
             {% endif %}
 
-            {% if dark_enabled and dark_toggle_enabled and dark_pos == 'left' %}
+            {% if theme.settings.get('veloura_dark_enabled_2026') and theme.settings.get('veloura_dark_toggle_enabled_2026') and dark_pos == 'left' %}
               <button type="button" class="veloura-header-icon veloura-dark-toggle" aria-label="تبديل الوضع الداكن">
                 <i class="sicon-moon veloura-dark-toggle__icon"></i>
               </button>
@@ -458,7 +427,7 @@
               <i class="sicon-search"></i>
             </button>
 
-            {% if dark_enabled and dark_toggle_enabled and dark_pos == 'right' %}
+            {% if theme.settings.get('veloura_dark_enabled_2026') and theme.settings.get('veloura_dark_toggle_enabled_2026') and dark_pos == 'right' %}
               <button type="button" class="veloura-header-icon veloura-dark-toggle" aria-label="تبديل الوضع الداكن">
                 <i class="sicon-moon veloura-dark-toggle__icon"></i>
               </button>
