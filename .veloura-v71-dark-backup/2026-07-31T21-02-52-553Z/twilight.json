@@ -1459,60 +1459,6 @@
       ]
     },
     {
-      "id": "veloura_dark_footer_bg_2026",
-      "type": "string",
-      "format": "color",
-      "inputType": "color",
-      "label": "لون خلفية الفوتر في الوضع الداكن",
-      "icon": "sicon-paint-bucket",
-      "value": "#010612",
-      "default": "#010612",
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_dark_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_dark_side_menu_bg_2026",
-      "type": "string",
-      "format": "color",
-      "inputType": "color",
-      "label": "لون خلفية القائمة الجانبية في الوضع الداكن",
-      "icon": "sicon-paint-bucket",
-      "value": "#18181b",
-      "default": "#18181b",
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_dark_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_dark_side_menu_text_2026",
-      "type": "string",
-      "format": "color",
-      "inputType": "color",
-      "label": "لون نصوص القائمة الجانبية في الوضع الداكن",
-      "icon": "sicon-paint-bucket",
-      "value": "#ffffff",
-      "default": "#ffffff",
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_dark_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "id": "veloura_dark_primary_text_2026",
       "type": "string",
       "format": "color",

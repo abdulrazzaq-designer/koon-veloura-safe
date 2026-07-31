@@ -3892,4 +3892,3 @@ if (document.readyState === 'loading') {
 document.addEventListener('theme::ready', initVelouraBalancedInlineSearchV63);
 /* VELOURA V63 BALANCED INLINE SEARCH LAYOUT END */
 
-import './partials/veloura-dark-search-v71';
