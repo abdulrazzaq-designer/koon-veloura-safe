@@ -1,0 +1,343 @@
+/* ========================================================================
+   Veloura V70 — dark color roles correction.
+
+   Contract:
+   - Dark secondary background owns generic component/card surfaces.
+   - Product cards remain isolated on their dedicated three settings.
+   - Dark header icons/text use the dark primary text setting only.
+   - Every rule is dark-scoped, so the light theme remains untouched.
+   ======================================================================== */
+
+html.dark body,
+body.dark {
+  --veloura-v70-surface-bg: var(--veloura-dark-secondary-bg, #010612);
+  --veloura-v70-surface-text: var(--veloura-dark-primary-text, #ffffff);
+  --veloura-v70-muted-text: var(--veloura-dark-secondary-text, #ededed);
+  --veloura-v70-surface-border: color-mix(
+    in srgb,
+    var(--veloura-dark-secondary-text, #ededed) 15%,
+    transparent
+  );
+  --veloura-v70-inner-surface: color-mix(
+    in srgb,
+    var(--veloura-dark-secondary-bg, #010612) 88%,
+    var(--veloura-dark-primary-text, #ffffff) 12%
+  );
+}
+
+/* ------------------------------------------------------------------------
+   Generic section/card surfaces use the DARK SECONDARY BACKGROUND.
+   Product-card selectors are intentionally absent from this group.
+   ------------------------------------------------------------------------ */
+
+html.dark body :is(
+  .veloura-store-features__item,
+  .veloura-faq__item,
+  .veloura-animated-articles__card,
+  .veloura-testimonials__card,
+  .veloura-before-after__card,
+  .veloura-quick-links__card,
+  .veloura-about__box,
+  .veloura-about__feature,
+  .veloura-about__stat,
+  .veloura-purchase-steps__item,
+  .veloura-branches__tab,
+  .veloura-brands__item,
+  .veloura-cart-banners__item,
+  .s-block--features__item,
+  .s-reviews-testimonial,
+  .s-block--custom-testimonials [class*='testimonial'],
+  .s-block--testimonials .s-reviews-testimonial,
+  .article-card,
+  .blog-card,
+  .s-blog-card
+),
+body.dark :is(
+  .veloura-store-features__item,
+  .veloura-faq__item,
+  .veloura-animated-articles__card,
+  .veloura-testimonials__card,
+  .veloura-before-after__card,
+  .veloura-quick-links__card,
+  .veloura-about__box,
+  .veloura-about__feature,
+  .veloura-about__stat,
+  .veloura-purchase-steps__item,
+  .veloura-branches__tab,
+  .veloura-brands__item,
+  .veloura-cart-banners__item,
+  .s-block--features__item,
+  .s-reviews-testimonial,
+  .s-block--custom-testimonials [class*='testimonial'],
+  .s-block--testimonials .s-reviews-testimonial,
+  .article-card,
+  .blog-card,
+  .s-blog-card
+) {
+  background: var(--veloura-v70-surface-bg) !important;
+  background-color: var(--veloura-v70-surface-bg) !important;
+  background-image: none !important;
+  color: var(--veloura-v70-surface-text) !important;
+  border-color: var(--veloura-v70-surface-border) !important;
+}
+
+/* Component-level variables may be defined inline by the home component.
+   Important custom properties override those light-mode inline defaults. */
+html.dark body .veloura-faq,
+body.dark .veloura-faq {
+  --faq-bg: var(--veloura-v70-surface-bg) !important;
+  --faq-text: var(--veloura-v70-surface-text) !important;
+  --faq-border: var(--veloura-v70-surface-border) !important;
+}
+
+html.dark body .veloura-testimonials,
+body.dark .veloura-testimonials {
+  --veloura-testimonials-bg: var(--veloura-v70-surface-bg) !important;
+  --veloura-testimonials-text: var(--veloura-v70-surface-text) !important;
+  --veloura-testimonials-title-color: var(--veloura-v70-surface-text) !important;
+}
+
+html.dark body .veloura-about,
+body.dark .veloura-about {
+  --veloura-about-bg: var(--veloura-v70-surface-bg) !important;
+  --veloura-about-text: var(--veloura-v70-surface-text) !important;
+  --veloura-about-soft: var(--veloura-v70-inner-surface) !important;
+  --veloura-about-soft-solid: var(--veloura-v70-inner-surface) !important;
+  --veloura-about-border: var(--veloura-v70-surface-border) !important;
+}
+
+html.dark body .veloura-purchase-steps,
+body.dark .veloura-purchase-steps {
+  --veloura-steps-card-bg: var(--veloura-v70-surface-bg) !important;
+  --veloura-steps-text-color: var(--veloura-v70-surface-text) !important;
+}
+
+html.dark body .veloura-faq__answer,
+body.dark .veloura-faq__answer,
+html.dark body .veloura-about__feature-border::after,
+body.dark .veloura-about__feature-border::after {
+  background: var(--veloura-v70-inner-surface) !important;
+  background-color: var(--veloura-v70-inner-surface) !important;
+}
+
+html.dark body .veloura-animated-articles__image,
+body.dark .veloura-animated-articles__image,
+html.dark body .veloura-about__image,
+body.dark .veloura-about__image {
+  background-color: var(--veloura-v70-inner-surface) !important;
+}
+
+/* Primary vs secondary dark text inside generic surfaces. */
+html.dark body :is(
+  .veloura-store-features__content h3,
+  .veloura-faq__question,
+  .veloura-animated-articles__card h3 a,
+  .veloura-testimonials__info h3,
+  .veloura-quick-links__card h2,
+  .veloura-quick-links__card span,
+  .veloura-about__title,
+  .veloura-about__feature,
+  .veloura-about__stat,
+  .veloura-purchase-steps__content h3,
+  .s-reviews-testimonial__name
+),
+body.dark :is(
+  .veloura-store-features__content h3,
+  .veloura-faq__question,
+  .veloura-animated-articles__card h3 a,
+  .veloura-testimonials__info h3,
+  .veloura-quick-links__card h2,
+  .veloura-quick-links__card span,
+  .veloura-about__title,
+  .veloura-about__feature,
+  .veloura-about__stat,
+  .veloura-purchase-steps__content h3,
+  .s-reviews-testimonial__name
+) {
+  color: var(--veloura-v70-surface-text) !important;
+}
+
+html.dark body :is(
+  .veloura-store-features__content p,
+  .veloura-faq__answer,
+  .veloura-faq__answer-inner,
+  .veloura-animated-articles__card p,
+  .veloura-testimonials__text,
+  .veloura-testimonials__info span,
+  .veloura-about__description,
+  .veloura-purchase-steps__content p,
+  .s-reviews-testimonial__text
+),
+body.dark :is(
+  .veloura-store-features__content p,
+  .veloura-faq__answer,
+  .veloura-faq__answer-inner,
+  .veloura-animated-articles__card p,
+  .veloura-testimonials__text,
+  .veloura-testimonials__info span,
+  .veloura-about__description,
+  .veloura-purchase-steps__content p,
+  .s-reviews-testimonial__text
+) {
+  color: var(--veloura-v70-muted-text) !important;
+}
+
+/* ------------------------------------------------------------------------
+   PRODUCT CARDS keep their own dedicated background/text/border settings.
+   This explicit block also neutralizes the mixed V69 group loaded earlier.
+   ------------------------------------------------------------------------ */
+
+html.dark body :is(
+  .s-product-card-entry,
+  .s-product-card-content,
+  product-card,
+  .product-entry
+),
+body.dark :is(
+  .s-product-card-entry,
+  .s-product-card-content,
+  product-card,
+  .product-entry
+) {
+  background: var(--veloura-dark-product-card-bg, #111111) !important;
+  background-color: var(--veloura-dark-product-card-bg, #111111) !important;
+  color: var(--veloura-dark-product-card-text, #ffffff) !important;
+  border-color: var(--veloura-dark-product-card-border, #242424) !important;
+}
+
+html.dark body :is(
+  .s-product-card-entry,
+  .s-product-card-content,
+  product-card,
+  .product-entry
+) :is(
+  .s-product-card-content-title,
+  .s-product-card-content-title a,
+  .s-product-card-content-subtitle,
+  .s-product-card-price,
+  .s-product-card-sale-price,
+  .s-product-card-regular-price,
+  [class*='price'],
+  [class*='Price']
+),
+body.dark :is(
+  .s-product-card-entry,
+  .s-product-card-content,
+  product-card,
+  .product-entry
+) :is(
+  .s-product-card-content-title,
+  .s-product-card-content-title a,
+  .s-product-card-content-subtitle,
+  .s-product-card-price,
+  .s-product-card-sale-price,
+  .s-product-card-regular-price,
+  [class*='price'],
+  [class*='Price']
+) {
+  color: var(--veloura-dark-product-card-text, #ffffff) !important;
+}
+
+/* ------------------------------------------------------------------------
+   HEADER color isolation.
+
+   The dark header may use the dark secondary background when it is solid,
+   or the dark glass tint when glass is enabled. In both cases its text and
+   icons come from DARK PRIMARY TEXT. The light header setting is untouched.
+   ------------------------------------------------------------------------ */
+
+html.dark body .veloura-header-tabs-stack,
+body.dark .veloura-header-tabs-stack,
+html.dark body .store-header.veloura-top-enabled,
+body.dark .store-header.veloura-top-enabled {
+  --veloura-top-text: var(--veloura-dark-primary-text, #ffffff) !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+
+html.dark body
+  .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
+  .store-header.veloura-top-enabled,
+html.dark body
+  .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
+  .store-header.veloura-top-enabled #mainnav,
+html.dark body
+  .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
+  .store-header.veloura-top-enabled #mainnav > .inner,
+body.dark
+  .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
+  .store-header.veloura-top-enabled,
+body.dark
+  .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
+  .store-header.veloura-top-enabled #mainnav,
+body.dark
+  .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
+  .store-header.veloura-top-enabled #mainnav > .inner {
+  background: var(--veloura-dark-secondary-bg, #010612) !important;
+  background-color: var(--veloura-dark-secondary-bg, #010612) !important;
+}
+
+html.dark body .store-header.veloura-top-enabled :where(
+  .veloura-header-icon,
+  .veloura-header-icon i,
+  .veloura-header-side a,
+  .veloura-header-side button,
+  .veloura-menu-links-wrap a,
+  .veloura-cart-summary,
+  .veloura-cart-custom-icon,
+  .veloura-cart-custom-icon i,
+  .veloura-dark-toggle,
+  .veloura-dark-toggle__icon,
+  .veloura-search-toggle,
+  .veloura-menu-trigger-mobile,
+  salla-cart-summary
+),
+body.dark .store-header.veloura-top-enabled :where(
+  .veloura-header-icon,
+  .veloura-header-icon i,
+  .veloura-header-side a,
+  .veloura-header-side button,
+  .veloura-menu-links-wrap a,
+  .veloura-cart-summary,
+  .veloura-cart-custom-icon,
+  .veloura-cart-custom-icon i,
+  .veloura-dark-toggle,
+  .veloura-dark-toggle__icon,
+  .veloura-search-toggle,
+  .veloura-menu-trigger-mobile,
+  salla-cart-summary
+) {
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+
+html.dark body .store-header.veloura-top-enabled
+  :where(.veloura-header-icon, .veloura-menu-links-wrap a, salla-cart-summary) svg,
+body.dark .store-header.veloura-top-enabled
+  :where(.veloura-header-icon, .veloura-menu-links-wrap a, salla-cart-summary) svg {
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+html.dark body .store-header.veloura-top-enabled .veloura-search-surface,
+html.dark body .store-header.veloura-top-enabled .veloura-search-surface input,
+html.dark body .store-header.veloura-top-enabled .veloura-search-surface .s-search-input,
+body.dark .store-header.veloura-top-enabled .veloura-search-surface,
+body.dark .store-header.veloura-top-enabled .veloura-search-surface input,
+body.dark .store-header.veloura-top-enabled .veloura-search-surface .s-search-input {
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+
+html.dark body .store-header.veloura-top-enabled
+  .veloura-search-surface input::placeholder,
+html.dark body .store-header.veloura-top-enabled
+  .veloura-search-surface .s-search-input::placeholder,
+body.dark .store-header.veloura-top-enabled
+  .veloura-search-surface input::placeholder,
+body.dark .store-header.veloura-top-enabled
+  .veloura-search-surface .s-search-input::placeholder {
+  color: color-mix(
+    in srgb,
+    var(--veloura-dark-secondary-text, #ededed) 72%,
+    transparent
+  ) !important;
+}

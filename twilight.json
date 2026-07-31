@@ -2441,7 +2441,7 @@
       "type": "string",
       "format": "color",
       "inputType": "color",
-      "label": "لون التبويب النشط",
+      "label": "لون التبويب النشط1111",
       "icon": "sicon-paint-bucket",
       "value": "#003848",
       "required": false,
