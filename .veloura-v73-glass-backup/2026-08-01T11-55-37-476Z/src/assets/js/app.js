@@ -3895,5 +3895,3 @@ document.addEventListener('theme::ready', initVelouraBalancedInlineSearchV63);
 import './partials/veloura-dark-search-v71';
 
 import './partials/veloura-search-glass-v72';
-
-import './partials/veloura-search-glass-v73';
