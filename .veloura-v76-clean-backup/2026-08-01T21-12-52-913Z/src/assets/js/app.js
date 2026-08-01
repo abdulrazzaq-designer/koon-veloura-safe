@@ -562,6 +562,7 @@ const initVelouraGlobalGlass = (() => {
   return init;
 })();
 
+
 /* ========================================================================
    Veloura Header Controls
    - Opens the single official Salla localization component from the mobile icon.
@@ -612,6 +613,7 @@ const initVelouraHeaderControls = (() => {
     }, true);
   };
 })();
+
 
 /* ========================================================================
    Veloura V55 adaptive header controller
@@ -834,7 +836,7 @@ class App extends AppHelpers {
     this.initiateDropdowns();
     this.initiateModals();
     this.initiateCollapse();
-
+    
     // Ensure #more-menu-dropdown exists before running changeMenuDirection
     const menuDirInterval = setInterval(() => {
       if (document.querySelector('#more-menu-dropdown')) {
@@ -917,6 +919,7 @@ isElementLoaded(selector){
    },160)
 }))
 
+  
   };
 
   copyToClipboard(event) {
@@ -1303,6 +1306,7 @@ isElementLoaded(selector){
       });
   }
 
+
   /**
    * Workaround for seeking to simplify & clean, There are three ways to use this method:
    * 1- direct call: `this.anime('.my-selector')` - will use default values
@@ -1334,6 +1338,7 @@ isElementLoaded(selector){
 }
 
 salla.onReady(() => (new App).loadTheApp());
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const counters = document.querySelectorAll('.veloura-counter');
@@ -1391,6 +1396,7 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(counter);
   });
 });
+
 
 document.addEventListener('click', function (e) {
   const button = e.target.closest('.veloura-faq__question');
@@ -1452,6 +1458,9 @@ document.addEventListener('DOMContentLoaded', initVelouraTitleNextSection);
 document.addEventListener('theme::ready', initVelouraTitleNextSection);
 setTimeout(initVelouraTitleNextSection, 500);
 setTimeout(initVelouraTitleNextSection, 1500);
+
+
+
 
 /* ================================
    Veloura Dark Mode Controller V69
@@ -1637,6 +1646,7 @@ setTimeout(initVelouraTitleNextSection, 1500);
   sync('initial');
 })();
 
+
 /* ================================
    Veloura Cart Total Hide Only
    تم حذف سكربت درج اللابتوب القديم لأنه يتعارض مع قائمة الجوال الأصلية
@@ -1662,6 +1672,10 @@ document.addEventListener('DOMContentLoaded', () => {
     subtree: true
   });
 });
+
+
+
+
 
 /* ================================
    Veloura Side Categories Settings Hook V5
@@ -2184,6 +2198,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(scanCards, 500);
   });
 })();
+
 
 /* ================================
    Veloura Quick View Full Product Modal
@@ -3078,6 +3093,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .veloura-qv-full__qty{width:144px!important;grid-template-columns:38px 68px 38px!important}
       }
 
+
       /* V12: تكبير صورة الجوال وإخفاء سكرول الوصف */
       @media(max-width:767px){
         .veloura-qv-full__media{
@@ -3656,7 +3672,10 @@ if (document.readyState === 'loading') {
 document.addEventListener('theme::ready', initVelouraHomeTabs);
 /* VELOURA HOME TABS CONTROLLER END 2026 */
 
+
+
 document.addEventListener('DOMContentLoaded', () => initVelouraCartBanners());
+
 
 document.addEventListener('DOMContentLoaded', () => initVelouraCartBanners());
 
@@ -3873,4 +3892,12 @@ if (document.readyState === 'loading') {
 document.addEventListener('theme::ready', initVelouraBalancedInlineSearchV63);
 /* VELOURA V63 BALANCED INLINE SEARCH LAYOUT END */
 
-import './partials/veloura-search-clean-v76';
+import './partials/veloura-dark-search-v71';
+
+import './partials/veloura-search-glass-v72';
+
+import './partials/veloura-search-glass-v73';
+
+import './partials/veloura-glass-cart-final-v74';
+
+import './partials/veloura-glass-menu-search-v75';
