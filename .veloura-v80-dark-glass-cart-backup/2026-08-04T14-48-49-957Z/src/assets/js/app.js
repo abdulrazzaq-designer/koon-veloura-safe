@@ -394,8 +394,6 @@ const initVelouraGlobalGlass = (() => {
     'salla-modal',
     'salla-search',
     'salla-localization-modal',
-    'salla-user-menu',
-    'salla-scopes',
     'salla-gifting'
   ].join(',');
 
@@ -403,9 +401,8 @@ const initVelouraGlobalGlass = (() => {
     :host {
       --veloura-shadow-glass-bg: var(--veloura-global-glass-bg, rgba(255, 255, 255, .64));
       --veloura-shadow-glass-layer: var(--veloura-global-glass-layer, linear-gradient(145deg, rgba(255, 255, 255, .22), rgba(229, 231, 235, .08)));
-      --veloura-shadow-glass-edge-top: var(--veloura-global-glass-edge-top, rgba(148, 163, 184, .24));
-      --veloura-shadow-glass-edge-bottom: var(--veloura-global-glass-edge-bottom, rgba(148, 163, 184, .085));
-      --veloura-shadow-glass-shadow: var(--veloura-global-glass-shadow, rgba(15, 23, 42, .07));
+      --veloura-shadow-glass-border: var(--veloura-global-glass-border, rgba(255, 255, 255, .88));
+      --veloura-shadow-glass-ring: var(--veloura-global-glass-ring, rgba(15, 23, 42, .12));
       --veloura-shadow-glass-filter: var(--veloura-global-glass-filter, blur(17px) saturate(36%) brightness(104%) contrast(98%));
       --veloura-shadow-glass-overlay: var(--veloura-global-glass-overlay, rgba(15, 23, 42, .12));
       --veloura-shadow-glass-control: var(--veloura-global-glass-control, rgba(255, 255, 255, .52));
@@ -472,16 +469,13 @@ const initVelouraGlobalGlass = (() => {
     [part~='surface'] {
       background: var(--veloura-shadow-glass-layer), var(--veloura-shadow-glass-bg) !important;
       background-color: var(--veloura-shadow-glass-bg) !important;
-      border-top: 1px solid var(--veloura-shadow-glass-edge-top) !important;
-      border-bottom: 1px solid var(--veloura-shadow-glass-edge-bottom) !important;
-      border-inline: 0 !important;
+      border: 1px solid var(--veloura-shadow-glass-border) !important;
       -webkit-backdrop-filter: var(--veloura-shadow-glass-filter) !important;
       backdrop-filter: var(--veloura-shadow-glass-filter) !important;
       filter: none !important;
       box-shadow:
-        inset 0 1px 0 var(--veloura-shadow-glass-edge-top),
-        inset 0 -1px 0 var(--veloura-shadow-glass-edge-bottom),
-        0 8px 26px var(--veloura-shadow-glass-shadow) !important;
+        0 0 0 1px var(--veloura-shadow-glass-ring),
+        inset 0 1px 0 rgba(255, 255, 255, .82) !important;
       transition-property: opacity, transform, visibility !important;
       transition-delay: 0s !important;
     }
@@ -492,7 +486,7 @@ const initVelouraGlobalGlass = (() => {
     .form-input,
     .s-form-control {
       background: var(--veloura-shadow-glass-control) !important;
-      border-color: color-mix(in srgb, var(--veloura-shadow-glass-edge-top) 70%, transparent) !important;
+      border-color: color-mix(in srgb, var(--veloura-shadow-glass-ring) 70%, transparent) !important;
       -webkit-backdrop-filter: none !important;
       backdrop-filter: none !important;
     }
@@ -4138,257 +4132,4 @@ if (document.readyState === 'loading') {
 } else {
   initVelouraSearchSurfaceV79();
 }
-
-/* V80_RUNTIME_JS_START */
-(() => {
-  'use strict';
-
-  const GLASS_STYLE_ID = 'veloura-v80-shadow-glass-style';
-  const CART_STYLE_ID = 'veloura-v80-cart-click-style';
-  const GLASS_HOSTS = [
-    'salla-login-modal',
-    'salla-localization-modal',
-    'salla-modal',
-    'salla-search',
-    'salla-user-menu',
-    'salla-scopes',
-    'salla-gifting'
-  ].join(',');
-  const WALK_HOSTS = [GLASS_HOSTS, 'product-card', 'salla-product-card', 'salla-add-product-button'].join(',');
-
-  const glassCss = `
-    :host {
-      --v80-bg: var(--veloura-global-glass-bg, var(--veloura-v80-glass-surface, rgba(255, 255, 255, .72)));
-      --v80-top: var(--veloura-global-glass-edge-top, var(--veloura-v80-edge-top, rgba(148, 163, 184, .24)));
-      --v80-bottom: var(--veloura-global-glass-edge-bottom, var(--veloura-v80-edge-bottom, rgba(148, 163, 184, .085)));
-      --v80-shadow: var(--veloura-global-glass-shadow, var(--veloura-v80-shadow, rgba(15, 23, 42, .07)));
-      --v80-filter: var(--veloura-global-glass-filter, var(--veloura-v80-filter, blur(20px) saturate(124%) brightness(101%)));
-      --v80-overlay: var(--veloura-global-glass-overlay, rgba(15, 23, 42, .16));
-      --v80-control: var(--veloura-global-glass-control, rgba(255, 255, 255, .52));
-    }
-
-    :host,
-    .s-modal-wrapper,
-    .s-modal-container,
-    .s-login-modal,
-    .s-auth-modal,
-    .login-modal,
-    .auth-modal,
-    [part~='wrapper'],
-    [part~='container'] {
-      -webkit-backdrop-filter: none !important;
-      backdrop-filter: none !important;
-      filter: none !important;
-      box-shadow: none !important;
-    }
-
-    .s-modal-wrapper,
-    .s-modal-container,
-    .s-login-modal,
-    .s-auth-modal,
-    .login-modal,
-    .auth-modal,
-    [part~='wrapper'],
-    [part~='container'] {
-      background: transparent !important;
-      background-image: none !important;
-      border-color: transparent !important;
-    }
-
-    .s-salla-modal-overlay,
-    .s-modal-overlay,
-    .s-modal-backdrop,
-    .modal-backdrop,
-    .backdrop,
-    [part~='overlay'],
-    [part~='backdrop'] {
-      background: var(--v80-overlay) !important;
-      -webkit-backdrop-filter: none !important;
-      backdrop-filter: none !important;
-      filter: none !important;
-      box-shadow: none !important;
-    }
-
-    .s-salla-modal-body,
-    .s-modal-body,
-    .s-modal-content,
-    .modal-content,
-    .s-login-modal__body,
-    .s-login-modal__content,
-    .s-auth-modal__body,
-    .s-auth-modal__content,
-    .s-localization-modal-inner,
-    .s-user-menu-dropdown,
-    .s-user-menu-content,
-    [class*='localization-modal'][class*='content'],
-    [class*='currency-modal'][class*='content'],
-    [part~='body'],
-    [part~='content'],
-    [part~='panel'],
-    [part~='surface'],
-    [part~='menu'] {
-      box-sizing: border-box !important;
-      background:
-        linear-gradient(
-          to bottom,
-          var(--v80-top) 0,
-          var(--v80-top) 1px,
-          transparent 1px,
-          transparent calc(100% - 1px),
-          var(--v80-bottom) calc(100% - 1px),
-          var(--v80-bottom) 100%
-        ),
-        var(--v80-bg) !important;
-      background-color: var(--v80-bg) !important;
-      border-top: 1px solid var(--v80-top) !important;
-      border-bottom: 1px solid var(--v80-bottom) !important;
-      border-inline: 0 !important;
-      -webkit-backdrop-filter: var(--v80-filter) !important;
-      backdrop-filter: var(--v80-filter) !important;
-      filter: none !important;
-      box-shadow:
-        inset 0 1px 0 var(--v80-top),
-        inset 0 -1px 0 var(--v80-bottom),
-        0 8px 26px var(--v80-shadow) !important;
-    }
-
-    input,
-    select,
-    textarea,
-    .form-input,
-    .s-form-control {
-      background: var(--v80-control) !important;
-      border-color: color-mix(in srgb, var(--v80-top) 62%, transparent) !important;
-      -webkit-backdrop-filter: none !important;
-      backdrop-filter: none !important;
-    }
-  `;
-
-  const cartCss = `
-    :host {
-      position: relative !important;
-      z-index: 42 !important;
-      pointer-events: auto !important;
-      cursor: pointer !important;
-      touch-action: manipulation !important;
-    }
-    button,
-    .s-button-element,
-    .s-button-btn,
-    [role='button'],
-    [part~='button'] {
-      position: relative !important;
-      z-index: 1 !important;
-      pointer-events: auto !important;
-      cursor: pointer !important;
-      touch-action: manipulation !important;
-    }
-    button::before,
-    button::after,
-    .s-button-element::before,
-    .s-button-element::after,
-    .s-button-btn::before,
-    .s-button-btn::after {
-      pointer-events: none !important;
-    }
-  `;
-
-  const enabled = () => Boolean(document.body?.classList.contains('veloura-glass-effect'));
-
-  function upsertStyle(root, id, css) {
-    if (!root || typeof root.querySelector !== 'function') return;
-    let style = root.querySelector(`#${id}`);
-    if (!style) {
-      style = document.createElement('style');
-      style.id = id;
-      root.appendChild(style);
-    }
-    if (style.textContent !== css) style.textContent = css;
-  }
-
-  function fixGlassHost(host) {
-    if (!enabled() || !host?.shadowRoot) return;
-    upsertStyle(host.shadowRoot, GLASS_STYLE_ID, glassCss);
-  }
-
-  function fixCartHost(host) {
-    if (!host) return;
-    host.style.setProperty('position', 'relative', 'important');
-    host.style.setProperty('z-index', '42', 'important');
-    host.style.setProperty('pointer-events', 'auto', 'important');
-    host.style.setProperty('cursor', 'pointer', 'important');
-    host.style.setProperty('touch-action', 'manipulation', 'important');
-
-    const footer = host.closest?.('.s-product-card-content-footer');
-    if (footer) {
-      footer.style.setProperty('position', 'relative', 'important');
-      footer.style.setProperty('z-index', '40', 'important');
-      footer.style.setProperty('pointer-events', 'auto', 'important');
-      footer.style.setProperty('overflow', 'visible', 'important');
-    }
-
-    if (host.shadowRoot) upsertStyle(host.shadowRoot, CART_STYLE_ID, cartCss);
-
-    if (typeof host.componentOnReady === 'function' && !host.__velouraV80ReadyBound) {
-      host.__velouraV80ReadyBound = true;
-      host.componentOnReady().then(() => {
-        if (host.shadowRoot) upsertStyle(host.shadowRoot, CART_STYLE_ID, cartCss);
-      }).catch(() => {});
-    }
-  }
-
-  function scan(scope) {
-    if (!scope || typeof scope.querySelectorAll !== 'function') return;
-
-    if (scope.matches?.(GLASS_HOSTS)) fixGlassHost(scope);
-    if (scope.matches?.('salla-add-product-button')) fixCartHost(scope);
-
-    scope.querySelectorAll(GLASS_HOSTS).forEach(fixGlassHost);
-    scope.querySelectorAll('salla-add-product-button').forEach(fixCartHost);
-
-    scope.querySelectorAll(WALK_HOSTS).forEach((host) => {
-      if (host.shadowRoot) scan(host.shadowRoot);
-      if (typeof host.componentOnReady === 'function' && !host.__velouraV80WalkBound) {
-        host.__velouraV80WalkBound = true;
-        host.componentOnReady().then(() => {
-          if (host.shadowRoot) scan(host.shadowRoot);
-        }).catch(() => {});
-      }
-    });
-  }
-
-  function scanSoon() {
-    [0, 80, 220, 500, 1000, 1800, 3200].forEach((delay) => {
-      window.setTimeout(() => scan(document), delay);
-    });
-  }
-
-  function init() {
-    scanSoon();
-    document.addEventListener('theme::ready', scanSoon);
-    document.addEventListener('click', (event) => {
-      if (event.target.closest?.('[data-login], [data-open-login], [data-veloura-localization-trigger], .veloura-login-btn')) {
-        scanSoon();
-      }
-    }, true);
-
-    if (typeof MutationObserver === 'function') {
-      const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-          mutation.addedNodes.forEach((node) => {
-            if (node.nodeType === 1) scan(node);
-          });
-        });
-      });
-      observer.observe(document.documentElement, { childList: true, subtree: true });
-    }
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
-    init();
-  }
-})();
-/* V80_RUNTIME_JS_END */
 

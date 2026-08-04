@@ -450,9 +450,6 @@ function ensureVelouraShadowStyle(root) {
         --button-background-color: var(--veloura-product-button-bg, #004d65) !important;
         --button-border-color: var(--veloura-product-button-bg, #004d65) !important;
         --button-text-color: var(--veloura-product-button-text, #fff) !important;
-        pointer-events: auto !important;
-        cursor: pointer !important;
-        touch-action: manipulation !important;
       }
       button, .s-button-element, .s-button-btn, [part~="button"] {
         display: flex !important;
@@ -472,9 +469,6 @@ function ensureVelouraShadowStyle(root) {
         color: var(--veloura-product-button-text, #fff) !important;
         opacity: 1 !important;
         visibility: visible !important;
-        pointer-events: auto !important;
-        cursor: pointer !important;
-        touch-action: manipulation !important;
       }
       button *, .s-button-element *, .s-button-btn * {
         color: var(--veloura-product-button-text, #fff) !important;
@@ -563,11 +557,6 @@ function styleVelouraActionComponent(component, depth = 0) {
   component.style.setProperty('overflow', 'hidden', 'important');
   component.style.setProperty('opacity', '1', 'important');
   component.style.setProperty('visibility', 'visible', 'important');
-  component.style.setProperty('pointer-events', 'auto', 'important');
-  component.style.setProperty('cursor', 'pointer', 'important');
-  component.style.setProperty('touch-action', 'manipulation', 'important');
-  component.style.setProperty('position', 'relative', 'important');
-  component.style.setProperty('z-index', '42', 'important');
 
   // fill/width belong to the inner salla-button, not to salla-add-product-button.
   if (tagName === 'salla-button') {
@@ -579,13 +568,6 @@ function styleVelouraActionComponent(component, depth = 0) {
   const applyShadow = () => {
     if (!component.shadowRoot) return;
     ensureVelouraShadowStyle(component.shadowRoot);
-    component.shadowRoot
-      .querySelectorAll('button,.s-button-element,.s-button-btn,[part~="button"]')
-      .forEach((button) => {
-        button.style.setProperty('pointer-events', 'auto', 'important');
-        button.style.setProperty('cursor', 'pointer', 'important');
-        button.style.setProperty('touch-action', 'manipulation', 'important');
-      });
     component.shadowRoot
       .querySelectorAll('salla-button,salla-quick-buy,salla-mini-checkout-widget')
       .forEach((child) => styleVelouraActionComponent(child, depth + 1));
