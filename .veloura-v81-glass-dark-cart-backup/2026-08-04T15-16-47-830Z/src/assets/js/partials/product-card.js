@@ -538,7 +538,6 @@ function observeVelouraActionComponent(component) {
   }
 }
 
-/* VELOURA_V81_NATIVE_CART_SOURCE */
 function styleVelouraActionComponent(component, depth = 0) {
   if (!component || depth > 5) return;
 
@@ -567,7 +566,8 @@ function styleVelouraActionComponent(component, depth = 0) {
   component.style.setProperty('pointer-events', 'auto', 'important');
   component.style.setProperty('cursor', 'pointer', 'important');
   component.style.setProperty('touch-action', 'manipulation', 'important');
-  // V81: stacking belongs to CSS; do not create a synthetic host click layer.
+  component.style.setProperty('position', 'relative', 'important');
+  component.style.setProperty('z-index', '42', 'important');
 
   // fill/width belong to the inner salla-button, not to salla-add-product-button.
   if (tagName === 'salla-button') {
@@ -1134,11 +1134,7 @@ class ProductCard extends HTMLElement {
                 <salla-add-product-button class="veloura-card-add-button"
                   product-id="${this.product.id}"
                   product-status="${this.product.status}"
-                  product-type="${this.product.type}"
-                  loader-position="center"
-                  type="button"
-                  width="wide"
-                  data-veloura-v81-native-cart="true">
+                  product-type="${this.product.type}">
                   ${this.product.status == 'sale' ? 
                       `<i class="text-base sicon-${ this.product.type == 'booking' ? 'calendar-time' : 'shopping-bag'}"></i>` : ``
                     }
