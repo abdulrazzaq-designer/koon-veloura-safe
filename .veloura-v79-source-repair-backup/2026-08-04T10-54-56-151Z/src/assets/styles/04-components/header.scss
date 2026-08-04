@@ -1576,68 +1576,162 @@ html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn img.veloura-side-menu-img {
 }
 
 /* ================================
-   Veloura Side Categories Glass Effect — V79
-   مادة واحدة من اللون الثانوي، بدون تغيير هندسة mmenu.
+   Veloura Side Categories Glass Effect
+   نفس فكرة القائمة العائمة البلورية
 ================================ */
 
 html.veloura-side-cats-glass .mm-ocd .mm-ocd__content,
-body.veloura-side-cats-glass .mm-ocd .mm-ocd__content {
-  color: var(
-    --veloura-dark-side-menu-text,
-    var(--veloura-side-cats-text, #ffffff)
-  ) !important;
+html.veloura-side-cats-glass .mm-ocd.mm-ocd--right .mm-ocd__content,
+html.veloura-side-cats-glass .mm-ocd.mm-ocd--left .mm-ocd__content {
   background:
     linear-gradient(
-      to bottom,
-      var(--veloura-glass-edge-top) 0,
-      var(--veloura-glass-edge-top) 1px,
-      transparent 1px,
-      transparent calc(100% - 1px),
-      var(--veloura-glass-edge-bottom) calc(100% - 1px),
-      var(--veloura-glass-edge-bottom) 100%
-    ),
-    var(--veloura-glass-surface) !important;
-  background-color: var(--veloura-glass-surface) !important;
-  border-top: 1px solid var(--veloura-glass-edge-top) !important;
-  border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
-  border-inline: 0 !important;
-  -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
-  backdrop-filter: var(--veloura-glass-filter) !important;
+      135deg,
+      color-mix(
+        in srgb,
+        var(--veloura-side-cats-bg, #004d65) 10%,
+        transparent
+      ),
+      color-mix(
+        in srgb,
+        var(--veloura-side-cats-bg, #004d65) 6%,
+        transparent
+      )
+    ) !important;
+
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--veloura-side-cats-bg, #004d65) 18%,
+      rgba(255, 255, 255, 0.22)
+    ) !important;
+
   box-shadow:
-    inset 0 1px 0 var(--veloura-glass-edge-top),
-    inset 0 -1px 0 var(--veloura-glass-edge-bottom),
-    0 12px 34px var(--veloura-glass-shadow) !important;
+    0 18px 45px rgba(15, 23, 42, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(15, 23, 42, 0.05) !important;
+
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
 }
 
 html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn,
 html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn ul,
-html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn .main-menu,
-body.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn,
-body.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn ul,
-body.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn .main-menu {
+html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn .main-menu {
   background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
 }
 
-html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn :is(
-  li,
-  li > a,
-  li > span,
-  a,
-  span
-),
-body.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn :is(
-  li,
-  li > a,
-  li > span,
-  a,
-  span
-) {
+html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn li,
+html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn li > a,
+html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn li > span,
+html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn a,
+html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn span {
   background: transparent !important;
-  color: inherit !important;
-  -webkit-text-fill-color: currentColor !important;
 }
+
+html.veloura-side-cats-glass .mm-ocd .mm-ocd__content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      color-mix(
+        in srgb,
+        var(--veloura-side-cats-bg, #004d65) 10%,
+        transparent
+      ),
+      transparent 48%
+    );
+}
+
+html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* التأثير البلوري للقائمة الجانبية */
+html.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content,
+body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(
+        in srgb,
+        var(--veloura-side-cats-bg, #e0f7ff) 16%,
+        rgba(255, 255, 255, 0.46)
+      ),
+      color-mix(
+        in srgb,
+        var(--veloura-side-cats-bg, #e0f7ff) 8%,
+        rgba(255, 255, 255, 0.30)
+      )
+    ) !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.34) !important;
+
+  box-shadow:
+    0 24px 60px rgba(15, 23, 42, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 0 rgba(15, 23, 42, 0.05) !important;
+
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+}
+
+html.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content::before,
+body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(255, 255, 255, 0.36),
+      transparent 44%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      color-mix(
+        in srgb,
+        var(--veloura-side-cats-bg, #e0f7ff) 18%,
+        transparent
+      ),
+      transparent 50%
+    ) !important;
+}
+
+html.veloura-side-cats-glass .mm-ocd.mm-ocd--open #mobile-menu.mm-spn,
+html.veloura-side-cats-glass .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul,
+html.veloura-side-cats-glass .mm-ocd.mm-ocd--open #mobile-menu.mm-spn .main-menu,
+body.veloura-side-cats-glass .mm-ocd.mm-ocd--open #mobile-menu.mm-spn,
+body.veloura-side-cats-glass .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul,
+body.veloura-side-cats-glass .mm-ocd.mm-ocd--open #mobile-menu.mm-spn .main-menu {
+  background: transparent !important;
+}
+
+html.veloura-side-cats-glass .mm-ocd.mm-ocd--open #mobile-menu.mm-spn,
+body.veloura-side-cats-glass .mm-ocd.mm-ocd--open #mobile-menu.mm-spn {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+html.veloura-side-cats-glass .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li,
+html.veloura-side-cats-glass .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > a,
+html.veloura-side-cats-glass .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > span,
+body.veloura-side-cats-glass .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li,
+body.veloura-side-cats-glass .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > a,
+body.veloura-side-cats-glass .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > span {
+  background: transparent !important;
+}
+
 
 /* ================================
    Veloura Safe mmenu Panel Offset Fix

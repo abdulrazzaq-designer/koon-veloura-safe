@@ -2765,34 +2765,3 @@ body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image im
   visibility: visible !important;
   border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
 }
-
-/* ========================================================================
-   Veloura V79 — native product-card cart interaction guard
-   ======================================================================== */
-
-html body .s-product-card-entry .s-product-card-content-footer {
-  position: relative !important;
-  z-index: 20 !important;
-  pointer-events: auto !important;
-}
-
-html body .s-product-card-entry
-  .s-product-card-content-footer
-  > salla-add-product-button,
-html body .s-product-card-entry
-  .s-product-card-content-footer
-  > salla-add-product-button::part(button) {
-  position: relative !important;
-  z-index: 21 !important;
-  pointer-events: auto !important;
-  cursor: pointer !important;
-  touch-action: manipulation !important;
-}
-
-html body .s-product-card-entry
-  :is(.s-product-card-content-footer, .veloura-card-bottom)::before,
-html body .s-product-card-entry
-  :is(.s-product-card-content-footer, .veloura-card-bottom)::after {
-  pointer-events: none !important;
-}
-

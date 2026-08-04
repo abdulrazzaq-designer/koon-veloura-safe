@@ -1,66 +1,42 @@
-/* ========================================================================
-   Veloura V79 — clean dark color roles
-   ======================================================================== */
-
-html.dark body,
-html body.dark {
-  background-color: var(--veloura-dark-body-bg, #010202) !important;
-  color: var(--veloura-dark-primary-text, #ffffff) !important;
+body.dark {
+  background-color: var(--veloura-dark-body-bg) !important;
+  color: var(--veloura-dark-primary-text) !important;
 }
 
-html.dark body :is(.app-inner, main),
-html body.dark :is(.app-inner, main) {
+body.dark .app-inner,
+body.dark main {
   background: transparent !important;
-  color: inherit !important;
+  color: var(--veloura-dark-primary-text) !important;
 }
 
-/* Generic sections use the dark secondary background.
-   Product cards are deliberately excluded. */
-html.dark body :is(
-  .veloura-testimonials__card,
-  .veloura-store-features__item,
-  .veloura-animated-articles__card,
-  .veloura-before-after__card,
-  .veloura-quick-links__card,
-  .veloura-about__box,
-  .veloura-about__feature,
-  .veloura-about__stat,
-  .veloura-purchase-steps__item,
-  .veloura-faq__item,
-  .veloura-branches__tab,
-  .veloura-brands__item,
-  .article-card,
-  .blog-card,
-  .s-blog-card
-),
-html body.dark :is(
-  .veloura-testimonials__card,
-  .veloura-store-features__item,
-  .veloura-animated-articles__card,
-  .veloura-before-after__card,
-  .veloura-quick-links__card,
-  .veloura-about__box,
-  .veloura-about__feature,
-  .veloura-about__stat,
-  .veloura-purchase-steps__item,
-  .veloura-faq__item,
-  .veloura-branches__tab,
-  .veloura-brands__item,
-  .article-card,
-  .blog-card,
-  .s-blog-card
-) {
-  background: var(--veloura-dark-secondary-bg, #010612) !important;
-  background-color: var(--veloura-dark-secondary-bg, #010612) !important;
-  background-image: none !important;
-  color: var(--veloura-dark-primary-text, #ffffff) !important;
-  border-width: 0 !important;
-  border-color: transparent !important;
-  outline: 0 !important;
+/* الخلفية الثانوية للأقسام والبطاقات */
+body.dark .veloura-testimonials__card,
+body.dark .veloura-store-features__item,
+body.dark .veloura-animated-articles__card,
+body.dark .veloura-before-after__card,
+body.dark .veloura-quick-links__card,
+body.dark .veloura-about__box,
+body.dark .veloura-purchase-steps__item,
+body.dark .veloura-faq__item {
+  background-color: var(--veloura-dark-secondary-bg) !important;
+  color: var(--veloura-dark-primary-text) !important;
+  border-color: var(--veloura-dark-product-card-border) !important;
 }
 
-/* Primary and secondary text roles; avoid global span/[class*=text] rules. */
-html.dark body :is(
+
+/* الهيدر والفوتر */
+body.dark header,
+body.dark .main-menu,
+body.dark footer,
+body.dark .store-footer {
+  background: var(--veloura-dark-secondary-bg) !important;
+  color: var(--veloura-dark-primary-text) !important;
+}
+
+/* النصوص */
+body.dark {
+  color: var(--veloura-dark-primary-text) !important;
+
   h1,
   h2,
   h3,
@@ -71,245 +47,54 @@ html.dark body :is(
   b,
   .title,
   .section-title,
-  .s-block__title
-),
-html body.dark :is(
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  strong,
-  b,
-  .title,
-  .section-title,
-  .s-block__title
-) {
-  color: var(--veloura-dark-primary-text, #ffffff);
-}
+  .s-block__title,
+  [class*="title"] {
+    color: var(--veloura-dark-primary-text) !important;
+  }
 
-html.dark body :is(
+  p,
+  small,
+  span,
+  li,
   .subtitle,
   .description,
   .section-subtitle,
-  .s-block__description
-),
-html body.dark :is(
-  .subtitle,
-  .description,
-  .section-subtitle,
-  .s-block__description
-) {
-  color: var(--veloura-dark-secondary-text, #d7e0e8);
-}
+  .s-block__description,
+  [class*="desc"],
+  [class*="subtitle"],
+  [class*="text"] {
+    color: var(--veloura-dark-secondary-text) !important;
+  }
 
-/* Product cards: one dedicated background across all sections. */
-html.dark body :is(
-  .s-product-card-entry,
-  product-card,
-  .product-entry
-),
-html body.dark :is(
-  .s-product-card-entry,
-  product-card,
-  .product-entry
-) {
-  background: var(--veloura-dark-product-card-bg, #111111) !important;
-  background-color: var(--veloura-dark-product-card-bg, #111111) !important;
-  color: var(--veloura-dark-product-card-text, #ffffff) !important;
-  border-color: var(--veloura-dark-product-card-border, #242424) !important;
-}
+  .s-product-card-content-title,
+  .s-product-card-content-title a {
+    color: var(--veloura-dark-product-card-text) !important;
+  }
 
-html.dark body .s-product-card-entry :is(
-  .s-product-card-image,
-  .s-product-card-image > a,
-  .s-product-card-image-cover,
-  .s-product-card-content,
-  .s-product-card-content-main,
-  .s-product-card-content-sub,
-  .s-product-card-content-footer,
-  .veloura-card-bottom
-),
-html body.dark .s-product-card-entry :is(
-  .s-product-card-image,
-  .s-product-card-image > a,
-  .s-product-card-image-cover,
-  .s-product-card-content,
-  .s-product-card-content-main,
-  .s-product-card-content-sub,
-  .s-product-card-content-footer,
-  .veloura-card-bottom
-) {
-  background: var(--veloura-dark-product-card-bg, #111111) !important;
-  background-color: var(--veloura-dark-product-card-bg, #111111) !important;
-  background-image: none !important;
-}
-
-html.dark body .s-product-card-entry
-  :is(.s-product-card-content-title, .s-product-card-content-title a),
-html body.dark .s-product-card-entry
-  :is(.s-product-card-content-title, .s-product-card-content-title a) {
-  color: var(--veloura-dark-primary-text, #ffffff) !important;
-  opacity: 1 !important;
-}
-
-html.dark body .s-product-card-entry .s-product-card-content-subtitle,
-html body.dark .s-product-card-entry .s-product-card-content-subtitle {
-  color: var(--veloura-dark-secondary-text, #d7e0e8) !important;
-  opacity: 1 !important;
-}
-
-html.dark body .s-product-card-entry :is(
   .s-product-card-price,
   .s-product-card-sale-price,
-  .s-product-card-regular-price,
-  [class*='price'],
-  [class*='Price']
-),
-html body.dark .s-product-card-entry :is(
-  .s-product-card-price,
-  .s-product-card-sale-price,
-  .s-product-card-regular-price,
-  [class*='price'],
-  [class*='Price']
-) {
-  color: var(--veloura-dark-product-card-text, #ffffff) !important;
+  .s-product-card-regular-price {
+    color: var(--veloura-dark-product-card-text) !important;
+  }
 }
 
-/* Header text/icons use the dark primary text setting only. */
-html.dark body .store-header.veloura-top-enabled,
-html body.dark .store-header.veloura-top-enabled {
-  --veloura-top-text: var(--veloura-dark-primary-text, #ffffff) !important;
-  color: var(--veloura-dark-primary-text, #ffffff) !important;
+/* كروت المنتجات */
+body.dark .s-product-card-entry,
+body.dark .s-product-card-content,
+body.dark product-card,
+body.dark .product-entry {
+  background: var(--veloura-dark-product-card-bg) !important;
+  color: var(--veloura-dark-product-card-text) !important;
+  border-color: var(--veloura-dark-product-card-border) !important;
 }
 
-html.dark body .store-header.veloura-top-enabled :where(
-  .veloura-header-icon,
-  .veloura-header-side a,
-  .veloura-header-side button,
-  .veloura-menu-links-wrap a,
-  .veloura-cart-summary,
-  .veloura-cart-custom-icon,
-  .veloura-dark-toggle,
-  .veloura-search-toggle,
-  .veloura-menu-trigger-mobile,
-  salla-cart-summary
-),
-html body.dark .store-header.veloura-top-enabled :where(
-  .veloura-header-icon,
-  .veloura-header-side a,
-  .veloura-header-side button,
-  .veloura-menu-links-wrap a,
-  .veloura-cart-summary,
-  .veloura-cart-custom-icon,
-  .veloura-dark-toggle,
-  .veloura-search-toggle,
-  .veloura-menu-trigger-mobile,
-  salla-cart-summary
-) {
-  color: var(--veloura-dark-primary-text, #ffffff) !important;
+body.dark .s-product-card-content-title a,
+body.dark .s-product-card-price,
+body.dark .s-product-card-sale-price {
+  color: var(--veloura-dark-product-card-text) !important;
 }
 
-/* Solid side menu; its glass mode is owned by veloura-glass.scss. */
-html.dark body .mm-ocd .mm-ocd__content,
-html body.dark .mm-ocd .mm-ocd__content {
-  background: var(
-    --veloura-dark-side-menu-bg,
-    var(--veloura-dark-secondary-bg, #010612)
-  ) !important;
-  color: var(--veloura-dark-side-menu-text, #ffffff) !important;
-}
-
-html.dark.veloura-side-cats-glass body .mm-ocd .mm-ocd__content,
-html body.dark.veloura-side-cats-glass .mm-ocd .mm-ocd__content {
-  background:
-    linear-gradient(
-      to bottom,
-      var(--veloura-glass-edge-top) 0,
-      var(--veloura-glass-edge-top) 1px,
-      transparent 1px,
-      transparent calc(100% - 1px),
-      var(--veloura-glass-edge-bottom) calc(100% - 1px),
-      var(--veloura-glass-edge-bottom) 100%
-    ),
-    var(--veloura-glass-surface) !important;
-}
-
-/* Footer is one visual piece and preserves its existing radius variable. */
-html.dark body .store-footer.veloura-footer-enabled,
-html body.dark .store-footer.veloura-footer-enabled {
-  background: transparent !important;
-  color: var(--veloura-dark-primary-text, #ffffff) !important;
-  overflow: visible !important;
-}
-
-html.dark body .store-footer.veloura-footer-enabled
-  :is(.store-footer__inner, .veloura-footer-main),
-html body.dark .store-footer.veloura-footer-enabled
-  :is(.store-footer__inner, .veloura-footer-main) {
-  --veloura-footer-bg: var(
-    --veloura-dark-footer-bg,
-    var(--veloura-dark-secondary-bg, #010612)
-  );
-  --veloura-footer-title: var(--veloura-dark-primary-text, #ffffff);
-  --veloura-footer-text: var(--veloura-dark-secondary-text, #d7e0e8);
-  --veloura-footer-link: var(--veloura-dark-secondary-text, #d7e0e8);
-
-  background: var(--veloura-footer-bg) !important;
-  background-color: var(--veloura-footer-bg) !important;
-  border-radius:
-    var(--veloura-footer-real-radius)
-    var(--veloura-footer-real-radius)
-    0
-    0 !important;
-}
-
-html.dark body .store-footer.veloura-footer-enabled .veloura-footer-bottom,
-html body.dark .store-footer.veloura-footer-enabled .veloura-footer-bottom {
-  background: var(
-    --veloura-dark-footer-bg,
-    var(--veloura-dark-secondary-bg, #010612)
-  ) !important;
-  background-color: var(
-    --veloura-dark-footer-bg,
-    var(--veloura-dark-secondary-bg, #010612)
-  ) !important;
-  color: var(--veloura-dark-secondary-text, #d7e0e8) !important;
-  border-top-color: transparent !important;
-  border-radius:
-    0
-    0
-    var(--veloura-footer-real-radius)
-    var(--veloura-footer-real-radius) !important;
-}
-
-/* Forms */
-html.dark body :is(
-  input:not([type='color']),
-  textarea,
-  select,
-  .s-form-control
-),
-html body.dark :is(
-  input:not([type='color']),
-  textarea,
-  select,
-  .s-form-control
-) {
-  background-color: var(--veloura-dark-secondary-bg, #010612) !important;
-  color: var(--veloura-dark-primary-text, #ffffff) !important;
-  border-color: rgba(255, 255, 255, .10) !important;
-}
-
-html.dark body .veloura-search-surface :is(input, textarea),
-html body.dark .veloura-search-surface :is(input, textarea) {
-  background: transparent !important;
-  background-color: transparent !important;
-  border-color: transparent !important;
-}
-
-/* Dark toggle */
+/* زر التبديل */
 .veloura-dark-toggle--right {
   right: 16px;
 }
@@ -330,6 +115,7 @@ body.dark .veloura-dark-toggle__icon--moon {
 body:not(.dark) .veloura-dark-toggle__icon--sun {
   display: none;
 }
+
 
 
 /* ================================
