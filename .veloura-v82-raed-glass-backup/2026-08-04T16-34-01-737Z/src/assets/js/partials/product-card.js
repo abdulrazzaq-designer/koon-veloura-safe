@@ -538,7 +538,7 @@ function observeVelouraActionComponent(component) {
   }
 }
 
-/* VELOURA_V82_NATIVE_CART_SOURCE */
+/* VELOURA_V81_NATIVE_CART_SOURCE */
 function styleVelouraActionComponent(component, depth = 0) {
   if (!component || depth > 5) return;
 
@@ -1132,12 +1132,13 @@ class ProductCard extends HTMLElement {
             ${!this.hideAddBtn ?
               `<div class="s-product-card-content-footer veloura-card-action-row gap-2">
                 <salla-add-product-button class="veloura-card-add-button"
-                  fill="outline"
-                  width="wide"
                   product-id="${this.product.id}"
-                  product-status="${this.effectiveStatus}"
+                  product-status="${this.product.status}"
                   product-type="${this.product.type}"
-                  data-veloura-v82-native-cart="true">
+                  loader-position="center"
+                  type="button"
+                  width="wide"
+                  data-veloura-v81-native-cart="true">
                   ${this.product.status == 'sale' ? 
                       `<i class="text-base sicon-${ this.product.type == 'booking' ? 'calendar-time' : 'shopping-bag'}"></i>` : ``
                     }
