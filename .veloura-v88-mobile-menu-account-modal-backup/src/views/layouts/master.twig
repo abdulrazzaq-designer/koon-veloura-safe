@@ -3137,7 +3137,6 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     data-vmfm-page-slug="{{ page.slug|default('')|e('html_attr') }}"
     data-vmfm-account-url="{{ (store.url|default('') ~ '/profile')|e('html_attr') }}"
     data-vmfm-active-size="{{ vmfm_active_mode }}"
-    data-vmfm-controller="v88"
     class="veloura-mobile-floating-menu veloura-mobile-floating-menu--{{ vmfm_position }}{% if vmfm_position == 'full_width' %} veloura-mobile-floating-menu--full-width{% endif %}{% if vmfm_position == 'pill' %} veloura-mobile-floating-menu--pill{% endif %} veloura-mobile-floating-menu--active-{{ vmfm_active_mode }}"
     aria-label="قائمة الجوال العائمة"
     style="
@@ -3190,12 +3189,18 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         </a>
       {% endif %}
 
-      {# V88: do not read user.type in Twig. The account state is resolved safely at runtime. #}
       {% if vmfm_show_account %}
-        <button type="button" class="veloura-mobile-floating-menu__item" data-vmfm-match="account" data-vmfm-action="account" aria-label="{{ vmfm_account_label|e }}">
-          <i class="sicon-user" aria-hidden="true"></i>
-          {% if vmfm_show_labels %}<span>{{ vmfm_account_label }}</span>{% endif %}
-        </button>
+        {% if user.type == 'user' %}
+          <a href="{{ store.url|default('') }}/profile" class="veloura-mobile-floating-menu__item" data-vmfm-match="account" aria-label="{{ vmfm_account_label|e }}">
+            <i class="sicon-user" aria-hidden="true"></i>
+            {% if vmfm_show_labels %}<span>{{ vmfm_account_label }}</span>{% endif %}
+          </a>
+        {% else %}
+          <button type="button" class="veloura-mobile-floating-menu__item" data-vmfm-match="account" data-vmfm-action="login" aria-label="{{ vmfm_account_label|e }}">
+            <i class="sicon-user" aria-hidden="true"></i>
+            {% if vmfm_show_labels %}<span>{{ vmfm_account_label }}</span>{% endif %}
+          </button>
+        {% endif %}
       {% endif %}
 
       {% for item in vmfm_custom_items %}
