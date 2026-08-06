@@ -40,6 +40,7 @@
 @import './04-components/filters';
 @import './04-components/add-product-toast';
 @import './04-components/quick-view';
+@import './04-components/mobile-floating-menu';
 @import '04-components/veloura-loader';
 
 @import './05-utilities/chat-bots';
@@ -53,7 +54,9 @@
 @import 'mmenu-light/dist/mmenu-light.css';
 
 @import './05-utilities/veloura-header-tabs-v18';
+@import './05-utilities/veloura-mobile-menu-v22';
 
+@import './05-utilities/veloura-mobile-menu-v23';
 
 @import './05-utilities/veloura-global-overlays';
 
@@ -79,4 +82,6 @@
 
 @import './05-utilities/veloura-exact-dark-light-plus3-v86';
 
-@import './04-components/mobile-floating-menu';
+@import './05-utilities/veloura-mobile-floating-menu-final-v87';
+
+@import './05-utilities/veloura-mobile-menu-toggle-links-v89';

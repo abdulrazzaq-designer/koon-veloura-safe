@@ -1,0 +1,23 @@
+{
+  "version": "V90",
+  "created_at": "2026-08-06T23:22:11.218Z",
+  "theme_root": "D:\\salla-theme\\koon-veloura-safe",
+  "files": {
+    "src/assets/styles/app.scss": {
+      "sha256": "69b54b7b76c75280891b87513e4df3ae7f13d39ce671e4003d087200d046a806",
+      "bytes": 2859
+    },
+    "src/assets/styles/04-components/mobile-floating-menu.scss": {
+      "sha256": "8875181d8aa4b1cbbc13212bd6e5134697a903e254a774bf544d7f32b9cd2d5f",
+      "bytes": 32924
+    },
+    "src/assets/js/mobile-floating-menu.js": {
+      "sha256": "71d5949c1b0749342cacd90f264be9ed350b5a4b01efdb194e8ec8e6c28194e1",
+      "bytes": 30882
+    },
+    "src/views/layouts/master.twig": {
+      "sha256": "0e5fd1b8db3a93f3b3e4ce7d8b70e51b20050ed298ec4bd39fb2fc348c9f344c",
+      "bytes": 204291
+    }
+  }
+}
