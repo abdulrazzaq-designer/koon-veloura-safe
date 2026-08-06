@@ -1,4 +1,4 @@
-import './partials/veloura-scoped-glass-v84';
+import './partials/veloura-unified-glass-v83';
 import initVelouraCartBanners from './partials/veloura-cart-banners';
 import MobileMenu from 'mmenu-light';
 import './mobile-floating-menu';

@@ -1,0 +1,223 @@
+/* ========================================================================
+   Veloura V84 — class-scoped glass and dark roles
+
+   Contract:
+   - No html.dark/body.dark selector owns component colors.
+   - JavaScript marks only approved visual surfaces.
+   - Every marked surface receives exactly one mode class:
+       .veloura-v84-glass--light / .veloura-v84-glass--dark
+   - Product-card badges, promotional labels and solid action buttons are never
+     included in the glass selector set.
+   ======================================================================== */
+
+:root {
+  /* Same translucency approved on the header, with a roughly 4% darker silver. */
+  --veloura-v84-light-surface: rgba(228, 231, 235, .66);
+  --veloura-v84-light-edge-top: rgba(100, 116, 139, .12);
+  --veloura-v84-light-edge-bottom: rgba(100, 116, 139, .06);
+  --veloura-v84-light-shadow: rgba(15, 23, 42, .045);
+
+  /* Deliberately quiet white edges in dark mode. */
+  --veloura-v84-dark-edge-top: rgba(255, 255, 255, .07);
+  --veloura-v84-dark-edge-bottom: rgba(255, 255, 255, .03);
+  --veloura-v84-dark-shadow: rgba(0, 0, 0, .16);
+
+  --veloura-v84-filter: var(
+    --veloura-v59-glass-filter,
+    var(--veloura-v14-filter, blur(22px) saturate(118%))
+  );
+}
+
+/* Theme tokens live only on marked nodes. */
+.veloura-v84-theme {
+  --veloura-v84-surface: var(--veloura-v84-light-surface);
+  --veloura-v84-edge-top: var(--veloura-v84-light-edge-top);
+  --veloura-v84-edge-bottom: var(--veloura-v84-light-edge-bottom);
+  --veloura-v84-shadow: var(--veloura-v84-light-shadow);
+  --veloura-v84-primary-text: var(--color-text, #111827);
+  --veloura-v84-secondary-text: var(--color-grey, #64748b);
+}
+
+.veloura-v84-theme.veloura-v84-glass--dark {
+  --veloura-v84-dark-source: var(--veloura-dark-secondary-bg, #010612);
+  --veloura-v84-surface: color-mix(
+    in srgb,
+    var(--veloura-v84-dark-source) 92%,
+    transparent
+  );
+  --veloura-v84-edge-top: var(--veloura-v84-dark-edge-top);
+  --veloura-v84-edge-bottom: var(--veloura-v84-dark-edge-bottom);
+  --veloura-v84-shadow: var(--veloura-v84-dark-shadow);
+  --veloura-v84-primary-text: var(--veloura-dark-primary-text, #ffffff);
+  --veloura-v84-secondary-text: var(--veloura-dark-secondary-text, #cccccc);
+  color-scheme: dark;
+}
+
+/* Side menu intentionally uses its dedicated settings, not the site secondary. */
+.veloura-v84-theme.veloura-v84-side-menu.veloura-v84-glass--dark {
+  --veloura-v84-dark-source: var(--veloura-dark-side-menu-bg, #18181b);
+  --veloura-v84-primary-text: var(--veloura-dark-side-menu-text, #ffffff);
+  --veloura-v84-secondary-text: color-mix(
+    in srgb,
+    var(--veloura-dark-side-menu-text, #ffffff) 72%,
+    transparent
+  );
+}
+
+.veloura-v84-glass {
+  box-sizing: border-box !important;
+  background: var(--veloura-v84-surface) !important;
+  background-color: var(--veloura-v84-surface) !important;
+  background-image: none !important;
+  border-top: 1px solid var(--veloura-v84-edge-top) !important;
+  border-bottom: 1px solid var(--veloura-v84-edge-bottom) !important;
+  border-inline-start: 0 !important;
+  border-inline-end: 0 !important;
+  -webkit-backdrop-filter: var(--veloura-v84-filter) !important;
+  backdrop-filter: var(--veloura-v84-filter) !important;
+  box-shadow: 0 8px 24px var(--veloura-v84-shadow) !important;
+  filter: none !important;
+}
+
+/* Header outer surface owns the material; Theme Raed/Veloura internals are clear. */
+.veloura-v84-header.veloura-v84-glass :is(
+  .store-header,
+  #mainnav.main-nav-container,
+  #mainnav.main-nav-container > .inner,
+  .veloura-header-container,
+  .veloura-header-grid,
+  .veloura-home-tabs
+) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+.veloura-v84-header.veloura-v84-glass--dark :is(
+  .veloura-header-icon,
+  .veloura-header-icon i,
+  .veloura-cart-custom-icon,
+  .veloura-cart-custom-icon i,
+  .veloura-home-tabs a,
+  .veloura-home-tabs button
+) {
+  color: var(--veloura-v84-primary-text) !important;
+}
+
+/* Search wrapper is the sole visible material for inline/detached search. */
+.veloura-search-surface.veloura-v84-glass {
+  overflow: hidden;
+  color: var(--veloura-v84-primary-text) !important;
+
+  --s-search-bg: transparent !important;
+  --s-search-input-bg: transparent !important;
+  --s-search-input-background: transparent !important;
+  --search-input-bg: transparent !important;
+  --search-background: transparent !important;
+}
+
+.veloura-search-surface.veloura-v84-glass > salla-search,
+.veloura-search-surface.veloura-v84-glass salla-search.veloura-header-search-component {
+  display: block !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: inherit !important;
+}
+
+/* Floating mobile menu: dark mode changes only its own neutral navigation text. */
+.veloura-mobile-floating-menu__inner.veloura-v84-glass--dark
+  .veloura-mobile-floating-menu__item,
+.veloura-mobile-floating-menu__inner.veloura-v84-glass--dark
+  .veloura-mobile-floating-menu__item :is(i, span, svg) {
+  color: var(--veloura-v84-primary-text) !important;
+  fill: currentColor !important;
+}
+
+/* Remove the old extra highlight layer that made the floating bar brighter. */
+.veloura-mobile-floating-menu__inner.veloura-v84-glass::before,
+.veloura-mobile-floating-menu__inner.veloura-v84-glass::after {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Side menu uses its dedicated background/text settings only. */
+.mm-ocd__content.veloura-v84-side-menu.veloura-v84-glass--dark,
+.mm-ocd__content.veloura-v84-side-menu.veloura-v84-glass--dark #mobile-menu,
+.mm-ocd__content.veloura-v84-side-menu.veloura-v84-glass--dark #mobile-menu ul {
+  color: var(--veloura-v84-primary-text) !important;
+}
+
+.mm-ocd__content.veloura-v84-side-menu.veloura-v84-glass--dark
+  #mobile-menu :is(a, li > span, .mm-spn__title),
+.mm-ocd__content.veloura-v84-side-menu.veloura-v84-glass--dark
+  #mobile-menu :is(a, li > span, .mm-spn__title) :is(span, i, svg) {
+  color: var(--veloura-v84-primary-text) !important;
+  fill: currentColor !important;
+}
+
+/* Custom quick-view text roles. Buttons/prices keep their own configured colors. */
+.veloura-quick-view-modal__dialog.veloura-v84-glass--dark
+  .veloura-quick-view-modal__title,
+.veloura-qv-full__dialog.veloura-v84-glass--dark
+  :is(.veloura-qv-full__title, h1, h2, h3) {
+  color: var(--veloura-v84-primary-text) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+.veloura-quick-view-modal__dialog.veloura-v84-glass--dark
+  :is(.veloura-quick-view-modal__description, .veloura-quick-view-modal__loading),
+.veloura-qv-full__dialog.veloura-v84-glass--dark
+  :is(.veloura-qv-full__description, .veloura-qv-full__loading) {
+  color: var(--veloura-v84-secondary-text) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+/* Keep inner content layers clear only inside surfaces explicitly marked by V84. */
+.veloura-v84-panel.veloura-v84-glass > :is(
+  .veloura-popup__content,
+  .veloura-popup__image,
+  .veloura-quick-view-modal__content,
+  .veloura-quick-view-modal__media,
+  .veloura-qv-full__content,
+  .veloura-qv-full__media
+) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Full-screen overlays dim only; they are not glass surfaces. */
+body.veloura-glass-effect :is(
+  .s-salla-modal-overlay,
+  .s-modal-overlay,
+  .s-modal-backdrop,
+  .modal-backdrop,
+  .veloura-qv-full__overlay,
+  .veloura-quick-view-modal__overlay,
+  .veloura-popup__overlay,
+  .swal2-container.swal2-backdrop-show
+) {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+/* Product-card promo labels and solid actions receive no V84 selectors. */
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .veloura-v84-theme.veloura-v84-glass--light {
+    --veloura-v84-surface: #e4e7eb;
+  }
+
+  .veloura-v84-theme.veloura-v84-glass--dark {
+    --veloura-v84-surface: var(--veloura-v84-dark-source, #010612);
+  }
+}
