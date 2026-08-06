@@ -1,0 +1,208 @@
+/* ==========================================================================
+   Veloura Mobile Floating Menu V87 - final isolated controller
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  html body .veloura-mobile-floating-menu {
+    inset-inline: 0 !important;
+    pointer-events: none !important;
+    overflow: visible !important;
+  }
+
+  html body .veloura-mobile-floating-menu__inner {
+    position: relative !important;
+    isolation: isolate !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: stretch !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+  }
+
+  /* Connected mode: the surface itself reaches the physical screen bottom. */
+  html body .veloura-mobile-floating-menu.veloura-mobile-floating-menu--full_width,
+  html body .veloura-mobile-floating-menu.veloura-mobile-floating-menu--full-width,
+  html body.veloura-mobile-floating-menu-position-full_width .veloura-mobile-floating-menu {
+    inset-block-end: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: calc(var(--veloura-mobile-floating-menu-height, 56px) + env(safe-area-inset-bottom, 0px)) !important;
+    min-height: calc(var(--veloura-mobile-floating-menu-height, 56px) + env(safe-area-inset-bottom, 0px)) !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body .veloura-mobile-floating-menu.veloura-mobile-floating-menu--full_width .veloura-mobile-floating-menu__inner,
+  html body .veloura-mobile-floating-menu.veloura-mobile-floating-menu--full-width .veloura-mobile-floating-menu__inner,
+  html body.veloura-mobile-floating-menu-position-full_width .veloura-mobile-floating-menu__inner {
+    width: 100% !important;
+    max-width: none !important;
+    height: calc(var(--veloura-mobile-floating-menu-height, 56px) + env(safe-area-inset-bottom, 0px)) !important;
+    min-height: calc(var(--veloura-mobile-floating-menu-height, 56px) + env(safe-area-inset-bottom, 0px)) !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 max(8px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(8px, env(safe-area-inset-left, 0px)) !important;
+    border-radius: var(--veloura-mobile-floating-menu-radius, 24px) var(--veloura-mobile-floating-menu-radius, 24px) 0 0 !important;
+    border-bottom: 0 !important;
+  }
+
+  /* Floating capsule keeps its own bottom spacing. */
+  html body .veloura-mobile-floating-menu.veloura-mobile-floating-menu--pill,
+  html body.veloura-mobile-floating-menu-position-pill .veloura-mobile-floating-menu {
+    bottom: calc(var(--veloura-mobile-floating-menu-bottom, 18px) + env(safe-area-inset-bottom, 0px)) !important;
+    height: var(--veloura-mobile-floating-menu-height, 56px) !important;
+    min-height: var(--veloura-mobile-floating-menu-height, 56px) !important;
+    max-height: var(--veloura-mobile-floating-menu-height, 56px) !important;
+    padding-inline: var(--veloura-home-container-padding, var(--veloura-global-spacing, 14px)) !important;
+  }
+
+  html body .veloura-mobile-floating-menu.veloura-mobile-floating-menu--pill .veloura-mobile-floating-menu__inner,
+  html body.veloura-mobile-floating-menu-position-pill .veloura-mobile-floating-menu__inner {
+    width: 100% !important;
+    max-width: min(430px, 100%) !important;
+    height: var(--veloura-mobile-floating-menu-height, 56px) !important;
+    min-height: var(--veloura-mobile-floating-menu-height, 56px) !important;
+    max-height: var(--veloura-mobile-floating-menu-height, 56px) !important;
+    margin-inline: auto !important;
+    padding: 0 6px !important;
+    border-radius: var(--veloura-mobile-floating-menu-radius, 999px) !important;
+  }
+
+  /* Every normal item uses the complete usable bar height. */
+  html body .veloura-mobile-floating-menu__item,
+  html body .veloura-mobile-floating-menu__item:hover,
+  html body .veloura-mobile-floating-menu__item:focus,
+  html body .veloura-mobile-floating-menu__item:active {
+    position: relative !important;
+    inset: auto !important;
+    display: flex !important;
+    flex: 1 1 0 !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: stretch !important;
+    width: auto !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 1px !important;
+    padding: 4px 3px !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    translate: none !important;
+    rotate: none !important;
+    scale: none !important;
+    transform: none !important;
+    transform-origin: center center !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Icons-only mode: the icon is mathematically centered regardless of height. */
+  html body.veloura-mobile-floating-menu-no-labels .veloura-mobile-floating-menu__item {
+    align-self: stretch !important;
+    justify-content: center !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    margin-block: 0 !important;
+    padding-block: 0 !important;
+    gap: 0 !important;
+  }
+
+  html body.veloura-mobile-floating-menu-no-labels .veloura-mobile-floating-menu__item i {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+  }
+
+  html body.veloura-mobile-floating-menu-no-labels .veloura-mobile-floating-menu__item span {
+    display: none !important;
+  }
+
+  /* Shared active tile: background + the small bottom indicator. */
+  html body .veloura-mobile-floating-menu__item.is-active,
+  html body .veloura-mobile-floating-menu__item[aria-current='page'] {
+    z-index: 5 !important;
+    align-self: center !important;
+    height: calc(100% - 10px) !important;
+    min-height: calc(100% - 10px) !important;
+    max-height: calc(100% - 10px) !important;
+    margin: 5px 1px !important;
+    padding: 3px !important;
+    border-radius: min(20px, var(--veloura-mobile-floating-menu-radius, 20px)) !important;
+    background: var(--veloura-mobile-floating-menu-active, #004d65) !important;
+    background-color: var(--veloura-mobile-floating-menu-active, #004d65) !important;
+    color: #fff !important;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, .12) !important;
+    transform-origin: center center !important;
+    overflow: visible !important;
+  }
+
+  html body .veloura-mobile-floating-menu__item.is-active i,
+  html body .veloura-mobile-floating-menu__item.is-active span,
+  html body .veloura-mobile-floating-menu__item[aria-current='page'] i,
+  html body .veloura-mobile-floating-menu__item[aria-current='page'] span {
+    color: #fff !important;
+  }
+
+  html body .veloura-mobile-floating-menu__item.is-active::before,
+  html body .veloura-mobile-floating-menu__item[aria-current='page']::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  html body .veloura-mobile-floating-menu__item.is-active::after,
+  html body .veloura-mobile-floating-menu__item[aria-current='page']::after {
+    content: '' !important;
+    display: block !important;
+    position: absolute !important;
+    inset-inline-start: 34% !important;
+    inset-inline-end: 34% !important;
+    bottom: -5px !important;
+    width: auto !important;
+    height: 3px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 999px 999px 0 0 !important;
+    background: var(--veloura-mobile-floating-menu-active, #004d65) !important;
+    box-shadow: none !important;
+    transform: none !important;
+    pointer-events: none !important;
+  }
+
+  /* Option 1: background only, completely inside the bar. */
+  html body .veloura-mobile-floating-menu--active-none .veloura-mobile-floating-menu__item.is-active,
+  html body .veloura-mobile-floating-menu--active-none .veloura-mobile-floating-menu__item[aria-current='page'] {
+    transform: none !important;
+  }
+
+  /* Option 2: a small and controlled lift. */
+  html body .veloura-mobile-floating-menu--active-soft .veloura-mobile-floating-menu__item.is-active,
+  html body .veloura-mobile-floating-menu--active-soft .veloura-mobile-floating-menu__item[aria-current='page'] {
+    transform: translateY(-4px) scale(1.035) !important;
+  }
+
+  html body .veloura-mobile-floating-menu--active-soft .veloura-mobile-floating-menu__item.is-active::after,
+  html body .veloura-mobile-floating-menu--active-soft .veloura-mobile-floating-menu__item[aria-current='page']::after {
+    bottom: -9px !important;
+  }
+
+  /* Option 3: a clearly raised active tile above the bar. */
+  html body .veloura-mobile-floating-menu--active-strong .veloura-mobile-floating-menu__item.is-active,
+  html body .veloura-mobile-floating-menu--active-strong .veloura-mobile-floating-menu__item[aria-current='page'] {
+    transform: translateY(-9px) scale(1.075) !important;
+    box-shadow: 0 14px 26px rgba(0, 0, 0, .18) !important;
+  }
+
+  html body .veloura-mobile-floating-menu--active-strong .veloura-mobile-floating-menu__item.is-active::after,
+  html body .veloura-mobile-floating-menu--active-strong .veloura-mobile-floating-menu__item[aria-current='page']::after {
+    bottom: -14px !important;
+  }
+}

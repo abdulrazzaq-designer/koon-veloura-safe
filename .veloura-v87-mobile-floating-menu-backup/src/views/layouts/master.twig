@@ -1028,17 +1028,6 @@
   {% set vmfm_active_scale = vmfm_active_scale_raw %}
 {% endif %}
 
-{# VELOURA MOBILE FLOATING MENU V87 ACTIVE MODE START #}
-{% set vmfm_active_scale_number = vmfm_active_scale + 0 %}
-{% if vmfm_active_scale_number <= 1.001 %}
-  {% set vmfm_active_mode = 'none' %}
-{% elseif vmfm_active_scale_number <= 1.065 %}
-  {% set vmfm_active_mode = 'soft' %}
-{% else %}
-  {% set vmfm_active_mode = 'strong' %}
-{% endif %}
-{# VELOURA MOBILE FLOATING MENU V87 ACTIVE MODE END #}
-
 {% set vmfm_show_home_raw = theme.settings.get('veloura_mobile_floating_menu_show_home_2026', true) %}
 {% if vmfm_show_home_raw.value is defined %}{% set vmfm_show_home_raw = vmfm_show_home_raw.value %}{% endif %}
 {% set vmfm_show_home = vmfm_show_home_raw == true or vmfm_show_home_raw == 'true' or vmfm_show_home_raw == 1 or vmfm_show_home_raw == '1' or vmfm_show_home_raw == 'on' %}
@@ -3133,11 +3122,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 {% if vmfm_enabled and not veloura_is_product_page %}
   <nav
     data-login-url="{{ (store.url|default('') ~ '/login')|e('html_attr') }}"
-    data-vmfm-store-url="{{ store.url|default('')|e('html_attr') }}"
-    data-vmfm-page-slug="{{ page.slug|default('')|e('html_attr') }}"
-    data-vmfm-account-url="{{ (store.url|default('') ~ '/profile')|e('html_attr') }}"
-    data-vmfm-active-size="{{ vmfm_active_mode }}"
-    class="veloura-mobile-floating-menu veloura-mobile-floating-menu--{{ vmfm_position }}{% if vmfm_position == 'full_width' %} veloura-mobile-floating-menu--full-width{% endif %}{% if vmfm_position == 'pill' %} veloura-mobile-floating-menu--pill{% endif %} veloura-mobile-floating-menu--active-{{ vmfm_active_mode }}"
+    class="veloura-mobile-floating-menu veloura-mobile-floating-menu--{{ vmfm_position }}{% if vmfm_position == 'full_width' %} veloura-mobile-floating-menu--full-width{% endif %}{% if vmfm_position == 'pill' %} veloura-mobile-floating-menu--pill{% endif %}"
     aria-label="قائمة الجوال العائمة"
     style="
       --veloura-mobile-floating-menu-height: {{ vmfm_height }}px;
@@ -3190,17 +3175,10 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       {% endif %}
 
       {% if vmfm_show_account %}
-        {% if user.type == 'user' %}
-          <a href="{{ store.url|default('') }}/profile" class="veloura-mobile-floating-menu__item" data-vmfm-match="account" aria-label="{{ vmfm_account_label|e }}">
-            <i class="sicon-user" aria-hidden="true"></i>
-            {% if vmfm_show_labels %}<span>{{ vmfm_account_label }}</span>{% endif %}
-          </a>
-        {% else %}
-          <button type="button" class="veloura-mobile-floating-menu__item" data-vmfm-match="account" data-vmfm-action="login" aria-label="{{ vmfm_account_label|e }}">
-            <i class="sicon-user" aria-hidden="true"></i>
-            {% if vmfm_show_labels %}<span>{{ vmfm_account_label }}</span>{% endif %}
-          </button>
-        {% endif %}
+        <button type="button" class="veloura-mobile-floating-menu__item" data-vmfm-match="account" data-vmfm-action="login" aria-label="{{ vmfm_account_label|e }}">
+          <i class="sicon-user" aria-hidden="true"></i>
+          {% if vmfm_show_labels %}<span>{{ vmfm_account_label }}</span>{% endif %}
+        </button>
       {% endif %}
 
       {% for item in vmfm_custom_items %}
@@ -3208,18 +3186,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         {% set item_enabled = item_enabled_raw == true or item_enabled_raw == 'true' or item_enabled_raw == 1 or item_enabled_raw == '1' or item_enabled_raw == 'on' %}
         {% if item_enabled %}
           {% set item_label = item.label|default('رابط') %}
-          {% set item_url_raw = item.url|default('') %}
-          {% if item_url_raw is iterable and item_url_raw[0].url is defined %}
-            {% set item_url = item_url_raw[0].url %}
-          {% elseif item_url_raw is iterable and item_url_raw[0].value is defined %}
-            {% set item_url = item_url_raw[0].value %}
-          {% elseif item_url_raw.url is defined %}
-            {% set item_url = item_url_raw.url %}
-          {% elseif item_url_raw.value is defined %}
-            {% set item_url = item_url_raw.value %}
-          {% else %}
-            {% set item_url = item_url_raw %}
-          {% endif %}
+          {% set item_url = item.url|default('') %}
           {% set item_new_tab_raw = item.open_new_tab is defined ? item.open_new_tab : false %}
           {% set item_new_tab = item_new_tab_raw == true or item_new_tab_raw == 'true' or item_new_tab_raw == 1 or item_new_tab_raw == '1' or item_new_tab_raw == 'on' %}
           {% set item_icon_raw = item.icon|default('sicon-shopping-bag') %}
@@ -3231,7 +3198,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
             {% set item_icon = item_icon_raw %}
           {% endif %}
           {% if item_url %}
-            <a href="{{ item_url|e('html_attr') }}" class="veloura-mobile-floating-menu__item" data-vmfm-match="custom" data-vmfm-custom-url="{{ item_url|e('html_attr') }}" aria-label="{{ item_label|e }}" {% if item_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+            <a href="{{ item_url|e('html_attr') }}" class="veloura-mobile-floating-menu__item" aria-label="{{ item_label|e }}" {% if item_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
               <i class="{{ item_icon|e('html_attr') }}" aria-hidden="true"></i>
               {% if vmfm_show_labels %}<span>{{ item_label }}</span>{% endif %}
             </a>
