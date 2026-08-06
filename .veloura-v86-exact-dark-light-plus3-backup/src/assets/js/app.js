@@ -1,4 +1,4 @@
-import './partials/veloura-exact-dark-light-plus3-v86';
+import './partials/veloura-root-dark-contract-v85';
 import initVelouraCartBanners from './partials/veloura-cart-banners';
 import MobileMenu from 'mmenu-light';
 import './mobile-floating-menu';
