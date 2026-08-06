@@ -1,4 +1,4 @@
-import './partials/veloura-root-dark-contract-v85';
+import './partials/veloura-scoped-glass-v84';
 import initVelouraCartBanners from './partials/veloura-cart-banners';
 import MobileMenu from 'mmenu-light';
 import './mobile-floating-menu';
@@ -829,7 +829,7 @@ class App extends AppHelpers {
   loadTheApp() {
     this.commonThings();
     initVelouraFooter();
-    // V85: legacy Shadow DOM glass runtime disabled; V85 owns this bridge.
+    initVelouraGlobalGlass();
     initVelouraHeaderControls();
     initVelouraAdaptiveHeaderLayout();
     this.initiateNotifier();
