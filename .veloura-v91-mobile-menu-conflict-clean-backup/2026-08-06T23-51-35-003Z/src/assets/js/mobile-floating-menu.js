@@ -1,12 +1,17 @@
 (function () {
   'use strict';
 
-  var VERSION = 'v91';
+  var VERSION = 'v90';
   var MOBILE_QUERY = '(max-width: 767px)';
+  var SAFE_STYLE_ID = 'veloura-v90-menu-safe-space';
   var PANEL_SELECTOR = [
     'salla-login-modal',
     'salla-localization-modal',
-    'salla-search:not([inline])'
+    'salla-search:not([inline])',
+    'salla-modal',
+    'salla-sheet',
+    'salla-user-menu',
+    'salla-scopes'
   ].join(',');
 
   function domReady(callback) {
@@ -28,8 +33,10 @@
     var indicator = menu.querySelector('.veloura-mobile-floating-menu__indicator');
     var currentAction = '';
     var currentItem = null;
+    var actionResetTimer = 0;
     var indicatorFrame = 0;
-    var boundVisibilityTargets = new WeakSet();
+    var panelOpenKeys = new Set();
+    var boundPanels = new WeakSet();
 
     function isMobile() {
       return window.matchMedia ? window.matchMedia(MOBILE_QUERY).matches : window.innerWidth <= 767;
@@ -62,8 +69,14 @@
     function userIsLoggedIn() {
       try {
         if (!window.salla || !salla.config || typeof salla.config.get !== 'function') return false;
-        var type = String(salla.config.get('user.type') || '').trim().toLowerCase();
-        return Boolean(type && type !== 'guest' && type !== 'anonymous');
+        var type = String(salla.config.get('user.type') || '').toLowerCase();
+        var id = salla.config.get('user.id');
+        var logged = salla.config.get('user.is_logged_in');
+        return Boolean(
+          id ||
+          logged === true || logged === 'true' || logged === 1 || logged === '1' ||
+          type === 'user' || type === 'customer' || type === 'member'
+        );
       } catch (error) {
         return false;
       }
@@ -99,7 +112,7 @@
           return;
         }
 
-        var width = Math.max(18, Math.min(30, Math.round(activeRect.width * 0.25)));
+        var width = Math.max(16, Math.min(28, Math.round(activeRect.width * 0.24)));
         var x = Math.round(activeRect.left - innerRect.left + ((activeRect.width - width) / 2));
         indicator.style.width = width + 'px';
         indicator.style.transform = 'translate3d(' + x + 'px, 0, 0)';
@@ -165,111 +178,113 @@
       activate(routeItem());
     }
 
-    function ensurePanelCloseButton() {
-      var button = document.querySelector('[data-vmfm-panel-close]');
-      if (button) return button;
-
-      button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'veloura-vmfm-panel-close';
-      button.setAttribute('data-vmfm-panel-close', '');
-      button.setAttribute('aria-label', 'إغلاق');
-      button.hidden = true;
-      button.innerHTML = '<span aria-hidden="true">×</span>';
-      document.body.appendChild(button);
-      button.addEventListener('click', function () {
-        if (currentAction) closeAction(currentAction);
-      });
-      return button;
-    }
-
-    var panelCloseButton = ensurePanelCloseButton();
-
-    function syncPanelUi() {
-      var opened = Boolean(currentAction);
+    function syncPanelClass() {
+      var opened = panelOpenKeys.size > 0;
       document.documentElement.classList.toggle('veloura-vmfm-panel-open', opened);
       if (document.body) {
         document.body.classList.toggle('veloura-vmfm-panel-open', opened);
-        if (opened) document.body.setAttribute('data-vmfm-open-panel', currentAction);
-        else document.body.removeAttribute('data-vmfm-open-panel');
-      }
-
-      if (panelCloseButton) {
-        var showClose = currentAction === 'search';
-        panelCloseButton.hidden = !showClose;
-        panelCloseButton.classList.toggle('is-visible', showClose);
+        if (opened) document.body.setAttribute('data-vmfm-open-panels', Array.from(panelOpenKeys).join(' '));
+        else document.body.removeAttribute('data-vmfm-open-panels');
       }
     }
 
-    function setAction(action, item) {
-      currentAction = action || '';
-      currentItem = item || null;
-      if (currentItem) activate(currentItem);
-      syncPanelUi();
+    function markPanel(key, opened) {
+      if (opened) panelOpenKeys.add(key);
+      else panelOpenKeys.delete(key);
+      syncPanelClass();
     }
 
-    function clearAction(action) {
-      if (action && currentAction && action !== currentAction) return;
-      currentAction = '';
-      currentItem = null;
-      syncPanelUi();
-      window.setTimeout(restoreRoute, 50);
-    }
-
-    function strictOpened(event) {
-      if (!event) return null;
-      if (typeof event.detail === 'boolean') return event.detail;
-      if (event.detail && typeof event.detail.visible === 'boolean') return event.detail.visible;
-      if (event.detail && typeof event.detail.open === 'boolean') return event.detail.open;
-      if (event.detail && typeof event.detail.opened === 'boolean') return event.detail.opened;
-      return null;
-    }
-
-    function actionForHost(host) {
-      if (!host || !host.matches) return '';
-      if (host.matches('salla-login-modal')) return 'account';
-      if (host.matches('salla-search:not([inline])')) return 'search';
-      if (host.matches('salla-localization-modal')) return 'localization';
-      return '';
-    }
-
-    function bindVisibilityTarget(target, action) {
-      if (!target || boundVisibilityTargets.has(target)) return;
-      boundVisibilityTargets.add(target);
-      target.addEventListener('modalVisibilityChanged', function (event) {
-        var opened = strictOpened(event);
-        if (opened === null) return;
-        if (opened) {
-          var item = menu.querySelector('[data-vmfm-action="' + action + '"], [data-vmfm-match="' + action + '"]');
-          setAction(action, item);
-        } else {
-          clearAction(action);
-        }
+    function syncOverlap() {
+      if (!inner || !isMobile()) return;
+      var rect = inner.getBoundingClientRect();
+      var viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+      var overlap = rect.width && rect.height ? Math.max(0, Math.ceil(viewportHeight - rect.top + 8)) : 0;
+      document.documentElement.style.setProperty('--veloura-vmfm-panel-overlap', overlap + 'px');
+      if (document.body) document.body.style.setProperty('--veloura-vmfm-panel-overlap', overlap + 'px');
+      document.querySelectorAll(PANEL_SELECTOR).forEach(function (host) {
+        host.style.setProperty('--veloura-vmfm-panel-overlap', overlap + 'px');
       });
     }
 
-    function walkShadow(root, callback) {
-      if (!root || !root.querySelectorAll) return;
-      var elements = root.querySelectorAll('*');
-      for (var index = 0; index < elements.length; index += 1) {
-        var element = elements[index];
-        callback(element);
-        if (element.shadowRoot) walkShadow(element.shadowRoot, callback);
+    function eventOpened(event) {
+      if (typeof event.detail === 'boolean') return event.detail;
+      if (event.detail && typeof event.detail.visible === 'boolean') return event.detail.visible;
+      if (event.detail && typeof event.detail.open === 'boolean') return event.detail.open;
+      return Boolean(event.detail);
+    }
+
+    function panelKey(host) {
+      if (!host) return 'panel';
+      if (host.matches('salla-login-modal')) return 'account';
+      if (host.matches('salla-search:not([inline])')) return 'search';
+      if (host.matches('salla-localization-modal')) return 'localization';
+      return 'panel-' + host.localName;
+    }
+
+    function actionForPanel(host) {
+      var key = panelKey(host);
+      return key === 'account' || key === 'search' || key === 'localization' ? key : '';
+    }
+
+    function injectSafeSpace(host) {
+      if (!host || !host.shadowRoot) return;
+      var root = host.shadowRoot;
+      var style = root.getElementById(SAFE_STYLE_ID);
+      if (!style) {
+        style = document.createElement('style');
+        style.id = SAFE_STYLE_ID;
+        root.appendChild(style);
       }
+      style.textContent = [
+        '@media (max-width: 767px) {',
+        '  salla-modal::part(body),',
+        '  salla-modal::part(content),',
+        '  salla-sheet::part(body),',
+        '  salla-sheet::part(content),',
+        '  [part~="body"],',
+        '  .s-salla-modal-body,',
+        '  .s-modal-body,',
+        '  .s-sheet-body {',
+        '    box-sizing: border-box !important;',
+        '    padding-bottom: calc(var(--veloura-vmfm-panel-overlap, 0px) + 12px) !important;',
+        '    scroll-padding-bottom: calc(var(--veloura-vmfm-panel-overlap, 0px) + 12px) !important;',
+        '  }',
+        '}'
+      ].join('\n');
     }
 
     function bindPanel(host) {
-      if (!host) return;
-      var action = actionForHost(host);
-      if (!action) return;
-      bindVisibilityTarget(host, action);
+      if (!host || boundPanels.has(host)) return;
+      boundPanels.add(host);
+
+      var key = panelKey(host);
+      var action = actionForPanel(host);
+      var listener = function (event) {
+        var opened = eventOpened(event);
+        markPanel(key, opened);
+        syncOverlap();
+
+        if (opened && action) {
+          currentAction = action;
+          currentItem = menu.querySelector('[data-vmfm-action="' + action + '"], [data-vmfm-match="' + action + '"]');
+          activate(currentItem);
+        } else if (!opened && action && currentAction === action) {
+          currentAction = '';
+          currentItem = null;
+          restoreRoute();
+        }
+      };
+
+      host.addEventListener('modalVisibilityChanged', listener);
 
       var finalize = function () {
-        if (!host.shadowRoot) return;
-        walkShadow(host.shadowRoot, function (element) {
-          if (element.matches && element.matches('salla-modal, salla-sheet')) {
-            bindVisibilityTarget(element, action);
-          }
+        injectSafeSpace(host);
+        var root = host.shadowRoot;
+        if (!root) return;
+        root.querySelectorAll('salla-modal, salla-sheet').forEach(function (nested) {
+          if (boundPanels.has(nested)) return;
+          boundPanels.add(nested);
+          nested.addEventListener('modalVisibilityChanged', listener);
         });
       };
 
@@ -289,12 +304,40 @@
       var root = scope || document;
       if (root.matches && root.matches(PANEL_SELECTOR)) bindPanel(root);
       if (root.querySelectorAll) root.querySelectorAll(PANEL_SELECTOR).forEach(bindPanel);
+      syncOverlap();
     }
 
-    function clickFirst(selectors, root) {
-      var scope = root || document;
+    function beginAction(action, item) {
+      if (actionResetTimer) window.clearTimeout(actionResetTimer);
+      currentAction = action;
+      currentItem = item;
+      activate(item);
+      markPanel(action, true);
+      syncOverlap();
+      actionResetTimer = window.setTimeout(function () {
+        if (currentAction !== action) return;
+        markPanel(action, false);
+        currentAction = '';
+        currentItem = null;
+        restoreRoute();
+      }, 10000);
+    }
+
+    function finishAction(action) {
+      if (actionResetTimer) window.clearTimeout(actionResetTimer);
+      actionResetTimer = 0;
+      markPanel(action, false);
+      if (!action || currentAction === action) {
+        currentAction = '';
+        currentItem = null;
+      }
+      window.setTimeout(restoreRoute, 120);
+    }
+
+    function clickFirst(selectors, scope) {
+      var root = scope || document;
       for (var index = 0; index < selectors.length; index += 1) {
-        var element = scope.querySelector && scope.querySelector(selectors[index]);
+        var element = root.querySelector(selectors[index]);
         if (!element) continue;
         try {
           element.click();
@@ -304,53 +347,51 @@
       return false;
     }
 
-    function closeHostDeep(host) {
+    function closeHost(host) {
       if (!host) return false;
       var closed = false;
-      var closeElement = function (element) {
-        if (!element || typeof element.close !== 'function') return;
+
+      if (typeof host.close === 'function') {
         try {
-          element.close();
+          host.close();
           closed = true;
         } catch (error) {}
-      };
-
-      closeElement(host);
-      if (host.shadowRoot) {
-        walkShadow(host.shadowRoot, function (element) {
-          if (element.matches && element.matches('salla-modal, salla-sheet')) closeElement(element);
-        });
-
-        if (!closed) {
-          closed = clickFirst([
-            '[part~="close"]',
-            '[data-close]',
-            '.s-modal-close',
-            '.s-modal-close-button',
-            '.s-search-close',
-            'button[aria-label="إغلاق"]',
-            'button[aria-label="Close"]'
-          ], host.shadowRoot);
-        }
       }
+
+      var root = host.shadowRoot || host;
+      root.querySelectorAll('salla-modal, salla-sheet').forEach(function (nested) {
+        if (typeof nested.close !== 'function') return;
+        try {
+          nested.close();
+          closed = true;
+        } catch (error) {}
+      });
+
+      if (!closed) {
+        closed = clickFirst([
+          '[part~="close"]',
+          '[data-close]',
+          '.s-modal-close',
+          '.s-modal-close-button',
+          'button[aria-label="إغلاق"]',
+          'button[aria-label="Close"]'
+        ], root);
+      }
+
       return closed;
     }
 
     function openSearch(item) {
-      setAction('search', item);
+      beginAction('search', item);
       if (!dispatchSalla('search::open')) {
         clickFirst(['.veloura-search-toggle', '[data-search-open]', '[data-open-search]']);
       }
-      window.setTimeout(function () {
-        scanPanels(document);
-      }, 100);
     }
 
     function closeSearch() {
-      var host = document.querySelector('salla-search:not([inline])');
-      closeHostDeep(host);
+      closeHost(document.querySelector('salla-search:not([inline])'));
       dispatchSalla('search::close');
-      clearAction('search');
+      finishAction('search');
     }
 
     function openLogin(item) {
@@ -359,10 +400,10 @@
         return;
       }
 
-      setAction('account', item);
+      beginAction('account', item);
       var host = document.querySelector('salla-login-modal');
       var fallback = function () {
-        if (!dispatchSalla('login::open')) clearAction('account');
+        if (!dispatchSalla('login::open')) clickFirst(['.veloura-login-btn', '[data-login]', '[data-open-login]']);
       };
 
       if (!host) {
@@ -377,11 +418,7 @@
         }
         try {
           var result = host.open();
-          if (result && typeof result.catch === 'function') {
-            result.catch(function () {
-              fallback();
-            });
-          }
+          if (result && typeof result.catch === 'function') result.catch(fallback);
         } catch (error) {
           fallback();
         }
@@ -396,41 +433,27 @@
           }
         } catch (error) {}
       }
-
-      if (window.customElements && typeof customElements.whenDefined === 'function') {
-        customElements.whenDefined('salla-login-modal').then(open).catch(fallback);
-        return;
-      }
-
       open();
     }
 
     function closeLogin() {
-      closeHostDeep(document.querySelector('salla-login-modal'));
+      closeHost(document.querySelector('salla-login-modal'));
       dispatchSalla('login::close');
       dispatchSalla('auth::close');
-      clearAction('account');
+      finishAction('account');
+    }
+
+    function getCategoriesDrawer() {
+      return document.querySelector('.mm-ocd.ocd-categs, .mm-ocd--right.ocd-categs, .mm-ocd');
     }
 
     function categoriesOpen() {
-      var drawer = document.querySelector('.mm-ocd.ocd-categs, .mm-ocd--right.ocd-categs, .mm-ocd');
-      return Boolean(
-        (document.body && document.body.classList.contains('menu-opened')) ||
-        (drawer && drawer.classList.contains('mm-ocd--open'))
-      );
+      var drawer = getCategoriesDrawer();
+      return Boolean(drawer && drawer.classList.contains('mm-ocd--open'));
     }
 
     function openCategories(item) {
-      setAction('categories', item);
-      var drawer = window.__velouraNativeMobileMenuDrawer;
-      if (drawer && typeof drawer.open === 'function') {
-        try {
-          if (document.body) document.body.classList.add('menu-opened');
-          drawer.open();
-          return;
-        } catch (error) {}
-      }
-
+      beginAction('categories', item);
       clickFirst([
         '.veloura-menu-trigger-mobile[href="#mobile-menu"]',
         'a.mburger[href="#mobile-menu"]',
@@ -439,21 +462,13 @@
     }
 
     function closeCategories() {
-      var drawer = window.__velouraNativeMobileMenuDrawer;
-      if (document.body) document.body.classList.remove('menu-opened');
-      if (drawer && typeof drawer.close === 'function') {
-        try {
-          drawer.close();
-        } catch (error) {}
-      } else {
-        var host = document.querySelector('.mm-ocd.mm-ocd--open, .mm-ocd');
-        if (host) clickFirst(['.close-mobile-menu', '.mm-ocd__backdrop', '.mm-ocd__close'], host);
-      }
-      clearAction('categories');
+      var drawer = getCategoriesDrawer();
+      if (drawer) clickFirst(['.close-mobile-menu', '.mm-ocd__backdrop', '.mm-ocd__close'], drawer);
+      finishAction('categories');
     }
 
     function openLocalization(item) {
-      setAction('localization', item);
+      beginAction('localization', item);
       var host = document.querySelector('salla-localization-modal');
       if (host && typeof host.open === 'function') {
         try {
@@ -465,8 +480,8 @@
     }
 
     function closeLocalization() {
-      closeHostDeep(document.querySelector('salla-localization-modal'));
-      clearAction('localization');
+      closeHost(document.querySelector('salla-localization-modal'));
+      finishAction('localization');
     }
 
     function closeAction(action) {
@@ -491,14 +506,10 @@
       if (!action) {
         currentAction = '';
         currentItem = null;
-        syncPanelUi();
         return;
       }
 
-      /* Own action buttons in capture phase so no legacy handler can navigate/reload. */
       event.preventDefault();
-      event.stopPropagation();
-      if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
 
       if (currentAction === action || (action === 'categories' && categoriesOpen())) {
         closeAction(action);
@@ -507,15 +518,12 @@
 
       if (currentAction) closeAction(currentAction);
       openAction(action, item);
-    }, true);
+    });
 
     document.addEventListener('click', function (event) {
-      if (!currentAction || currentAction !== 'categories') return;
-      if (!event.target.closest) return;
-      if (event.target.closest('.close-mobile-menu, .mm-ocd__backdrop, .mm-ocd__close')) {
-        window.setTimeout(function () {
-          if (!categoriesOpen()) clearAction('categories');
-        }, 0);
+      if (event.target.closest && event.target.closest('[data-veloura-localization-trigger]')) {
+        markPanel('localization', true);
+        syncOverlap();
       }
     }, true);
 
@@ -527,26 +535,26 @@
           });
         });
 
-        if (currentAction === 'categories' && !categoriesOpen()) clearAction('categories');
+        if (currentAction === 'categories' && !categoriesOpen()) finishAction('categories');
         updateIndicator();
       });
-      observer.observe(document.documentElement, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['class', 'open', 'visible']
-      });
+      observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'open', 'visible'] });
     }
 
     if (typeof ResizeObserver === 'function') {
       var resizeObserver = new ResizeObserver(function () {
         updateIndicator();
+        syncOverlap();
       });
       resizeObserver.observe(menu);
       if (inner) resizeObserver.observe(inner);
     }
 
-    window.addEventListener('resize', updateIndicator, { passive: true });
+    window.addEventListener('resize', function () {
+      updateIndicator();
+      syncOverlap();
+    }, { passive: true });
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', syncOverlap, { passive: true });
     window.addEventListener('pageshow', restoreRoute);
     window.addEventListener('popstate', restoreRoute);
     window.addEventListener('hashchange', restoreRoute);
@@ -557,7 +565,7 @@
 
     scanPanels(document);
     restoreRoute();
-    syncPanelUi();
+    syncOverlap();
   }
 
   domReady(function () {
