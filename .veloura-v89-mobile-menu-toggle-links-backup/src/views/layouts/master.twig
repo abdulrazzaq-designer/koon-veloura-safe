@@ -3137,8 +3137,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     data-vmfm-page-slug="{{ page.slug|default('')|e('html_attr') }}"
     data-vmfm-account-url="{{ (store.url|default('') ~ '/profile')|e('html_attr') }}"
     data-vmfm-active-size="{{ vmfm_active_mode }}"
-    data-vmfm-controller="v89"
-
+    data-vmfm-controller="v88"
     class="veloura-mobile-floating-menu veloura-mobile-floating-menu--{{ vmfm_position }}{% if vmfm_position == 'full_width' %} veloura-mobile-floating-menu--full-width{% endif %}{% if vmfm_position == 'pill' %} veloura-mobile-floating-menu--pill{% endif %} veloura-mobile-floating-menu--active-{{ vmfm_active_mode }}"
     aria-label="قائمة الجوال العائمة"
     style="
@@ -3204,66 +3203,39 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         {% set item_enabled = item_enabled_raw == true or item_enabled_raw == 'true' or item_enabled_raw == 1 or item_enabled_raw == '1' or item_enabled_raw == 'on' %}
         {% if item_enabled %}
           {% set item_label = item.label|default('رابط') %}
-          {% set item_url_raw = item.url|default(null) %}
-          {% set item_url = '' %}
-
-          {# V89: variable-list may return selected/value objects, arrays, or direct URLs. #}
-          {% if item_url_raw is iterable and item_url_raw.url is defined %}
-            {% set item_url = item_url_raw.url %}
-          {% elseif item_url_raw is iterable and item_url_raw.href is defined %}
-            {% set item_url = item_url_raw.href %}
-          {% elseif item_url_raw is iterable and item_url_raw.link is defined %}
-            {% set item_url = item_url_raw.link %}
-          {% elseif item_url_raw is iterable and item_url_raw.value is defined and item_url_raw.value is iterable and item_url_raw.value.url is defined %}
-            {% set item_url = item_url_raw.value.url %}
-          {% elseif item_url_raw is iterable and item_url_raw.value is defined and item_url_raw.value is iterable and item_url_raw.value.href is defined %}
-            {% set item_url = item_url_raw.value.href %}
-          {% elseif item_url_raw is iterable and item_url_raw.selected is defined and item_url_raw.selected is iterable and item_url_raw.selected.url is defined %}
-            {% set item_url = item_url_raw.selected.url %}
-          {% elseif item_url_raw is iterable and item_url_raw.selected is defined and item_url_raw.selected is iterable and item_url_raw.selected.value is defined and item_url_raw.selected.value is iterable and item_url_raw.selected.value.url is defined %}
-            {% set item_url = item_url_raw.selected.value.url %}
-          {% elseif item_url_raw is iterable and item_url_raw.selected is defined and item_url_raw.selected is iterable and item_url_raw.selected[0] is defined and item_url_raw.selected[0].url is defined %}
-            {% set item_url = item_url_raw.selected[0].url %}
-          {% elseif item_url_raw is iterable and item_url_raw.selected is defined and item_url_raw.selected is iterable and item_url_raw.selected[0] is defined and item_url_raw.selected[0].value is defined and item_url_raw.selected[0].value is iterable and item_url_raw.selected[0].value.url is defined %}
-            {% set item_url = item_url_raw.selected[0].value.url %}
-          {% elseif item_url_raw is iterable and item_url_raw[0] is defined and item_url_raw[0].url is defined %}
+          {% set item_url_raw = item.url|default('') %}
+          {% if item_url_raw is iterable and item_url_raw[0].url is defined %}
             {% set item_url = item_url_raw[0].url %}
-          {% elseif item_url_raw is iterable and item_url_raw[0] is defined and item_url_raw[0].value is defined and item_url_raw[0].value is iterable and item_url_raw[0].value.url is defined %}
-            {% set item_url = item_url_raw[0].value.url %}
-          {% elseif item_url_raw is iterable and item_url_raw.value is defined and item_url_raw.value is not iterable %}
+          {% elseif item_url_raw is iterable and item_url_raw[0].value is defined %}
+            {% set item_url = item_url_raw[0].value %}
+          {% elseif item_url_raw.url is defined %}
+            {% set item_url = item_url_raw.url %}
+          {% elseif item_url_raw.value is defined %}
             {% set item_url = item_url_raw.value %}
-          {% elseif item_url_raw is iterable and item_url_raw.selected is defined and item_url_raw.selected is not iterable %}
-            {% set item_url = item_url_raw.selected %}
-          {% elseif item_url_raw is not iterable %}
+          {% else %}
             {% set item_url = item_url_raw %}
           {% endif %}
-
           {% set item_new_tab_raw = item.open_new_tab is defined ? item.open_new_tab : false %}
           {% set item_new_tab = item_new_tab_raw == true or item_new_tab_raw == 'true' or item_new_tab_raw == 1 or item_new_tab_raw == '1' or item_new_tab_raw == 'on' %}
           {% set item_icon_raw = item.icon|default('sicon-shopping-bag') %}
-          {% if item_icon_raw is iterable and item_icon_raw[0] is defined and item_icon_raw[0].value is defined %}
+          {% if item_icon_raw is iterable and item_icon_raw[0].value is defined %}
             {% set item_icon = item_icon_raw[0].value %}
-          {% elseif item_icon_raw is iterable and item_icon_raw.value is defined %}
+          {% elseif item_icon_raw.value is defined %}
             {% set item_icon = item_icon_raw.value %}
-          {% elseif item_icon_raw is iterable and item_icon_raw.selected is defined and item_icon_raw.selected is iterable and item_icon_raw.selected[0] is defined and item_icon_raw.selected[0].value is defined %}
-            {% set item_icon = item_icon_raw.selected[0].value %}
           {% else %}
             {% set item_icon = item_icon_raw %}
           {% endif %}
-
-          <a
-            href="{{ item_url ? item_url|e('html_attr') : '#' }}"
-            class="veloura-mobile-floating-menu__item"
-            data-vmfm-match="custom"
-            data-vmfm-action="custom-link"
-            data-vmfm-custom-payload="{{ item_url_raw|json_encode|e('html_attr') }}"
-            {% if item_url %}data-vmfm-custom-url="{{ item_url|e('html_attr') }}"{% endif %}
-            aria-label="{{ item_label|e }}"
-            {% if item_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
-          >
-            <i class="{{ item_icon|e('html_attr') }}" aria-hidden="true"></i>
-            {% if vmfm_show_labels %}<span>{{ item_label }}</span>{% endif %}
-          </a>
+          {% if item_url %}
+            <a href="{{ item_url|e('html_attr') }}" class="veloura-mobile-floating-menu__item" data-vmfm-match="custom" data-vmfm-custom-url="{{ item_url|e('html_attr') }}" aria-label="{{ item_label|e }}" {% if item_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+              <i class="{{ item_icon|e('html_attr') }}" aria-hidden="true"></i>
+              {% if vmfm_show_labels %}<span>{{ item_label }}</span>{% endif %}
+            </a>
+          {% else %}
+            <button type="button" class="veloura-mobile-floating-menu__item" aria-label="{{ item_label|e }}">
+              <i class="{{ item_icon|e('html_attr') }}" aria-hidden="true"></i>
+              {% if vmfm_show_labels %}<span>{{ item_label }}</span>{% endif %}
+            </button>
+          {% endif %}
         {% endif %}
       {% endfor %}
     </div>
