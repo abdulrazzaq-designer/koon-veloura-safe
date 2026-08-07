@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'v95';
+  var VERSION = 'v94';
 
   function ready(callback) {
     if (document.readyState === 'loading') {
@@ -256,169 +256,184 @@
 
     function preferredSearchHost() {
       var hosts = Array.prototype.slice.call(document.querySelectorAll('salla-search'));
-      for (var i = hosts.length - 1; i >= 0; i -= 1) {
+      for (var i = 0; i < hosts.length; i += 1) {
         if (!hosts[i].hasAttribute('inline')) return hosts[i];
       }
-      return null;
+      return hosts.length ? hosts[hosts.length - 1] : null;
     }
 
     function loginHost() {
       return document.querySelector('salla-login-modal');
     }
 
-    function modalFromHost(host) {
-      if (!host) return null;
+    function deepFind(root, predicate, depth) {
+      if (!root || depth > 7) return null;
 
-      // Current Twilight salla-search keeps the rendered salla-modal instance
-      // on host.modal. Prefer that exact native instance first.
-      if (host.modal && typeof host.modal.close === 'function') return host.modal;
-
+      var nodes;
       try {
-        var direct = host.querySelector && host.querySelector('salla-modal, salla-sheet');
-        if (direct && typeof direct.close === 'function') return direct;
-      } catch (error) {}
+        nodes = root.querySelectorAll ? root.querySelectorAll('*') : [];
+      } catch (error) {
+        nodes = [];
+      }
 
-      try {
-        var root = host.shadowRoot;
-        var shadowModal = root && root.querySelector('salla-modal, salla-sheet');
-        if (shadowModal && typeof shadowModal.close === 'function') return shadowModal;
-      } catch (error) {}
+      for (var i = 0; i < nodes.length; i += 1) {
+        if (predicate(nodes[i])) return nodes[i];
+      }
+
+      for (var j = 0; j < nodes.length; j += 1) {
+        if (nodes[j].shadowRoot) {
+          var nested = deepFind(nodes[j].shadowRoot, predicate, depth + 1);
+          if (nested) return nested;
+        }
+      }
 
       return null;
     }
 
-    function modalLooksOpen(modal) {
-      if (!modal) return false;
-      if (modal.visible === true || modal.opened === true) return true;
-      if (modal.hasAttribute && (
-        modal.hasAttribute('visible') ||
-        modal.hasAttribute('open') ||
-        modal.hasAttribute('opened')
-      )) return true;
-      if (modal.getAttribute && modal.getAttribute('aria-hidden') === 'false') return true;
-      return false;
+    function findClosableModal(host) {
+      if (!host) return null;
+      var root = host.shadowRoot || host;
+      return deepFind(root, function (node) {
+        var tag = (node.tagName || '').toLowerCase();
+        return (tag === 'salla-modal' || tag === 'salla-sheet') && typeof node.close === 'function';
+      }, 0);
     }
 
-    function bindNativeModalState(action, host) {
-      var modal = modalFromHost(host);
-      if (!modal || modal.__velouraVmfmV95Bound) return;
-      modal.__velouraVmfmV95Bound = true;
+    function clickNativeClose(host) {
+      if (!host) return false;
+      var root = host.shadowRoot || host;
+      var node = deepFind(root, function (candidate) {
+        if (!candidate.matches) return false;
+        return candidate.matches([
+          '[part~="close"]',
+          '.s-modal-close',
+          '.s-modal__close',
+          '.sicon-cancel',
+          'button[aria-label*="إغلاق"]',
+          'button[aria-label*="close" i]'
+        ].join(','));
+      }, 0);
 
-      modal.addEventListener('modalVisibilityChanged', function (event) {
-        var opened = event && typeof event.detail === 'boolean'
-          ? event.detail
-          : modalLooksOpen(modal);
-
-        if (opened) {
-          setTransient(action);
-        } else {
-          clearTransient(action);
-        }
-      });
+      if (!node) return false;
+      try {
+        node.click();
+        return true;
+      } catch (error) {
+        return false;
+      }
     }
 
-    function clickNativeHeaderSearch() {
-      // The user's real header trigger already uses:
-      // salla.event.dispatch('search::open')
-      // Reuse that exact working path instead of implementing a second search API.
-      return clickFirst([
-        '.veloura-search-toggle-right',
-        '.veloura-search-toggle-left',
-        '.veloura-search-toggle'
-      ]);
-    }
+    function bindModalVisibility(action, host, attempts) {
+      if (!host || attempts > 18) return;
 
-    function clickNativeHeaderLogin() {
-      // Same principle for login: reuse the real header trigger.
-      return clickFirst(['.veloura-login-btn']);
-    }
-
-    function openSearch(item) {
-      var host = preferredSearchHost();
-      setTransient('search');
-
-      if (host) bindNativeModalState('search', host);
-
-      if (clickNativeHeaderSearch()) {
+      var modal = findClosableModal(host);
+      if (!modal) {
         window.setTimeout(function () {
-          var currentHost = preferredSearchHost();
-          if (currentHost) bindNativeModalState('search', currentHost);
-        }, 120);
+          bindModalVisibility(action, host, attempts + 1);
+        }, 100);
         return;
       }
 
-      // Exact native fallback used by the header itself.
-      if (window.salla && window.salla.event && typeof window.salla.event.dispatch === 'function') {
-        try {
-          window.salla.event.dispatch('search::open');
-          return;
-        } catch (error) {}
+      if (boundModals && boundModals.has(modal)) return;
+      if (boundModals) boundModals.add(modal);
+
+      modal.addEventListener('modalVisibilityChanged', function (event) {
+        var opened = event && typeof event.detail === 'boolean' ? event.detail : null;
+        if (opened === false) clearTransient(action);
+        if (opened === true) setTransient(action);
+      });
+    }
+
+    function defineThen(tagName, callback) {
+      if (!window.customElements || typeof window.customElements.whenDefined !== 'function') {
+        callback();
+        return;
       }
 
-      var fallback = item && item.getAttribute('href');
-      if (fallback) window.location.href = fallback;
+      window.customElements.whenDefined(tagName).then(callback).catch(callback);
+    }
+
+    function openSearch(item) {
+      setTransient('search');
+
+      defineThen('salla-search', function () {
+        var host = preferredSearchHost();
+        if (host && typeof host.open === 'function') {
+          Promise.resolve(host.open()).then(function () {
+            bindModalVisibility('search', host, 0);
+          }).catch(function () {
+            clickFirst(['.veloura-search-toggle', '[onclick*="search::open"]']);
+          });
+          return;
+        }
+
+        if (clickFirst(['.veloura-search-toggle', '[onclick*="search::open"]'])) return;
+
+        var fallback = item && item.getAttribute('href');
+        if (fallback) window.location.href = fallback;
+      });
     }
 
     function closeSearch() {
       var host = preferredSearchHost();
-      var modal = modalFromHost(host);
+      var modal = findClosableModal(host);
 
-      if (modal && typeof modal.close === 'function') {
-        Promise.resolve(modal.close())
-          .catch(function () {})
-          .finally(function () { clearTransient('search'); });
+      if (modal) {
+        Promise.resolve(modal.close()).finally(function () {
+          clearTransient('search');
+        });
         return;
       }
 
-      // Last-resort native close: click the actual Salla modal close button.
-      var closed = false;
-      try {
-        var roots = [host, host && host.shadowRoot].filter(Boolean);
-        for (var i = 0; i < roots.length && !closed; i += 1) {
-          closed = clickFirst([
-            '.s-modal-close',
-            '.s-modal__close',
-            '[part~="close"]',
-            'button[aria-label*="إغلاق"]',
-            'button[aria-label*="close" i]'
-          ], roots[i]);
-        }
-      } catch (error) {}
-
-      if (closed) {
-        window.setTimeout(function () { clearTransient('search'); }, 100);
+      if (clickNativeClose(host)) {
+        window.setTimeout(function () { clearTransient('search'); }, 120);
         return;
       }
 
-      // Do not fake a closed state if Salla's actual modal was not closed.
-      activeAction = 'search';
-      activateItem(itemForAction('search'));
+      if (window.salla && window.salla.event && typeof window.salla.event.dispatch === 'function') {
+        try { window.salla.event.dispatch('search::close'); } catch (error) {}
+      }
+      window.setTimeout(function () { clearTransient('search'); }, 120);
     }
 
     function openLogin() {
-      var host = loginHost();
       setTransient('login');
-      if (host) bindNativeModalState('login', host);
 
-      if (clickNativeHeaderLogin()) return;
+      defineThen('salla-login-modal', function () {
+        var host = loginHost();
+        if (!host || typeof host.open !== 'function') {
+          clickFirst(['.veloura-login-btn', '[onclick*="login::open"]']);
+          return;
+        }
 
-      if (window.salla && window.salla.event && typeof window.salla.event.dispatch === 'function') {
-        try { window.salla.event.dispatch('login::open'); } catch (error) {}
-      }
+        Promise.resolve(host.open()).then(function () {
+          bindModalVisibility('login', host, 0);
+        }).catch(function () {
+          clickFirst(['.veloura-login-btn', '[onclick*="login::open"]']);
+        });
+      });
     }
 
     function closeLogin() {
       var host = loginHost();
-      var modal = modalFromHost(host);
+      var modal = findClosableModal(host);
 
-      if (modal && typeof modal.close === 'function') {
-        Promise.resolve(modal.close())
-          .catch(function () {})
-          .finally(function () { clearTransient('login'); });
+      if (modal) {
+        Promise.resolve(modal.close()).finally(function () {
+          clearTransient('login');
+        });
         return;
       }
 
-      clearTransient('login');
+      if (clickNativeClose(host)) {
+        window.setTimeout(function () { clearTransient('login'); }, 120);
+        return;
+      }
+
+      if (window.salla && window.salla.event && typeof window.salla.event.dispatch === 'function') {
+        try { window.salla.event.dispatch('login::close'); } catch (error) {}
+      }
+      window.setTimeout(function () { clearTransient('login'); }, 120);
     }
 
     function toggleAction(action, item) {
