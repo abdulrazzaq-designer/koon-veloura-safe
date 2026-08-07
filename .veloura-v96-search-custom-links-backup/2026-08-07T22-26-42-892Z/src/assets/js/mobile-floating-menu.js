@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'v96';
+  var VERSION = 'v95';
 
   function ready(callback) {
     if (document.readyState === 'loading') {
@@ -91,18 +91,12 @@
     function resolveCustomUrl(item) {
       if (!item) return '';
 
-      // Twilight variable-list resolves to a final URL string in Twig.
-      // Prefer that exact URL instead of reverse-engineering editor payloads.
-      var direct = safeUrl(
-        item.getAttribute('data-vmfm-custom-url') ||
-        item.getAttribute('href') ||
-        ''
-      );
+      var direct = safeUrl(item.getAttribute('href') || '');
       if (direct) return direct;
 
-      // Legacy fallback for stores that still have a pre-V96 saved value.
       var payload = item.getAttribute('data-vmfm-link-payload');
       if (!payload) return '';
+
       return resolveUrlValue(safeJsonParse(payload), 0);
     }
 
@@ -268,59 +262,6 @@
       return null;
     }
 
-    function delay(ms) {
-      return new Promise(function (resolve) { window.setTimeout(resolve, ms); });
-    }
-
-    function promiseWithTimeout(promise, ms) {
-      return Promise.race([
-        Promise.resolve(promise),
-        new Promise(function (_, reject) {
-          window.setTimeout(function () { reject(new Error('timeout')); }, ms);
-        })
-      ]);
-    }
-
-    function waitForSearchReady() {
-      var host = preferredSearchHost();
-      if (!host) return Promise.resolve(null);
-
-      var defined = Promise.resolve();
-      if (window.customElements && typeof window.customElements.whenDefined === 'function') {
-        defined = promiseWithTimeout(window.customElements.whenDefined('salla-search'), 3500)
-          .catch(function () {});
-      }
-
-      return defined
-        .then(function () {
-          if (typeof host.componentOnReady === 'function') {
-            return promiseWithTimeout(host.componentOnReady(), 3500).catch(function () {});
-          }
-        })
-        .then(function () {
-          var tries = 0;
-          return new Promise(function (resolve) {
-            function probe() {
-              // Salla Search public open() uses its rendered modal internally,
-              // so wait until both the method and modal are actually ready.
-              if (typeof host.open === 'function' && modalFromHost(host)) {
-                resolve(host);
-                return;
-              }
-
-              tries += 1;
-              if (tries >= 40) {
-                resolve(typeof host.open === 'function' ? host : null);
-                return;
-              }
-
-              window.setTimeout(probe, 50);
-            }
-            probe();
-          });
-        });
-    }
-
     function loginHost() {
       return document.querySelector('salla-login-modal');
     }
@@ -376,82 +317,82 @@
       });
     }
 
+    function clickNativeHeaderSearch() {
+      // The user's real header trigger already uses:
+      // salla.event.dispatch('search::open')
+      // Reuse that exact working path instead of implementing a second search API.
+      return clickFirst([
+        '.veloura-search-toggle-right',
+        '.veloura-search-toggle-left',
+        '.veloura-search-toggle'
+      ]);
+    }
+
     function clickNativeHeaderLogin() {
       // Same principle for login: reuse the real header trigger.
       return clickFirst(['.veloura-login-btn']);
     }
 
-    var searchBusy = false;
-    var searchCloseRequested = false;
-
     function openSearch(item) {
-      if (searchBusy) return;
-
-      searchBusy = true;
-      searchCloseRequested = false;
+      var host = preferredSearchHost();
       setTransient('search');
 
-      waitForSearchReady()
-        .then(function (host) {
-          if (!host || typeof host.open !== 'function') {
-            throw new Error('Salla search component is not ready');
-          }
+      if (host) bindNativeModalState('search', host);
 
-          return Promise.resolve(host.open()).then(function () {
-            bindNativeModalState('search', host);
-            return delay(40).then(function () {
-              bindNativeModalState('search', host);
-              if (searchCloseRequested) {
-                searchBusy = false;
-                closeSearch();
-                return;
-              }
-              setTransient('search');
-            });
-          });
-        })
-        .catch(function () {
-          // The native Search component itself listens to search::open.
-          // Dispatch only after waiting for the component definition so the event is not lost.
-          if (window.salla && window.salla.event && typeof window.salla.event.dispatch === 'function') {
-            try {
-              window.salla.event.dispatch('search::open');
-              return;
-            } catch (error) {}
-          }
-          clearTransient('search');
-        })
-        .finally(function () {
-          searchBusy = false;
-        });
-    }
-
-    function closeSearch() {
-      if (searchBusy) {
-        searchCloseRequested = true;
+      if (clickNativeHeaderSearch()) {
+        window.setTimeout(function () {
+          var currentHost = preferredSearchHost();
+          if (currentHost) bindNativeModalState('search', currentHost);
+        }, 120);
         return;
       }
 
-      searchBusy = true;
-      searchCloseRequested = false;
+      // Exact native fallback used by the header itself.
+      if (window.salla && window.salla.event && typeof window.salla.event.dispatch === 'function') {
+        try {
+          window.salla.event.dispatch('search::open');
+          return;
+        } catch (error) {}
+      }
 
-      waitForSearchReady()
-        .then(function (host) {
-          var modal = modalFromHost(host);
-          if (!modal || typeof modal.close !== 'function') {
-            throw new Error('Salla search modal is not ready');
-          }
-          return Promise.resolve(modal.close());
-        })
-        .then(function () { clearTransient('search'); })
-        .catch(function () {
-          // Keep the active state if the real Salla modal could not be closed.
-          activeAction = 'search';
-          activateItem(itemForAction('search'));
-        })
-        .finally(function () {
-          searchBusy = false;
-        });
+      var fallback = item && item.getAttribute('href');
+      if (fallback) window.location.href = fallback;
+    }
+
+    function closeSearch() {
+      var host = preferredSearchHost();
+      var modal = modalFromHost(host);
+
+      if (modal && typeof modal.close === 'function') {
+        Promise.resolve(modal.close())
+          .catch(function () {})
+          .finally(function () { clearTransient('search'); });
+        return;
+      }
+
+      // Last-resort native close: click the actual Salla modal close button.
+      var closed = false;
+      try {
+        var roots = [host, host && host.shadowRoot].filter(Boolean);
+        for (var i = 0; i < roots.length && !closed; i += 1) {
+          closed = clickFirst([
+            '.s-modal-close',
+            '.s-modal__close',
+            '[part~="close"]',
+            'button[aria-label*="إغلاق"]',
+            'button[aria-label*="close" i]'
+          ], roots[i]);
+        }
+      } catch (error) {}
+
+      if (closed) {
+        window.setTimeout(function () { clearTransient('search'); }, 100);
+        return;
+      }
+
+      // Do not fake a closed state if Salla's actual modal was not closed.
+      activeAction = 'search';
+      activateItem(itemForAction('search'));
     }
 
     function openLogin() {

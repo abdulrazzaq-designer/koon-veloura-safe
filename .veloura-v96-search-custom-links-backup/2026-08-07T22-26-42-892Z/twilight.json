@@ -9063,77 +9063,82 @@
         },
         {
           "id": "icon",
-          "type": "string",
-          "format": "icon",
-          "label": "أيقونة العنصر",
-          "description": "اختر أيقونة العنصر من مكتبة أيقونات سلة",
-          "icon": "sicon-star",
-          "value": "sicon-shopping-bag",
-          "required": true
-        },
-        {
           "type": "items",
-          "icon": "sicon-link",
-          "label": "الرابط",
-          "id": "url",
-          "value": null,
-          "description": null,
-          "required": false,
-          "format": "variable-list",
-          "searchable": true,
-          "source": "custom",
-          "sources": [
+          "format": "dropdown-list",
+          "label": "أيقونة العنصر",
+          "description": "اختر أيقونة العنصر داخل القائمة",
+          "icon": "sicon-star",
+          "source": "Manual",
+          "required": true,
+          "selected": [
             {
-              "label": "منتج",
-              "key": "products",
-              "value": "products"
+              "label": "سلة",
+              "value": "sicon-shopping-bag",
+              "key": "vmfm-custom-icon-cart-2026"
+            }
+          ],
+          "options": [
+            {
+              "label": "سلة",
+              "value": "sicon-shopping-bag",
+              "key": "vmfm-custom-icon-cart-2026"
             },
             {
-              "label": "تصنيف",
-              "key": "categories",
-              "value": "categories"
+              "label": "رئيسية",
+              "value": "sicon-home",
+              "key": "vmfm-custom-icon-home-2026"
             },
             {
-              "label": "ماركة تجارية",
-              "key": "brands",
-              "value": "brands"
+              "label": "تصنيفات",
+              "value": "sicon-grid",
+              "key": "vmfm-custom-icon-grid-2026"
             },
             {
-              "label": "صفحة تعريفية",
-              "key": "pages",
-              "value": "pages"
+              "label": "بحث",
+              "value": "sicon-search",
+              "key": "vmfm-custom-icon-search-2026"
             },
             {
-              "label": "مقالة",
-              "key": "blog_articles",
-              "value": "blog_articles"
+              "label": "حساب",
+              "value": "sicon-user",
+              "key": "vmfm-custom-icon-user-2026"
             },
             {
-              "label": "تصنيف ضمن المدونة",
-              "key": "blog_categories",
-              "value": "blog_categories"
+              "label": "عروض",
+              "value": "sicon-discount-calculator",
+              "key": "vmfm-custom-icon-offer-2026"
             },
             {
-              "label": "التخفيضات",
-              "key": "offers_link",
-              "value": "offers_link"
+              "label": "هدية",
+              "value": "sicon-gift",
+              "key": "vmfm-custom-icon-gift-2026"
             },
             {
-              "label": "الماركات التجارية",
-              "key": "brands_link",
-              "value": "brands_link"
+              "label": "واتساب",
+              "value": "sicon-whatsapp2",
+              "key": "vmfm-custom-icon-whatsapp-2026"
             },
             {
-              "label": "المدونة",
-              "key": "blog_link",
-              "value": "blog_link"
+              "label": "هاتف",
+              "value": "sicon-phone",
+              "key": "vmfm-custom-icon-phone-2026"
             },
             {
-              "label": "رابط خارجي",
-              "key": "custom",
-              "value": "custom"
+              "label": "رابط",
+              "value": "sicon-link",
+              "key": "vmfm-custom-icon-link-2026"
             }
           ]
+        },
+        {
+          "id": "url",
+          "type": "string",
+          "format": "url",
+          "inputType": "url",
+          "label": "رابط العنصر",
+          "description": "اختياري، اتركه فارغًا إذا كان العنصر بدون رابط",
+          "placeholder": "https://example.com",
+          "required": false
         },
         {
           "id": "open_new_tab",
