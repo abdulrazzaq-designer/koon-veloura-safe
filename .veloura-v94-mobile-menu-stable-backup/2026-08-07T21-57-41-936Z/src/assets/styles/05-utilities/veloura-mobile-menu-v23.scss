@@ -1,0 +1,45 @@
+/* ========================================================================
+   Veloura V23 — centered compact active indicator, no backdrop fades
+
+   Loaded after V22. This patch intentionally changes only:
+   1) the active mobile-menu indicator geometry;
+   2) removal of the page-color fades behind the header and floating menu.
+   ======================================================================== */
+
+/* Remove the extra fade behind the connected header/tabs stack. */
+html body .veloura-header-tabs-stack::before {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 1023px) {
+  /* Remove the extra fade below/behind the floating mobile menu. */
+  html body .veloura-mobile-floating-menu::before {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+    background-image: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Compact 14x3 indicator centered against the active item's own width. */
+  html body .veloura-mobile-floating-menu__item.is-active::after,
+  html body .veloura-mobile-floating-menu__item[aria-current='page']::after {
+    inset-inline-start: auto !important;
+    inset-inline-end: auto !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: -6px !important;
+    width: 14px !important;
+    min-width: 14px !important;
+    max-width: 14px !important;
+    height: 3px !important;
+    min-height: 3px !important;
+    max-height: 3px !important;
+    border-radius: 3px 3px 0 0 !important;
+    transform: translateX(-50%) !important;
+  }
+}
