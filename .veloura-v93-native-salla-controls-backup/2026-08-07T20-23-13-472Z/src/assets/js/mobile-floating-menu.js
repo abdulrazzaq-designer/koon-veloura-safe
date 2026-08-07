@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'v93';
+  var VERSION = 'v92';
   var MOBILE_QUERY = '(max-width: 767px)';
 
   function ready(callback) {
@@ -131,33 +131,55 @@
       activate(routeItem());
     }
 
+    function ensureCloseButton() {
+      var button = document.querySelector('[data-vmfm-panel-close]');
+      if (button) return button;
+      button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'veloura-vmfm-panel-close';
+      button.setAttribute('data-vmfm-panel-close', '');
+      button.setAttribute('aria-label', 'إغلاق البحث');
+      button.hidden = true;
+      button.innerHTML = '<span aria-hidden="true">×</span>';
+      document.body.appendChild(button);
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        closeSearch();
+      });
+      return button;
+    }
+
+    var closeButton = ensureCloseButton();
+
+    function syncCloseButton() {
+      var show = currentAction === 'search';
+      closeButton.hidden = !show;
+      closeButton.classList.toggle('is-visible', show);
+    }
+
     function setAction(action, item) {
       currentAction = action || '';
       currentItem = item || null;
       if (currentItem) activate(currentItem);
+      syncCloseButton();
     }
 
     function clearAction(action) {
       if (action && currentAction && action !== currentAction) return;
       currentAction = '';
       currentItem = null;
+      syncCloseButton();
       window.setTimeout(restoreRoute, 20);
     }
 
-    function whenDefined(name) {
-      if (!window.customElements || typeof window.customElements.whenDefined !== 'function') {
-        return Promise.resolve();
-      }
-      return window.customElements.whenDefined(name);
-    }
-
-    function componentReady(host) {
-      if (!host || typeof host.componentOnReady !== 'function') return Promise.resolve(host);
+    function dispatchSalla(name, detail) {
       try {
-        return Promise.resolve(host.componentOnReady()).then(function () { return host; });
-      } catch (error) {
-        return Promise.resolve(host);
-      }
+        if (window.salla && salla.event && typeof salla.event.dispatch === 'function') {
+          salla.event.dispatch(name, detail);
+          return true;
+        }
+      } catch (error) {}
+      return false;
     }
 
     function clickElement(element) {
@@ -189,191 +211,68 @@
       }
     }
 
-    function findNativeModal(host) {
-      if (!host) return null;
-
-      /* Stencil private refs sometimes remain reachable on the host. */
-      if (host.modal && typeof host.modal.close === 'function') return host.modal;
-
-      var found = null;
-      function inspect(root) {
-        if (!root || found || !root.querySelectorAll) return;
-        var direct = root.querySelector('salla-modal, salla-sheet');
-        if (direct && typeof direct.close === 'function') {
-          found = direct;
-          return;
-        }
-        walkShadow(root, function (node) {
-          if (found || !node || !node.matches) return;
-          if (node.matches('salla-modal, salla-sheet') && typeof node.close === 'function') {
-            found = node;
-          }
+    function closeHostDeep(host) {
+      if (!host) return false;
+      var closed = false;
+      function tryClose(node) {
+        if (!node || typeof node.close !== 'function') return;
+        try {
+          node.close();
+          closed = true;
+        } catch (error) {}
+      }
+      tryClose(host);
+      if (host.shadowRoot) {
+        walkShadow(host.shadowRoot, function (node) {
+          if (node.matches && node.matches('salla-modal, salla-sheet')) tryClose(node);
         });
-      }
-
-      inspect(host.shadowRoot);
-      return found;
-    }
-
-    function waitForNativeModal(host, timeout) {
-      var limit = Date.now() + (timeout || 1600);
-      return new Promise(function (resolve) {
-        function check() {
-          var modal = findNativeModal(host);
-          if (modal || Date.now() >= limit) {
-            resolve(modal || null);
-            return;
-          }
-          window.setTimeout(check, 40);
-        }
-        check();
-      });
-    }
-
-    function nativeCloseButton(host) {
-      if (!host || !host.shadowRoot) return null;
-      var found = null;
-      var selectors = [
-        '[part~="close"]',
-        '[data-close]',
-        '.s-modal-close',
-        '.s-modal-close-button',
-        '.s-search-close',
-        'button[aria-label="إغلاق"]',
-        'button[aria-label="Close"]'
-      ];
-
-      function inspect(root) {
-        if (!root || found || !root.querySelectorAll) return;
-        for (var i = 0; i < selectors.length; i += 1) {
-          var candidate = root.querySelector(selectors[i]);
-          if (candidate) {
-            found = candidate;
-            return;
+        if (!closed) {
+          var selectors = [
+            '[part~="close"]', '[data-close]', '.s-modal-close', '.s-modal-close-button',
+            '.s-search-close', 'button[aria-label="إغلاق"]', 'button[aria-label="Close"]'
+          ];
+          for (var i = 0; i < selectors.length && !closed; i += 1) {
+            var button = host.shadowRoot.querySelector(selectors[i]);
+            if (button) closed = clickElement(button);
           }
         }
-        walkShadow(root, function (node) {
-          if (found || !node || !node.shadowRoot) return;
-          inspect(node.shadowRoot);
-        });
       }
-
-      inspect(host.shadowRoot);
-      return found;
+      return closed;
     }
 
-    function modalLooksOpen(modal) {
-      if (!modal) return false;
-      if (modal.open === true || modal.opened === true || modal.visible === true) return true;
-      if (modal.hasAttribute && (modal.hasAttribute('open') || modal.hasAttribute('opened'))) return true;
-      if (modal.classList && (modal.classList.contains('is-open') || modal.classList.contains('s-modal-is-open'))) return true;
-      try {
-        var style = window.getComputedStyle(modal);
-        var rect = modal.getBoundingClientRect();
-        return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 1 && rect.height > 1;
-      } catch (error) {
-        return false;
-      }
-    }
-
-    function bindNativeModal(modal, action) {
-      if (!modal || modal.dataset.vmfmNativeBound === VERSION) return;
-      modal.dataset.vmfmNativeBound = VERSION;
-      modal.addEventListener('modalVisibilityChanged', function (event) {
-        var detail = event && event.detail;
-        var opened = detail === true || (detail && (detail.visible === true || detail.open === true || detail.opened === true));
-        var closed = detail === false || (detail && (detail.visible === false || detail.open === false || detail.opened === false));
-        if (opened) {
-          var item = menu.querySelector('[data-vmfm-action="' + action + '"]');
-          if (item) setAction(action, item);
-        } else if (closed) {
-          clearAction(action);
-        }
-      });
-    }
-
-    function closeNativeHost(host, action) {
-      if (!host) return Promise.resolve(false);
-      return waitForNativeModal(host, 900).then(function (modal) {
-        if (modal) {
-          bindNativeModal(modal, action);
-          try {
-            var result = modal.close();
-            return Promise.resolve(result).then(function () { return true; }, function () { return false; });
-          } catch (error) {}
-        }
-
-        var button = nativeCloseButton(host);
-        if (button) return clickElement(button);
-        return false;
-      });
-    }
-
-    /* Search: call Salla's web component directly. No synthetic X button. */
+    /* Search uses the exact header trigger already used by the theme. */
     function openSearch(item) {
-      var host = document.querySelector('salla-search:not([inline])');
-      if (!host) return;
-
       setAction('search', item);
-      whenDefined('salla-search')
-        .then(function () { return componentReady(host); })
-        .then(function () {
-          if (typeof host.open !== 'function') throw new Error('salla-search.open is unavailable');
-          return host.open();
-        })
-        .then(function () { return waitForNativeModal(host, 1600); })
-        .then(function (modal) {
-          if (modal) bindNativeModal(modal, 'search');
-        })
-        .catch(function () {
-          clearAction('search');
-        });
+      var trigger = firstOutsideMenu(['.veloura-search-toggle', '[data-search-open]', '[data-open-search]']);
+      if (!clickElement(trigger)) dispatchSalla('search::open');
     }
 
     function closeSearch() {
-      var host = document.querySelector('salla-search:not([inline])');
-      if (!host) {
-        clearAction('search');
-        return;
-      }
-
-      closeNativeHost(host, 'search').then(function (closed) {
-        /* Never pretend the search closed. Clear only after a real close path. */
-        if (closed) window.setTimeout(function () { clearAction('search'); }, 80);
-      });
+      closeHostDeep(document.querySelector('salla-search:not([inline])'));
+      dispatchSalla('search::close');
+      clearAction('search');
     }
 
-    /* Account: use the documented salla-login-modal.open() API directly. */
+    /* Account deliberately never redirects. It delegates to the header login trigger. */
     function openAccount(item) {
-      var host = document.querySelector('salla-login-modal');
-      if (!host) return;
-
       setAction('account', item);
-      whenDefined('salla-login-modal')
-        .then(function () { return componentReady(host); })
-        .then(function () {
-          if (typeof host.open !== 'function') throw new Error('salla-login-modal.open is unavailable');
-          return host.open();
-        })
-        .then(function () { return waitForNativeModal(host, 1600); })
-        .then(function (modal) {
-          if (modal) bindNativeModal(modal, 'account');
-        })
-        .catch(function () {
-          clearAction('account');
-        });
+      var trigger = firstOutsideMenu(['.veloura-login-btn', '[data-login]', '[data-open-login]', '.s-login-modal-trigger']);
+      if (clickElement(trigger)) return;
+      if (dispatchSalla('login::open')) return;
+
+      var host = document.querySelector('salla-login-modal');
+      if (host && typeof host.open === 'function') {
+        try { host.open(); } catch (error) { clearAction('account'); }
+      } else {
+        clearAction('account');
+      }
     }
 
     function closeAccount() {
-      var host = document.querySelector('salla-login-modal');
-      if (!host) {
-        clearAction('account');
-        return;
-      }
-
-      closeNativeHost(host, 'account').then(function (closed) {
-        if (closed) window.setTimeout(function () { clearAction('account'); }, 80);
-      });
+      closeHostDeep(document.querySelector('salla-login-modal'));
+      dispatchSalla('login::close');
+      dispatchSalla('auth::close');
+      clearAction('account');
     }
 
     function categoriesOpen() {
@@ -497,7 +396,25 @@
       bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     }
 
-    /* Native modal visibility is bound lazily after each Salla component opens. */
+    /* Salla's modalVisibilityChanged restores route state when a native modal closes itself. */
+    function bindModalVisibility(host, action) {
+      if (!host || host.dataset.vmfmVisibilityBound === VERSION) return;
+      host.dataset.vmfmVisibilityBound = VERSION;
+      host.addEventListener('modalVisibilityChanged', function (event) {
+        var detail = event && event.detail;
+        var open = typeof detail === 'boolean' ? detail : detail && (detail.visible === true || detail.open === true || detail.opened === true);
+        var closed = detail === false || (detail && (detail.visible === false || detail.open === false || detail.opened === false));
+        if (open) {
+          var item = menu.querySelector('[data-vmfm-action="' + action + '"]');
+          if (item) setAction(action, item);
+        } else if (closed) {
+          clearAction(action);
+        }
+      });
+    }
+
+    bindModalVisibility(document.querySelector('salla-login-modal'), 'account');
+    bindModalVisibility(document.querySelector('salla-search:not([inline])'), 'search');
 
     document.addEventListener('click', function (event) {
       if (!event.target.closest) return;

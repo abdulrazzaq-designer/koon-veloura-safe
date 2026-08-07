@@ -1,8 +1,9 @@
 /* ========================================================================
-   Veloura Mobile Floating Menu V93 — native Salla interactions
+   Veloura Mobile Floating Menu V92 — single owner, geometry first
    ======================================================================== */
 
-.veloura-mobile-floating-menu {
+.veloura-mobile-floating-menu,
+.veloura-vmfm-panel-close {
   display: none;
 }
 
@@ -261,7 +262,37 @@
     border-radius: var(--veloura-mobile-floating-menu-radius, 999px) !important;
   }
 
-  /* V93: search keeps only the native Salla close control; no injected X. */
+  /* Search-specific close control. No Salla component internals are resized here. */
+  .veloura-vmfm-panel-close {
+    position: fixed !important;
+    inset-block-start: calc(12px + env(safe-area-inset-top, 0px)) !important;
+    inset-inline-end: 12px !important;
+    z-index: 2147483646 !important;
+    display: none !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 42px !important;
+    height: 42px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 1px solid rgba(255, 255, 255, .54) !important;
+    border-radius: 14px !important;
+    background: rgba(255, 255, 255, .88) !important;
+    color: #ef4444 !important;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, .12) !important;
+    font: 400 30px/1 Arial, sans-serif !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+  }
+
+  .veloura-vmfm-panel-close.is-visible:not([hidden]) {
+    display: inline-flex !important;
+  }
+
+  html.dark body .veloura-vmfm-panel-close {
+    background: var(--veloura-dark-secondary-bg, #010612) !important;
+    border-color: rgba(255, 255, 255, .10) !important;
+  }
 
   @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
     body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
