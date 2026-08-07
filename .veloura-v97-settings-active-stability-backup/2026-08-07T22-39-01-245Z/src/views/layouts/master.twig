@@ -3134,7 +3134,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     data-vmfm-is-home="{{ is_page('index') ? 'true' : 'false' }}"
     data-vmfm-home-url="{{ store.url|default('/')|e('html_attr') }}"
     data-vmfm-page-slug="{{ page.slug|default('')|e('html_attr') }}"
-    data-vmfm-controller="v97"
+    data-vmfm-controller="v96"
     class="veloura-mobile-floating-menu veloura-mobile-floating-menu--{{ vmfm_position }} veloura-mobile-floating-menu--scale-{{ vmfm_active_scale_class }}{% if vmfm_position == 'full_width' %} veloura-mobile-floating-menu--full-width{% endif %}{% if vmfm_position == 'pill' %} veloura-mobile-floating-menu--pill{% endif %}"
     aria-label="قائمة الجوال العائمة"
     style="
@@ -3199,29 +3199,11 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         {% set item_enabled = item_enabled_raw == true or item_enabled_raw == 'true' or item_enabled_raw == 1 or item_enabled_raw == '1' or item_enabled_raw == 'on' %}
         {% if item_enabled %}
           {% set item_label = item.label|default('رابط') %}
-          {% set item_url_raw = item.url is defined ? item.url : '' %}
-          {% set item_url = '' %}
-
-          {# V97: never escape/render a variable-list array/object as a string. #}
-          {% if item_url_raw is not iterable %}
-            {% set item_url = item_url_raw %}
-          {% elseif item_url_raw.url is defined and item_url_raw.url is not iterable %}
-            {% set item_url = item_url_raw.url %}
-          {% elseif item_url_raw.href is defined and item_url_raw.href is not iterable %}
-            {% set item_url = item_url_raw.href %}
-          {% elseif item_url_raw.value is defined and item_url_raw.value is not iterable %}
-            {% set item_url = item_url_raw.value %}
-          {% elseif item_url_raw[0] is defined and item_url_raw[0].url is defined and item_url_raw[0].url is not iterable %}
-            {% set item_url = item_url_raw[0].url %}
-          {% elseif item_url_raw[0] is defined and item_url_raw[0].href is defined and item_url_raw[0].href is not iterable %}
-            {% set item_url = item_url_raw[0].href %}
-          {% elseif item_url_raw[0] is defined and item_url_raw[0].value is defined and item_url_raw[0].value is not iterable %}
-            {% set item_url = item_url_raw[0].value %}
-          {% endif %}
-
+          {% set item_url = item.url|default('') %}
           {% set item_new_tab_raw = item.open_new_tab is defined ? item.open_new_tab : false %}
           {% set item_new_tab = item_new_tab_raw == true or item_new_tab_raw == 'true' or item_new_tab_raw == 1 or item_new_tab_raw == '1' or item_new_tab_raw == 'on' %}
 
+          {# format=icon returns the Salla icon class as a string. Keep a legacy fallback for saved dropdown values. #}
           {% set item_icon_raw = item.icon|default('sicon-shopping-bag') %}
           {% if item_icon_raw is iterable and item_icon_raw[0] is defined and item_icon_raw[0].value is defined %}
             {% set item_icon = item_icon_raw[0].value %}
@@ -3235,8 +3217,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
             href="{{ (item_url ? item_url : '#')|e('html_attr') }}"
             class="veloura-mobile-floating-menu__item"
             data-vmfm-custom-link
-            data-vmfm-link-payload="{{ item_url_raw|json_encode|e('html_attr') }}"
-            {% if item_url %}data-vmfm-custom-url="{{ item_url|e('html_attr') }}"{% endif %}
+            data-vmfm-custom-url="{{ item_url|e('html_attr') }}"
             aria-label="{{ item_label|e }}"
             {% if item_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
           >

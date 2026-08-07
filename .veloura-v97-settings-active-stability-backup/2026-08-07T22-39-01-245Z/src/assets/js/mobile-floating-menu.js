@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'v97';
+  var VERSION = 'v96';
 
   function ready(callback) {
     if (document.readyState === 'loading') {
