@@ -1,23 +1,18 @@
 (function () {
   'use strict';
 
-  var VERSION = 'v91';
+  var VERSION = 'v92';
   var MOBILE_QUERY = '(max-width: 767px)';
-  var PANEL_SELECTOR = [
-    'salla-login-modal',
-    'salla-localization-modal',
-    'salla-search:not([inline])'
-  ].join(',');
 
-  function domReady(callback) {
+  function ready(callback) {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', callback, { once: true });
-      return;
+    } else {
+      callback();
     }
-    callback();
   }
 
-  function boot() {
+  ready(function () {
     var menu = document.querySelector('.veloura-mobile-floating-menu');
     if (!menu || menu.dataset.vmfmBound === VERSION) return;
 
@@ -29,80 +24,53 @@
     var currentAction = '';
     var currentItem = null;
     var indicatorFrame = 0;
-    var boundVisibilityTargets = new WeakSet();
 
     function isMobile() {
-      return window.matchMedia ? window.matchMedia(MOBILE_QUERY).matches : window.innerWidth <= 767;
+      return !window.matchMedia || window.matchMedia(MOBILE_QUERY).matches;
     }
 
-    function dispatchSalla(name, detail) {
-      if (!window.salla || !salla.event || typeof salla.event.dispatch !== 'function') return false;
-      try {
-        salla.event.dispatch(name, detail);
-        return true;
-      } catch (error) {
-        return false;
-      }
+    function items() {
+      return Array.prototype.slice.call(menu.querySelectorAll('.veloura-mobile-floating-menu__item'));
     }
 
     function normalizePath(value) {
       var path = String(value || '/').split('?')[0].split('#')[0];
-      path = path.replace(/\/{2,}/g, '/').replace(/\/+$/, '');
+      path = path.replace(/\/+$/, '');
       return path || '/';
     }
 
     function pathFromUrl(value) {
+      if (!value) return '';
       try {
-        return normalizePath(new URL(value || '/', window.location.href).pathname);
+        return normalizePath(new URL(value, window.location.origin).pathname);
       } catch (error) {
         return normalizePath(value);
       }
     }
 
-    function userIsLoggedIn() {
-      try {
-        if (!window.salla || !salla.config || typeof salla.config.get !== 'function') return false;
-        var type = String(salla.config.get('user.type') || '').trim().toLowerCase();
-        return Boolean(type && type !== 'guest' && type !== 'anonymous');
-      } catch (error) {
-        return false;
-      }
-    }
-
-    function allItems() {
-      return Array.prototype.slice.call(menu.querySelectorAll('.veloura-mobile-floating-menu__item'));
-    }
-
     function clearActive() {
-      allItems().forEach(function (item) {
+      items().forEach(function (item) {
         item.classList.remove('is-active');
         item.removeAttribute('aria-current');
       });
     }
 
     function updateIndicator() {
-      if (!inner || !indicator) return;
+      if (!inner || !indicator || !isMobile()) return;
       if (indicatorFrame) window.cancelAnimationFrame(indicatorFrame);
-
       indicatorFrame = window.requestAnimationFrame(function () {
         indicatorFrame = 0;
         var active = menu.querySelector('.veloura-mobile-floating-menu__item.is-active');
-        if (!active || !isMobile()) {
+        if (!active) {
           indicator.classList.remove('is-visible');
           return;
         }
 
-        var innerRect = inner.getBoundingClientRect();
-        var activeRect = active.getBoundingClientRect();
-        if (!innerRect.width || !activeRect.width) {
-          indicator.classList.remove('is-visible');
-          return;
-        }
-
-        var width = Math.max(18, Math.min(30, Math.round(activeRect.width * 0.25)));
-        var x = Math.round(activeRect.left - innerRect.left + ((activeRect.width - width) / 2));
+        /* offsetLeft/offsetWidth intentionally ignore the active transform. */
+        var width = Math.max(18, Math.min(28, Math.round(active.offsetWidth * .24)));
+        var x = Math.round(active.offsetLeft + ((active.offsetWidth - width) / 2));
         indicator.style.width = width + 'px';
-        indicator.style.transform = 'translate3d(' + x + 'px, 0, 0)';
+        indicator.style.transform = 'translate3d(' + x + 'px,0,0)';
         indicator.classList.add('is-visible');
       });
     }
@@ -139,19 +107,17 @@
       } else if (
         slug.indexOf('profile') !== -1 ||
         slug.indexOf('customer') !== -1 ||
-        slug.indexOf('login') !== -1 ||
         path.indexOf('/profile') !== -1 ||
-        path.indexOf('/account') !== -1 ||
-        path.indexOf('/login') !== -1
+        path.indexOf('/account') !== -1
       ) {
         item = menu.querySelector('[data-vmfm-match="account"]');
       }
 
       if (!item) {
-        var customItems = menu.querySelectorAll('[data-vmfm-url]');
-        for (var index = 0; index < customItems.length; index += 1) {
-          if (pathFromUrl(customItems[index].getAttribute('data-vmfm-url')) === path) {
-            item = customItems[index];
+        var custom = menu.querySelectorAll('[data-vmfm-url]');
+        for (var i = 0; i < custom.length; i += 1) {
+          if (pathFromUrl(custom[i].dataset.vmfmUrl) === path) {
+            item = custom[i];
             break;
           }
         }
@@ -165,247 +131,144 @@
       activate(routeItem());
     }
 
-    function ensurePanelCloseButton() {
+    function ensureCloseButton() {
       var button = document.querySelector('[data-vmfm-panel-close]');
       if (button) return button;
-
       button = document.createElement('button');
       button.type = 'button';
       button.className = 'veloura-vmfm-panel-close';
       button.setAttribute('data-vmfm-panel-close', '');
-      button.setAttribute('aria-label', 'إغلاق');
+      button.setAttribute('aria-label', 'إغلاق البحث');
       button.hidden = true;
       button.innerHTML = '<span aria-hidden="true">×</span>';
       document.body.appendChild(button);
-      button.addEventListener('click', function () {
-        if (currentAction) closeAction(currentAction);
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        closeSearch();
       });
       return button;
     }
 
-    var panelCloseButton = ensurePanelCloseButton();
+    var closeButton = ensureCloseButton();
 
-    function syncPanelUi() {
-      var opened = Boolean(currentAction);
-      document.documentElement.classList.toggle('veloura-vmfm-panel-open', opened);
-      if (document.body) {
-        document.body.classList.toggle('veloura-vmfm-panel-open', opened);
-        if (opened) document.body.setAttribute('data-vmfm-open-panel', currentAction);
-        else document.body.removeAttribute('data-vmfm-open-panel');
-      }
-
-      if (panelCloseButton) {
-        var showClose = currentAction === 'search';
-        panelCloseButton.hidden = !showClose;
-        panelCloseButton.classList.toggle('is-visible', showClose);
-      }
+    function syncCloseButton() {
+      var show = currentAction === 'search';
+      closeButton.hidden = !show;
+      closeButton.classList.toggle('is-visible', show);
     }
 
     function setAction(action, item) {
       currentAction = action || '';
       currentItem = item || null;
       if (currentItem) activate(currentItem);
-      syncPanelUi();
+      syncCloseButton();
     }
 
     function clearAction(action) {
       if (action && currentAction && action !== currentAction) return;
       currentAction = '';
       currentItem = null;
-      syncPanelUi();
-      window.setTimeout(restoreRoute, 50);
+      syncCloseButton();
+      window.setTimeout(restoreRoute, 20);
     }
 
-    function strictOpened(event) {
-      if (!event) return null;
-      if (typeof event.detail === 'boolean') return event.detail;
-      if (event.detail && typeof event.detail.visible === 'boolean') return event.detail.visible;
-      if (event.detail && typeof event.detail.open === 'boolean') return event.detail.open;
-      if (event.detail && typeof event.detail.opened === 'boolean') return event.detail.opened;
-      return null;
-    }
-
-    function actionForHost(host) {
-      if (!host || !host.matches) return '';
-      if (host.matches('salla-login-modal')) return 'account';
-      if (host.matches('salla-search:not([inline])')) return 'search';
-      if (host.matches('salla-localization-modal')) return 'localization';
-      return '';
-    }
-
-    function bindVisibilityTarget(target, action) {
-      if (!target || boundVisibilityTargets.has(target)) return;
-      boundVisibilityTargets.add(target);
-      target.addEventListener('modalVisibilityChanged', function (event) {
-        var opened = strictOpened(event);
-        if (opened === null) return;
-        if (opened) {
-          var item = menu.querySelector('[data-vmfm-action="' + action + '"], [data-vmfm-match="' + action + '"]');
-          setAction(action, item);
-        } else {
-          clearAction(action);
+    function dispatchSalla(name, detail) {
+      try {
+        if (window.salla && salla.event && typeof salla.event.dispatch === 'function') {
+          salla.event.dispatch(name, detail);
+          return true;
         }
-      });
+      } catch (error) {}
+      return false;
+    }
+
+    function clickElement(element) {
+      if (!element) return false;
+      try {
+        element.click();
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function firstOutsideMenu(selectors) {
+      for (var i = 0; i < selectors.length; i += 1) {
+        var nodes = document.querySelectorAll(selectors[i]);
+        for (var n = 0; n < nodes.length; n += 1) {
+          if (!menu.contains(nodes[n])) return nodes[n];
+        }
+      }
+      return null;
     }
 
     function walkShadow(root, callback) {
       if (!root || !root.querySelectorAll) return;
-      var elements = root.querySelectorAll('*');
-      for (var index = 0; index < elements.length; index += 1) {
-        var element = elements[index];
-        callback(element);
-        if (element.shadowRoot) walkShadow(element.shadowRoot, callback);
+      var nodes = root.querySelectorAll('*');
+      for (var i = 0; i < nodes.length; i += 1) {
+        callback(nodes[i]);
+        if (nodes[i].shadowRoot) walkShadow(nodes[i].shadowRoot, callback);
       }
-    }
-
-    function bindPanel(host) {
-      if (!host) return;
-      var action = actionForHost(host);
-      if (!action) return;
-      bindVisibilityTarget(host, action);
-
-      var finalize = function () {
-        if (!host.shadowRoot) return;
-        walkShadow(host.shadowRoot, function (element) {
-          if (element.matches && element.matches('salla-modal, salla-sheet')) {
-            bindVisibilityTarget(element, action);
-          }
-        });
-      };
-
-      finalize();
-      if (typeof host.componentOnReady === 'function') {
-        try {
-          var ready = host.componentOnReady();
-          if (ready && typeof ready.then === 'function') ready.then(finalize).catch(function () {});
-        } catch (error) {}
-      }
-      if (window.customElements && typeof customElements.whenDefined === 'function') {
-        customElements.whenDefined(host.localName).then(finalize).catch(function () {});
-      }
-    }
-
-    function scanPanels(scope) {
-      var root = scope || document;
-      if (root.matches && root.matches(PANEL_SELECTOR)) bindPanel(root);
-      if (root.querySelectorAll) root.querySelectorAll(PANEL_SELECTOR).forEach(bindPanel);
-    }
-
-    function clickFirst(selectors, root) {
-      var scope = root || document;
-      for (var index = 0; index < selectors.length; index += 1) {
-        var element = scope.querySelector && scope.querySelector(selectors[index]);
-        if (!element) continue;
-        try {
-          element.click();
-          return true;
-        } catch (error) {}
-      }
-      return false;
     }
 
     function closeHostDeep(host) {
       if (!host) return false;
       var closed = false;
-      var closeElement = function (element) {
-        if (!element || typeof element.close !== 'function') return;
+      function tryClose(node) {
+        if (!node || typeof node.close !== 'function') return;
         try {
-          element.close();
+          node.close();
           closed = true;
         } catch (error) {}
-      };
-
-      closeElement(host);
+      }
+      tryClose(host);
       if (host.shadowRoot) {
-        walkShadow(host.shadowRoot, function (element) {
-          if (element.matches && element.matches('salla-modal, salla-sheet')) closeElement(element);
+        walkShadow(host.shadowRoot, function (node) {
+          if (node.matches && node.matches('salla-modal, salla-sheet')) tryClose(node);
         });
-
         if (!closed) {
-          closed = clickFirst([
-            '[part~="close"]',
-            '[data-close]',
-            '.s-modal-close',
-            '.s-modal-close-button',
-            '.s-search-close',
-            'button[aria-label="إغلاق"]',
-            'button[aria-label="Close"]'
-          ], host.shadowRoot);
+          var selectors = [
+            '[part~="close"]', '[data-close]', '.s-modal-close', '.s-modal-close-button',
+            '.s-search-close', 'button[aria-label="إغلاق"]', 'button[aria-label="Close"]'
+          ];
+          for (var i = 0; i < selectors.length && !closed; i += 1) {
+            var button = host.shadowRoot.querySelector(selectors[i]);
+            if (button) closed = clickElement(button);
+          }
         }
       }
       return closed;
     }
 
+    /* Search uses the exact header trigger already used by the theme. */
     function openSearch(item) {
       setAction('search', item);
-      if (!dispatchSalla('search::open')) {
-        clickFirst(['.veloura-search-toggle', '[data-search-open]', '[data-open-search]']);
-      }
-      window.setTimeout(function () {
-        scanPanels(document);
-      }, 100);
+      var trigger = firstOutsideMenu(['.veloura-search-toggle', '[data-search-open]', '[data-open-search]']);
+      if (!clickElement(trigger)) dispatchSalla('search::open');
     }
 
     function closeSearch() {
-      var host = document.querySelector('salla-search:not([inline])');
-      closeHostDeep(host);
+      closeHostDeep(document.querySelector('salla-search:not([inline])'));
       dispatchSalla('search::close');
       clearAction('search');
     }
 
-    function openLogin(item) {
-      if (userIsLoggedIn()) {
-        window.location.assign(menu.dataset.vmfmAccountUrl || '/profile');
-        return;
-      }
-
+    /* Account deliberately never redirects. It delegates to the header login trigger. */
+    function openAccount(item) {
       setAction('account', item);
+      var trigger = firstOutsideMenu(['.veloura-login-btn', '[data-login]', '[data-open-login]', '.s-login-modal-trigger']);
+      if (clickElement(trigger)) return;
+      if (dispatchSalla('login::open')) return;
+
       var host = document.querySelector('salla-login-modal');
-      var fallback = function () {
-        if (!dispatchSalla('login::open')) clearAction('account');
-      };
-
-      if (!host) {
-        fallback();
-        return;
+      if (host && typeof host.open === 'function') {
+        try { host.open(); } catch (error) { clearAction('account'); }
+      } else {
+        clearAction('account');
       }
-
-      var open = function () {
-        if (typeof host.open !== 'function') {
-          fallback();
-          return;
-        }
-        try {
-          var result = host.open();
-          if (result && typeof result.catch === 'function') {
-            result.catch(function () {
-              fallback();
-            });
-          }
-        } catch (error) {
-          fallback();
-        }
-      };
-
-      if (typeof host.componentOnReady === 'function') {
-        try {
-          var ready = host.componentOnReady();
-          if (ready && typeof ready.then === 'function') {
-            ready.then(open).catch(fallback);
-            return;
-          }
-        } catch (error) {}
-      }
-
-      if (window.customElements && typeof customElements.whenDefined === 'function') {
-        customElements.whenDefined('salla-login-modal').then(open).catch(fallback);
-        return;
-      }
-
-      open();
     }
 
-    function closeLogin() {
+    function closeAccount() {
       closeHostDeep(document.querySelector('salla-login-modal'));
       dispatchSalla('login::close');
       dispatchSalla('auth::close');
@@ -422,126 +285,150 @@
 
     function openCategories(item) {
       setAction('categories', item);
-      var drawer = window.__velouraNativeMobileMenuDrawer;
-      if (drawer && typeof drawer.open === 'function') {
-        try {
-          if (document.body) document.body.classList.add('menu-opened');
-          drawer.open();
-          return;
-        } catch (error) {}
-      }
-
-      clickFirst([
-        '.veloura-menu-trigger-mobile[href="#mobile-menu"]',
-        'a.mburger[href="#mobile-menu"]',
-        'a[href="#mobile-menu"]'
-      ]);
+      var trigger = firstOutsideMenu(['a[href="#mobile-menu"]', '.veloura-menu-trigger-mobile[href="#mobile-menu"]']);
+      if (!clickElement(trigger)) clearAction('categories');
     }
 
     function closeCategories() {
-      var drawer = window.__velouraNativeMobileMenuDrawer;
-      if (document.body) document.body.classList.remove('menu-opened');
-      if (drawer && typeof drawer.close === 'function') {
-        try {
-          drawer.close();
-        } catch (error) {}
-      } else {
-        var host = document.querySelector('.mm-ocd.mm-ocd--open, .mm-ocd');
-        if (host) clickFirst(['.close-mobile-menu', '.mm-ocd__backdrop', '.mm-ocd__close'], host);
+      var close = document.querySelector('.close-mobile-menu, .mm-ocd.mm-ocd--open .mm-ocd__backdrop, .mm-ocd.mm-ocd--open .mm-ocd__close');
+      if (!clickElement(close)) {
+        var drawer = document.querySelector('.mm-ocd.mm-ocd--open');
+        if (drawer) drawer.classList.remove('mm-ocd--open');
+        if (document.body) document.body.classList.remove('menu-opened');
       }
       clearAction('categories');
     }
 
-    function openLocalization(item) {
-      setAction('localization', item);
-      var host = document.querySelector('salla-localization-modal');
-      if (host && typeof host.open === 'function') {
-        try {
-          host.open();
-          return;
-        } catch (error) {}
+    function findUrl(value, depth) {
+      if (depth > 7 || value == null) return '';
+      if (typeof value === 'string') {
+        var text = value.trim();
+        if (!text) return '';
+        if (/^(https?:\/\/|\/|#)/i.test(text)) return text;
+        return '';
       }
-      clickFirst(['[data-veloura-localization-trigger]', '.veloura-lang-mobile', '.veloura-lang-desktop']);
+      if (Array.isArray(value)) {
+        for (var i = 0; i < value.length; i += 1) {
+          var fromArray = findUrl(value[i], depth + 1);
+          if (fromArray) return fromArray;
+        }
+        return '';
+      }
+      if (typeof value === 'object') {
+        var preferred = ['url', 'href', 'link', 'permalink', 'value'];
+        for (var p = 0; p < preferred.length; p += 1) {
+          if (Object.prototype.hasOwnProperty.call(value, preferred[p])) {
+            var found = findUrl(value[preferred[p]], depth + 1);
+            if (found) return found;
+          }
+        }
+        var keys = Object.keys(value);
+        for (var k = 0; k < keys.length; k += 1) {
+          var nested = findUrl(value[keys[k]], depth + 1);
+          if (nested) return nested;
+        }
+      }
+      return '';
     }
 
-    function closeLocalization() {
-      closeHostDeep(document.querySelector('salla-localization-modal'));
-      clearAction('localization');
+    function openCustom(item) {
+      var payload = item.getAttribute('data-vmfm-custom-payload') || '';
+      var url = item.getAttribute('data-vmfm-url') || '';
+      if (!url && payload) {
+        try { url = findUrl(JSON.parse(payload), 0); } catch (error) {}
+      }
+      if (!url) return;
+      if (/^javascript:/i.test(url)) return;
+      if (item.getAttribute('data-vmfm-new-tab') === 'true') {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      } else {
+        window.location.assign(url);
+      }
     }
 
-    function closeAction(action) {
-      if (action === 'search') closeSearch();
-      else if (action === 'account') closeLogin();
-      else if (action === 'categories') closeCategories();
-      else if (action === 'localization') closeLocalization();
-    }
-
-    function openAction(action, item) {
-      if (action === 'search') openSearch(item);
-      else if (action === 'account') openLogin(item);
-      else if (action === 'categories') openCategories(item);
-      else if (action === 'localization') openLocalization(item);
+    function closeCurrent() {
+      if (currentAction === 'search') closeSearch();
+      else if (currentAction === 'account') closeAccount();
+      else if (currentAction === 'categories') closeCategories();
     }
 
     menu.addEventListener('click', function (event) {
       var item = event.target.closest && event.target.closest('.veloura-mobile-floating-menu__item');
       if (!item || !menu.contains(item)) return;
 
-      var action = item.dataset.vmfmAction || '';
-      if (!action) {
-        currentAction = '';
-        currentItem = null;
-        syncPanelUi();
-        return;
-      }
+      var action = item.getAttribute('data-vmfm-action');
+      if (!action) return; /* real links keep native navigation */
 
-      /* Own action buttons in capture phase so no legacy handler can navigate/reload. */
       event.preventDefault();
       event.stopPropagation();
-      if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
 
-      if (currentAction === action || (action === 'categories' && categoriesOpen())) {
-        closeAction(action);
+      if (action === 'custom') {
+        openCustom(item);
         return;
       }
 
-      if (currentAction) closeAction(currentAction);
-      openAction(action, item);
-    }, true);
-
-    document.addEventListener('click', function (event) {
-      if (!currentAction || currentAction !== 'categories') return;
-      if (!event.target.closest) return;
-      if (event.target.closest('.close-mobile-menu, .mm-ocd__backdrop, .mm-ocd__close')) {
-        window.setTimeout(function () {
-          if (!categoriesOpen()) clearAction('categories');
-        }, 0);
+      if (currentAction === action) {
+        closeCurrent();
+        return;
       }
-    }, true);
 
-    if (typeof MutationObserver === 'function') {
-      var observer = new MutationObserver(function (records) {
-        records.forEach(function (record) {
-          record.addedNodes.forEach(function (node) {
-            if (node.nodeType === 1) scanPanels(node);
-          });
-        });
+      if (currentAction) closeCurrent();
 
-        if (currentAction === 'categories' && !categoriesOpen()) clearAction('categories');
-        updateIndicator();
+      if (action === 'search') openSearch(item);
+      else if (action === 'account') openAccount(item);
+      else if (action === 'categories') openCategories(item);
+    });
+
+    /* Header drawer state is authoritative even when it is opened/closed outside this menu. */
+    function syncCategoriesFromBody() {
+      if (categoriesOpen()) {
+        var item = menu.querySelector('[data-vmfm-action="categories"]');
+        if (item && currentAction !== 'categories') setAction('categories', item);
+      } else if (currentAction === 'categories') {
+        clearAction('categories');
+      }
+    }
+
+    if (typeof MutationObserver === 'function' && document.body) {
+      var bodyObserver = new MutationObserver(function () {
+        syncCategoriesFromBody();
       });
-      observer.observe(document.documentElement, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['class', 'open', 'visible']
+      bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    }
+
+    /* Salla's modalVisibilityChanged restores route state when a native modal closes itself. */
+    function bindModalVisibility(host, action) {
+      if (!host || host.dataset.vmfmVisibilityBound === VERSION) return;
+      host.dataset.vmfmVisibilityBound = VERSION;
+      host.addEventListener('modalVisibilityChanged', function (event) {
+        var detail = event && event.detail;
+        var open = typeof detail === 'boolean' ? detail : detail && (detail.visible === true || detail.open === true || detail.opened === true);
+        var closed = detail === false || (detail && (detail.visible === false || detail.open === false || detail.opened === false));
+        if (open) {
+          var item = menu.querySelector('[data-vmfm-action="' + action + '"]');
+          if (item) setAction(action, item);
+        } else if (closed) {
+          clearAction(action);
+        }
       });
     }
 
+    bindModalVisibility(document.querySelector('salla-login-modal'), 'account');
+    bindModalVisibility(document.querySelector('salla-search:not([inline])'), 'search');
+
+    document.addEventListener('click', function (event) {
+      if (!event.target.closest) return;
+      if (event.target.closest('.close-mobile-menu, .mm-ocd__backdrop, .mm-ocd__close')) {
+        window.setTimeout(syncCategoriesFromBody, 30);
+      }
+    }, true);
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && currentAction) closeCurrent();
+    });
+
     if (typeof ResizeObserver === 'function') {
-      var resizeObserver = new ResizeObserver(function () {
-        updateIndicator();
-      });
+      var resizeObserver = new ResizeObserver(updateIndicator);
       resizeObserver.observe(menu);
       if (inner) resizeObserver.observe(inner);
     }
@@ -551,17 +438,7 @@
     window.addEventListener('popstate', restoreRoute);
     window.addEventListener('hashchange', restoreRoute);
 
-    document.addEventListener('keydown', function (event) {
-      if (event.key === 'Escape' && currentAction) closeAction(currentAction);
-    });
-
-    scanPanels(document);
     restoreRoute();
-    syncPanelUi();
-  }
-
-  domReady(function () {
-    if (window.salla && typeof salla.onReady === 'function') salla.onReady(boot);
-    else boot();
+    syncCategoriesFromBody();
   });
 })();
