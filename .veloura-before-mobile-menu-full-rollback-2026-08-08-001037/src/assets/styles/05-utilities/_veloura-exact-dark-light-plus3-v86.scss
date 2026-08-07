@@ -257,37 +257,7 @@ html body.dark .veloura-search-surface :is(input, textarea)::placeholder {
   opacity: .78 !important;
 }
 
-/* ------------------------------------------------------------------------
-   Mobile bottom menu: same material, dark secondary background, correct text.
-   The old highlight pseudo layer is removed; active-item styling is preserved.
-   ------------------------------------------------------------------------ */
-html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner::before,
-html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner::after {
-  content: none !important;
-  display: none !important;
-  background: none !important;
-  border: 0 !important;
-  box-shadow: none !important;
-}
-
-html.dark body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner,
-html body.dark.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
-  color: var(--veloura-dark-primary-text, #ffffff) !important;
-  --veloura-mobile-floating-menu-text: var(--veloura-dark-primary-text, #ffffff);
-}
-
-html.dark body .veloura-mobile-floating-menu__item:not(.is-active),
-html body.dark .veloura-mobile-floating-menu__item:not(.is-active) {
-  color: var(--veloura-dark-primary-text, #ffffff) !important;
-  text-shadow: none !important;
-}
-
-html.dark body .veloura-mobile-floating-menu__item.is-active,
-html body.dark .veloura-mobile-floating-menu__item.is-active,
-html.dark body .veloura-mobile-floating-menu__item[aria-current='page'],
-html body.dark .veloura-mobile-floating-menu__item[aria-current='page'] {
-  color: var(--veloura-mobile-floating-menu-active, #00a7e8) !important;
-}
+/* Mobile bottom menu state/layout is owned by mobile-floating-menu.scss (V91). */
 
 /* ------------------------------------------------------------------------
    Side menu: its dedicated dark settings win over the general glass source.

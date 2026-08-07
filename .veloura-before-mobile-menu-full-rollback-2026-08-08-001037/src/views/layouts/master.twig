@@ -1028,6 +1028,17 @@
   {% set vmfm_active_scale = vmfm_active_scale_raw %}
 {% endif %}
 
+{# VELOURA MOBILE FLOATING MENU V87 ACTIVE MODE START #}
+{% set vmfm_active_scale_number = vmfm_active_scale + 0 %}
+{% if vmfm_active_scale_number <= 1.001 %}
+  {% set vmfm_active_mode = 'none' %}
+{% elseif vmfm_active_scale_number <= 1.065 %}
+  {% set vmfm_active_mode = 'soft' %}
+{% else %}
+  {% set vmfm_active_mode = 'strong' %}
+{% endif %}
+{# VELOURA MOBILE FLOATING MENU V87 ACTIVE MODE END #}
+
 {% set vmfm_show_home_raw = theme.settings.get('veloura_mobile_floating_menu_show_home_2026', true) %}
 {% if vmfm_show_home_raw.value is defined %}{% set vmfm_show_home_raw = vmfm_show_home_raw.value %}{% endif %}
 {% set vmfm_show_home = vmfm_show_home_raw == true or vmfm_show_home_raw == 'true' or vmfm_show_home_raw == 1 or vmfm_show_home_raw == '1' or vmfm_show_home_raw == 'on' %}
@@ -3121,8 +3132,11 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
 {% if vmfm_enabled and not veloura_is_product_page %}
   <nav
-    data-login-url="{{ (store.url|default('') ~ '/login')|e('html_attr') }}"
-    class="veloura-mobile-floating-menu veloura-mobile-floating-menu--{{ vmfm_position }}{% if vmfm_position == 'full_width' %} veloura-mobile-floating-menu--full-width{% endif %}{% if vmfm_position == 'pill' %} veloura-mobile-floating-menu--pill{% endif %}"
+    class="veloura-mobile-floating-menu veloura-mobile-floating-menu--{{ vmfm_position }}{% if vmfm_position == 'full_width' %} veloura-mobile-floating-menu--full-width{% endif %}{% if vmfm_position == 'pill' %} veloura-mobile-floating-menu--pill{% endif %} veloura-mobile-floating-menu--active-{{ vmfm_active_mode }}"
+    data-vmfm-controller="v93"
+    data-vmfm-store-url="{{ store.url|default('')|e('html_attr') }}"
+    data-vmfm-page-slug="{{ page.slug|default('')|e('html_attr') }}"
+    data-vmfm-is-home="{{ is_page('index') ? 'true' : 'false' }}"
     aria-label="قائمة الجوال العائمة"
     style="
       --veloura-mobile-floating-menu-height: {{ vmfm_height }}px;
@@ -3137,47 +3151,38 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     "
   >
     <div class="veloura-mobile-floating-menu__inner">
-
       {% if vmfm_show_home %}
         <a href="{{ store.url|default('/') }}" class="veloura-mobile-floating-menu__item" data-vmfm-match="home" aria-label="{{ vmfm_home_label|e }}">
-          <i class="sicon-home" aria-hidden="true"></i>
-          {% if vmfm_show_labels %}<span>{{ vmfm_home_label }}</span>{% endif %}
+          <span class="veloura-mobile-floating-menu__icon-wrap"><i class="sicon-home" aria-hidden="true"></i></span>
+          {% if vmfm_show_labels %}<span class="veloura-mobile-floating-menu__label">{{ vmfm_home_label }}</span>{% endif %}
         </a>
       {% endif %}
 
       {% if vmfm_show_categories %}
-  <button
-    type="button"
-    class="veloura-mobile-floating-menu__item"
-    data-vmfm-match="categories"
-    data-vmfm-action="categories"
-    aria-label="{{ vmfm_categories_label|e }}"
-  >
-    <i class="sicon-grid" aria-hidden="true"></i>
-    {% if vmfm_show_labels %}
-      <span>{{ vmfm_categories_label }}</span>
-    {% endif %}
-  </button>
-{% endif %}
+        <button type="button" class="veloura-mobile-floating-menu__item" data-vmfm-match="categories" data-vmfm-action="categories" aria-label="{{ vmfm_categories_label|e }}">
+          <span class="veloura-mobile-floating-menu__icon-wrap"><i class="sicon-grid" aria-hidden="true"></i></span>
+          {% if vmfm_show_labels %}<span class="veloura-mobile-floating-menu__label">{{ vmfm_categories_label }}</span>{% endif %}
+        </button>
+      {% endif %}
 
       {% if vmfm_show_search %}
-        <a href="{{ store.url|default('') }}/search" class="veloura-mobile-floating-menu__item" data-vmfm-match="search" data-vmfm-action="search" aria-label="{{ vmfm_search_label|e }}">
-          <i class="sicon-search" aria-hidden="true"></i>
-          {% if vmfm_show_labels %}<span>{{ vmfm_search_label }}</span>{% endif %}
-        </a>
+        <button type="button" class="veloura-mobile-floating-menu__item" data-vmfm-match="search" data-vmfm-action="search" aria-label="{{ vmfm_search_label|e }}">
+          <span class="veloura-mobile-floating-menu__icon-wrap"><i class="sicon-search" aria-hidden="true"></i></span>
+          {% if vmfm_show_labels %}<span class="veloura-mobile-floating-menu__label">{{ vmfm_search_label }}</span>{% endif %}
+        </button>
       {% endif %}
 
       {% if vmfm_show_cart %}
         <a href="{{ store.url|default('') }}/cart" class="veloura-mobile-floating-menu__item" data-vmfm-match="cart" aria-label="{{ vmfm_cart_label|e }}">
-          <i class="sicon-shopping-bag" aria-hidden="true"></i>
-          {% if vmfm_show_labels %}<span>{{ vmfm_cart_label }}</span>{% endif %}
+          <span class="veloura-mobile-floating-menu__icon-wrap"><i class="sicon-shopping-bag" aria-hidden="true"></i></span>
+          {% if vmfm_show_labels %}<span class="veloura-mobile-floating-menu__label">{{ vmfm_cart_label }}</span>{% endif %}
         </a>
       {% endif %}
 
       {% if vmfm_show_account %}
-        <button type="button" class="veloura-mobile-floating-menu__item" data-vmfm-match="account" data-vmfm-action="login" aria-label="{{ vmfm_account_label|e }}">
-          <i class="sicon-user" aria-hidden="true"></i>
-          {% if vmfm_show_labels %}<span>{{ vmfm_account_label }}</span>{% endif %}
+        <button type="button" class="veloura-mobile-floating-menu__item" data-vmfm-match="account" data-vmfm-action="account" aria-label="{{ vmfm_account_label|e }}">
+          <span class="veloura-mobile-floating-menu__icon-wrap"><i class="sicon-user" aria-hidden="true"></i></span>
+          {% if vmfm_show_labels %}<span class="veloura-mobile-floating-menu__label">{{ vmfm_account_label }}</span>{% endif %}
         </button>
       {% endif %}
 
@@ -3186,37 +3191,70 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         {% set item_enabled = item_enabled_raw == true or item_enabled_raw == 'true' or item_enabled_raw == 1 or item_enabled_raw == '1' or item_enabled_raw == 'on' %}
         {% if item_enabled %}
           {% set item_label = item.label|default('رابط') %}
-          {% set item_url = item.url|default('') %}
+          {% set item_url_raw = item.url|default('') %}
+          {% set item_url = '' %}
+          {% if item_url_raw is iterable and item_url_raw.selected is defined and item_url_raw.selected is iterable and item_url_raw.selected[0] is defined and item_url_raw.selected[0].url is defined %}
+            {% set item_url = item_url_raw.selected[0].url %}
+          {% elseif item_url_raw is iterable and item_url_raw.selected is defined and item_url_raw.selected is iterable and item_url_raw.selected[0] is defined and item_url_raw.selected[0].value is defined and item_url_raw.selected[0].value is not iterable %}
+            {% set item_url = item_url_raw.selected[0].value %}
+          {% elseif item_url_raw is iterable and item_url_raw[0] is defined and item_url_raw[0].url is defined %}
+            {% set item_url = item_url_raw[0].url %}
+          {% elseif item_url_raw is iterable and item_url_raw[0] is defined and item_url_raw[0].value is defined and item_url_raw[0].value is not iterable %}
+            {% set item_url = item_url_raw[0].value %}
+          {% elseif item_url_raw is iterable and item_url_raw.url is defined %}
+            {% set item_url = item_url_raw.url %}
+          {% elseif item_url_raw is iterable and item_url_raw.value is defined and item_url_raw.value is not iterable %}
+            {% set item_url = item_url_raw.value %}
+          {% elseif item_url_raw is not iterable %}
+            {% set item_url = item_url_raw %}
+          {% endif %}
+
           {% set item_new_tab_raw = item.open_new_tab is defined ? item.open_new_tab : false %}
           {% set item_new_tab = item_new_tab_raw == true or item_new_tab_raw == 'true' or item_new_tab_raw == 1 or item_new_tab_raw == '1' or item_new_tab_raw == 'on' %}
           {% set item_icon_raw = item.icon|default('sicon-shopping-bag') %}
-          {% if item_icon_raw is iterable and item_icon_raw[0].value is defined %}
+          {% if item_icon_raw is iterable and item_icon_raw.selected is defined and item_icon_raw.selected is iterable and item_icon_raw.selected[0] is defined and item_icon_raw.selected[0].value is defined %}
+            {% set item_icon = item_icon_raw.selected[0].value %}
+          {% elseif item_icon_raw is iterable and item_icon_raw[0] is defined and item_icon_raw[0].value is defined %}
             {% set item_icon = item_icon_raw[0].value %}
-          {% elseif item_icon_raw.value is defined %}
+          {% elseif item_icon_raw is iterable and item_icon_raw.value is defined %}
             {% set item_icon = item_icon_raw.value %}
           {% else %}
             {% set item_icon = item_icon_raw %}
           {% endif %}
+
           {% if item_url %}
-            <a href="{{ item_url|e('html_attr') }}" class="veloura-mobile-floating-menu__item" aria-label="{{ item_label|e }}" {% if item_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
-              <i class="{{ item_icon|e('html_attr') }}" aria-hidden="true"></i>
-              {% if vmfm_show_labels %}<span>{{ item_label }}</span>{% endif %}
+            <a
+              href="{{ item_url|e('html_attr') }}"
+              data-vmfm-match="custom"
+              data-vmfm-url="{{ item_url|e('html_attr') }}"
+              class="veloura-mobile-floating-menu__item"
+              aria-label="{{ item_label|e }}"
+              {% if item_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+            >
+              <span class="veloura-mobile-floating-menu__icon-wrap"><i class="{{ item_icon|e('html_attr') }}" aria-hidden="true"></i></span>
+              {% if vmfm_show_labels %}<span class="veloura-mobile-floating-menu__label">{{ item_label }}</span>{% endif %}
             </a>
-          {% else %}
-            <button type="button" class="veloura-mobile-floating-menu__item" aria-label="{{ item_label|e }}">
-              <i class="{{ item_icon|e('html_attr') }}" aria-hidden="true"></i>
-              {% if vmfm_show_labels %}<span>{{ item_label }}</span>{% endif %}
+          {% elseif item_url_raw %}
+            <button
+              type="button"
+              class="veloura-mobile-floating-menu__item"
+              data-vmfm-match="custom"
+              data-vmfm-action="custom"
+              data-vmfm-custom-payload="{{ item_url_raw|json_encode|e('html_attr') }}"
+              data-vmfm-new-tab="{{ item_new_tab ? 'true' : 'false' }}"
+              aria-label="{{ item_label|e }}"
+            >
+              <span class="veloura-mobile-floating-menu__icon-wrap"><i class="{{ item_icon|e('html_attr') }}" aria-hidden="true"></i></span>
+              {% if vmfm_show_labels %}<span class="veloura-mobile-floating-menu__label">{{ item_label }}</span>{% endif %}
             </button>
           {% endif %}
         {% endif %}
       {% endfor %}
+
+      <span class="veloura-mobile-floating-menu__indicator" aria-hidden="true"></span>
     </div>
   </nav>
-
-  {# Mobile floating menu behavior is bundled from src/assets/js/mobile-floating-menu.js #}
-
 {% endif %}
-
 
 
 <script data-cfasync="false" id="veloura-product-card-native-actions-sync-2026">

@@ -2495,7 +2495,7 @@
       "type": "string",
       "format": "color",
       "inputType": "color",
-      "label": "لون التبويب النشط",
+      "label": "لون التبويب النشط1111",
       "icon": "sicon-paint-bucket",
       "value": "#003848",
       "required": false,
@@ -8752,7 +8752,7 @@
       "type": "items",
       "format": "dropdown-list",
       "label": "تكبير العنصر النشط",
-      "description": "تكبير خفيف ومتزن. يتم تقييد التكبير بصرياً حتى لا يخرج العنصر أو النقطة خارج القائمة.",
+      "description": "بدون تكبير: خلفية داخل القائمة. خفيف: ارتفاع بسيط فوق القائمة. كبير: ارتفاع واضح فوق القائمة.",
       "icon": "sicon-star",
       "source": "Manual",
       "required": true,
@@ -8775,7 +8775,7 @@
           "key": "vmfm-active-scale-106-v15-2026"
         },
         {
-          "label": "واضح",
+          "label": "كبير",
           "value": "1.08",
           "key": "vmfm-active-scale-108-v15-2026"
         }
@@ -9063,82 +9063,77 @@
         },
         {
           "id": "icon",
-          "type": "items",
-          "format": "dropdown-list",
+          "type": "string",
+          "format": "icon",
           "label": "أيقونة العنصر",
-          "description": "اختر أيقونة العنصر داخل القائمة",
+          "description": "اختر أي أيقونة من مكتبة أيقونات سلة، بدون قائمة مقيدة.",
           "icon": "sicon-star",
-          "source": "Manual",
-          "required": true,
-          "selected": [
-            {
-              "label": "سلة",
-              "value": "sicon-shopping-bag",
-              "key": "vmfm-custom-icon-cart-2026"
-            }
-          ],
-          "options": [
-            {
-              "label": "سلة",
-              "value": "sicon-shopping-bag",
-              "key": "vmfm-custom-icon-cart-2026"
-            },
-            {
-              "label": "رئيسية",
-              "value": "sicon-home",
-              "key": "vmfm-custom-icon-home-2026"
-            },
-            {
-              "label": "تصنيفات",
-              "value": "sicon-grid",
-              "key": "vmfm-custom-icon-grid-2026"
-            },
-            {
-              "label": "بحث",
-              "value": "sicon-search",
-              "key": "vmfm-custom-icon-search-2026"
-            },
-            {
-              "label": "حساب",
-              "value": "sicon-user",
-              "key": "vmfm-custom-icon-user-2026"
-            },
-            {
-              "label": "عروض",
-              "value": "sicon-discount-calculator",
-              "key": "vmfm-custom-icon-offer-2026"
-            },
-            {
-              "label": "هدية",
-              "value": "sicon-gift",
-              "key": "vmfm-custom-icon-gift-2026"
-            },
-            {
-              "label": "واتساب",
-              "value": "sicon-whatsapp2",
-              "key": "vmfm-custom-icon-whatsapp-2026"
-            },
-            {
-              "label": "هاتف",
-              "value": "sicon-phone",
-              "key": "vmfm-custom-icon-phone-2026"
-            },
-            {
-              "label": "رابط",
-              "value": "sicon-link",
-              "key": "vmfm-custom-icon-link-2026"
-            }
-          ]
+          "value": "sicon-shopping-bag",
+          "required": true
         },
         {
-          "id": "url",
-          "type": "string",
-          "format": "url",
-          "inputType": "url",
+          "type": "items",
+          "icon": "sicon-link",
           "label": "رابط العنصر",
-          "description": "اختياري، اتركه فارغًا إذا كان العنصر بدون رابط",
-          "placeholder": "https://example.com",
-          "required": false
+          "id": "url",
+          "value": null,
+          "description": "اختر منتجًا أو تصنيفًا أو صفحة أو رابطًا جاهزًا من المتجر.",
+          "required": false,
+          "format": "variable-list",
+          "searchable": true,
+          "source": "custom",
+          "sources": [
+            {
+              "label": "منتج",
+              "key": "products",
+              "value": "products"
+            },
+            {
+              "label": "تصنيف",
+              "key": "categories",
+              "value": "categories"
+            },
+            {
+              "label": "ماركة تجارية",
+              "key": "brands",
+              "value": "brands"
+            },
+            {
+              "label": "صفحة تعريفية",
+              "key": "pages",
+              "value": "pages"
+            },
+            {
+              "label": "مقالة",
+              "key": "blog_articles",
+              "value": "blog_articles"
+            },
+            {
+              "label": "تصنيف ضمن المدونة",
+              "key": "blog_categories",
+              "value": "blog_categories"
+            },
+            {
+              "label": "التخفيضات",
+              "key": "offers_link",
+              "value": "offers_link"
+            },
+            {
+              "label": "الماركات التجارية",
+              "key": "brands_link",
+              "value": "brands_link"
+            },
+            {
+              "label": "المدونة",
+              "key": "blog_link",
+              "value": "blog_link"
+            },
+            {
+              "label": "رابط خارجي",
+              "key": "custom",
+              "value": "custom"
+            }
+          ]
         },
         {
           "id": "open_new_tab",
