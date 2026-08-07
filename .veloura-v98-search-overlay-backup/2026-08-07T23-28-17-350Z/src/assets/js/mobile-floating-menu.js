@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var VERSION = 'v98';
+  var VERSION = 'v97';
 
   function ready(callback) {
     if (document.readyState === 'loading') {
@@ -268,34 +268,57 @@
       return null;
     }
 
-    var searchHostCache = null;
-    var searchReadyPromise = null;
+    function delay(ms) {
+      return new Promise(function (resolve) { window.setTimeout(resolve, ms); });
+    }
 
-    function primeSearchHost() {
-      if (searchReadyPromise) return searchReadyPromise;
-
-      searchHostCache = preferredSearchHost();
-      if (!searchHostCache) return Promise.resolve(null);
-
-      var host = searchHostCache;
-      searchReadyPromise = Promise.resolve()
-        .then(function () {
-          if (window.customElements && typeof window.customElements.whenDefined === 'function') {
-            return window.customElements.whenDefined('salla-search');
-          }
+    function promiseWithTimeout(promise, ms) {
+      return Promise.race([
+        Promise.resolve(promise),
+        new Promise(function (_, reject) {
+          window.setTimeout(function () { reject(new Error('timeout')); }, ms);
         })
+      ]);
+    }
+
+    function waitForSearchReady() {
+      var host = preferredSearchHost();
+      if (!host) return Promise.resolve(null);
+
+      var defined = Promise.resolve();
+      if (window.customElements && typeof window.customElements.whenDefined === 'function') {
+        defined = promiseWithTimeout(window.customElements.whenDefined('salla-search'), 3500)
+          .catch(function () {});
+      }
+
+      return defined
         .then(function () {
           if (typeof host.componentOnReady === 'function') {
-            return host.componentOnReady();
+            return promiseWithTimeout(host.componentOnReady(), 3500).catch(function () {});
           }
         })
-        .catch(function () {})
         .then(function () {
-          bindNativeModalState('search', host);
-          return host;
-        });
+          var tries = 0;
+          return new Promise(function (resolve) {
+            function probe() {
+              // Salla Search public open() uses its rendered modal internally,
+              // so wait until both the method and modal are actually ready.
+              if (typeof host.open === 'function' && modalFromHost(host)) {
+                resolve(host);
+                return;
+              }
 
-      return searchReadyPromise;
+              tries += 1;
+              if (tries >= 40) {
+                resolve(typeof host.open === 'function' ? host : null);
+                return;
+              }
+
+              window.setTimeout(probe, 50);
+            }
+            probe();
+          });
+        });
     }
 
     function loginHost() {
@@ -337,8 +360,8 @@
 
     function bindNativeModalState(action, host) {
       var modal = modalFromHost(host);
-      if (!modal || modal.__velouraVmfmV98Bound) return;
-      modal.__velouraVmfmV98Bound = true;
+      if (!modal || modal.__velouraVmfmV95Bound) return;
+      modal.__velouraVmfmV95Bound = true;
 
       modal.addEventListener('modalVisibilityChanged', function (event) {
         var opened = event && typeof event.detail === 'boolean'
@@ -354,149 +377,87 @@
     }
 
     function clickNativeHeaderLogin() {
+      // Same principle for login: reuse the real header trigger.
       return clickFirst(['.veloura-login-btn']);
     }
 
-    var searchOpened = false;
-    var searchOpening = false;
+    var searchBusy = false;
+    var searchCloseRequested = false;
 
-    function nativeSearchModal() {
-      return modalFromHost(searchHostCache || preferredSearchHost());
-    }
+    function openSearch(item) {
+      if (searchBusy) return;
 
-    function setSearchOpened(opened) {
-      searchOpened = Boolean(opened);
-      searchOpening = false;
-      if (searchOpened) {
-        setTransient('search');
-      } else {
-        clearTransient('search');
-      }
-    }
-
-    function bindSearchState(host) {
-      var modal = modalFromHost(host);
-      if (!modal || modal.__velouraVmfmV98SearchStateBound) return;
-      modal.__velouraVmfmV98SearchStateBound = true;
-
-      modal.addEventListener('modalVisibilityChanged', function (event) {
-        var opened = event && typeof event.detail === 'boolean'
-          ? event.detail
-          : modalLooksOpen(modal);
-        setSearchOpened(opened);
-      });
-    }
-
-    function openSearch() {
-      if (searchOpened || searchOpening) return;
-
-      searchOpening = true;
+      searchBusy = true;
+      searchCloseRequested = false;
       setTransient('search');
 
-      var host = searchHostCache || preferredSearchHost();
-      searchHostCache = host;
-
-      // Fast path: once Twilight is ready this opens synchronously from the click.
-      if (host && typeof host.open === 'function') {
-        try {
-          var opened = host.open();
-          Promise.resolve(opened)
-            .then(function () {
-              bindSearchState(host);
-              window.setTimeout(function () {
-                bindSearchState(host);
-                setSearchOpened(true);
-              }, 0);
-            })
-            .catch(function () {
-              searchOpening = false;
-              clearTransient('search');
-            });
-          return;
-        } catch (error) {}
-      }
-
-      // Immediate native event fallback. Do not wait seconds before trying to open.
-      if (window.salla && window.salla.event && typeof window.salla.event.dispatch === 'function') {
-        try { window.salla.event.dispatch('search::open'); } catch (error) {}
-      }
-
-      // Prime in parallel so future clicks are instant and bind the real modal state.
-      primeSearchHost().then(function (readyHost) {
-        if (!readyHost) {
-          searchOpening = false;
-          clearTransient('search');
-          return;
-        }
-
-        bindSearchState(readyHost);
-        var modal = modalFromHost(readyHost);
-        if (modalLooksOpen(modal)) {
-          setSearchOpened(true);
-          return;
-        }
-
-        if (typeof readyHost.open === 'function') {
-          try {
-            Promise.resolve(readyHost.open())
-              .then(function () {
-                bindSearchState(readyHost);
-                setSearchOpened(true);
-              })
-              .catch(function () {
-                searchOpening = false;
-                clearTransient('search');
-              });
-          } catch (error) {
-            searchOpening = false;
-            clearTransient('search');
+      waitForSearchReady()
+        .then(function (host) {
+          if (!host || typeof host.open !== 'function') {
+            throw new Error('Salla search component is not ready');
           }
-        }
-      });
+
+          return Promise.resolve(host.open()).then(function () {
+            bindNativeModalState('search', host);
+            return delay(40).then(function () {
+              bindNativeModalState('search', host);
+              if (searchCloseRequested) {
+                searchBusy = false;
+                closeSearch();
+                return;
+              }
+              setTransient('search');
+            });
+          });
+        })
+        .catch(function () {
+          // The native Search component itself listens to search::open.
+          // Dispatch only after waiting for the component definition so the event is not lost.
+          if (window.salla && window.salla.event && typeof window.salla.event.dispatch === 'function') {
+            try {
+              window.salla.event.dispatch('search::open');
+              return;
+            } catch (error) {}
+          }
+          clearTransient('search');
+        })
+        .finally(function () {
+          searchBusy = false;
+        });
     }
 
     function closeSearch() {
-      var modal = nativeSearchModal();
-
-      // Fast path: close the exact Salla modal immediately on the second tap.
-      if (modal && typeof modal.close === 'function') {
-        try {
-          Promise.resolve(modal.close())
-            .catch(function () {})
-            .finally(function () { setSearchOpened(false); });
-          return;
-        } catch (error) {}
+      if (searchBusy) {
+        searchCloseRequested = true;
+        return;
       }
 
-      // One short readiness pass only; no multi-second polling loop.
-      primeSearchHost().then(function (host) {
-        var readyModal = modalFromHost(host);
-        if (readyModal && typeof readyModal.close === 'function') {
-          try {
-            Promise.resolve(readyModal.close())
-              .catch(function () {})
-              .finally(function () { setSearchOpened(false); });
-            return;
-          } catch (error) {}
-        }
-        // If Salla reports no live modal, restore the route state instead of faking an open search.
-        setSearchOpened(false);
-      });
+      searchBusy = true;
+      searchCloseRequested = false;
+
+      waitForSearchReady()
+        .then(function (host) {
+          var modal = modalFromHost(host);
+          if (!modal || typeof modal.close !== 'function') {
+            throw new Error('Salla search modal is not ready');
+          }
+          return Promise.resolve(modal.close());
+        })
+        .then(function () { clearTransient('search'); })
+        .catch(function () {
+          // Keep the active state if the real Salla modal could not be closed.
+          activeAction = 'search';
+          activateItem(itemForAction('search'));
+        })
+        .finally(function () {
+          searchBusy = false;
+        });
     }
 
     function openLogin() {
       var host = loginHost();
       setTransient('login');
-
       if (host) bindNativeModalState('login', host);
-
-      // Prefer the native component directly; header trigger remains fallback only.
-      if (host && typeof host.open === 'function') {
-        try {
-          Promise.resolve(host.open()).catch(function () { clickNativeHeaderLogin(); });
-          return;
-        } catch (error) {}
-      }
 
       if (clickNativeHeaderLogin()) return;
 
@@ -505,31 +466,36 @@
       }
     }
 
-    function toggleAction(action) {
-      if (action === 'search') {
-        if (searchOpened || activeAction === 'search') closeSearch();
-        else openSearch();
+    function closeLogin() {
+      var host = loginHost();
+      var modal = modalFromHost(host);
+
+      if (modal && typeof modal.close === 'function') {
+        Promise.resolve(modal.close())
+          .catch(function () {})
+          .finally(function () { clearTransient('login'); });
         return;
       }
 
-      if (action === 'categories') {
-        if (activeAction === 'categories' || categoriesAreOpen()) closeCategories();
-        else openCategories();
-        return;
-      }
-
-      if (action === 'login') {
-        // Login is intentionally open-only from the bottom bar.
-        // Its native modal is layered above the menu and must be closed with Salla's own X.
-        if (activeAction !== 'login') openLogin();
-      }
+      clearTransient('login');
     }
 
-    // Warm the lazily-loaded Salla Search component in the background.
-    // This removes the old 2–3 second wait from the first user click in normal browsing.
-    primeSearchHost().then(function (host) {
-      if (host) bindSearchState(host);
-    });
+    function toggleAction(action, item) {
+      if (activeAction === action) {
+        if (action === 'search') closeSearch();
+        if (action === 'login') closeLogin();
+        if (action === 'categories') closeCategories();
+        return;
+      }
+
+      if (activeAction === 'search') closeSearch();
+      if (activeAction === 'login') closeLogin();
+      if (activeAction === 'categories' && categoriesAreOpen()) closeCategories();
+
+      if (action === 'search') openSearch(item);
+      if (action === 'login') openLogin();
+      if (action === 'categories') openCategories();
+    }
 
     menu.addEventListener('click', function (event) {
       var item = closest(event.target, '.veloura-mobile-floating-menu__item');
@@ -539,7 +505,7 @@
       if (action) {
         event.preventDefault();
         event.stopPropagation();
-        toggleAction(action);
+        toggleAction(action, item);
         return;
       }
 
