@@ -1,8 +1,6 @@
 (function () {
   'use strict';
 
-  var VERSION = 'v98';
-
   function ready(callback) {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', callback, { once: true });
@@ -15,15 +13,15 @@
     var menu = document.querySelector('.veloura-mobile-floating-menu');
     if (!menu) return;
 
-    menu.setAttribute('data-vmfm-runtime', VERSION);
-
+    var inner = menu.querySelector('.veloura-mobile-floating-menu__inner');
+    var indicator = menu.querySelector('.veloura-mobile-floating-menu__indicator');
     var items = Array.prototype.slice.call(
       menu.querySelectorAll('.veloura-mobile-floating-menu__item')
     );
 
     var activeAction = '';
-    var boundModals = typeof WeakSet === 'function' ? new WeakSet() : null;
-    var stateTimer = null;
+    var searchOpened = false;
+    var searchReadyPromise = null;
 
     function closest(target, selector) {
       if (!target || target === document || target === window) return null;
@@ -41,14 +39,14 @@
 
     function safeUrl(value) {
       if (typeof value !== 'string') return '';
-      var trimmed = value.trim();
-      if (!trimmed || trimmed === '#') return '';
-      if (/^(?:javascript|data|vbscript):/i.test(trimmed)) return '';
-      return trimmed;
+      var url = value.trim();
+      if (!url || url === '#') return '';
+      if (/^(?:javascript|data|vbscript):/i.test(url)) return '';
+      return url;
     }
 
     function resolveUrlValue(value, depth) {
-      if (depth > 7 || value == null) return '';
+      if (value == null || depth > 7) return '';
 
       if (typeof value === 'string') {
         var parsed = safeJsonParse(value);
@@ -65,17 +63,16 @@
       }
 
       if (typeof value === 'object') {
-        var priorityKeys = [
+        var preferredKeys = [
           'url', 'href', 'link', 'permalink', 'web_url', 'target_url',
           'selected', 'selection', 'item', 'data', 'value'
         ];
 
-        for (var k = 0; k < priorityKeys.length; k += 1) {
-          var key = priorityKeys[k];
-          if (Object.prototype.hasOwnProperty.call(value, key)) {
-            var preferred = resolveUrlValue(value[key], depth + 1);
-            if (preferred) return preferred;
-          }
+        for (var k = 0; k < preferredKeys.length; k += 1) {
+          var key = preferredKeys[k];
+          if (!Object.prototype.hasOwnProperty.call(value, key)) continue;
+          var preferred = resolveUrlValue(value[key], depth + 1);
+          if (preferred) return preferred;
         }
 
         var keys = Object.keys(value);
@@ -91,8 +88,6 @@
     function resolveCustomUrl(item) {
       if (!item) return '';
 
-      // Twilight variable-list resolves to a final URL string in Twig.
-      // Prefer that exact URL instead of reverse-engineering editor payloads.
       var direct = safeUrl(
         item.getAttribute('data-vmfm-custom-url') ||
         item.getAttribute('href') ||
@@ -100,10 +95,8 @@
       );
       if (direct) return direct;
 
-      // Legacy fallback for stores that still have a pre-V96 saved value.
       var payload = item.getAttribute('data-vmfm-link-payload');
-      if (!payload) return '';
-      return resolveUrlValue(safeJsonParse(payload), 0);
+      return payload ? resolveUrlValue(safeJsonParse(payload), 0) : '';
     }
 
     function comparableUrl(value) {
@@ -112,9 +105,9 @@
 
       try {
         var parsed = new URL(url, window.location.href);
-        var pathname = (parsed.pathname || '/').replace(/\/{2,}/g, '/');
-        if (pathname.length > 1) pathname = pathname.replace(/\/+$/, '');
-        return parsed.origin + pathname + (parsed.search || '');
+        var path = (parsed.pathname || '/').replace(/\/{2,}/g, '/');
+        if (path.length > 1) path = path.replace(/\/+$/, '');
+        return parsed.origin + path + (parsed.search || '');
       } catch (error) {
         return '';
       }
@@ -126,6 +119,24 @@
       return Boolean(left && right && left === right);
     }
 
+    function updateIndicator(item) {
+      if (!indicator || !inner) return;
+
+      if (!item) {
+        indicator.classList.remove('is-visible');
+        return;
+      }
+
+      window.requestAnimationFrame(function () {
+        var itemRect = item.getBoundingClientRect();
+        var innerRect = inner.getBoundingClientRect();
+        var center = itemRect.left - innerRect.left + (itemRect.width / 2);
+
+        indicator.style.setProperty('--vmfm-indicator-left', center + 'px');
+        indicator.classList.add('is-visible');
+      });
+    }
+
     function clearActive() {
       items.forEach(function (item) {
         item.classList.remove('is-active');
@@ -135,17 +146,22 @@
 
     function activateItem(item) {
       clearActive();
-      if (!item) return;
+
+      if (!item) {
+        updateIndicator(null);
+        return;
+      }
+
       item.classList.add('is-active');
       item.setAttribute('aria-current', 'page');
+      updateIndicator(item);
     }
 
     function itemForAction(action) {
-      var selector = '[data-vmfm-action="' + action + '"]';
-      return menu.querySelector(selector);
+      return menu.querySelector('[data-vmfm-action="' + action + '"]');
     }
 
-    function routeFallbackItem() {
+    function currentRouteItem() {
       var currentHref = window.location.href;
       var customItems = menu.querySelectorAll('[data-vmfm-custom-link]');
 
@@ -163,6 +179,7 @@
         return menu.querySelector('[data-vmfm-match="home"]');
       }
 
+      var pageSlug = (menu.getAttribute('data-vmfm-page-slug') || '').toLowerCase();
       var path = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
 
       if (/\/(?:cart)(?:\/|$)/i.test(path)) {
@@ -177,7 +194,7 @@
         return menu.querySelector('[data-vmfm-match="account"]');
       }
 
-      if (/\/(?:categories?|c)(?:\/|$)/i.test(path)) {
+      if (/category|categories/.test(pageSlug) || /\/(?:categories?|c)(?:\/|$)/i.test(path)) {
         return menu.querySelector('[data-vmfm-match="categories"]');
       }
 
@@ -192,7 +209,8 @@
           return;
         }
       }
-      activateItem(routeFallbackItem());
+
+      activateItem(currentRouteItem());
     }
 
     function setTransient(action) {
@@ -202,10 +220,26 @@
 
     function clearTransient(action) {
       if (!action || activeAction === action) activeAction = '';
-      window.setTimeout(restoreRouteActive, 40);
+      restoreRouteActive();
     }
 
-    function getCategoriesDrawer() {
+    function clickFirst(selectors, root) {
+      var scope = root || document;
+
+      for (var i = 0; i < selectors.length; i += 1) {
+        var node = scope.querySelector(selectors[i]);
+        if (!node) continue;
+
+        try {
+          node.click();
+          return true;
+        } catch (error) {}
+      }
+
+      return false;
+    }
+
+    function categoriesDrawer() {
       return (
         document.querySelector('.mm-ocd.ocd-categs') ||
         document.querySelector('.mm-ocd--right.ocd-categs') ||
@@ -214,7 +248,7 @@
     }
 
     function categoriesAreOpen() {
-      var drawer = getCategoriesDrawer();
+      var drawer = categoriesDrawer();
       return Boolean(
         drawer && (
           drawer.classList.contains('mm-ocd--open') ||
@@ -224,21 +258,6 @@
           document.body.classList.contains('veloura-side-categories-open')
         )
       );
-    }
-
-    function clickFirst(selectors, root) {
-      var scope = root || document;
-      for (var i = 0; i < selectors.length; i += 1) {
-        var node = scope.querySelector(selectors[i]);
-        if (!node) continue;
-        try {
-          node.click();
-          return true;
-        } catch (error) {
-          // Continue to the next native trigger.
-        }
-      }
-      return false;
     }
 
     function openCategories() {
@@ -251,33 +270,52 @@
     }
 
     function closeCategories() {
-      var drawer = getCategoriesDrawer();
-      if (drawer) {
-        clickFirst(['.close-mobile-menu', '.mm-ocd__backdrop'], drawer);
-      }
+      var drawer = categoriesDrawer();
+      if (drawer) clickFirst(['.close-mobile-menu', '.mm-ocd__backdrop'], drawer);
+
       window.setTimeout(function () {
         if (!categoriesAreOpen()) clearTransient('categories');
-      }, 120);
+      }, 80);
     }
 
-    function preferredSearchHost() {
+    function getSearchHost() {
       var hosts = Array.prototype.slice.call(document.querySelectorAll('salla-search'));
+
       for (var i = hosts.length - 1; i >= 0; i -= 1) {
         if (!hosts[i].hasAttribute('inline')) return hosts[i];
       }
+
       return null;
     }
 
-    var searchHostCache = null;
-    var searchReadyPromise = null;
+    function getSearchModal(host) {
+      var search = host || getSearchHost();
+      if (!search) return null;
 
-    function primeSearchHost() {
+      if (search.modal && typeof search.modal.close === 'function') {
+        return search.modal;
+      }
+
+      try {
+        var direct = search.querySelector('salla-modal.s-search-modal, salla-modal, salla-sheet');
+        if (direct && typeof direct.close === 'function') return direct;
+      } catch (error) {}
+
+      try {
+        var root = search.shadowRoot;
+        var shadowModal = root && root.querySelector('salla-modal.s-search-modal, salla-modal, salla-sheet');
+        if (shadowModal && typeof shadowModal.close === 'function') return shadowModal;
+      } catch (error) {}
+
+      return null;
+    }
+
+    function prepareSearch() {
       if (searchReadyPromise) return searchReadyPromise;
 
-      searchHostCache = preferredSearchHost();
-      if (!searchHostCache) return Promise.resolve(null);
+      var host = getSearchHost();
+      if (!host) return Promise.resolve(null);
 
-      var host = searchHostCache;
       searchReadyPromise = Promise.resolve()
         .then(function () {
           if (window.customElements && typeof window.customElements.whenDefined === 'function') {
@@ -285,251 +323,126 @@
           }
         })
         .then(function () {
-          if (typeof host.componentOnReady === 'function') {
-            return host.componentOnReady();
-          }
+          if (typeof host.componentOnReady === 'function') return host.componentOnReady();
         })
-        .catch(function () {})
-        .then(function () {
-          bindNativeModalState('search', host);
-          return host;
-        });
+        .then(function () { return host; })
+        .catch(function () { return host; });
 
       return searchReadyPromise;
     }
 
-    function loginHost() {
-      return document.querySelector('salla-login-modal');
-    }
-
-    function modalFromHost(host) {
-      if (!host) return null;
-
-      // Current Twilight salla-search keeps the rendered salla-modal instance
-      // on host.modal. Prefer that exact native instance first.
-      if (host.modal && typeof host.modal.close === 'function') return host.modal;
-
-      try {
-        var direct = host.querySelector && host.querySelector('salla-modal, salla-sheet');
-        if (direct && typeof direct.close === 'function') return direct;
-      } catch (error) {}
-
-      try {
-        var root = host.shadowRoot;
-        var shadowModal = root && root.querySelector('salla-modal, salla-sheet');
-        if (shadowModal && typeof shadowModal.close === 'function') return shadowModal;
-      } catch (error) {}
-
-      return null;
-    }
-
-    function modalLooksOpen(modal) {
-      if (!modal) return false;
-      if (modal.visible === true || modal.opened === true) return true;
-      if (modal.hasAttribute && (
-        modal.hasAttribute('visible') ||
-        modal.hasAttribute('open') ||
-        modal.hasAttribute('opened')
-      )) return true;
-      if (modal.getAttribute && modal.getAttribute('aria-hidden') === 'false') return true;
-      return false;
-    }
-
-    function bindNativeModalState(action, host) {
-      var modal = modalFromHost(host);
-      if (!modal || modal.__velouraVmfmV98Bound) return;
-      modal.__velouraVmfmV98Bound = true;
-
-      modal.addEventListener('modalVisibilityChanged', function (event) {
-        var opened = event && typeof event.detail === 'boolean'
-          ? event.detail
-          : modalLooksOpen(modal);
-
-        if (opened) {
-          setTransient(action);
-        } else {
-          clearTransient(action);
-        }
-      });
-    }
-
-    function clickNativeHeaderLogin() {
-      return clickFirst(['.veloura-login-btn']);
-    }
-
-    var searchOpened = false;
-    var searchOpening = false;
-
-    function nativeSearchModal() {
-      return modalFromHost(searchHostCache || preferredSearchHost());
-    }
-
-    function setSearchOpened(opened) {
-      searchOpened = Boolean(opened);
-      searchOpening = false;
-      if (searchOpened) {
-        setTransient('search');
-      } else {
-        clearTransient('search');
-      }
-    }
-
-    function bindSearchState(host) {
-      var modal = modalFromHost(host);
-      if (!modal || modal.__velouraVmfmV98SearchStateBound) return;
-      modal.__velouraVmfmV98SearchStateBound = true;
-
-      modal.addEventListener('modalVisibilityChanged', function (event) {
-        var opened = event && typeof event.detail === 'boolean'
-          ? event.detail
-          : modalLooksOpen(modal);
-        setSearchOpened(opened);
-      });
-    }
-
     function openSearch() {
-      if (searchOpened || searchOpening) return;
+      if (searchOpened) return;
 
-      searchOpening = true;
       setTransient('search');
+      searchOpened = true;
 
-      var host = searchHostCache || preferredSearchHost();
-      searchHostCache = host;
+      var host = getSearchHost();
 
-      // Fast path: once Twilight is ready this opens synchronously from the click.
       if (host && typeof host.open === 'function') {
         try {
-          var opened = host.open();
-          Promise.resolve(opened)
-            .then(function () {
-              bindSearchState(host);
-              window.setTimeout(function () {
-                bindSearchState(host);
-                setSearchOpened(true);
-              }, 0);
-            })
-            .catch(function () {
-              searchOpening = false;
-              clearTransient('search');
-            });
+          Promise.resolve(host.open()).catch(function () {
+            searchOpened = false;
+            clearTransient('search');
+          });
           return;
         } catch (error) {}
       }
 
-      // Immediate native event fallback. Do not wait seconds before trying to open.
-      if (window.salla && window.salla.event && typeof window.salla.event.dispatch === 'function') {
-        try { window.salla.event.dispatch('search::open'); } catch (error) {}
+      if (window.salla && window.salla.event && typeof window.salla.event.emit === 'function') {
+        try {
+          window.salla.event.emit('search::open');
+          prepareSearch();
+          return;
+        } catch (error) {}
       }
 
-      // Prime in parallel so future clicks are instant and bind the real modal state.
-      primeSearchHost().then(function (readyHost) {
-        if (!readyHost) {
-          searchOpening = false;
+      prepareSearch().then(function (readyHost) {
+        if (!readyHost || typeof readyHost.open !== 'function') {
+          searchOpened = false;
           clearTransient('search');
           return;
         }
 
-        bindSearchState(readyHost);
-        var modal = modalFromHost(readyHost);
-        if (modalLooksOpen(modal)) {
-          setSearchOpened(true);
-          return;
-        }
-
-        if (typeof readyHost.open === 'function') {
-          try {
-            Promise.resolve(readyHost.open())
-              .then(function () {
-                bindSearchState(readyHost);
-                setSearchOpened(true);
-              })
-              .catch(function () {
-                searchOpening = false;
-                clearTransient('search');
-              });
-          } catch (error) {
-            searchOpening = false;
-            clearTransient('search');
-          }
-        }
+        return Promise.resolve(readyHost.open()).catch(function () {
+          searchOpened = false;
+          clearTransient('search');
+        });
       });
     }
 
     function closeSearch() {
-      var modal = nativeSearchModal();
+      var host = getSearchHost();
+      var modal = getSearchModal(host);
 
-      // Fast path: close the exact Salla modal immediately on the second tap.
+      function finish() {
+        searchOpened = false;
+        clearTransient('search');
+      }
+
       if (modal && typeof modal.close === 'function') {
         try {
-          Promise.resolve(modal.close())
-            .catch(function () {})
-            .finally(function () { setSearchOpened(false); });
+          Promise.resolve(modal.close()).then(finish, finish);
           return;
         } catch (error) {}
       }
 
-      // One short readiness pass only; no multi-second polling loop.
-      primeSearchHost().then(function (host) {
-        var readyModal = modalFromHost(host);
+      prepareSearch().then(function (readyHost) {
+        var readyModal = getSearchModal(readyHost);
         if (readyModal && typeof readyModal.close === 'function') {
           try {
-            Promise.resolve(readyModal.close())
-              .catch(function () {})
-              .finally(function () { setSearchOpened(false); });
+            Promise.resolve(readyModal.close()).then(finish, finish);
             return;
           } catch (error) {}
         }
-        // If Salla reports no live modal, restore the route state instead of faking an open search.
-        setSearchOpened(false);
+        finish();
       });
     }
 
+    function getLoginHost() {
+      return document.querySelector('salla-login-modal');
+    }
+
     function openLogin() {
-      var host = loginHost();
+      var host = getLoginHost();
       setTransient('login');
 
-      if (host) bindNativeModalState('login', host);
-
-      // Prefer the native component directly; header trigger remains fallback only.
       if (host && typeof host.open === 'function') {
         try {
-          Promise.resolve(host.open()).catch(function () { clickNativeHeaderLogin(); });
+          Promise.resolve(host.open()).catch(function () {
+            clearTransient('login');
+          });
           return;
         } catch (error) {}
       }
 
-      if (clickNativeHeaderLogin()) return;
-
-      if (window.salla && window.salla.event && typeof window.salla.event.dispatch === 'function') {
-        try { window.salla.event.dispatch('login::open'); } catch (error) {}
+      if (window.salla && window.salla.event && typeof window.salla.event.emit === 'function') {
+        try {
+          window.salla.event.emit('login::open');
+          return;
+        } catch (error) {}
       }
+
+      clearTransient('login');
     }
 
-    function toggleAction(action) {
+    function handleAction(action) {
+      if (action === 'categories') {
+        if (categoriesAreOpen() || activeAction === 'categories') closeCategories();
+        else openCategories();
+        return;
+      }
+
       if (action === 'search') {
         if (searchOpened || activeAction === 'search') closeSearch();
         else openSearch();
         return;
       }
 
-      if (action === 'categories') {
-        if (activeAction === 'categories' || categoriesAreOpen()) closeCategories();
-        else openCategories();
-        return;
-      }
-
       if (action === 'login') {
-        // Login is intentionally open-only from the bottom bar.
-        // Its native modal is layered above the menu and must be closed with Salla's own X.
         if (activeAction !== 'login') openLogin();
       }
     }
-
-    // Warm the lazily-loaded Salla Search component in the background.
-    // This removes the old 2–3 second wait from the first user click in normal browsing.
-    primeSearchHost().then(function (host) {
-      if (host) bindSearchState(host);
-    });
 
     menu.addEventListener('click', function (event) {
       var item = closest(event.target, '.veloura-mobile-floating-menu__item');
@@ -539,7 +452,7 @@
       if (action) {
         event.preventDefault();
         event.stopPropagation();
-        toggleAction(action);
+        handleAction(action);
         return;
       }
 
@@ -550,15 +463,16 @@
           return;
         }
 
+        activeAction = '';
         activateItem(item);
 
-        var directHref = safeUrl(item.getAttribute('href') || '');
-        if (!directHref || directHref === '#') {
+        var href = safeUrl(item.getAttribute('href') || '');
+        if (!href) {
           event.preventDefault();
           if (item.getAttribute('target') === '_blank') {
             window.open(customUrl, '_blank', 'noopener');
           } else {
-            window.location.href = customUrl;
+            window.location.assign(customUrl);
           }
         }
         return;
@@ -585,33 +499,47 @@
       if (closest(event.target, '.veloura-menu-trigger-mobile[href="#mobile-menu"], a.mburger[href="#mobile-menu"]')) {
         window.setTimeout(function () {
           if (categoriesAreOpen()) setTransient('categories');
-        }, 80);
+        }, 60);
       }
     }, true);
 
+    if (window.salla && window.salla.event && typeof window.salla.event.on === 'function') {
+      try {
+        window.salla.event.on('modalClosed', function () {
+          if (activeAction === 'search') {
+            searchOpened = false;
+            clearTransient('search');
+          } else if (activeAction === 'login') {
+            clearTransient('login');
+          }
+        });
+      } catch (error) {}
+    }
+
     window.addEventListener('pageshow', function () {
       activeAction = '';
+      searchOpened = false;
       restoreRouteActive();
     });
+
     window.addEventListener('popstate', function () {
       activeAction = '';
+      searchOpened = false;
       restoreRouteActive();
     });
+
     window.addEventListener('hashchange', function () {
       activeAction = '';
+      searchOpened = false;
       restoreRouteActive();
     });
 
-    stateTimer = window.setInterval(function () {
-      if (activeAction === 'categories' && !categoriesAreOpen()) {
-        clearTransient('categories');
-      }
-    }, 350);
+    window.addEventListener('resize', function () {
+      var active = menu.querySelector('.veloura-mobile-floating-menu__item.is-active');
+      updateIndicator(active);
+    }, { passive: true });
 
-    window.addEventListener('beforeunload', function () {
-      if (stateTimer) window.clearInterval(stateTimer);
-    }, { once: true });
-
+    prepareSearch();
     restoreRouteActive();
   });
 })();

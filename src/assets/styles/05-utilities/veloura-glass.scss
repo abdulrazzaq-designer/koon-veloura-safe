@@ -1,9 +1,9 @@
 /* ========================================================================
-   Veloura V79 — unified secondary-color glass
+   Veloura unified secondary-color glass
 
-   Every enabled glass surface uses the same configured secondary color and
-   exactly the same opacity. The two edge lines are light; the lower line is
-   merely less opaque. No geometry/overflow rules are changed here.
+   Shared glass tokens only. Component-specific geometry belongs to each
+   component owner. The mobile floating menu consumes these variables from
+   app.scss and is intentionally not styled in this file.
    ======================================================================== */
 
 :root {
@@ -21,7 +21,6 @@
   --veloura-glass-shadow: rgba(15, 23, 42, .07);
   --veloura-glass-filter: blur(20px) saturate(124%) brightness(101%);
 
-  /* Legacy consumers resolve to the same material. */
   --veloura-glass-base: var(--veloura-glass-surface);
   --veloura-glass-layer: linear-gradient(
     180deg,
@@ -59,7 +58,6 @@ html body.dark {
 .store-header.veloura-top-enabled.veloura-top-blur .main-nav-container > .inner,
 .veloura-home-tabs.veloura-home-tabs--header-blur,
 .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
-body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner,
 html.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content,
 body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content,
 body.veloura-general-enabled.veloura-glass-effect .veloura-glass {
@@ -89,20 +87,7 @@ body.veloura-general-enabled.veloura-glass-effect .veloura-glass {
   filter: none !important;
 }
 
-body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu {
-  bottom: var(--veloura-shell-gap) !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
-  border-radius: var(--veloura-mobile-floating-menu-radius, 999px) !important;
-}
-
-@supports not (
-  (-webkit-backdrop-filter: blur(1px))
-  or (backdrop-filter: blur(1px))
-) {
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   :root {
     --veloura-glass-surface: var(
       --veloura-site-second-bg,

@@ -1,7 +1,7 @@
 /*
  * IMPORTANT NOTE: Theme based on Tailwindcss but for the purpose of simplifing the DOM we use
  * tailwind classes with @apply directive in the SCSS files
-*/
+ */
 
 @import './01-settings/tailwind';
 @import './01-settings/fonts';
@@ -40,7 +40,6 @@
 @import './04-components/filters';
 @import './04-components/add-product-toast';
 @import './04-components/quick-view';
-@import './04-components/mobile-floating-menu';
 @import '04-components/veloura-loader';
 
 @import './05-utilities/chat-bots';
@@ -54,30 +53,526 @@
 @import 'mmenu-light/dist/mmenu-light.css';
 
 @import './05-utilities/veloura-header-tabs-v18';
-@import './05-utilities/veloura-mobile-menu-v22';
-
-@import './05-utilities/veloura-mobile-menu-v23';
-
 @import './05-utilities/veloura-global-overlays';
-
 @import './05-utilities/veloura-cart-surfaces-v22';
-
 @import './05-utilities/veloura-cart-banners';
 @import './05-utilities/veloura-header-product-stability-v55';
-
 @import './05-utilities/veloura-header-container-menu-v56';
-
 @import './05-utilities/veloura-header-polish-glass-v57';
 @import './05-utilities/veloura-header-glass-search-cart-v58';
-
 @import './05-utilities/veloura-header-integrated-search-glass-v59';
-
 @import './05-utilities/veloura-header-order-search-submenu-v60';
-
 @import './05-utilities/veloura-header-search-visibility-secondary-submenu-v62';
-
 @import './05-utilities/veloura-header-balanced-inline-search-v63';
-
 @import './05-utilities/veloura-header-axis-centering-v64';
-
 @import './05-utilities/veloura-exact-dark-light-plus3-v86';
+
+/* ========================================================================
+   Veloura Mobile Floating Menu — single owner
+
+   This section is the ONLY visual owner of the mobile bottom menu.
+   Do not re-import:
+   - 04-components/mobile-floating-menu
+   - 05-utilities/veloura-mobile-menu-v22
+   - 05-utilities/veloura-mobile-menu-v23
+   ======================================================================== */
+
+.veloura-mobile-floating-menu {
+  display: none;
+}
+
+.veloura-cats-sheet,
+.veloura-cats-sheet__overlay,
+.veloura-cats-sheet__panel,
+.veloura-cats-sheet__body,
+.veloura-cats-sheet__list,
+.veloura-cats-sheet__loading,
+.veloura-cats-sheet__empty {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+@media (max-width: 767px) {
+  html body.veloura-mobile-floating-menu-enabled,
+  body.veloura-mobile-floating-menu-enabled,
+  html body.veloura-mobile-floating-menu-enabled .app-inner,
+  body.veloura-mobile-floating-menu-enabled .app-inner,
+  html body.veloura-mobile-floating-menu-enabled #app,
+  body.veloura-mobile-floating-menu-enabled #app,
+  html body.veloura-mobile-floating-menu-enabled main,
+  body.veloura-mobile-floating-menu-enabled main {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  html body.veloura-mobile-floating-menu-enabled,
+  body.veloura-mobile-floating-menu-enabled {
+    overflow-x: hidden !important;
+  }
+
+  .veloura-mobile-floating-menu {
+    --vmfm-active-lift: 0px;
+    --vmfm-active-zoom: 1;
+    position: fixed !important;
+    inset-inline: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 2147483000 !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    width: 100% !important;
+    margin: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    pointer-events: none !important;
+  }
+
+  .veloura-mobile-floating-menu--scale-soft {
+    --vmfm-active-lift: -2px;
+    --vmfm-active-zoom: 1.035;
+  }
+
+  .veloura-mobile-floating-menu--scale-strong {
+    --vmfm-active-lift: -5px;
+    --vmfm-active-zoom: 1.06;
+  }
+
+  .veloura-mobile-floating-menu::before,
+  .veloura-mobile-floating-menu::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  .veloura-mobile-floating-menu__inner {
+    position: relative !important;
+    isolation: isolate !important;
+    z-index: 1 !important;
+    display: flex !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+    gap: 3px !important;
+    width: 100% !important;
+    height: var(--veloura-mobile-floating-menu-height, 56px) !important;
+    min-height: var(--veloura-mobile-floating-menu-height, 56px) !important;
+    margin: 0 !important;
+    padding: 3px !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+    color: var(--veloura-mobile-floating-menu-text, #111827) !important;
+    background: var(--veloura-mobile-floating-menu-bg, #ffffff) !important;
+    background-color: var(--veloura-mobile-floating-menu-bg, #ffffff) !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    pointer-events: auto !important;
+  }
+
+  .veloura-mobile-floating-menu__inner::before,
+  .veloura-mobile-floating-menu__inner::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
+    background: var(--veloura-glass-surface, rgba(230, 232, 235, .69)) !important;
+    background-color: var(--veloura-glass-surface, rgba(230, 232, 235, .69)) !important;
+    background-image: none !important;
+    border-top: 1px solid var(--veloura-glass-edge-top, rgba(100, 116, 139, .10)) !important;
+    border-bottom: 1px solid var(--veloura-glass-edge-bottom, rgba(100, 116, 139, .045)) !important;
+    border-inline: 0 !important;
+    -webkit-backdrop-filter: var(--veloura-glass-filter, blur(20px) saturate(124%)) !important;
+    backdrop-filter: var(--veloura-glass-filter, blur(20px) saturate(124%)) !important;
+    box-shadow:
+      inset 0 1px 0 var(--veloura-glass-edge-top, rgba(100, 116, 139, .10)),
+      inset 0 -1px 0 var(--veloura-glass-edge-bottom, rgba(100, 116, 139, .045)),
+      0 8px 24px var(--veloura-glass-shadow, rgba(15, 23, 42, .055)) !important;
+  }
+
+  html.dark body .veloura-mobile-floating-menu,
+  html body.dark .veloura-mobile-floating-menu {
+    --veloura-mobile-floating-menu-text: var(--veloura-dark-primary-text, #ffffff);
+  }
+
+  .veloura-mobile-floating-menu__item,
+  .veloura-mobile-floating-menu__item:hover,
+  .veloura-mobile-floating-menu__item:focus,
+  .veloura-mobile-floating-menu__item:active {
+    position: relative !important;
+    z-index: 1 !important;
+    display: flex !important;
+    flex: 1 1 0 !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: stretch !important;
+    min-width: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 1px !important;
+    padding: 4px 3px 5px !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+    border: 0 !important;
+    outline: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: var(--veloura-mobile-floating-menu-text, #111827) !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+    opacity: .9;
+    cursor: pointer;
+    transform: none !important;
+    transition:
+      transform 180ms cubic-bezier(.2, .8, .2, 1),
+      opacity 140ms ease,
+      background-color 140ms ease,
+      color 140ms ease !important;
+  }
+
+  .veloura-mobile-floating-menu__item::before,
+  .veloura-mobile-floating-menu__item::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  .veloura-mobile-floating-menu__item i {
+    position: relative !important;
+    z-index: 2 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: var(--veloura-mobile-floating-menu-icon-size, 22px) !important;
+    line-height: 1 !important;
+    color: inherit !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .veloura-mobile-floating-menu__item span {
+    position: relative !important;
+    z-index: 2 !important;
+    display: block !important;
+    max-width: 100% !important;
+    margin: 2px 0 0 !important;
+    padding: 0 !important;
+    font-size: var(--veloura-mobile-floating-menu-font-size, 12px) !important;
+    font-weight: 800 !important;
+    line-height: 1.05 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    color: inherit !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .veloura-mobile-floating-menu__item:hover,
+  .veloura-mobile-floating-menu__item:focus-visible {
+    opacity: 1;
+  }
+
+  .veloura-mobile-floating-menu__item.is-active,
+  .veloura-mobile-floating-menu__item[aria-current='page'] {
+    z-index: 4 !important;
+    align-self: stretch !important;
+    margin-block: 4px !important;
+    margin-inline: 1px !important;
+    padding-block-start: 6px !important;
+    padding-block-end: 7px !important;
+    padding-inline: 4px !important;
+    border-radius: clamp(10px, var(--veloura-mobile-floating-menu-radius, 16px), 18px) !important;
+    background: var(--veloura-mobile-floating-menu-active, #004d65) !important;
+    background-color: var(--veloura-mobile-floating-menu-active, #004d65) !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+    box-shadow: none !important;
+    transform: translate3d(0, var(--vmfm-active-lift), 0) scale(var(--vmfm-active-zoom)) !important;
+    transform-origin: center bottom !important;
+    will-change: transform !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+  }
+
+  .veloura-mobile-floating-menu__item.is-active i,
+  .veloura-mobile-floating-menu__item.is-active span,
+  .veloura-mobile-floating-menu__item[aria-current='page'] i,
+  .veloura-mobile-floating-menu__item[aria-current='page'] span {
+    color: #ffffff !important;
+  }
+
+  body.veloura-mobile-floating-menu-no-labels .veloura-mobile-floating-menu__item {
+    gap: 0 !important;
+    padding-block: 5px !important;
+  }
+
+  body.veloura-mobile-floating-menu-no-labels .veloura-mobile-floating-menu__item span {
+    display: none !important;
+  }
+
+  body.veloura-mobile-floating-menu-no-labels .veloura-mobile-floating-menu__item.is-active,
+  body.veloura-mobile-floating-menu-no-labels .veloura-mobile-floating-menu__item[aria-current='page'] {
+    padding-block: 7px !important;
+  }
+
+  .veloura-mobile-floating-menu__indicator {
+    --vmfm-indicator-left: 50%;
+    position: absolute !important;
+    left: var(--vmfm-indicator-left) !important;
+    bottom: 2px !important;
+    z-index: 8 !important;
+    display: block !important;
+    width: 16px !important;
+    height: 3px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: var(--veloura-mobile-floating-menu-active, #004d65) !important;
+    box-shadow: none !important;
+    opacity: 0 !important;
+    transform: translate3d(-50%, 0, 0) !important;
+    transition: left 180ms cubic-bezier(.2, .8, .2, 1), opacity 100ms ease !important;
+    pointer-events: none !important;
+  }
+
+  .veloura-mobile-floating-menu__indicator.is-visible {
+    opacity: 1 !important;
+  }
+
+  /* Full-width connected mode */
+  body.veloura-mobile-floating-menu-position-full_width .veloura-mobile-floating-menu,
+  .veloura-mobile-floating-menu.veloura-mobile-floating-menu--full_width,
+  .veloura-mobile-floating-menu.veloura-mobile-floating-menu--full-width {
+    bottom: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.veloura-mobile-floating-menu-position-full_width .veloura-mobile-floating-menu__inner,
+  .veloura-mobile-floating-menu.veloura-mobile-floating-menu--full_width .veloura-mobile-floating-menu__inner,
+  .veloura-mobile-floating-menu.veloura-mobile-floating-menu--full-width .veloura-mobile-floating-menu__inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: calc(var(--veloura-mobile-floating-menu-height, 56px) + env(safe-area-inset-bottom, 0px)) !important;
+    min-height: calc(var(--veloura-mobile-floating-menu-height, 56px) + env(safe-area-inset-bottom, 0px)) !important;
+    padding-inline: max(4px, env(safe-area-inset-left, 0px)) max(4px, env(safe-area-inset-right, 0px)) !important;
+    padding-bottom: calc(3px + env(safe-area-inset-bottom, 0px)) !important;
+    border-radius:
+      var(--veloura-mobile-floating-menu-radius, 24px)
+      var(--veloura-mobile-floating-menu-radius, 24px)
+      0
+      0 !important;
+  }
+
+  /* Floating pill mode */
+  body.veloura-mobile-floating-menu-position-pill .veloura-mobile-floating-menu,
+  .veloura-mobile-floating-menu.veloura-mobile-floating-menu--pill {
+    bottom: calc(var(--veloura-mobile-floating-menu-bottom, 18px) + env(safe-area-inset-bottom, 0px)) !important;
+    padding-inline: var(--veloura-home-container-padding, var(--veloura-global-spacing, var(--veloura-site-spacing, 14px))) !important;
+  }
+
+  body.veloura-mobile-floating-menu-position-pill .veloura-mobile-floating-menu__inner,
+  .veloura-mobile-floating-menu.veloura-mobile-floating-menu--pill .veloura-mobile-floating-menu__inner {
+    width: 100% !important;
+    max-width: min(430px, 100%) !important;
+    margin-inline: auto !important;
+    border-radius: var(--veloura-mobile-floating-menu-radius, 999px) !important;
+  }
+
+  /* Footer clearance */
+  body.veloura-mobile-floating-menu-position-full_width .store-footer .veloura-footer-bottom,
+  body.veloura-mobile-floating-menu-position-full_width footer.store-footer > .store-footer__inner:last-child,
+  body.veloura-mobile-floating-menu-position-full_width .store-footer > .store-footer__inner:last-child {
+    padding-bottom: calc(
+      var(--veloura-mobile-floating-menu-height, 56px) +
+      env(safe-area-inset-bottom, 0px) +
+      28px
+    ) !important;
+  }
+
+  body.veloura-mobile-floating-menu-position-pill .store-footer .veloura-footer-bottom,
+  body.veloura-mobile-floating-menu-position-pill footer.store-footer > .store-footer__inner:last-child,
+  body.veloura-mobile-floating-menu-position-pill .store-footer > .store-footer__inner:last-child {
+    padding-bottom: calc(
+      var(--veloura-mobile-floating-menu-height, 56px) +
+      var(--veloura-mobile-floating-menu-bottom, 18px) +
+      env(safe-area-inset-bottom, 0px) +
+      42px
+    ) !important;
+  }
+
+  /* Native categories drawer stays below the menu so the same button can toggle it. */
+  html.veloura-ocd-bottom-active,
+  body.veloura-ocd-bottom-active {
+    overflow: hidden !important;
+  }
+
+  body.veloura-ocd-bottom-active .mm-ocd.ocd-categs,
+  .mm-ocd.ocd-categs.ocd-bottom,
+  .mm-ocd.ocd-categs.veloura-native-bottom {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 2147482000 !important;
+    background: rgba(15, 23, 42, .42) !important;
+    overflow: hidden !important;
+    transform: none !important;
+  }
+
+  body.veloura-ocd-bottom-active .mm-ocd.ocd-categs .mm-ocd__backdrop,
+  .mm-ocd.ocd-categs.ocd-bottom .mm-ocd__backdrop,
+  .mm-ocd.ocd-categs.veloura-native-bottom .mm-ocd__backdrop {
+    position: absolute !important;
+    inset: 0 !important;
+    background: transparent !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  body.veloura-ocd-bottom-active .mm-ocd.ocd-categs .mm-ocd__content,
+  body.veloura-ocd-bottom-active .mm-ocd.ocd-categs.mm-ocd--right .mm-ocd__content,
+  .mm-ocd.ocd-categs.ocd-bottom .mm-ocd__content,
+  .mm-ocd.ocd-categs.ocd-bottom.mm-ocd--right .mm-ocd__content,
+  .mm-ocd.ocd-categs.veloura-native-bottom .mm-ocd__content {
+    position: fixed !important;
+    top: auto !important;
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    max-width: none !important;
+    height: auto !important;
+    max-height: min(68vh, 620px) !important;
+    padding-bottom: 0 !important;
+    border-radius: 24px !important;
+    overflow: hidden !important;
+    transform: translate3d(0, 100%, 0) !important;
+    transition: transform .28s cubic-bezier(.2, .8, .2, 1) !important;
+    bottom: calc(
+      var(--veloura-mobile-floating-menu-height, 56px) +
+      var(--veloura-mobile-floating-menu-bottom, 18px) +
+      env(safe-area-inset-bottom, 0px) +
+      16px
+    ) !important;
+  }
+
+  body.veloura-mobile-floating-menu-position-full_width.veloura-ocd-bottom-active .mm-ocd.ocd-categs .mm-ocd__content,
+  body.veloura-mobile-floating-menu-position-full_width .mm-ocd.ocd-categs.ocd-bottom .mm-ocd__content,
+  body.veloura-mobile-floating-menu-position-full_width .mm-ocd.ocd-categs.veloura-native-bottom .mm-ocd__content {
+    bottom: calc(var(--veloura-mobile-floating-menu-height, 56px) + env(safe-area-inset-bottom, 0px) + 12px) !important;
+  }
+
+  body.veloura-mobile-floating-menu-position-pill.veloura-ocd-bottom-active .mm-ocd.ocd-categs .mm-ocd__content,
+  body.veloura-mobile-floating-menu-position-pill .mm-ocd.ocd-categs.ocd-bottom .mm-ocd__content,
+  body.veloura-mobile-floating-menu-position-pill .mm-ocd.ocd-categs.veloura-native-bottom .mm-ocd__content {
+    bottom: calc(
+      var(--veloura-mobile-floating-menu-height, 56px) +
+      var(--veloura-mobile-floating-menu-bottom, 18px) +
+      env(safe-area-inset-bottom, 0px) +
+      18px
+    ) !important;
+  }
+
+  body.veloura-ocd-bottom-active .mm-ocd.ocd-categs.mm-ocd--open .mm-ocd__content,
+  .mm-ocd.ocd-categs.ocd-bottom.mm-ocd--open .mm-ocd__content,
+  .mm-ocd.ocd-categs.veloura-native-bottom.mm-ocd--open .mm-ocd__content {
+    transform: translate3d(0, 0, 0) !important;
+  }
+
+  body.veloura-ocd-bottom-active .mm-ocd.ocd-categs .mobile-menu,
+  body.veloura-ocd-bottom-active .mm-ocd.ocd-categs #mobile-menu,
+  .mm-ocd.ocd-categs.ocd-bottom .mobile-menu,
+  .mm-ocd.ocd-categs.ocd-bottom #mobile-menu,
+  .mm-ocd.ocd-categs.veloura-native-bottom #mobile-menu {
+    display: block !important;
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: min(68vh, 620px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    transform: none !important;
+  }
+
+  body.veloura-ocd-bottom-active .mm-ocd.ocd-categs #mobile-menu::before,
+  .mm-ocd.ocd-categs.ocd-bottom #mobile-menu::before,
+  .mm-ocd.ocd-categs.veloura-native-bottom #mobile-menu::before {
+    content: '';
+    display: block;
+    width: 44px;
+    height: 5px;
+    margin: 12px auto 8px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, .16);
+  }
+
+  .mm-ocd.ocd-categs .close-mobile-menu,
+  .mm-ocd.ocd-categs.mm-ocd--open .close-mobile-menu {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  /* Search stays below the menu so a second tap on Search can close it. */
+  salla-search .s-search-modal,
+  salla-search salla-modal.s-search-modal {
+    z-index: 2147482500 !important;
+  }
+
+  /* Login / currency / language intentionally cover the bottom menu. */
+  salla-login-modal,
+  salla-localization-modal {
+    position: relative !important;
+    z-index: 2147483600 !important;
+    isolation: isolate !important;
+  }
+
+  salla-login-modal::part(backdrop),
+  salla-login-modal::part(overlay),
+  salla-localization-modal::part(backdrop),
+  salla-localization-modal::part(overlay) {
+    z-index: 2147483598 !important;
+  }
+
+  salla-login-modal::part(modal),
+  salla-login-modal::part(panel),
+  salla-login-modal::part(content),
+  salla-login-modal::part(body),
+  salla-localization-modal::part(modal),
+  salla-localization-modal::part(panel),
+  salla-localization-modal::part(content),
+  salla-localization-modal::part(body) {
+    position: relative !important;
+    z-index: 2147483601 !important;
+  }
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  @media (max-width: 767px) {
+    body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
+      background: var(--veloura-glass-source, #e6e8eb) !important;
+      background-color: var(--veloura-glass-source, #e6e8eb) !important;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .veloura-mobile-floating-menu__item,
+  .veloura-mobile-floating-menu__indicator {
+    transition: none !important;
+  }
+}
