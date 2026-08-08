@@ -21,7 +21,11 @@
 
     var activeAction = '';
     var searchOpened = false;
+    var searchOpening = false;
+    var searchCloseRequested = false;
     var searchReadyPromise = null;
+    var searchOpenPromise = null;
+    var searchHostCache = null;
 
     function closest(target, selector) {
       if (!target || target === document || target === window) return null;
@@ -279,12 +283,20 @@
     }
 
     function getSearchHost() {
+      if (searchHostCache && document.documentElement.contains(searchHostCache)) {
+        return searchHostCache;
+      }
+
       var hosts = Array.prototype.slice.call(document.querySelectorAll('salla-search'));
 
       for (var i = hosts.length - 1; i >= 0; i -= 1) {
-        if (!hosts[i].hasAttribute('inline')) return hosts[i];
+        if (!hosts[i].hasAttribute('inline')) {
+          searchHostCache = hosts[i];
+          return searchHostCache;
+        }
       }
 
+      searchHostCache = null;
       return null;
     }
 
@@ -310,6 +322,75 @@
       return null;
     }
 
+    function modalLooksOpen(modal) {
+      if (!modal) return false;
+
+      if (modal.visible === true || modal.opened === true || modal.isOpen === true) {
+        return true;
+      }
+
+      if (modal.hasAttribute) {
+        if (modal.hasAttribute('open') || modal.hasAttribute('opened') || modal.hasAttribute('visible')) {
+          return true;
+        }
+      }
+
+      if (modal.getAttribute && modal.getAttribute('aria-hidden') === 'false') {
+        return true;
+      }
+
+      if (modal.classList && (
+        modal.classList.contains('is-open') ||
+        modal.classList.contains('s-modal-open') ||
+        modal.classList.contains('s-modal-show')
+      )) {
+        return true;
+      }
+
+      return false;
+    }
+
+    function modalEventOpened(event, modal) {
+      var detail = event && event.detail;
+
+      if (typeof detail === 'boolean') return detail;
+      if (detail && typeof detail.visible === 'boolean') return detail.visible;
+      if (detail && typeof detail.opened === 'boolean') return detail.opened;
+      if (detail && typeof detail.isOpen === 'boolean') return detail.isOpen;
+
+      return modalLooksOpen(modal);
+    }
+
+    function finishSearchClosed() {
+      searchOpened = false;
+      searchOpening = false;
+      searchCloseRequested = false;
+      searchOpenPromise = null;
+      clearTransient('search');
+    }
+
+    function bindSearchModal(host) {
+      var modal = getSearchModal(host);
+      if (!modal || modal.__velouraSearchToggleBound) return modal;
+
+      modal.__velouraSearchToggleBound = true;
+
+      modal.addEventListener('modalVisibilityChanged', function (event) {
+        var opened = modalEventOpened(event, modal);
+
+        if (opened) {
+          searchOpened = true;
+          searchOpening = false;
+          setTransient('search');
+          return;
+        }
+
+        finishSearchClosed();
+      });
+
+      return modal;
+    }
+
     function prepareSearch() {
       if (searchReadyPromise) return searchReadyPromise;
 
@@ -323,79 +404,106 @@
           }
         })
         .then(function () {
-          if (typeof host.componentOnReady === 'function') return host.componentOnReady();
+          var readyHost = getSearchHost() || host;
+          bindSearchModal(readyHost);
+          return readyHost;
         })
-        .then(function () { return host; })
-        .catch(function () { return host; });
+        .catch(function () {
+          searchReadyPromise = null;
+          return getSearchHost() || host;
+        });
 
       return searchReadyPromise;
     }
 
-    function openSearch() {
-      if (searchOpened) return;
+    function performSearchOpen(host) {
+      if (!host || typeof host.open !== 'function') {
+        return Promise.reject(new Error('Salla search is not ready'));
+      }
 
+      searchOpening = true;
+
+      searchOpenPromise = Promise.resolve(host.open())
+        .then(function () {
+          bindSearchModal(host);
+          searchOpening = false;
+          searchOpened = true;
+          searchOpenPromise = null;
+
+          if (searchCloseRequested) {
+            closeSearch();
+            return;
+          }
+
+          setTransient('search');
+        })
+        .catch(function () {
+          finishSearchClosed();
+        });
+
+      return searchOpenPromise;
+    }
+
+    function openSearch() {
+      if (searchOpened || searchOpening) return;
+
+      searchCloseRequested = false;
       setTransient('search');
-      searchOpened = true;
 
       var host = getSearchHost();
 
+      // Fast path: once the component is defined, call Salla's own open() directly.
       if (host && typeof host.open === 'function') {
-        try {
-          Promise.resolve(host.open()).catch(function () {
-            searchOpened = false;
-            clearTransient('search');
-          });
-          return;
-        } catch (error) {}
+        performSearchOpen(host);
+        return;
       }
 
-      if (window.salla && window.salla.event && typeof window.salla.event.emit === 'function') {
-        try {
-          window.salla.event.emit('search::open');
-          prepareSearch();
-          return;
-        } catch (error) {}
-      }
-
+      // No event fallback and no polling. Wait only for the real web component,
+      // then call its native method exactly once.
+      searchOpening = true;
       prepareSearch().then(function (readyHost) {
-        if (!readyHost || typeof readyHost.open !== 'function') {
-          searchOpened = false;
-          clearTransient('search');
+        if (searchCloseRequested) {
+          finishSearchClosed();
           return;
         }
 
-        return Promise.resolve(readyHost.open()).catch(function () {
-          searchOpened = false;
-          clearTransient('search');
-        });
+        if (!readyHost || typeof readyHost.open !== 'function') {
+          finishSearchClosed();
+          return;
+        }
+
+        performSearchOpen(readyHost);
       });
     }
 
     function closeSearch() {
+      searchCloseRequested = true;
+
       var host = getSearchHost();
-      var modal = getSearchModal(host);
+      var modal = bindSearchModal(host) || getSearchModal(host);
 
-      function finish() {
-        searchOpened = false;
-        clearTransient('search');
-      }
+      function closeModal(target) {
+        if (!target || typeof target.close !== 'function') return false;
 
-      if (modal && typeof modal.close === 'function') {
         try {
-          Promise.resolve(modal.close()).then(finish, finish);
-          return;
-        } catch (error) {}
+          Promise.resolve(target.close()).then(finishSearchClosed, finishSearchClosed);
+          return true;
+        } catch (error) {
+          return false;
+        }
       }
 
+      // Fast path: close Salla's actual modal immediately.
+      if (closeModal(modal)) return;
+
+      // If the second tap happened while open() is still resolving, the open
+      // promise sees searchCloseRequested and closes the same native modal once ready.
+      if (searchOpenPromise) return;
+
+      // Component may still be upgrading. Resolve it once, without a timer loop.
       prepareSearch().then(function (readyHost) {
-        var readyModal = getSearchModal(readyHost);
-        if (readyModal && typeof readyModal.close === 'function') {
-          try {
-            Promise.resolve(readyModal.close()).then(finish, finish);
-            return;
-          } catch (error) {}
-        }
-        finish();
+        var readyModal = bindSearchModal(readyHost) || getSearchModal(readyHost);
+        if (!closeModal(readyModal)) finishSearchClosed();
       });
     }
 
@@ -507,8 +615,7 @@
       try {
         window.salla.event.on('modalClosed', function () {
           if (activeAction === 'search') {
-            searchOpened = false;
-            clearTransient('search');
+            finishSearchClosed();
           } else if (activeAction === 'login') {
             clearTransient('login');
           }
@@ -519,18 +626,27 @@
     window.addEventListener('pageshow', function () {
       activeAction = '';
       searchOpened = false;
+      searchOpening = false;
+      searchCloseRequested = false;
+      searchOpenPromise = null;
       restoreRouteActive();
     });
 
     window.addEventListener('popstate', function () {
       activeAction = '';
       searchOpened = false;
+      searchOpening = false;
+      searchCloseRequested = false;
+      searchOpenPromise = null;
       restoreRouteActive();
     });
 
     window.addEventListener('hashchange', function () {
       activeAction = '';
       searchOpened = false;
+      searchOpening = false;
+      searchCloseRequested = false;
+      searchOpenPromise = null;
       restoreRouteActive();
     });
 

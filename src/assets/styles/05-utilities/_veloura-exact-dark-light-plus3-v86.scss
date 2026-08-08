@@ -91,7 +91,6 @@ html body :is(
   .s-modal-body,
   .s-modal-content
 ),
-html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner,
 html.veloura-side-cats-glass body .mm-ocd.mm-ocd--open .mm-ocd__content,
 html body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
   box-sizing: border-box !important;
@@ -255,38 +254,6 @@ html body.dark .veloura-search-surface :is(input, textarea)::placeholder {
   color: var(--veloura-dark-secondary-text, #cccccc) !important;
   -webkit-text-fill-color: currentColor !important;
   opacity: .78 !important;
-}
-
-/* ------------------------------------------------------------------------
-   Mobile bottom menu: same material, dark secondary background, correct text.
-   The old highlight pseudo layer is removed; active-item styling is preserved.
-   ------------------------------------------------------------------------ */
-html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner::before,
-html body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner::after {
-  content: none !important;
-  display: none !important;
-  background: none !important;
-  border: 0 !important;
-  box-shadow: none !important;
-}
-
-html.dark body.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner,
-html body.dark.veloura-mobile-floating-menu-glass .veloura-mobile-floating-menu__inner {
-  color: var(--veloura-dark-primary-text, #ffffff) !important;
-  --veloura-mobile-floating-menu-text: var(--veloura-dark-primary-text, #ffffff);
-}
-
-html.dark body .veloura-mobile-floating-menu__item:not(.is-active),
-html body.dark .veloura-mobile-floating-menu__item:not(.is-active) {
-  color: var(--veloura-dark-primary-text, #ffffff) !important;
-  text-shadow: none !important;
-}
-
-html.dark body .veloura-mobile-floating-menu__item.is-active,
-html body.dark .veloura-mobile-floating-menu__item.is-active,
-html.dark body .veloura-mobile-floating-menu__item[aria-current='page'],
-html body.dark .veloura-mobile-floating-menu__item[aria-current='page'] {
-  color: var(--veloura-mobile-floating-menu-active, #00a7e8) !important;
 }
 
 /* ------------------------------------------------------------------------
