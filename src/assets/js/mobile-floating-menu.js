@@ -361,7 +361,12 @@
       return modalLooksOpen(modal);
     }
 
+    function setSearchLayer(opened) {
+      document.body.classList.toggle('veloura-vmfm-search-open', Boolean(opened));
+    }
+
     function finishSearchClosed() {
+      setSearchLayer(false);
       searchOpened = false;
       searchOpening = false;
       searchCloseRequested = false;
@@ -379,6 +384,7 @@
         var opened = modalEventOpened(event, modal);
 
         if (opened) {
+          setSearchLayer(true);
           searchOpened = true;
           searchOpening = false;
           setTransient('search');
@@ -422,6 +428,7 @@
       }
 
       searchOpening = true;
+      setSearchLayer(true);
 
       searchOpenPromise = Promise.resolve(host.open())
         .then(function () {
@@ -448,6 +455,7 @@
       if (searchOpened || searchOpening) return;
 
       searchCloseRequested = false;
+      setSearchLayer(true);
       setTransient('search');
 
       var host = getSearchHost();
@@ -624,6 +632,7 @@
     }
 
     window.addEventListener('pageshow', function () {
+      setSearchLayer(false);
       activeAction = '';
       searchOpened = false;
       searchOpening = false;
@@ -633,6 +642,7 @@
     });
 
     window.addEventListener('popstate', function () {
+      setSearchLayer(false);
       activeAction = '';
       searchOpened = false;
       searchOpening = false;
@@ -642,6 +652,7 @@
     });
 
     window.addEventListener('hashchange', function () {
+      setSearchLayer(false);
       activeAction = '';
       searchOpened = false;
       searchOpening = false;
