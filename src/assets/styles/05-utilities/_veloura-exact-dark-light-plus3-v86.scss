@@ -84,12 +84,6 @@ html body :is(
   .veloura-glass-surface,
   .veloura-popup .veloura-popup__box,
   .swal2-container .swal2-popup:not(.swal2-toast),
-  .s-modal .s-salla-modal-body,
-  .s-modal .s-modal-body,
-  .s-modal .s-modal-content,
-  .s-salla-modal-body,
-  .s-modal-body,
-  .s-modal-content
 ),
 html.veloura-side-cats-glass body .mm-ocd.mm-ocd--open .mm-ocd__content,
 html body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
@@ -296,9 +290,6 @@ html body.dark .mm-ocd.mm-ocd--open .mm-ocd__content :is(
 html.dark body :is(
   .veloura-popup__box,
   .swal2-popup,
-  .s-salla-modal-body,
-  .s-modal-body,
-  .s-modal-content,
   .veloura-qv-full__dialog,
   .veloura-quick-view-modal__dialog
 ) :is(
@@ -310,9 +301,6 @@ html.dark body :is(
 html body.dark :is(
   .veloura-popup__box,
   .swal2-popup,
-  .s-salla-modal-body,
-  .s-modal-body,
-  .s-modal-content,
   .veloura-qv-full__dialog,
   .veloura-quick-view-modal__dialog
 ) :is(
@@ -328,9 +316,6 @@ html body.dark :is(
 html.dark body :is(
   .veloura-popup__box,
   .swal2-popup,
-  .s-salla-modal-body,
-  .s-modal-body,
-  .s-modal-content,
   .veloura-qv-full__dialog,
   .veloura-quick-view-modal__dialog
 ) :is(
@@ -344,9 +329,6 @@ html.dark body :is(
 html body.dark :is(
   .veloura-popup__box,
   .swal2-popup,
-  .s-salla-modal-body,
-  .s-modal-body,
-  .s-modal-content,
   .veloura-qv-full__dialog,
   .veloura-quick-view-modal__dialog
 ) :is(
@@ -363,10 +345,6 @@ html body.dark :is(
 
 /* Backdrops dim only. They never blur the whole page. */
 html body.veloura-glass-effect :is(
-  .s-salla-modal-overlay,
-  .s-modal-overlay,
-  .s-modal-backdrop,
-  .modal-backdrop,
   .veloura-qv-full__overlay,
   .veloura-quick-view-modal__overlay,
   .veloura-popup__overlay,
@@ -446,54 +424,6 @@ html.dark body .s-product-card-entry .veloura-quick-view-btn *,
 html body.dark .s-product-card-entry .veloura-quick-view-btn * {
   color: inherit !important;
   fill: currentColor !important;
-}
-
-/* Salla parts exposed to light DOM use the same exact material. */
-html body.veloura-glass-effect :is(
-  salla-login-modal,
-  salla-localization-modal,
-  salla-user-menu,
-  salla-scopes,
-  salla-offer-modal,
-  salla-modal,
-  salla-sheet
-)::part(body),
-html body.veloura-glass-effect :is(
-  salla-login-modal,
-  salla-localization-modal,
-  salla-user-menu,
-  salla-scopes,
-  salla-offer-modal,
-  salla-modal,
-  salla-sheet
-)::part(content),
-html body.veloura-glass-effect :is(
-  salla-login-modal,
-  salla-localization-modal,
-  salla-user-menu,
-  salla-scopes,
-  salla-offer-modal,
-  salla-modal,
-  salla-sheet
-)::part(panel),
-html body.veloura-glass-effect :is(
-  salla-login-modal,
-  salla-localization-modal,
-  salla-user-menu,
-  salla-scopes,
-  salla-offer-modal,
-  salla-modal,
-  salla-sheet
-)::part(surface) {
-  background: var(--veloura-v86-glass-surface) !important;
-  background-color: var(--veloura-v86-glass-surface) !important;
-  background-image: none !important;
-  border-top: 1px solid var(--veloura-v86-edge-top) !important;
-  border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
-  border-inline: 0 !important;
-  -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: var(--veloura-v86-filter) !important;
-  box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
 }
 
 html body.veloura-glass-effect :is(

@@ -1,0 +1,153 @@
+/* ========================================================================
+   Veloura V63 — balanced inline-search desktop header.
+
+   Connected rectangular search:
+     right: every header icon | exact center: logo | left: search
+
+   Detached search or icon-only search:
+     the controller restores the original right/left icon groups and the
+     existing centered-logo layout remains in control.
+   ======================================================================== */
+
+@media (min-width: 1024px) {
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-header-grid {
+    direction: ltr !important;
+    display: grid !important;
+    grid-template-columns:
+      minmax(180px, var(--veloura-v63-side-width, 240px))
+      auto
+      minmax(180px, var(--veloura-v63-side-width, 240px)) !important;
+    grid-template-rows: auto auto !important;
+    grid-template-areas: none !important;
+    grid-auto-flow: row !important;
+    align-items: center !important;
+    align-content: center !important;
+    justify-items: stretch !important;
+    column-gap: var(--veloura-v63-main-gap, 16px) !important;
+    row-gap: 2px !important;
+    min-height: 0 !important;
+    padding-top: clamp(10px, .8vw, 14px) !important;
+    padding-bottom: 2px !important;
+  }
+
+  /* Left track: the connected rectangular search. */
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-header-grid > .veloura-desktop-search-bar {
+    grid-area: auto !important;
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: var(--veloura-v60-search-height, 36px) !important;
+    margin: 0 !important;
+  }
+
+  /* True mathematical center, because both side tracks have equal width. */
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-header-grid > .veloura-header-logo {
+    grid-area: auto !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    align-self: center !important;
+    justify-self: center !important;
+    margin: 0 !important;
+    line-height: 0 !important;
+    transform: none !important;
+  }
+
+  /* Right track: all visible header controls in one compact group. */
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-header-grid > .veloura-v63-unified-icons {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    direction: rtl !important;
+    align-items: center !important;
+    align-self: center !important;
+    justify-content: flex-start !important;
+    justify-self: stretch !important;
+    gap: clamp(5px, .55vw, 9px) !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: max-content !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons > .veloura-header-side {
+    display: flex !important;
+    direction: ltr !important;
+    align-items: center !important;
+    align-self: center !important;
+    justify-content: flex-start !important;
+    flex: 0 0 auto !important;
+    gap: clamp(5px, .55vw, 9px) !important;
+    min-width: 0 !important;
+    width: auto !important;
+    height: max-content !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons .veloura-header-icon,
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons .veloura-cart-summary,
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons salla-cart-summary,
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons > *,
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons .veloura-header-side > * {
+    align-self: center !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    transform: none !important;
+  }
+
+  /* Categories remain a centered second row under the complete first row. */
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-header-grid > .veloura-menu-links-wrap {
+    grid-area: auto !important;
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: center !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-menu-links-wrap custom-main-menu,
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-menu-links-wrap .veloura-main-menu-desktop,
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-menu-links-wrap .main-menu {
+    margin-inline: auto !important;
+    justify-content: center !important;
+  }
+
+  /* V55/V57 edge margins belong to split groups; remove them while both
+     original groups are nested inside the unified right-side wrapper. */
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons .veloura-header-left,
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons .veloura-header-right {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}

@@ -1,0 +1,326 @@
+/* ========================================================================
+   Veloura V64 — fixed desktop header axes.
+
+   Rectangular search inside the header:
+     physical left  = compact search
+     exact center   = logo
+     physical right = every header icon (V63 unified wrapper)
+
+   Detached search or icon-only search:
+     physical left/right icon groups remain natural and the logo is forced
+     to the mathematical center, regardless of the laptop de-centering flag.
+
+   This file intentionally loads after V63 and uses a higher-specificity
+   contract than V60 so older explicit grid-column rules cannot win.
+   ======================================================================== */
+
+@media (min-width: 1024px) {
+  /* ----------------------------------------------------------------------
+     CONNECTED RECTANGULAR SEARCH
+     ---------------------------------------------------------------------- */
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar
+    .veloura-header-grid,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled)
+    .veloura-header-grid {
+    direction: ltr !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+    grid-template-rows: minmax(58px, auto) auto !important;
+    grid-template-areas: none !important;
+    grid-auto-flow: row !important;
+    align-items: center !important;
+    align-content: center !important;
+    justify-items: stretch !important;
+    column-gap: clamp(14px, 1.35vw, 24px) !important;
+    row-gap: 0 !important;
+    min-height: 0 !important;
+    padding-top: clamp(8px, .65vw, 12px) !important;
+    padding-bottom: 2px !important;
+  }
+
+  /* Search: fixed/compact width on the physical left, never a full track. */
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar
+    .veloura-header-grid > .veloura-desktop-search-bar,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled)
+    .veloura-header-grid > .veloura-desktop-search-bar {
+    grid-area: auto !important;
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    align-self: center !important;
+    justify-self: start !important;
+    width: clamp(240px, var(--veloura-v63-side-width, 320px), 340px) !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: var(--veloura-v60-search-height, 36px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached)
+    .veloura-header-grid > .veloura-desktop-search-bar
+    salla-search.veloura-header-search-component,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached)
+    .veloura-header-grid > .veloura-desktop-search-bar
+    .s-search-container,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached)
+    .veloura-header-grid > .veloura-desktop-search-bar
+    .s-search-wrapper,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached)
+    .veloura-header-grid > .veloura-desktop-search-bar
+    .s-search-input,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached)
+    .veloura-header-grid > .veloura-desktop-search-bar
+    input {
+    align-self: center !important;
+    height: var(--veloura-v60-search-height, 36px) !important;
+    min-height: var(--veloura-v60-search-height, 36px) !important;
+    max-height: var(--veloura-v60-search-height, 36px) !important;
+    margin: 0 !important;
+  }
+
+  /* Logo: an independent center column and a guaranteed vertical axis. */
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar
+    .veloura-header-grid > .veloura-header-logo,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled)
+    .veloura-header-grid > .veloura-header-logo {
+    grid-area: auto !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    position: relative !important;
+    z-index: 5 !important;
+    display: flex !important;
+    align-items: center !important;
+    align-self: center !important;
+    justify-content: center !important;
+    justify-self: center !important;
+    width: auto !important;
+    max-width: clamp(118px, 12vw, 190px) !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 0 !important;
+    transform: none !important;
+  }
+
+  /* All controls: physical right, away from the centered logo. */
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar
+    .veloura-header-grid > .veloura-v63-unified-icons,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled)
+    .veloura-header-grid > .veloura-v63-unified-icons {
+    grid-area: auto !important;
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+    display: flex !important;
+    direction: rtl !important;
+    align-items: center !important;
+    align-self: center !important;
+    justify-content: flex-end !important;
+    justify-self: end !important;
+    gap: clamp(5px, .5vw, 9px) !important;
+    width: clamp(240px, var(--veloura-v63-side-width, 320px), 340px) !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    min-height: 40px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons > .veloura-header-side {
+    display: flex !important;
+    align-items: center !important;
+    align-self: center !important;
+    justify-content: flex-end !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 40px !important;
+    gap: clamp(5px, .5vw, 9px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons .veloura-header-icon,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons .veloura-cart-summary,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons salla-cart-summary,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons .veloura-cart-custom-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    align-self: center !important;
+    justify-content: center !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    transform: none !important;
+    vertical-align: middle !important;
+  }
+
+  /* Categories: complete-width row, centered independently of row one. */
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-header-grid > .veloura-menu-links-wrap {
+    grid-area: auto !important;
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    display: flex !important;
+    align-items: center !important;
+    align-self: center !important;
+    justify-content: center !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 0 1px !important;
+  }
+
+  /* ----------------------------------------------------------------------
+     DETACHED SEARCH OR ICON-ONLY SEARCH
+     Force a true centered logo even when laptop de-centering is enabled.
+     ---------------------------------------------------------------------- */
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-top-search-detached
+    .veloura-header-grid,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-search-icon_right
+    .veloura-header-grid,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-search-icon_left
+    .veloura-header-grid,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-search-bar_sticky_icon.veloura-top-scrolled
+    .veloura-header-grid {
+    direction: ltr !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+    grid-template-rows: minmax(58px, auto) auto !important;
+    grid-template-areas: none !important;
+    align-items: center !important;
+    align-content: center !important;
+    column-gap: clamp(12px, 1vw, 18px) !important;
+    row-gap: 0 !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-top-search-detached
+    .veloura-header-grid > .veloura-header-left,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-search-icon_right
+    .veloura-header-grid > .veloura-header-left,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-search-icon_left
+    .veloura-header-grid > .veloura-header-left,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-search-bar_sticky_icon.veloura-top-scrolled
+    .veloura-header-grid > .veloura-header-left {
+    grid-area: auto !important;
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    align-items: center !important;
+    align-self: center !important;
+    justify-self: start !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-top-search-detached
+    .veloura-header-grid > .veloura-header-logo,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-search-icon_right
+    .veloura-header-grid > .veloura-header-logo,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-search-icon_left
+    .veloura-header-grid > .veloura-header-logo,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-search-bar_sticky_icon.veloura-top-scrolled
+    .veloura-header-grid > .veloura-header-logo {
+    grid-area: auto !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    position: relative !important;
+    z-index: 5 !important;
+    display: flex !important;
+    align-items: center !important;
+    align-self: center !important;
+    justify-content: center !important;
+    justify-self: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 0 !important;
+    transform: none !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-top-search-detached
+    .veloura-header-grid > .veloura-header-right,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-search-icon_right
+    .veloura-header-grid > .veloura-header-right,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-search-icon_left
+    .veloura-header-grid > .veloura-header-right,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-search-bar_sticky_icon.veloura-top-scrolled
+    .veloura-header-grid > .veloura-header-right {
+    grid-area: auto !important;
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+    align-items: center !important;
+    align-self: center !important;
+    justify-self: end !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-top-search-detached
+    .veloura-header-grid > .veloura-menu-links-wrap,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-search-icon_right
+    .veloura-header-grid > .veloura-menu-links-wrap,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-search-icon_left
+    .veloura-header-grid > .veloura-menu-links-wrap,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-search-bar_sticky_icon.veloura-top-scrolled
+    .veloura-header-grid > .veloura-menu-links-wrap {
+    grid-area: auto !important;
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 0 1px !important;
+  }
+}

@@ -51731,10 +51731,16 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
 }
 /* =========================================================
    Veloura Bottom Navigation
-   Fresh component. No V22/V23/V9x override layers.
+   CSS owns ONLY our bottom bar and the light-DOM search wrapper.
+   Salla Web Components keep their native internal styles.
    ========================================================= */
 .veloura-bottom-nav {
   display: none;
+}
+.veloura-bottom-search-panel {
+  padding: 14px 14px calc(18px + env(safe-area-inset-bottom, 0px));
+  background: #ffffff;
+  background: var(--color-background, #ffffff);
 }
 @media (max-width: 767px) {
   body.veloura-bottom-nav-enabled {
@@ -51750,7 +51756,7 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
     right: 0;
     bottom: 0px;
     bottom: var(--vbn-bottom, 0px);
-    z-index: 50;
+    z-index: 80;
     display: flex;
     justify-content: center;
     width: 100%;
@@ -51760,6 +51766,7 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
   }
   .veloura-bottom-nav__surface {
     position: relative;
+    isolation: isolate;
     display: flex;
     align-items: stretch;
     width: 100%;
@@ -51776,13 +51783,11 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
     border-radius: var(--vbn-radius, 20px);
     box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
     overflow: visible;
-    clip-path: none;
-    contain: none;
     pointer-events: auto;
   }
   .veloura-bottom-nav__item {
     position: relative;
-    overflow: visible;
+    isolation: isolate;
     display: flex;
     flex: 1 1 0;
     flex-direction: column;
@@ -51790,113 +51795,86 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
     justify-content: center;
     gap: 2px;
     min-width: 0;
+    height: calc(56px - 8px);
+    height: calc(var(--vbn-height, 56px) - 8px);
     min-height: calc(56px - 8px);
     min-height: calc(var(--vbn-height, 56px) - 8px);
     margin: 0 1px;
-    padding: 5px 3px;
+    padding: 4px 2px;
     -webkit-appearance: none;
        -moz-appearance: none;
             appearance: none;
     border: 0;
+    outline: 0;
     border-radius: 20px;
     border-radius: var(--vbn-radius, 20px);
-    outline: none;
     color: inherit;
     background: transparent;
     font: inherit;
     -webkit-text-decoration: none;
     text-decoration: none;
     cursor: pointer;
-    transition: transform 160ms cubic-bezier(0.2, 0.8, 0.2, 1), background-color 160ms ease, color 160ms ease, opacity 160ms ease;
+    overflow: visible;
+    transform-origin: center bottom;
+    transition: transform 160ms cubic-bezier(0.2, 0.8, 0.2, 1), background-color 160ms ease, color 160ms ease;
     -webkit-tap-highlight-color: transparent;
   }
   .veloura-bottom-nav__item i {
-    position: relative;
-    z-index: 2;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 0;
     font-size: 22px;
     font-size: var(--vbn-icon-size, 22px);
     line-height: 1;
     color: inherit;
+    pointer-events: none;
   }
   .veloura-bottom-nav__item span {
-    position: relative;
-    z-index: 2;
     display: block;
+    width: 100%;
     max-width: 100%;
+    margin: 1px 0 0;
+    padding: 0;
     font-size: 12px;
     font-size: var(--vbn-font-size, 12px);
     font-weight: 700;
-    line-height: 1.1;
+    line-height: 1.05;
+    text-align: center;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  /* -------------------------------------------------------
-     Active item
-     الخلفية تتحرك وحدها، بينما الأيقونة والنص يبقيان ظاهرين بالكامل.
-     ------------------------------------------------------- */
-  .veloura-bottom-nav__item {
-    isolation: isolate;
-    overflow: visible;
-  }
-  .veloura-bottom-nav__item::before {
-    content: none;
-  }
-  .veloura-bottom-nav__item.is-active {
-    z-index: 4;
-    color: #ffffff;
-    background: transparent;
-    overflow: visible;
-    transform: none;
-  }
-  .veloura-bottom-nav__item.is-active i,
-  .veloura-bottom-nav__item.is-active span {
-    color: #ffffff;
     overflow: visible;
     text-overflow: clip;
+    color: inherit;
+    pointer-events: none;
   }
-  .veloura-bottom-nav__item.is-active::before {
-    content: "";
-    position: absolute;
-    z-index: 0;
-    left: 0;
-    right: 0;
+  /* Active — same corner style as the menu. */
+  .veloura-bottom-nav__item.is-active {
+    z-index: 5;
+    color: #ffffff;
     background: #004d65;
     background: var(--vbn-active, #004d65);
     border-radius: 20px;
     border-radius: var(--vbn-radius, 20px);
-    pointer-events: none;
-    transform-origin: center bottom;
-    transition: top 160ms cubic-bezier(0.2, 0.8, 0.2, 1), bottom 160ms cubic-bezier(0.2, 0.8, 0.2, 1), transform 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    overflow: visible;
   }
   /* بدون تكبير */
-  .veloura-bottom-nav--scale-none .veloura-bottom-nav__item.is-active::before {
-    top: 0;
-    bottom: 0;
+  .veloura-bottom-nav--scale-none .veloura-bottom-nav__item.is-active {
     transform: none;
   }
   .veloura-bottom-nav--scale-none .veloura-bottom-nav__item.is-active::after {
     content: none;
   }
   /* خفيف */
-  .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active::before {
-    top: -7px;
-    bottom: 8px;
-    transform: scaleX(1.04);
-  }
-  .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active i,
-  .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active span {
-    transform: translateY(-3px);
+  .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active {
+    transform: translateY(-6px) scale(1.04);
   }
   .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active::after {
     content: "";
     position: absolute;
-    z-index: 3;
     left: 50%;
-    bottom: 2px;
+    bottom: -5px;
     width: 15px;
     height: 3px;
     border-radius: 999px;
@@ -51906,21 +51884,14 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
     pointer-events: none;
   }
   /* واضح */
-  .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active::before {
-    top: -15px;
-    bottom: 10px;
-    transform: scaleX(1.08);
-  }
-  .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active i,
-  .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active span {
-    transform: translateY(-7px);
+  .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active {
+    transform: translateY(-12px) scale(1.08);
   }
   .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active::after {
     content: "";
     position: absolute;
-    z-index: 3;
     left: 50%;
-    bottom: 2px;
+    bottom: -8px;
     width: 17px;
     height: 3px;
     border-radius: 999px;
@@ -51928,11 +51899,6 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
     background: var(--vbn-active, #004d65);
     transform: translateX(-50%);
     pointer-events: none;
-  }
-  /* العنصر النشط يأخذ نفس حواف القائمة */
-  .veloura-bottom-nav__item.is-active::before {
-    border-radius: 20px;
-    border-radius: var(--vbn-radius, 20px);
   }
   body.veloura-bottom-nav-no-labels .veloura-bottom-nav__item {
     gap: 0;
@@ -51942,7 +51908,7 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
   body.veloura-bottom-nav-no-labels .veloura-bottom-nav__item span {
     display: none;
   }
-  /* Connected to viewport bottom. */
+  /* Full-width / connected */
   body.veloura-bottom-nav-position-full_width .veloura-bottom-nav {
     bottom: 0;
   }
@@ -51953,7 +51919,7 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
     border-radius: 20px 20px 0 0;
     border-radius: var(--vbn-radius, 20px) var(--vbn-radius, 20px) 0 0;
   }
-  /* Floating pill. */
+  /* Floating pill */
   body.veloura-bottom-nav-position-pill .veloura-bottom-nav {
     bottom: calc(18px + var(--vbn-safe-bottom));
     bottom: calc(var(--vbn-bottom, 18px) + var(--vbn-safe-bottom));
@@ -51967,7 +51933,7 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
     border-radius: 999px;
     border-radius: var(--vbn-radius, 999px);
   }
-  /* Glass uses the global site's existing material tokens, but only this file owns menu geometry. */
+  /* Glass belongs to the bottom bar only. */
   body.veloura-bottom-nav-glass .veloura-bottom-nav__surface {
     background: rgba(230, 232, 235, .69);
     background: var(--veloura-glass-surface, rgba(230, 232, 235, 0.72));
@@ -51992,17 +51958,14 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
     background: #010612;
     background: var(--veloura-dark-secondary-bg, var(--vbn-bg, #010612));
   }
-  /* The bar rises only while categories/search need a second tap on the same button. */
+  /* Search/categories: keep bar tappable so second tap can close. */
+  body.veloura-bottom-nav-search-open .veloura-bottom-nav,
   body.veloura-bottom-nav-categories-open .veloura-bottom-nav,
-  body.veloura-bottom-nav-search-open .veloura-bottom-nav {
-    z-index: 2147483000;
+  body.menu-opened .veloura-bottom-nav {
+    z-index: 2147483640;
   }
-  body.veloura-bottom-nav-categories-open .mm-ocd.mm-ocd--open {
-    z-index: 2147482000 !important;
-  }
-  body.veloura-bottom-nav-search-open salla-search:not([inline]) {
-    position: relative;
-    z-index: 2147482000;
+  body.menu-opened .mm-ocd.mm-ocd--open {
+    z-index: 2147483000 !important;
   }
 }
 @media (max-width: 767px) and (prefers-reduced-motion: reduce) {
