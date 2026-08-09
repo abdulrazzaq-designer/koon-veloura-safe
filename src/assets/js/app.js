@@ -9,10 +9,17 @@ import AppHelpers from "./app-helpers";
 
 /* ========================================================================
    Veloura Bottom Navigation
-   Native bridge: mirrors the already-working header triggers.
+   Functional contract:
+   - Search = documented <salla-modal> open()/close() + inline <salla-search>.
+   - Login  = documented <salla-login-modal>.open().
+   - Categories = Theme Raed native #mobile-menu trigger/drawer.
+   - Home/Cart/Custom items = ordinary links.
+   - This controller never edits Salla Shadow DOM.
    ======================================================================== */
 const initVelouraBottomNav = (() => {
   let menu = null;
+  let searchModal = null;
+  let searchOpened = false;
   let activeAction = '';
 
   const itemSelector = '[data-vbn-item]';
@@ -40,7 +47,7 @@ const initVelouraBottomNav = (() => {
     menu?.querySelector(`${itemSelector}[data-vbn-action="${action}"]`) || null;
 
   const normalizeUrl = value => {
-    if (typeof value !== 'string' || !value.trim() || value.trim() === '#') return '';
+    if (typeof value !== 'string') return '';
 
     try {
       const url = new URL(value, window.location.href);
@@ -62,13 +69,17 @@ const initVelouraBottomNav = (() => {
     if (!item) return '';
 
     const direct = item.getAttribute('data-vbn-url') || item.getAttribute('href') || '';
-    if (normalizeUrl(direct)) return direct;
+    if (direct && direct !== '#') return direct;
 
     const payload = item.getAttribute('data-vbn-payload');
     if (!payload) return '';
 
     let value;
-    try { value = JSON.parse(payload); } catch (error) { return ''; }
+    try {
+      value = JSON.parse(payload);
+    } catch (error) {
+      return '';
+    }
 
     const walk = (entry, depth = 0) => {
       if (depth > 8 || entry == null) return '';
@@ -79,10 +90,16 @@ const initVelouraBottomNav = (() => {
           /^https?:\/\//i.test(candidate) ||
           /^\/\//.test(candidate) ||
           /^[/?]/.test(candidate)
-        ) return candidate;
+        ) {
+          return candidate;
+        }
 
-        try { return walk(JSON.parse(candidate), depth + 1); }
-        catch (error) { return ''; }
+        try {
+          const parsed = JSON.parse(candidate);
+          return walk(parsed, depth + 1);
+        } catch (error) {
+          return '';
+        }
       }
 
       if (Array.isArray(entry)) {
@@ -121,23 +138,26 @@ const initVelouraBottomNav = (() => {
   const routeItem = () => {
     if (!menu) return null;
 
-    const current = window.location.href;
+    const currentUrl = window.location.href;
 
-    for (const custom of menu.querySelectorAll('[data-vbn-link]')) {
-      const url = resolveCustomUrl(custom);
-      if (url && sameUrl(url, current)) return custom;
+    for (const customItem of menu.querySelectorAll('[data-vbn-link]')) {
+      const customUrl = resolveCustomUrl(customItem);
+      if (customUrl && sameUrl(customUrl, currentUrl)) return customItem;
     }
 
     const home = itemByKey('home');
-    if (home && sameUrl(home.getAttribute('href') || '/', current)) return home;
+    if (home && sameUrl(home.getAttribute('href') || '/', currentUrl)) {
+      return home;
+    }
 
     const path = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
+
     if (/(?:^|\/)cart(?:\/|$)/i.test(path)) return itemByKey('cart');
 
     return null;
   };
 
-  const restoreActive = () => {
+  const restoreRouteActive = () => {
     if (activeAction) {
       const transient = itemByAction(activeAction) || itemByKey(activeAction);
       if (transient) {
@@ -151,137 +171,144 @@ const initVelouraBottomNav = (() => {
 
   const setTransient = action => {
     activeAction = action || '';
-    restoreActive();
+    restoreRouteActive();
   };
 
   const clearTransient = action => {
     if (!action || activeAction === action) activeAction = '';
-    window.setTimeout(restoreActive, 20);
+    window.setTimeout(restoreRouteActive, 20);
   };
 
-  /* Search uses the exact same global Search component/trigger as the header. */
-  const searchHost = () =>
-    document.querySelector('salla-search[data-testid="store-search-modal"]');
-
-  const searchModal = () => {
-    const host = searchHost();
-    if (!host) return null;
-
-    if (host.modal && typeof host.modal.close === 'function') return host.modal;
+  const waitForComponent = async (tagName, element) => {
+    if (!element) return null;
 
     try {
-      const light = host.querySelector?.('salla-modal, salla-sheet');
-      if (light && typeof light.close === 'function') return light;
+      if (window.customElements?.whenDefined) {
+        await window.customElements.whenDefined(tagName);
+      }
+
+      if (typeof element.componentOnReady === 'function') {
+        await element.componentOnReady();
+      }
     } catch (error) {}
 
-    try {
-      const shadow = host.shadowRoot?.querySelector?.('salla-modal, salla-sheet');
-      if (shadow && typeof shadow.close === 'function') return shadow;
-    } catch (error) {}
-
-    return null;
+    return element;
   };
 
-  const modalLooksOpen = modal => {
-    if (!modal) return false;
-    if (modal.visible === true || modal.opened === true) return true;
+  /* ---------------- Search: native Salla Modal + inline Search ---------------- */
 
-    return Boolean(
-      modal.hasAttribute?.('visible') ||
-      modal.hasAttribute?.('open') ||
-      modal.hasAttribute?.('opened') ||
-      modal.getAttribute?.('aria-hidden') === 'false'
-    );
+  const setSearchState = opened => {
+    searchOpened = Boolean(opened);
+    document.body.classList.toggle('veloura-bottom-nav-search-open', searchOpened);
+
+    if (searchOpened) setTransient('search');
+    else clearTransient('search');
   };
 
-  const bindSearchModal = modal => {
-    if (!modal || modal.dataset?.vbnSearchBound === 'true') return;
-    if (modal.dataset) modal.dataset.vbnSearchBound = 'true';
+  const bindSearchModal = () => {
+    searchModal = document.getElementById('veloura-bottom-search-modal');
+    if (!searchModal || searchModal.dataset.vbnBound === 'true') return;
 
-    modal.addEventListener('modalVisibilityChanged', event => {
-      const opened =
-        typeof event.detail === 'boolean'
-          ? event.detail
-          : modalLooksOpen(modal);
+    searchModal.dataset.vbnBound = 'true';
 
-      if (opened) setTransient('search');
-      else clearTransient('search');
+    searchModal.addEventListener('modalVisibilityChanged', event => {
+      setSearchState(Boolean(event.detail));
     });
-  };
-
-  const captureSearchModal = () => {
-    const modal = searchModal();
-    if (modal) bindSearchModal(modal);
-    return modal;
   };
 
   const toggleSearch = async () => {
-    const modal = captureSearchModal();
+    bindSearchModal();
+    const modal = await waitForComponent('salla-modal', searchModal);
+    if (!modal) return;
 
-    if (modal && modalLooksOpen(modal)) {
-      try {
+    try {
+      if (searchOpened) {
         await modal.close();
-      } catch (error) {}
-      clearTransient('search');
-      return;
+        setSearchState(false);
+      } else {
+        setTransient('search');
+        await modal.open();
+        setSearchState(true);
+      }
+    } catch (error) {
+      setSearchState(false);
+      salla.logger?.error?.('veloura-bottom-nav::search', error);
     }
+  };
 
-    setTransient('search');
+  /* ---------------- Login: exact Salla login component ---------------- */
 
-    if (window.salla?.event?.dispatch) {
-      salla.event.dispatch('search::open');
-    }
+  const bindReturnedLoginModal = modal => {
+    if (!modal || typeof modal.addEventListener !== 'function') return;
+    if (modal.dataset?.vbnLoginBound === 'true') return;
 
-    [0, 40, 120, 280].forEach(delay => {
-      window.setTimeout(captureSearchModal, delay);
+    if (modal.dataset) modal.dataset.vbnLoginBound = 'true';
+
+    modal.addEventListener('modalVisibilityChanged', event => {
+      const opened = Boolean(event.detail);
+      if (opened) setTransient('account');
+      else clearTransient('account');
     });
   };
 
-  /* Login uses the exact same native event already used by the header button. */
-  const openLogin = () => {
+  const openLogin = async () => {
+    const login = document.querySelector('salla-login-modal[data-testid="store-login-modal"]')
+      || document.querySelector('salla-login-modal');
+
+    const component = await waitForComponent('salla-login-modal', login);
+    if (!component || typeof component.open !== 'function') return;
+
     setTransient('account');
 
-    if (window.salla?.event?.dispatch) {
-      salla.event.dispatch('login::open');
-      return;
+    try {
+      const returned = await component.open();
+      bindReturnedLoginModal(returned);
+    } catch (error) {
+      clearTransient('account');
+      salla.logger?.error?.('veloura-bottom-nav::login', error);
     }
-
-    clearTransient('account');
   };
 
-  /* Categories use Theme Raed's existing #mobile-menu trigger. */
+  /* ---------------- Categories: same trigger contract as Theme Raed ---------------- */
+
   const categoriesAreOpen = () =>
     Boolean(
-      document.body.classList.contains('menu-opened') ||
-      document.querySelector('.mm-ocd.mm-ocd--open')
+      document.body.classList.contains('menu-opened')
+      || document.querySelector('.mm-ocd.mm-ocd--open')
     );
 
   const syncCategories = () => {
-    if (categoriesAreOpen()) setTransient('categories');
-    else if (activeAction === 'categories') clearTransient('categories');
+    if (categoriesAreOpen()) {
+      setTransient('categories');
+      document.body.classList.add('veloura-bottom-nav-categories-open');
+    } else {
+      document.body.classList.remove('veloura-bottom-nav-categories-open');
+      if (activeAction === 'categories') clearTransient('categories');
+    }
   };
 
   const toggleCategories = () => {
     if (categoriesAreOpen()) {
-      const close =
-        document.querySelector('.close-mobile-menu') ||
-        document.querySelector('.mm-ocd__backdrop');
+      const closeButton = document.querySelector('.close-mobile-menu')
+        || document.querySelector('.mm-ocd__backdrop');
 
-      close?.click();
-      window.setTimeout(syncCategories, 60);
+      closeButton?.click();
+      window.setTimeout(syncCategories, 50);
       return;
     }
 
     setTransient('categories');
 
-    const trigger =
-      document.querySelector('.veloura-menu-trigger-mobile[href="#mobile-menu"]') ||
-      document.querySelector('a.mburger[href="#mobile-menu"]') ||
-      document.querySelector('a[href="#mobile-menu"]');
+    const nativeTrigger =
+      document.querySelector('.veloura-menu-trigger-mobile[href="#mobile-menu"]')
+      || document.querySelector('a.mburger[href="#mobile-menu"]')
+      || document.querySelector('a[href="#mobile-menu"]');
 
-    trigger?.click();
-    window.setTimeout(syncCategories, 60);
+    nativeTrigger?.click();
+    window.setTimeout(syncCategories, 50);
   };
+
+  /* ---------------- Clicks ---------------- */
 
   const handleClick = event => {
     const item = event.target.closest?.(itemSelector);
@@ -312,6 +339,7 @@ const initVelouraBottomNav = (() => {
 
     if (item.hasAttribute('data-vbn-link')) {
       const url = resolveCustomUrl(item);
+
       if (!url) {
         event.preventDefault();
         return;
@@ -319,7 +347,7 @@ const initVelouraBottomNav = (() => {
 
       activate(item);
 
-      if (!item.getAttribute('href') || item.getAttribute('href') === '#') {
+      if (item.getAttribute('href') === '#' || !item.getAttribute('href')) {
         event.preventDefault();
 
         if (item.getAttribute('target') === '_blank') {
@@ -343,18 +371,20 @@ const initVelouraBottomNav = (() => {
     menu.dataset.vbnReady = 'true';
     menu.addEventListener('click', handleClick);
 
+    bindSearchModal();
+
     const bodyObserver = new MutationObserver(syncCategories);
     bodyObserver.observe(document.body, {
       attributes: true,
       attributeFilter: ['class']
     });
 
-    window.addEventListener('pageshow', restoreActive);
-    window.addEventListener('popstate', restoreActive);
-    window.addEventListener('hashchange', restoreActive);
+    window.addEventListener('pageshow', restoreRouteActive);
+    window.addEventListener('popstate', restoreRouteActive);
+    window.addEventListener('hashchange', restoreRouteActive);
 
     syncCategories();
-    restoreActive();
+    restoreRouteActive();
   };
 
   return init;

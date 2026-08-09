@@ -2999,6 +2999,23 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 <salla-search data-testid="store-search-modal"></salla-search>
 <salla-login-modal data-testid="store-login-modal"></salla-login-modal>
 
+{# Bottom-nav Search: documented Salla Modal + documented inline Search. #}
+<salla-modal
+  id="veloura-bottom-search-modal"
+  data-testid="veloura-bottom-search-modal"
+  position="bottom"
+  width="full"
+  no-padding
+>
+  <div class="veloura-bottom-search-panel">
+    <salla-search
+      data-testid="veloura-bottom-search"
+      inline
+      oval
+      height="52"
+    ></salla-search>
+  </div>
+</salla-modal>
 
 {% if store.scope %}
     <salla-scopes selection="{{ store.scope.display_as == 'popup' ? 'mandatory' : 'optional' }}"></salla-scopes>
@@ -3096,7 +3113,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         >
           <i class="sicon-user" aria-hidden="true"></i>
           {% if vbn_show_labels %}<span>{{ vbn_account_label }}</span>{% endif %}
-        </button>
+        </a>
       {% endif %}
 
       {% for item in vbn_custom_items %}
