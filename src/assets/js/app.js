@@ -280,10 +280,8 @@ const initVelouraBottomNav = (() => {
   const syncCategories = () => {
     if (categoriesAreOpen()) {
       setTransient('categories');
-      document.body.classList.add('veloura-bottom-nav-categories-open');
-    } else {
-      document.body.classList.remove('veloura-bottom-nav-categories-open');
-      if (activeAction === 'categories') clearTransient('categories');
+    } else if (activeAction === 'categories') {
+      clearTransient('categories');
     }
   };
 
@@ -372,12 +370,6 @@ const initVelouraBottomNav = (() => {
     menu.addEventListener('click', handleClick);
 
     bindSearchModal();
-
-    const bodyObserver = new MutationObserver(syncCategories);
-    bodyObserver.observe(document.body, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
 
     window.addEventListener('pageshow', restoreRouteActive);
     window.addEventListener('popstate', restoreRouteActive);
