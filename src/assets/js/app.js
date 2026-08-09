@@ -318,6 +318,76 @@ const initVelouraBottomNav = (() => {
     return null;
   };
 
+  const deepQueryAll = (root, selector, output = [], visited = new Set()) => {
+    if (!root || visited.has(root)) return output;
+    visited.add(root);
+
+    try {
+      root.querySelectorAll?.(selector).forEach(node => {
+        if (!output.includes(node)) output.push(node);
+      });
+
+      root.querySelectorAll?.('*').forEach(node => {
+        if (node.shadowRoot) deepQueryAll(node.shadowRoot, selector, output, visited);
+      });
+    } catch (error) {}
+
+    return output;
+  };
+
+  const nativeSearchModals = host => {
+    const found = [];
+
+    const add = node => {
+      if (node && !found.includes(node)) found.push(node);
+    };
+
+    add(host?.modal);
+
+    try {
+      host?.querySelectorAll?.('salla-modal, salla-sheet').forEach(add);
+    } catch (error) {}
+
+    if (host?.shadowRoot) {
+      deepQueryAll(host.shadowRoot, 'salla-modal, salla-sheet').forEach(add);
+    }
+
+    return found;
+  };
+
+  const nativeCloseButton = host => {
+    const selectors = [
+      '[part~="close"]',
+      '[data-close-modal]',
+      '.s-modal-close',
+      '.s-modal-header-close',
+      '.s-search-close',
+      'button[aria-label="إغلاق"]',
+      'button[aria-label="اغلاق"]',
+      'button[aria-label="Close"]',
+      'button[aria-label="close"]',
+    ];
+
+    const roots = [];
+    if (host?.shadowRoot) roots.push(host.shadowRoot);
+
+    nativeSearchModals(host).forEach(modal => {
+      if (modal.shadowRoot) roots.push(modal.shadowRoot);
+      roots.push(modal);
+    });
+
+    for (const root of roots) {
+      for (const selector of selectors) {
+        try {
+          const button = root.querySelector?.(selector);
+          if (button) return button;
+        } catch (error) {}
+      }
+    }
+
+    return null;
+  };
+
   const modalLooksOpen = modal => {
     if (!modal) return false;
     if (modal.visible === true || modal.opened === true) return true;
@@ -443,25 +513,59 @@ const initVelouraBottomNav = (() => {
 
   const closeSearch = async () => {
     const host = searchHostCache || preferredSearchHost();
-    const modal = modalFromHost(host);
 
-    if (modal && typeof modal.close === 'function') {
+    // Salla Search is built on a native Modal. Prefer the real modal/sheet
+    // close() method wherever Twilight exposes it.
+    const candidates = nativeSearchModals(host);
+
+    for (const modal of candidates) {
+      if (typeof modal?.close !== 'function') continue;
+
+      try {
+        if (typeof modal.componentOnReady === 'function') {
+          await modal.componentOnReady();
+        }
+      } catch (error) {}
+
       try {
         await modal.close();
+        setSearchOpened(false);
+        return;
       } catch (error) {}
-      setSearchOpened(false);
-      return;
     }
 
+    // One readiness pass in case the inner native modal was created lazily.
     const readyHost = await primeSearchHost();
-    const readyModal = modalFromHost(readyHost);
+    const readyCandidates = nativeSearchModals(readyHost);
 
-    if (readyModal && typeof readyModal.close === 'function') {
+    for (const modal of readyCandidates) {
+      if (typeof modal?.close !== 'function') continue;
+
       try {
-        await readyModal.close();
+        if (typeof modal.componentOnReady === 'function') {
+          await modal.componentOnReady();
+        }
+      } catch (error) {}
+
+      try {
+        await modal.close();
+        setSearchOpened(false);
+        return;
       } catch (error) {}
     }
 
+    // Last native fallback: click Salla's own close control if the component
+    // does not expose the inner modal instance to light DOM.
+    const closeButton = nativeCloseButton(readyHost || host);
+    if (closeButton) {
+      try {
+        closeButton.click();
+        window.setTimeout(() => setSearchOpened(false), 40);
+        return;
+      } catch (error) {}
+    }
+
+    // Do not leave a stale active state if Salla reports no live modal.
     setSearchOpened(false);
   };
 
@@ -559,30 +663,14 @@ const initVelouraBottomNav = (() => {
     setTransient('account');
 
     let host = document.querySelector('salla-login-modal');
+
     if (!host) {
       if (safeUrl(fallbackHref)) window.location.assign(fallbackHref);
       return;
     }
 
-    // Login must remain a native Salla component. Keep it above the bottom bar
-    // and do not inject Veloura glass contracts into its Shadow DOM.
-    host.style.setProperty('position', 'relative', 'important');
-    host.style.setProperty('z-index', '2147483600', 'important');
-    host.removeAttribute('data-veloura-glass-host');
-
-    const removeLoginInjectedStyles = () => {
-      const root = host.shadowRoot;
-      if (!root) return;
-
-      [
-        'veloura-global-glass-shadow-style',
-        'veloura-v86-shadow-contract',
-        'veloura-v85-shadow-contract',
-        'veloura-v84-shadow-style',
-        'veloura-v82-component-style',
-      ].forEach(id => root.getElementById(id)?.remove());
-    };
-
+    // Keep Salla Login 100% native. Do not set position/z-index/height/overflow
+    // on the host and do not rewrite its Shadow DOM.
     try {
       if (window.customElements?.whenDefined) {
         await window.customElements.whenDefined('salla-login-modal');
@@ -592,17 +680,8 @@ const initVelouraBottomNav = (() => {
         await host.componentOnReady();
       }
 
-      removeLoginInjectedStyles();
-
       if (typeof host.open === 'function') {
         await host.open();
-
-        removeLoginInjectedStyles();
-        window.requestAnimationFrame(removeLoginInjectedStyles);
-        window.setTimeout(removeLoginInjectedStyles, 80);
-        window.setTimeout(removeLoginInjectedStyles, 240);
-
-        bindNativeModalState('login', host);
         setTransient('account');
         return;
       }

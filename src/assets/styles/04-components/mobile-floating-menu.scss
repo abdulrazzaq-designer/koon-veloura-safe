@@ -57,6 +57,7 @@
     box-shadow: 0 8px 24px rgba(15, 23, 42, .10);
 
     overflow: visible;
+    clip-path: none;
     pointer-events: auto;
   }
 
@@ -121,59 +122,76 @@
     text-overflow: ellipsis;
   }
 
-  /* Active item base:
-     "بدون تكبير" = centered background only, no indicator. */
+  /* -------------------------------------------------------
+     Active item
+     - none: background only, centered, no indicator.
+     - soft: clearly rises above the menu edge.
+     - strong: strongly protrudes above the menu edge.
+     ------------------------------------------------------- */
+
   .veloura-bottom-nav__item.is-active {
-    z-index: 2;
+    z-index: 4;
     color: #ffffff;
     background: var(--vbn-active, #004d65);
     border-radius: var(--vbn-radius, 20px);
-    transform: none;
     overflow: visible;
+    transform-origin: center center;
   }
 
-  .veloura-bottom-nav__item.is-active::after {
+  /* بدون تكبير */
+  .veloura-bottom-nav--scale-none .veloura-bottom-nav__item.is-active {
+    transform: none;
+  }
+
+  .veloura-bottom-nav--scale-none .veloura-bottom-nav__item.is-active::after {
     content: none;
   }
 
-  /* خفيف / واضح:
-     the active background rises upward and leaves a clean strip underneath.
-     The indicator sits in that strip: outside the active background,
-     but still inside the bottom navigation surface. */
-  .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active,
-  .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active {
-    align-self: flex-start;
-    height: calc(var(--vbn-height, 56px) - 12px);
-    min-height: calc(var(--vbn-height, 56px) - 12px);
-    margin-top: 0;
-    margin-bottom: 6px;
-    transform-origin: center bottom;
-  }
-
+  /* خفيف */
   .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active {
-    transform: translateY(-3px) scale(var(--vbn-active-scale, 1.06));
+    transform: translate3d(0, -7px, 0) scale(1.06);
   }
 
-  .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active {
-    transform: translateY(-6px) scale(var(--vbn-active-scale, 1.08));
-  }
-
-  .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active::after,
-  .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active::after {
+  .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active::after {
     content: '';
     position: absolute;
     inset-inline-start: 50%;
-    bottom: -5px;
+    bottom: -6px;
 
-    width: 14px;
+    width: 15px;
     height: 3px;
 
     border-radius: 999px;
     background: var(--vbn-active, #004d65);
 
     transform: translateX(-50%);
-    opacity: .95;
     pointer-events: none;
+  }
+
+  /* واضح / كبير */
+  .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active {
+    transform: translate3d(0, -14px, 0) scale(1.10);
+  }
+
+  .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active::after {
+    content: '';
+    position: absolute;
+    inset-inline-start: 50%;
+    bottom: -11px;
+
+    width: 17px;
+    height: 3px;
+
+    border-radius: 999px;
+    background: var(--vbn-active, #004d65);
+
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  /* The active tile uses the exact same configured corner style as the menu. */
+  .veloura-bottom-nav__item.is-active {
+    border-radius: var(--vbn-radius, 20px);
   }
 
   body.veloura-bottom-nav-no-labels .veloura-bottom-nav__item {
@@ -252,11 +270,6 @@
     z-index: 2147482000;
   }
 
-  /* Native Salla Login must always sit above the bottom bar. */
-  salla-login-modal {
-    position: relative !important;
-    z-index: 2147483600 !important;
-  }
 
 
   @media (prefers-reduced-motion: reduce) {

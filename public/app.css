@@ -51796,8 +51796,8 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
        -moz-appearance: none;
             appearance: none;
     border: 0;
-    border-radius: max(10px, 20px - 6px);
-    border-radius: max(10px, var(--vbn-radius, 20px) - 6px);
+    border-radius: 20px;
+    border-radius: var(--vbn-radius, 20px);
     outline: none;
     color: inherit;
     background: transparent;
@@ -51828,17 +51828,50 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  /* Active item base:
+     "بدون تكبير" = centered background only, no indicator. */
   .veloura-bottom-nav__item.is-active {
     z-index: 2;
     color: #ffffff;
     background: #004d65;
     background: var(--vbn-active, #004d65);
+    border-radius: 20px;
+    border-radius: var(--vbn-radius, 20px);
+    transform: none;
+    overflow: visible;
   }
   .veloura-bottom-nav__item.is-active::after {
+    content: none;
+  }
+  /* خفيف / واضح:
+     the active background rises upward and leaves a clean strip underneath.
+     The indicator sits in that strip: outside the active background,
+     but still inside the bottom navigation surface. */
+  .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active,
+  .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active {
+    align-self: flex-start;
+    height: calc(56px - 12px);
+    height: calc(var(--vbn-height, 56px) - 12px);
+    min-height: calc(56px - 12px);
+    min-height: calc(var(--vbn-height, 56px) - 12px);
+    margin-top: 0;
+    margin-bottom: 6px;
+    transform-origin: center bottom;
+  }
+  .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active {
+    transform: translateY(-3px) scale(1.06);
+    transform: translateY(-3px) scale(var(--vbn-active-scale, 1.06));
+  }
+  .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active {
+    transform: translateY(-6px) scale(1.08);
+    transform: translateY(-6px) scale(var(--vbn-active-scale, 1.08));
+  }
+  .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active::after,
+  .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active::after {
     content: "";
     position: absolute;
     left: 50%;
-    bottom: -6px;
+    bottom: -5px;
     width: 14px;
     height: 3px;
     border-radius: 999px;
@@ -51847,35 +51880,6 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
     transform: translateX(-50%);
     opacity: 0.95;
     pointer-events: none;
-  }
-  .veloura-bottom-nav--active-raised .veloura-bottom-nav__item.is-active {
-    transform: translateY(-4px) scale(1);
-    transform: translateY(-4px) scale(var(--vbn-active-scale, 1));
-  }
-  .veloura-bottom-nav--active-bubble .veloura-bottom-nav__item.is-active {
-    transform: scale(1);
-    transform: scale(var(--vbn-active-scale, 1));
-  }
-  .veloura-bottom-nav--active-dot .veloura-bottom-nav__item.is-active {
-    color: #004d65;
-    color: var(--vbn-active, #004d65);
-    background: transparent;
-  }
-  .veloura-bottom-nav--active-dot .veloura-bottom-nav__item.is-active::after {
-    bottom: -5px;
-    width: 7px;
-    height: 7px;
-    background: #004d65;
-    background: var(--vbn-active, #004d65);
-  }
-  .veloura-bottom-nav--active-none .veloura-bottom-nav__item.is-active {
-    color: #004d65;
-    color: var(--vbn-active, #004d65);
-    background: transparent;
-    transform: none;
-  }
-  .veloura-bottom-nav--active-none .veloura-bottom-nav__item.is-active::after {
-    content: none;
   }
   body.veloura-bottom-nav-no-labels .veloura-bottom-nav__item {
     gap: 0;
@@ -51946,6 +51950,11 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
   body.veloura-bottom-nav-search-open salla-search:not([inline]) {
     position: relative;
     z-index: 2147482000;
+  }
+  /* Native Salla Login must always sit above the bottom bar. */
+  salla-login-modal {
+    position: relative !important;
+    z-index: 2147483600 !important;
   }
 }
 @media (max-width: 767px) and (prefers-reduced-motion: reduce) {

@@ -938,13 +938,12 @@
 {% set vbn_font_size = _self.veloura_dm_value(theme.settings.get('veloura_mobile_floating_menu_font_size_2026', '12'), '12')|trim %}
 
 {% set vbn_active_scale = _self.veloura_dm_value(theme.settings.get('veloura_mobile_floating_menu_active_scale_2026', '1.06'), '1.06')|trim %}
-{% set vbn_active_scale_number = vbn_active_scale + 0 %}
-{% if vbn_active_scale_number <= 1.001 %}
+{% if vbn_active_scale in ['1', '1.0', '1.00', '1.000'] %}
   {% set vbn_active_mode = 'none' %}
-{% elseif vbn_active_scale_number < 1.075 %}
-  {% set vbn_active_mode = 'soft' %}
-{% else %}
+{% elseif vbn_active_scale in ['1.08', '1.080'] %}
   {% set vbn_active_mode = 'strong' %}
+{% else %}
+  {% set vbn_active_mode = 'soft' %}
 {% endif %}
 
 {% set vbn_show_home_raw = _self.veloura_dm_value(theme.settings.get('veloura_mobile_floating_menu_show_home_2026', true), true)|trim %}
