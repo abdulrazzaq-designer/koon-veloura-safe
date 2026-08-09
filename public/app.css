@@ -51780,6 +51780,7 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
   }
   .veloura-bottom-nav__item {
     position: relative;
+    overflow: visible;
     display: flex;
     flex: 1 1 0;
     flex-direction: column;
@@ -51837,11 +51838,12 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
     content: "";
     position: absolute;
     left: 50%;
-    bottom: 2px;
+    bottom: -6px;
     width: 14px;
     height: 3px;
     border-radius: 999px;
-    background: currentColor;
+    background: #004d65;
+    background: var(--vbn-active, #004d65);
     transform: translateX(-50%);
     opacity: 0.95;
     pointer-events: none;
@@ -51860,7 +51862,7 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
     background: transparent;
   }
   .veloura-bottom-nav--active-dot .veloura-bottom-nav__item.is-active::after {
-    bottom: 3px;
+    bottom: -5px;
     width: 7px;
     height: 7px;
     background: #004d65;

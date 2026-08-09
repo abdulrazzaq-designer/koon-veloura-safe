@@ -333,17 +333,31 @@ const initVelouraBottomNav = (() => {
     return modal.getAttribute?.('aria-hidden') === 'false';
   };
 
+  const readModalVisibility = (event, modal) => {
+    const detail = event?.detail;
+
+    if (typeof detail === 'boolean') return detail;
+
+    if (detail && typeof detail === 'object') {
+      if (typeof detail.visible === 'boolean') return detail.visible;
+      if (typeof detail.isOpen === 'boolean') return detail.isOpen;
+      if (typeof detail.open === 'boolean') return detail.open;
+      if (typeof detail.opened === 'boolean') return detail.opened;
+    }
+
+    return modalLooksOpen(modal);
+  };
+
   const bindNativeModalState = (action, host) => {
     const modal = modalFromHost(host);
-    if (!modal || modal.dataset.vbnStateBound === 'true') return modal;
+    if (!modal) return modal;
 
-    modal.dataset.vbnStateBound = 'true';
+    const key = `vbnStateBound${action}`;
+    if (modal.dataset[key] === 'true') return modal;
+    modal.dataset[key] = 'true';
 
     modal.addEventListener('modalVisibilityChanged', event => {
-      const opened =
-        typeof event?.detail === 'boolean'
-          ? event.detail
-          : modalLooksOpen(modal);
+      const opened = readModalVisibility(event, modal);
 
       if (action === 'search') {
         searchOpened = opened;
@@ -479,6 +493,16 @@ const initVelouraBottomNav = (() => {
 
     // Native Salla event fallback, then prepare the component and retry once.
     const dispatched = dispatchSallaEvent('search::open');
+
+    // When the event itself opens Salla Search, the active state must remain
+    // selected even if the internal modal instance is not exposed immediately.
+    if (dispatched) {
+      searchOpened = true;
+      searchOpening = false;
+      document.body.classList.add('veloura-bottom-nav-search-open');
+      setTransient('search');
+    }
+
     host = await primeSearchHost();
 
     if (host) {
@@ -490,7 +514,7 @@ const initVelouraBottomNav = (() => {
         return;
       }
 
-      if (typeof host.open === 'function') {
+      if (typeof host.open === 'function' && !searchOpened) {
         try {
           await host.open();
           bindNativeModalState('search', host);
@@ -505,12 +529,13 @@ const initVelouraBottomNav = (() => {
       }
     }
 
+    if (dispatched) return;
+
     searchOpening = false;
     document.body.classList.remove('veloura-bottom-nav-search-open');
     clearTransient('search');
 
-    // Last-resort navigation only if Salla's modal could not be opened at all.
-    if (!dispatched && safeUrl(fallbackHref)) {
+    if (safeUrl(fallbackHref)) {
       window.location.assign(fallbackHref);
     }
   };
@@ -534,48 +559,67 @@ const initVelouraBottomNav = (() => {
     setTransient('account');
 
     let host = document.querySelector('salla-login-modal');
-
-    if (host) {
-      bindNativeModalState('login', host);
-
-      if (typeof host.open === 'function') {
-        try {
-          await host.open();
-          bindNativeModalState('login', host);
-          return;
-        } catch (error) {}
-      }
+    if (!host) {
+      if (safeUrl(fallbackHref)) window.location.assign(fallbackHref);
+      return;
     }
 
-    // Salla's native event is an immediate fallback.
-    const dispatched = dispatchSallaEvent('login::open');
+    // Login must remain a native Salla component. Keep it above the bottom bar
+    // and do not inject Veloura glass contracts into its Shadow DOM.
+    host.style.setProperty('position', 'relative', 'important');
+    host.style.setProperty('z-index', '2147483600', 'important');
+    host.removeAttribute('data-veloura-glass-host');
+
+    const removeLoginInjectedStyles = () => {
+      const root = host.shadowRoot;
+      if (!root) return;
+
+      [
+        'veloura-global-glass-shadow-style',
+        'veloura-v86-shadow-contract',
+        'veloura-v85-shadow-contract',
+        'veloura-v84-shadow-style',
+        'veloura-v82-component-style',
+      ].forEach(id => root.getElementById(id)?.remove());
+    };
 
     try {
       if (window.customElements?.whenDefined) {
         await window.customElements.whenDefined('salla-login-modal');
       }
 
-      host = document.querySelector('salla-login-modal');
-
-      if (host && typeof host.componentOnReady === 'function') {
+      if (typeof host.componentOnReady === 'function') {
         await host.componentOnReady();
       }
 
-      if (host && typeof host.open === 'function') {
-        bindNativeModalState('login', host);
+      removeLoginInjectedStyles();
+
+      if (typeof host.open === 'function') {
         await host.open();
+
+        removeLoginInjectedStyles();
+        window.requestAnimationFrame(removeLoginInjectedStyles);
+        window.setTimeout(removeLoginInjectedStyles, 80);
+        window.setTimeout(removeLoginInjectedStyles, 240);
+
+        bindNativeModalState('login', host);
+        setTransient('account');
         return;
       }
     } catch (error) {}
 
-    // Re-use a native header trigger if the current theme exposes one.
-    const clicked = clickFirst([
+    if (clickFirst([
       '.veloura-login-btn',
       '[data-veloura-login-trigger]',
-      'salla-user-menu[show-trigger]',
-    ]);
+      '[data-login]',
+      '[data-open-login]',
+    ])) {
+      return;
+    }
 
-    if (!clicked && !dispatched && safeUrl(fallbackHref)) {
+    if (dispatchSallaEvent('login::open')) return;
+
+    if (safeUrl(fallbackHref)) {
       window.location.assign(fallbackHref);
     }
   };
@@ -1060,7 +1104,6 @@ const initVelouraFooter = (() => {
 const initVelouraGlobalGlass = (() => {
   const STYLE_ID = 'veloura-global-glass-shadow-style';
   const HOST_SELECTOR = [
-    'salla-login-modal',
     'salla-modal',
     'salla-search',
     'salla-localization-modal',
@@ -1188,6 +1231,7 @@ const initVelouraGlobalGlass = (() => {
 
   function markHost(host) {
     if (!host || host.nodeType !== 1) return;
+    if (host.matches?.('salla-login-modal')) return;
 
     host.setAttribute('data-veloura-glass-host', 'true');
     host.style.setProperty('-webkit-backdrop-filter', 'none', 'important');

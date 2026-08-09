@@ -937,12 +937,15 @@
 {% set vbn_icon_size = _self.veloura_dm_value(theme.settings.get('veloura_mobile_floating_menu_icon_size_2026', '22'), '22')|trim %}
 {% set vbn_font_size = _self.veloura_dm_value(theme.settings.get('veloura_mobile_floating_menu_font_size_2026', '12'), '12')|trim %}
 
-{% set vbn_active_style = _self.veloura_dm_value(theme.settings.get('veloura_mobile_floating_menu_active_style_2026', 'raised'), 'raised')|trim %}
-{% if vbn_active_style not in ['raised', 'bubble', 'dot', 'none'] %}
-  {% set vbn_active_style = 'raised' %}
-{% endif %}
-
 {% set vbn_active_scale = _self.veloura_dm_value(theme.settings.get('veloura_mobile_floating_menu_active_scale_2026', '1.06'), '1.06')|trim %}
+{% set vbn_active_scale_number = vbn_active_scale + 0 %}
+{% if vbn_active_scale_number <= 1.001 %}
+  {% set vbn_active_mode = 'none' %}
+{% elseif vbn_active_scale_number < 1.075 %}
+  {% set vbn_active_mode = 'soft' %}
+{% else %}
+  {% set vbn_active_mode = 'strong' %}
+{% endif %}
 
 {% set vbn_show_home_raw = _self.veloura_dm_value(theme.settings.get('veloura_mobile_floating_menu_show_home_2026', true), true)|trim %}
 {% set vbn_show_home = vbn_show_home_raw in [true, 'true', 1, '1', 'on'] %}
@@ -2995,7 +2998,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 {# Twilight Components #}
 <salla-offer-modal></salla-offer-modal>
 <salla-search></salla-search>
-<salla-login-modal class="veloura-glass-host" data-veloura-glass-host="login"></salla-login-modal>
+<salla-login-modal></salla-login-modal>
 
 {% if store.scope %}
     <salla-scopes selection="{{ store.scope.display_as == 'popup' ? 'mandatory' : 'optional' }}"></salla-scopes>
@@ -3009,7 +3012,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
 {% if vbn_enabled and not vbn_is_product_page %}
   <nav
-    class="veloura-bottom-nav veloura-bottom-nav--{{ vbn_position }} veloura-bottom-nav--active-{{ vbn_active_style }}"
+    class="veloura-bottom-nav veloura-bottom-nav--{{ vbn_position }} veloura-bottom-nav--scale-{{ vbn_active_mode }}"
     data-vbn
     data-vbn-home-url="{{ store.url|default('/')|e('html_attr') }}"
     aria-label="قائمة الجوال"
