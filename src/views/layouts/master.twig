@@ -885,14 +885,9 @@
    Fresh reading of the existing Twilight settings.
    ================================ #}
 
-{% set vbn_enabled_raw = _self.veloura_dm_value(theme.settings.get('veloura_mobile_floating_menu_enabled_2026', true), true)|trim %}
-{% set vbn_enabled =
-  vbn_enabled_raw == true
-  or vbn_enabled_raw == 'true'
-  or vbn_enabled_raw == 1
-  or vbn_enabled_raw == '1'
-  or vbn_enabled_raw == 'on'
-%}
+{# القائمة السفلية مفعلة دائمًا في الواجهة.
+   مفتاح Twilight يبقى فقط لإظهار/إخفاء إعدادات القسم في لوحة التحكم. #}
+{% set vbn_enabled = true %}
 
 {% set vbn_position = _self.veloura_dm_value(theme.settings.get('veloura_mobile_floating_menu_position_2026', 'full_width'), 'full_width')|trim %}
 {% if vbn_position == 'floating_center' or vbn_position == 'floating-center' %}
