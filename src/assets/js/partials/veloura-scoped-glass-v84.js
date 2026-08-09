@@ -454,16 +454,7 @@
       if (enabled) markMaterial(element, 'veloura-v84-search-shell');
       else unmarkMaterial(element);
     });
-
-    scope.querySelectorAll?.('.veloura-mobile-floating-menu__inner').forEach((element) => {
-      if (body.classList.contains('veloura-mobile-floating-menu-glass')) {
-        markMaterial(element, 'veloura-v84-mobile-menu');
-      } else {
-        unmarkMaterial(element);
-      }
-    });
-
-    scope.querySelectorAll?.('.mm-ocd.mm-ocd--open .mm-ocd__content').forEach((element) => {
+scope.querySelectorAll?.('.mm-ocd.mm-ocd--open .mm-ocd__content').forEach((element) => {
       const sideGlass =
         document.documentElement.classList.contains('veloura-side-cats-glass') ||
         body.classList.contains('veloura-side-cats-glass');

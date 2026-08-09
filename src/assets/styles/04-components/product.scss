@@ -1,4 +1,4 @@
-  
+
 // Wishlist Product entry
 .product-entry {
   @apply h-full transition-shadow duration-300 bg-white hover:shadow-default rounded-lg justify-between flex relative;
@@ -434,35 +434,6 @@ body.veloura-is-product-page {
   scroll-padding-bottom: 24px !important;
   padding-bottom: 0 !important;
 }
-
-html.veloura-is-product-page .veloura-mobile-floating-menu,
-html.veloura-is-product-page .veloura-floating-menu,
-html.veloura-is-product-page .veloura-bottom-navigation,
-html.veloura-is-product-page .veloura-mobile-bottom-menu,
-html.veloura-is-product-page .mobile-floating-menu,
-html.veloura-is-product-page .mobile-bottom-menu,
-html.veloura-is-product-page .mobile-bottom-nav,
-html.veloura-is-product-page .bottom-nav,
-html.veloura-is-product-page .floating-menu,
-html.veloura-is-product-page #veloura-mobile-floating-menu,
-html.veloura-is-product-page [data-veloura-mobile-floating-menu],
-body.veloura-is-product-page .veloura-mobile-floating-menu,
-body.veloura-is-product-page .veloura-floating-menu,
-body.veloura-is-product-page .veloura-bottom-navigation,
-body.veloura-is-product-page .veloura-mobile-bottom-menu,
-body.veloura-is-product-page .mobile-floating-menu,
-body.veloura-is-product-page .mobile-bottom-menu,
-body.veloura-is-product-page .mobile-bottom-nav,
-body.veloura-is-product-page .bottom-nav,
-body.veloura-is-product-page .floating-menu,
-body.veloura-is-product-page #veloura-mobile-floating-menu,
-body.veloura-is-product-page [data-veloura-mobile-floating-menu] {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
 
 /* ======================================================
    1) Variables
@@ -2795,4 +2766,3 @@ html body .s-product-card-entry
   :is(.s-product-card-content-footer, .veloura-card-bottom)::after {
   pointer-events: none !important;
 }
-

@@ -188,8 +188,7 @@
   function glassEnabled() {
     return Boolean(
       document.body?.classList.contains('veloura-glass-effect') ||
-      document.querySelector('.veloura-header-tabs-stack--blur') ||
-      document.body?.classList.contains('veloura-mobile-floating-menu-glass')
+      document.querySelector('.veloura-header-tabs-stack--blur')
     );
   }
 
