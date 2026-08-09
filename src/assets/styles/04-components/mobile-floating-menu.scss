@@ -58,6 +58,7 @@
 
     overflow: visible;
     clip-path: none;
+    contain: none;
     pointer-events: auto;
   }
 
@@ -100,6 +101,8 @@
   }
 
   .veloura-bottom-nav__item i {
+    position: relative;
+    z-index: 2;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -110,6 +113,8 @@
   }
 
   .veloura-bottom-nav__item span {
+    position: relative;
+    z-index: 2;
     display: block;
     max-width: 100%;
 
@@ -124,22 +129,54 @@
 
   /* -------------------------------------------------------
      Active item
-     - none: background only, centered, no indicator.
-     - soft: clearly rises above the menu edge.
-     - strong: strongly protrudes above the menu edge.
+     الخلفية تتحرك وحدها، بينما الأيقونة والنص يبقيان ظاهرين بالكامل.
      ------------------------------------------------------- */
+
+  .veloura-bottom-nav__item {
+    isolation: isolate;
+    overflow: visible;
+  }
+
+  .veloura-bottom-nav__item::before {
+    content: none;
+  }
 
   .veloura-bottom-nav__item.is-active {
     z-index: 4;
     color: #ffffff;
+    background: transparent;
+    overflow: visible;
+    transform: none;
+  }
+
+  .veloura-bottom-nav__item.is-active i,
+  .veloura-bottom-nav__item.is-active span {
+    color: #ffffff;
+    overflow: visible;
+    text-overflow: clip;
+  }
+
+  .veloura-bottom-nav__item.is-active::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    inset-inline: 0;
+
     background: var(--vbn-active, #004d65);
     border-radius: var(--vbn-radius, 20px);
-    overflow: visible;
-    transform-origin: center center;
+
+    pointer-events: none;
+    transform-origin: center bottom;
+    transition:
+      top 160ms cubic-bezier(.2, .8, .2, 1),
+      bottom 160ms cubic-bezier(.2, .8, .2, 1),
+      transform 160ms cubic-bezier(.2, .8, .2, 1);
   }
 
   /* بدون تكبير */
-  .veloura-bottom-nav--scale-none .veloura-bottom-nav__item.is-active {
+  .veloura-bottom-nav--scale-none .veloura-bottom-nav__item.is-active::before {
+    top: 0;
+    bottom: 0;
     transform: none;
   }
 
@@ -148,15 +185,23 @@
   }
 
   /* خفيف */
-  .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active {
-    transform: translate3d(0, -7px, 0) scale(1.06);
+  .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active::before {
+    top: -7px;
+    bottom: 8px;
+    transform: scaleX(1.04);
+  }
+
+  .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active i,
+  .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active span {
+    transform: translateY(-3px);
   }
 
   .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active::after {
     content: '';
     position: absolute;
+    z-index: 3;
     inset-inline-start: 50%;
-    bottom: -6px;
+    bottom: 2px;
 
     width: 15px;
     height: 3px;
@@ -168,16 +213,24 @@
     pointer-events: none;
   }
 
-  /* واضح / كبير */
-  .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active {
-    transform: translate3d(0, -14px, 0) scale(1.10);
+  /* واضح */
+  .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active::before {
+    top: -15px;
+    bottom: 10px;
+    transform: scaleX(1.08);
+  }
+
+  .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active i,
+  .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active span {
+    transform: translateY(-7px);
   }
 
   .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active::after {
     content: '';
     position: absolute;
+    z-index: 3;
     inset-inline-start: 50%;
-    bottom: -11px;
+    bottom: 2px;
 
     width: 17px;
     height: 3px;
@@ -189,8 +242,8 @@
     pointer-events: none;
   }
 
-  /* The active tile uses the exact same configured corner style as the menu. */
-  .veloura-bottom-nav__item.is-active {
+  /* العنصر النشط يأخذ نفس حواف القائمة */
+  .veloura-bottom-nav__item.is-active::before {
     border-radius: var(--vbn-radius, 20px);
   }
 
