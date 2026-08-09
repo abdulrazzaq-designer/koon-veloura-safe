@@ -2996,8 +2996,26 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
 {# Twilight Components #}
 <salla-offer-modal></salla-offer-modal>
-<salla-search></salla-search>
-<salla-login-modal></salla-login-modal>
+<salla-search data-testid="store-search-modal"></salla-search>
+<salla-login-modal data-testid="store-login-modal"></salla-login-modal>
+
+{# Bottom-nav Search: documented Salla Modal + documented inline Search. #}
+<salla-modal
+  id="veloura-bottom-search-modal"
+  data-testid="veloura-bottom-search-modal"
+  position="bottom"
+  width="full"
+  no-padding
+>
+  <div class="veloura-bottom-search-panel">
+    <salla-search
+      data-testid="veloura-bottom-search"
+      inline
+      oval
+      height="52"
+    ></salla-search>
+  </div>
+</salla-modal>
 
 {% if store.scope %}
     <salla-scopes selection="{{ store.scope.display_as == 'popup' ? 'mandatory' : 'optional' }}"></salla-scopes>
@@ -3057,18 +3075,17 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       {% endif %}
 
       {% if vbn_show_search %}
-        <a
-          href="{{ store.url|default('') }}/search"
-          class="veloura-bottom-nav__item{% if is_page('search') %} is-active{% endif %}"
+        <button
+          type="button"
+          class="veloura-bottom-nav__item"
           data-vbn-item
           data-vbn-key="search"
           data-vbn-action="search"
           aria-label="{{ vbn_search_label|e }}"
-          {% if is_page('search') %}aria-current="page"{% endif %}
         >
           <i class="sicon-search" aria-hidden="true"></i>
           {% if vbn_show_labels %}<span>{{ vbn_search_label }}</span>{% endif %}
-        </a>
+        </button>
       {% endif %}
 
       {% if vbn_show_cart %}
@@ -3086,8 +3103,8 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       {% endif %}
 
       {% if vbn_show_account %}
-        <a
-          href="{{ store.url|default('') }}/login"
+        <button
+          type="button"
           class="veloura-bottom-nav__item"
           data-vbn-item
           data-vbn-key="account"
