@@ -6,6 +6,676 @@ import Anime from './partials/anime';
 import initTootTip from './partials/tooltip';
 import AppHelpers from "./app-helpers";
 
+
+/* ========================================================================
+   Veloura Bottom Navigation
+   Main app.js controller — no separate JS file.
+   Registered before the rest of the theme runtimes so the bottom bar keeps
+   working even if a later optional runtime fails.
+   ======================================================================== */
+const initVelouraBottomNav = (() => {
+  let menu = null;
+  let activeAction = '';
+  let searchHostCache = null;
+  let searchReadyPromise = null;
+  let searchOpened = false;
+  let searchOpening = false;
+  let searchCloseRequested = false;
+
+  const itemSelector = '[data-vbn-item]';
+
+  const closest = (target, selector) => {
+    if (!target || target === document || target === window) return null;
+    return target.closest ? target.closest(selector) : null;
+  };
+
+  const safeJsonParse = value => {
+    if (!value || typeof value !== 'string') return value;
+    try {
+      return JSON.parse(value);
+    } catch (error) {
+      return value;
+    }
+  };
+
+  const safeUrl = value => {
+    if (typeof value !== 'string') return '';
+
+    const trimmed = value.trim();
+    if (!trimmed || trimmed === '#') return '';
+    if (/^(?:javascript|data|vbscript):/i.test(trimmed)) return '';
+
+    // Accept real web URLs and real paths only. This intentionally rejects
+    // variable-list metadata strings such as "categories" or numeric IDs.
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+    if (/^\/\//.test(trimmed)) return trimmed;
+    if (/^[/?]/.test(trimmed)) return trimmed;
+    if (/^[^\s]+\.[^\s]+(?:\/|$)/.test(trimmed)) return trimmed;
+    if (/^[^\s]+\/[^\s]+/.test(trimmed)) return trimmed;
+
+    return '';
+  };
+
+  const resolveUrlValue = (value, depth = 0) => {
+    if (depth > 8 || value == null) return '';
+
+    if (typeof value === 'string') {
+      const parsed = safeJsonParse(value);
+      if (parsed !== value) return resolveUrlValue(parsed, depth + 1);
+      return safeUrl(value);
+    }
+
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        const resolved = resolveUrlValue(item, depth + 1);
+        if (resolved) return resolved;
+      }
+      return '';
+    }
+
+    if (typeof value === 'object') {
+      const priorityKeys = [
+        'url',
+        'href',
+        'link',
+        'permalink',
+        'public_url',
+        'store_url',
+        'web_url',
+        'target_url',
+        'link_url',
+        'selected',
+        'selection',
+        'item',
+        'data',
+        'value',
+      ];
+
+      for (const key of priorityKeys) {
+        if (!Object.prototype.hasOwnProperty.call(value, key)) continue;
+        const resolved = resolveUrlValue(value[key], depth + 1);
+        if (resolved) return resolved;
+      }
+
+      for (const key of Object.keys(value)) {
+        const resolved = resolveUrlValue(value[key], depth + 1);
+        if (resolved) return resolved;
+      }
+    }
+
+    return '';
+  };
+
+  const resolveCustomUrl = item => {
+    if (!item) return '';
+
+    const direct = safeUrl(
+      item.getAttribute('data-vbn-url') ||
+      item.getAttribute('href') ||
+      ''
+    );
+
+    if (direct) return direct;
+
+    const payload = item.getAttribute('data-vbn-payload');
+    if (!payload) return '';
+
+    return resolveUrlValue(safeJsonParse(payload), 0);
+  };
+
+  const comparableUrl = value => {
+    const url = safeUrl(value);
+    if (!url) return '';
+
+    try {
+      const parsed = new URL(url, window.location.href);
+      let pathname = (parsed.pathname || '/').replace(/\/{2,}/g, '/');
+      if (pathname.length > 1) pathname = pathname.replace(/\/+$/, '');
+      return parsed.origin + pathname + (parsed.search || '');
+    } catch (error) {
+      return '';
+    }
+  };
+
+  const sameRoute = (a, b) => {
+    const left = comparableUrl(a);
+    const right = comparableUrl(b);
+    return Boolean(left && right && left === right);
+  };
+
+  const items = () => Array.from(menu?.querySelectorAll(itemSelector) || []);
+
+  const clearActive = () => {
+    items().forEach(item => {
+      item.classList.remove('is-active');
+      item.removeAttribute('aria-current');
+    });
+  };
+
+  const activateItem = item => {
+    clearActive();
+    if (!item) return;
+    item.classList.add('is-active');
+    item.setAttribute('aria-current', 'page');
+  };
+
+  const itemByKey = key =>
+    menu?.querySelector(`${itemSelector}[data-vbn-key="${key}"]`) || null;
+
+  const itemByAction = action =>
+    menu?.querySelector(`${itemSelector}[data-vbn-action="${action}"]`) || null;
+
+  const routeItem = () => {
+    if (!menu) return null;
+
+    const currentHref = window.location.href;
+
+    for (const customItem of menu.querySelectorAll('[data-vbn-link]')) {
+      const customUrl = resolveCustomUrl(customItem);
+      if (customUrl && sameRoute(customUrl, currentHref)) return customItem;
+    }
+
+    const home = itemByKey('home');
+    if (home) {
+      const homeUrl =
+        home.getAttribute('href') ||
+        menu.getAttribute('data-vbn-home-url') ||
+        '/';
+
+      if (sameRoute(homeUrl, currentHref)) return home;
+    }
+
+    const path = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
+
+    // Works with optional language/store prefixes, e.g. /ar/cart.
+    if (/(?:^|\/)cart(?:\/|$)/i.test(path)) return itemByKey('cart');
+    if (/(?:^|\/)search(?:\/|$)/i.test(path)) return itemByKey('search');
+    if (/(?:^|\/)(?:account|profile|login)(?:\/|$)/i.test(path)) return itemByKey('account');
+    if (/(?:^|\/)(?:categories?|c)(?:\/|$)/i.test(path)) return itemByKey('categories');
+
+    return null;
+  };
+
+  const restoreRouteActive = () => {
+    if (activeAction) {
+      const transient =
+        itemByAction(activeAction) ||
+        itemByKey(activeAction);
+
+      if (transient) {
+        activateItem(transient);
+        return;
+      }
+    }
+
+    activateItem(routeItem());
+  };
+
+  const setTransient = action => {
+    activeAction = action || '';
+    restoreRouteActive();
+  };
+
+  const clearTransient = action => {
+    if (!action || activeAction === action) activeAction = '';
+    window.setTimeout(restoreRouteActive, 30);
+  };
+
+  const clickFirst = selectors => {
+    for (const selector of selectors) {
+      const node = document.querySelector(selector);
+      if (!node) continue;
+
+      try {
+        node.click();
+        return true;
+      } catch (error) {}
+    }
+
+    return false;
+  };
+
+  /* -------------------- Categories -------------------- */
+  const categoriesAreOpen = () => {
+    const drawer =
+      document.querySelector('.mm-ocd.ocd-categs') ||
+      document.querySelector('.mm-ocd--right.ocd-categs') ||
+      document.querySelector('.mm-ocd');
+
+    return Boolean(
+      drawer && (
+        drawer.classList.contains('mm-ocd--open') ||
+        document.body.classList.contains('menu-opened') ||
+        document.body.classList.contains('mm-ocd-opened') ||
+        document.body.classList.contains('veloura-side-categories-open')
+      )
+    );
+  };
+
+  const syncCategories = () => {
+    const opened = categoriesAreOpen();
+    document.body.classList.toggle('veloura-bottom-nav-categories-open', opened);
+
+    if (opened) {
+      setTransient('categories');
+    } else {
+      clearTransient('categories');
+    }
+  };
+
+  const toggleCategories = () => {
+    const drawer = window.__velouraNativeMobileMenuDrawer;
+
+    if (categoriesAreOpen()) {
+      document.body.classList.remove('menu-opened', 'mm-ocd-opened');
+
+      if (drawer && typeof drawer.close === 'function') {
+        try { drawer.close(); } catch (error) {}
+      } else {
+        clickFirst(['.close-mobile-menu', '.mm-ocd__backdrop']);
+      }
+
+      window.setTimeout(syncCategories, 80);
+      return;
+    }
+
+    setTransient('categories');
+
+    if (drawer && typeof drawer.open === 'function') {
+      document.body.classList.add('menu-opened');
+      document.body.classList.add('veloura-bottom-nav-categories-open');
+      try { drawer.open(); } catch (error) {}
+      return;
+    }
+
+    clickFirst([
+      '.veloura-menu-trigger-mobile[href="#mobile-menu"]',
+      'a.mburger[href="#mobile-menu"]',
+      'a[href="#mobile-menu"]',
+    ]);
+
+    window.setTimeout(syncCategories, 80);
+  };
+
+  /* -------------------- Native Salla modal helpers -------------------- */
+  const modalFromHost = host => {
+    if (!host) return null;
+
+    if (host.modal && typeof host.modal.close === 'function') {
+      return host.modal;
+    }
+
+    try {
+      const direct = host.querySelector?.('salla-modal, salla-sheet');
+      if (direct && typeof direct.close === 'function') return direct;
+    } catch (error) {}
+
+    try {
+      const shadowModal = host.shadowRoot?.querySelector?.('salla-modal, salla-sheet');
+      if (shadowModal && typeof shadowModal.close === 'function') return shadowModal;
+    } catch (error) {}
+
+    return null;
+  };
+
+  const modalLooksOpen = modal => {
+    if (!modal) return false;
+    if (modal.visible === true || modal.opened === true) return true;
+
+    if (
+      modal.hasAttribute?.('visible') ||
+      modal.hasAttribute?.('open') ||
+      modal.hasAttribute?.('opened')
+    ) {
+      return true;
+    }
+
+    return modal.getAttribute?.('aria-hidden') === 'false';
+  };
+
+  const bindNativeModalState = (action, host) => {
+    const modal = modalFromHost(host);
+    if (!modal || modal.dataset.vbnStateBound === 'true') return modal;
+
+    modal.dataset.vbnStateBound = 'true';
+
+    modal.addEventListener('modalVisibilityChanged', event => {
+      const opened =
+        typeof event?.detail === 'boolean'
+          ? event.detail
+          : modalLooksOpen(modal);
+
+      if (action === 'search') {
+        searchOpened = opened;
+        searchOpening = false;
+        document.body.classList.toggle('veloura-bottom-nav-search-open', opened);
+      }
+
+      if (opened) {
+        setTransient(action === 'login' ? 'account' : action);
+      } else {
+        clearTransient(action === 'login' ? 'account' : action);
+      }
+    });
+
+    return modal;
+  };
+
+  const dispatchSallaEvent = (name, payload) => {
+    if (!window.salla?.event || typeof window.salla.event.dispatch !== 'function') {
+      return false;
+    }
+
+    try {
+      window.salla.event.dispatch(name, payload);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  /* -------------------- Search -------------------- */
+  const preferredSearchHost = () => {
+    const hosts = Array.from(document.querySelectorAll('salla-search'));
+
+    // The global non-inline search is normally the last one in master.twig.
+    for (let index = hosts.length - 1; index >= 0; index -= 1) {
+      if (!hosts[index].hasAttribute('inline')) return hosts[index];
+    }
+
+    return null;
+  };
+
+  const primeSearchHost = () => {
+    if (searchReadyPromise) return searchReadyPromise;
+
+    searchHostCache = preferredSearchHost();
+
+    if (!searchHostCache) {
+      searchReadyPromise = Promise.resolve(null);
+      return searchReadyPromise;
+    }
+
+    const host = searchHostCache;
+
+    searchReadyPromise = Promise.resolve()
+      .then(() => {
+        if (window.customElements?.whenDefined) {
+          return window.customElements.whenDefined('salla-search');
+        }
+      })
+      .then(() => {
+        if (typeof host.componentOnReady === 'function') {
+          return host.componentOnReady();
+        }
+      })
+      .catch(() => null)
+      .then(() => {
+        bindNativeModalState('search', host);
+        return host;
+      });
+
+    return searchReadyPromise;
+  };
+
+  const setSearchOpened = opened => {
+    searchOpened = Boolean(opened);
+    searchOpening = false;
+    document.body.classList.toggle('veloura-bottom-nav-search-open', searchOpened);
+
+    if (searchOpened) setTransient('search');
+    else clearTransient('search');
+  };
+
+  const closeSearch = async () => {
+    const host = searchHostCache || preferredSearchHost();
+    const modal = modalFromHost(host);
+
+    if (modal && typeof modal.close === 'function') {
+      try {
+        await modal.close();
+      } catch (error) {}
+      setSearchOpened(false);
+      return;
+    }
+
+    const readyHost = await primeSearchHost();
+    const readyModal = modalFromHost(readyHost);
+
+    if (readyModal && typeof readyModal.close === 'function') {
+      try {
+        await readyModal.close();
+      } catch (error) {}
+    }
+
+    setSearchOpened(false);
+  };
+
+  const openSearch = async fallbackHref => {
+    if (searchOpened || searchOpening) return;
+
+    searchOpening = true;
+    searchCloseRequested = false;
+    document.body.classList.add('veloura-bottom-nav-search-open');
+    setTransient('search');
+
+    let host = searchHostCache || preferredSearchHost();
+    searchHostCache = host;
+
+    // Fast path — official Salla Search exposes open().
+    if (host && typeof host.open === 'function') {
+      try {
+        await host.open();
+        bindNativeModalState('search', host);
+        setSearchOpened(true);
+
+        if (searchCloseRequested) {
+          searchCloseRequested = false;
+          await closeSearch();
+        }
+        return;
+      } catch (error) {}
+    }
+
+    // Native Salla event fallback, then prepare the component and retry once.
+    const dispatched = dispatchSallaEvent('search::open');
+    host = await primeSearchHost();
+
+    if (host) {
+      bindNativeModalState('search', host);
+
+      const existingModal = modalFromHost(host);
+      if (modalLooksOpen(existingModal)) {
+        setSearchOpened(true);
+        return;
+      }
+
+      if (typeof host.open === 'function') {
+        try {
+          await host.open();
+          bindNativeModalState('search', host);
+          setSearchOpened(true);
+
+          if (searchCloseRequested) {
+            searchCloseRequested = false;
+            await closeSearch();
+          }
+          return;
+        } catch (error) {}
+      }
+    }
+
+    searchOpening = false;
+    document.body.classList.remove('veloura-bottom-nav-search-open');
+    clearTransient('search');
+
+    // Last-resort navigation only if Salla's modal could not be opened at all.
+    if (!dispatched && safeUrl(fallbackHref)) {
+      window.location.assign(fallbackHref);
+    }
+  };
+
+  const toggleSearch = fallbackHref => {
+    if (searchOpening) {
+      searchCloseRequested = true;
+      return;
+    }
+
+    if (searchOpened || activeAction === 'search') {
+      closeSearch();
+      return;
+    }
+
+    openSearch(fallbackHref);
+  };
+
+  /* -------------------- Login -------------------- */
+  const openLogin = async fallbackHref => {
+    setTransient('account');
+
+    let host = document.querySelector('salla-login-modal');
+
+    if (host) {
+      bindNativeModalState('login', host);
+
+      if (typeof host.open === 'function') {
+        try {
+          await host.open();
+          bindNativeModalState('login', host);
+          return;
+        } catch (error) {}
+      }
+    }
+
+    // Salla's native event is an immediate fallback.
+    const dispatched = dispatchSallaEvent('login::open');
+
+    try {
+      if (window.customElements?.whenDefined) {
+        await window.customElements.whenDefined('salla-login-modal');
+      }
+
+      host = document.querySelector('salla-login-modal');
+
+      if (host && typeof host.componentOnReady === 'function') {
+        await host.componentOnReady();
+      }
+
+      if (host && typeof host.open === 'function') {
+        bindNativeModalState('login', host);
+        await host.open();
+        return;
+      }
+    } catch (error) {}
+
+    // Re-use a native header trigger if the current theme exposes one.
+    const clicked = clickFirst([
+      '.veloura-login-btn',
+      '[data-veloura-login-trigger]',
+      'salla-user-menu[show-trigger]',
+    ]);
+
+    if (!clicked && !dispatched && safeUrl(fallbackHref)) {
+      window.location.assign(fallbackHref);
+    }
+  };
+
+  /* -------------------- Click handling -------------------- */
+  const handleClick = event => {
+    const item = closest(event.target, itemSelector);
+    if (!item || !menu?.contains(item)) return;
+
+    const action = item.getAttribute('data-vbn-action') || '';
+
+    if (action === 'categories') {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleCategories();
+      return;
+    }
+
+    if (action === 'search') {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleSearch(item.getAttribute('href') || '');
+      return;
+    }
+
+    if (action === 'login') {
+      event.preventDefault();
+      event.stopPropagation();
+      openLogin(item.getAttribute('href') || '');
+      return;
+    }
+
+    if (item.hasAttribute('data-vbn-link')) {
+      const customUrl = resolveCustomUrl(item);
+
+      if (!customUrl) {
+        event.preventDefault();
+        return;
+      }
+
+      activateItem(item);
+
+      // Navigate with the resolved Twilight variable-list URL explicitly.
+      event.preventDefault();
+
+      if (item.getAttribute('target') === '_blank') {
+        window.open(customUrl, '_blank', 'noopener');
+      } else {
+        window.location.assign(customUrl);
+      }
+
+      return;
+    }
+
+    // Cart and any normal route item become active immediately on tap.
+    activeAction = '';
+    activateItem(item);
+  };
+
+  const bind = () => {
+    menu = document.querySelector('[data-vbn]');
+    if (!menu || menu.dataset.vbnReady === 'true') return;
+
+    menu.dataset.vbnReady = 'true';
+    menu.addEventListener('click', handleClick);
+
+    const bodyObserver = new MutationObserver(syncCategories);
+    bodyObserver.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    window.addEventListener('pageshow', () => {
+      setSearchOpened(false);
+      syncCategories();
+      restoreRouteActive();
+    });
+
+    window.addEventListener('popstate', restoreRouteActive);
+    window.addEventListener('hashchange', restoreRouteActive);
+
+    primeSearchHost();
+    syncCategories();
+    restoreRouteActive();
+  };
+
+  return bind;
+})();
+
+const bootVelouraBottomNav = () => initVelouraBottomNav();
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootVelouraBottomNav, { once: true });
+} else {
+  bootVelouraBottomNav();
+}
+
+document.addEventListener('theme::ready', bootVelouraBottomNav);
+/* VELOURA BOTTOM NAVIGATION CONTROLLER END */
+
 /* ========================================================================
    Veloura Footer Controller — embedded in the existing app.js
    No additional JavaScript file is required.
@@ -3879,470 +4549,3 @@ if (document.readyState === 'loading') {
 }
 document.addEventListener('theme::ready', initVelouraBalancedInlineSearchV63);
 /* VELOURA V63 BALANCED INLINE SEARCH LAYOUT END */
-
-/* ========================================================================
-   Veloura Bottom Navigation — clean controller
-   Lives in app.js. No versioned/runtime patch file.
-   ======================================================================== */
-const initVelouraBottomNav = (() => {
-  let initialized = false;
-  let transientAction = '';
-  let searchHost = null;
-  let searchReady = null;
-  let searchOpening = false;
-  let searchOpened = false;
-  let searchCloseRequested = false;
-  let searchModal = null;
-
-  const navSelector = '[data-vbn]';
-  const itemSelector = '[data-vbn-item]';
-
-  const normalizePath = value => {
-    try {
-      const url = new URL(value || window.location.href, window.location.origin);
-      let path = url.pathname || '/';
-      path = path.replace(/\/+/g, '/');
-      if (path.length > 1) path = path.replace(/\/+$/, '');
-      return path || '/';
-    } catch (error) {
-      let path = String(value || '/').split(/[?#]/)[0] || '/';
-      if (!path.startsWith('/')) path = `/${path}`;
-      path = path.replace(/\/+/g, '/');
-      if (path.length > 1) path = path.replace(/\/+$/, '');
-      return path || '/';
-    }
-  };
-
-  const nav = () => document.querySelector(navSelector);
-
-  const items = () => Array.from(nav()?.querySelectorAll(itemSelector) || []);
-
-  const setActive = key => {
-    items().forEach(item => {
-      const active = Boolean(key) && item.dataset.vbnKey === key;
-      item.classList.toggle('is-active', active);
-
-      if (active && item.tagName === 'A') {
-        item.setAttribute('aria-current', 'page');
-      } else {
-        item.removeAttribute('aria-current');
-      }
-    });
-  };
-
-  const routeActiveKey = () => {
-    const menu = nav();
-    if (!menu) return '';
-
-    const current = normalizePath(window.location.href);
-
-    const customMatch = items().find(item => {
-      if (!item.matches('[data-vbn-link]')) return false;
-      const href = item.dataset.vbnUrl || item.getAttribute('href') || '';
-      if (!href || href === '#') return false;
-      return normalizePath(href) === current;
-    });
-
-    if (customMatch) return customMatch.dataset.vbnKey || '';
-
-    const cart = items().find(item => item.dataset.vbnKey === 'cart');
-    if (cart && /^\/cart(?:\/|$)/.test(current)) return 'cart';
-
-    const home = items().find(item => item.dataset.vbnKey === 'home');
-    if (home) {
-      const homePath = normalizePath(home.getAttribute('href') || menu.dataset.vbnHomeUrl || '/');
-      if (current === homePath || (homePath === '/' && current === '/')) return 'home';
-    }
-
-    return '';
-  };
-
-  const syncActive = () => {
-    if (transientAction) {
-      setActive(transientAction);
-      return;
-    }
-    setActive(routeActiveKey());
-  };
-
-  const setTransient = key => {
-    transientAction = key || '';
-    syncActive();
-  };
-
-  const categoriesOpen = () => {
-    const drawer = document.querySelector('.mm-ocd.mm-ocd--open');
-    return Boolean(
-      document.body.classList.contains('menu-opened') ||
-      document.body.classList.contains('mm-ocd-opened') ||
-      drawer
-    );
-  };
-
-  const syncCategories = () => {
-    const open = categoriesOpen();
-    document.body.classList.toggle('veloura-bottom-nav-categories-open', open);
-
-    if (open) {
-      transientAction = 'categories';
-    } else if (transientAction === 'categories') {
-      transientAction = '';
-    }
-
-    syncActive();
-  };
-
-  const toggleCategories = () => {
-    const drawer = window.__velouraNativeMobileMenuDrawer;
-
-    if (categoriesOpen()) {
-      document.body.classList.remove('menu-opened', 'mm-ocd-opened');
-
-      if (drawer && typeof drawer.close === 'function') {
-        drawer.close();
-      } else {
-        document.querySelector('.close-mobile-menu')?.click();
-      }
-
-      window.requestAnimationFrame(syncCategories);
-      return;
-    }
-
-    transientAction = 'categories';
-    syncActive();
-
-    if (drawer && typeof drawer.open === 'function') {
-      document.body.classList.add('menu-opened');
-      document.body.classList.add('veloura-bottom-nav-categories-open');
-      drawer.open();
-      return;
-    }
-
-    const nativeTrigger = document.querySelector("a[href='#mobile-menu']");
-    nativeTrigger?.click();
-    window.requestAnimationFrame(syncCategories);
-  };
-
-  const preferredSearchHost = () => {
-    const hosts = Array.from(document.querySelectorAll('salla-search'));
-    return hosts.find(host => !host.hasAttribute('inline')) || hosts[hosts.length - 1] || null;
-  };
-
-  const getSearchModal = host => {
-    if (!host) return null;
-
-    return (
-      host.modal ||
-      host.shadowRoot?.querySelector('salla-modal') ||
-      host.querySelector?.('salla-modal') ||
-      null
-    );
-  };
-
-  const readModalVisibility = event => {
-    const detail = event?.detail;
-
-    if (typeof detail === 'boolean') return detail;
-    if (detail && typeof detail === 'object') {
-      if (typeof detail.visible === 'boolean') return detail.visible;
-      if (typeof detail.isOpen === 'boolean') return detail.isOpen;
-      if (typeof detail.open === 'boolean') return detail.open;
-      if (typeof detail.opened === 'boolean') return detail.opened;
-    }
-
-    return null;
-  };
-
-  const finishSearchClosed = () => {
-    searchOpened = false;
-    searchOpening = false;
-    searchCloseRequested = false;
-    document.body.classList.remove('veloura-bottom-nav-search-open');
-
-    if (transientAction === 'search') transientAction = '';
-    syncActive();
-  };
-
-  const bindSearchModal = host => {
-    const modal = getSearchModal(host);
-    if (!modal || modal.dataset.vbnBound === 'true') return modal;
-
-    modal.dataset.vbnBound = 'true';
-
-    modal.addEventListener('modalVisibilityChanged', event => {
-      const visible = readModalVisibility(event);
-      if (visible === null) return;
-
-      if (visible) {
-        searchOpened = true;
-        searchOpening = false;
-        document.body.classList.add('veloura-bottom-nav-search-open');
-        setTransient('search');
-      } else {
-        finishSearchClosed();
-      }
-    });
-
-    searchModal = modal;
-    return modal;
-  };
-
-  const primeSearch = () => {
-    if (searchReady) return searchReady;
-
-    searchHost = preferredSearchHost();
-
-    if (!searchHost) {
-      searchReady = Promise.resolve(null);
-      return searchReady;
-    }
-
-    const host = searchHost;
-
-    searchReady = Promise.resolve()
-      .then(() => {
-        if (window.customElements?.whenDefined) {
-          return window.customElements.whenDefined('salla-search');
-        }
-      })
-      .then(() => {
-        if (typeof host.componentOnReady === 'function') {
-          return host.componentOnReady();
-        }
-      })
-      .catch(() => null)
-      .then(() => {
-        bindSearchModal(host);
-        return host;
-      });
-
-    return searchReady;
-  };
-
-  const closeSearch = async () => {
-    if (searchOpening) {
-      searchCloseRequested = true;
-      return;
-    }
-
-    const host = searchHost || preferredSearchHost() || await primeSearch();
-    const modal = bindSearchModal(host) || searchModal || getSearchModal(host);
-
-    if (modal && typeof modal.close === 'function') {
-      try {
-        await modal.close();
-      } finally {
-        finishSearchClosed();
-      }
-      return;
-    }
-
-    finishSearchClosed();
-  };
-
-  const openSearch = async () => {
-    if (searchOpening || searchOpened) return;
-
-    searchOpening = true;
-    searchCloseRequested = false;
-    document.body.classList.add('veloura-bottom-nav-search-open');
-    setTransient('search');
-
-    const host = searchHost || preferredSearchHost() || await primeSearch();
-
-    if (!host) {
-      finishSearchClosed();
-      return;
-    }
-
-    try {
-      if (typeof host.open !== 'function') {
-        await primeSearch();
-      }
-
-      if (typeof host.open !== 'function') {
-        finishSearchClosed();
-        return;
-      }
-
-      await host.open();
-      bindSearchModal(host);
-
-      searchOpening = false;
-      searchOpened = true;
-
-      if (searchCloseRequested) {
-        searchCloseRequested = false;
-        await closeSearch();
-      }
-    } catch (error) {
-      finishSearchClosed();
-    }
-  };
-
-  const toggleSearch = () => {
-    if (searchOpening) {
-      searchCloseRequested = true;
-      return;
-    }
-
-    if (searchOpened || transientAction === 'search') {
-      closeSearch();
-      return;
-    }
-
-    openSearch();
-  };
-
-  const openLogin = async () => {
-    const modal = document.querySelector('salla-login-modal');
-    if (!modal) return;
-
-    try {
-      if (window.customElements?.whenDefined) {
-        await window.customElements.whenDefined('salla-login-modal');
-      }
-
-      if (typeof modal.componentOnReady === 'function') {
-        await modal.componentOnReady();
-      }
-    } catch (error) {}
-
-    if (typeof modal.open === 'function') {
-      modal.open();
-    }
-  };
-
-  const resolveLinkValue = value => {
-    if (!value) return '';
-
-    if (typeof value === 'string') return value;
-
-    if (Array.isArray(value)) {
-      for (const item of value) {
-        const resolved = resolveLinkValue(item);
-        if (resolved) return resolved;
-      }
-      return '';
-    }
-
-    if (typeof value === 'object') {
-      const keys = [
-        'url',
-        'href',
-        'link',
-        'permalink',
-        'web_url',
-        'target_url',
-        'selected',
-        'selection',
-        'item',
-        'data',
-        'value',
-      ];
-
-      for (const key of keys) {
-        if (!(key in value)) continue;
-        const resolved = resolveLinkValue(value[key]);
-        if (resolved) return resolved;
-      }
-    }
-
-    return '';
-  };
-
-  const resolveCustomHref = link => {
-    const direct = link.dataset.vbnUrl || link.getAttribute('href') || '';
-    if (direct && direct !== '#') return direct;
-
-    const payload = link.dataset.vbnPayload;
-    if (!payload) return '';
-
-    try {
-      return resolveLinkValue(JSON.parse(payload));
-    } catch (error) {
-      return '';
-    }
-  };
-
-  const handleClick = event => {
-    const menu = nav();
-    if (!menu) return;
-
-    const item = event.target.closest(itemSelector);
-    if (!item || !menu.contains(item)) return;
-
-    const action = item.dataset.vbnAction || '';
-
-    if (action === 'categories') {
-      event.preventDefault();
-      toggleCategories();
-      return;
-    }
-
-    if (action === 'search') {
-      event.preventDefault();
-      toggleSearch();
-      return;
-    }
-
-    if (action === 'login') {
-      event.preventDefault();
-      openLogin();
-      return;
-    }
-
-    if (item.matches('[data-vbn-link]')) {
-      const href = resolveCustomHref(item);
-
-      if (!href) {
-        event.preventDefault();
-        return;
-      }
-
-      if (item.getAttribute('href') === '#') {
-        item.setAttribute('href', href);
-      }
-    }
-  };
-
-  const bind = () => {
-    if (initialized) return;
-
-    const menu = nav();
-    if (!menu) return;
-
-    initialized = true;
-
-    menu.addEventListener('click', handleClick);
-
-    const bodyObserver = new MutationObserver(syncCategories);
-    bodyObserver.observe(document.body, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-
-    window.addEventListener('pageshow', () => {
-      finishSearchClosed();
-      syncCategories();
-      syncActive();
-    });
-
-    window.addEventListener('popstate', syncActive);
-    window.addEventListener('hashchange', syncActive);
-
-    primeSearch();
-    syncCategories();
-    syncActive();
-  };
-
-  return bind;
-})();
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initVelouraBottomNav, { once: true });
-} else {
-  initVelouraBottomNav();
-}
-document.addEventListener('theme::ready', initVelouraBottomNav);
-/* VELOURA BOTTOM NAVIGATION END */

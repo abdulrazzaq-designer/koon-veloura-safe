@@ -3055,26 +3055,28 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       {% endif %}
 
       {% if vbn_show_search %}
-        <button
-          type="button"
-          class="veloura-bottom-nav__item"
+        <a
+          href="{{ store.url|default('') }}/search"
+          class="veloura-bottom-nav__item{% if is_page('search') %} is-active{% endif %}"
           data-vbn-item
           data-vbn-key="search"
           data-vbn-action="search"
           aria-label="{{ vbn_search_label|e }}"
+          {% if is_page('search') %}aria-current="page"{% endif %}
         >
           <i class="sicon-search" aria-hidden="true"></i>
           {% if vbn_show_labels %}<span>{{ vbn_search_label }}</span>{% endif %}
-        </button>
+        </a>
       {% endif %}
 
       {% if vbn_show_cart %}
         <a
-          href="{{ store.url|default('') }}/cart"
-          class="veloura-bottom-nav__item"
+          href="{{ page('cart') }}"
+          class="veloura-bottom-nav__item{% if is_page('cart') %} is-active{% endif %}"
           data-vbn-item
           data-vbn-key="cart"
           aria-label="{{ vbn_cart_label|e }}"
+          {% if is_page('cart') %}aria-current="page"{% endif %}
         >
           <i class="sicon-shopping-bag" aria-hidden="true"></i>
           {% if vbn_show_labels %}<span>{{ vbn_cart_label }}</span>{% endif %}
@@ -3082,8 +3084,8 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       {% endif %}
 
       {% if vbn_show_account %}
-        <button
-          type="button"
+        <a
+          href="{{ store.url|default('') }}/login"
           class="veloura-bottom-nav__item"
           data-vbn-item
           data-vbn-key="account"
@@ -3092,7 +3094,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         >
           <i class="sicon-user" aria-hidden="true"></i>
           {% if vbn_show_labels %}<span>{{ vbn_account_label }}</span>{% endif %}
-        </button>
+        </a>
       {% endif %}
 
       {% for item in vbn_custom_items %}
@@ -3118,6 +3120,18 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
             {% set vbn_item_url = vbn_item_url_raw[0].href %}
           {% elseif vbn_item_url_raw[0] is defined and vbn_item_url_raw[0].value is defined and vbn_item_url_raw[0].value is not iterable %}
             {% set vbn_item_url = vbn_item_url_raw[0].value %}
+          {% elseif vbn_item_url_raw.selected is defined and vbn_item_url_raw.selected.url is defined and vbn_item_url_raw.selected.url is not iterable %}
+            {% set vbn_item_url = vbn_item_url_raw.selected.url %}
+          {% elseif vbn_item_url_raw.selected is defined and vbn_item_url_raw.selected.href is defined and vbn_item_url_raw.selected.href is not iterable %}
+            {% set vbn_item_url = vbn_item_url_raw.selected.href %}
+          {% elseif vbn_item_url_raw.selected[0] is defined and vbn_item_url_raw.selected[0].url is defined and vbn_item_url_raw.selected[0].url is not iterable %}
+            {% set vbn_item_url = vbn_item_url_raw.selected[0].url %}
+          {% elseif vbn_item_url_raw.selected[0] is defined and vbn_item_url_raw.selected[0].href is defined and vbn_item_url_raw.selected[0].href is not iterable %}
+            {% set vbn_item_url = vbn_item_url_raw.selected[0].href %}
+          {% elseif vbn_item_url_raw.value is defined and vbn_item_url_raw.value.url is defined and vbn_item_url_raw.value.url is not iterable %}
+            {% set vbn_item_url = vbn_item_url_raw.value.url %}
+          {% elseif vbn_item_url_raw.value is defined and vbn_item_url_raw.value.href is defined and vbn_item_url_raw.value.href is not iterable %}
+            {% set vbn_item_url = vbn_item_url_raw.value.href %}
           {% endif %}
 
           {% set vbn_item_new_tab_raw = item.open_new_tab is defined ? item.open_new_tab : false %}
