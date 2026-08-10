@@ -42,25 +42,36 @@
     pointer-events: none;
   }
 
-  /* Inline Salla search opened by the bottom navigation.
-     It intentionally avoids the full-screen Search modal/overlay. */
+  /* Bottom-nav inline search.
+     Keep it in the viewport, exactly above the bottom bar, instead of letting
+     Salla's inline component affect the nav flex layout. */
   .veloura-bottom-search-panel {
-    position: absolute;
-    left: 50%;
-    bottom: calc(100% + 10px);
-    z-index: 10;
+    position: fixed;
+    z-index: 2147483641;
 
     display: none;
-    width: min(430px, calc(100vw - 28px));
-    margin: 0;
-    padding: 10px;
+    inset-inline: var(
+      --veloura-home-container-padding,
+      var(--veloura-site-spacing, 14px)
+    );
+    bottom: calc(
+      var(--vbn-bottom, 18px)
+      + var(--vbn-safe-bottom, 0px)
+      + var(--vbn-height, 56px)
+      + 8px
+    );
+
+    width: auto;
+    max-width: 430px;
+    min-height: 56px;
+    margin-inline: auto;
+    padding: 6px;
 
     border: 1px solid rgba(148, 163, 184, .14);
     border-radius: var(--vbn-radius, 20px);
     background: var(--vbn-bg, #ffffff);
     box-shadow: 0 12px 34px rgba(15, 23, 42, .14);
 
-    transform: translateX(-50%);
     pointer-events: auto;
     overflow: visible;
   }
@@ -282,6 +293,16 @@
       var(--vbn-radius, 20px)
       0
       0;
+  }
+
+  body.veloura-bottom-nav-position-full_width .veloura-bottom-search-panel {
+    inset-inline: 8px;
+    bottom: calc(
+      var(--vbn-height, 56px)
+      + var(--vbn-safe-bottom, 0px)
+      + 8px
+    );
+    max-width: none;
   }
 
   /* Floating pill */

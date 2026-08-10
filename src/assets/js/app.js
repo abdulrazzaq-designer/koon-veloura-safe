@@ -3905,6 +3905,109 @@ const initVelouraBottomNavController = () => {
   const searchItem = nav.querySelector(`${itemSelector}[data-vbn-key="search"]`);
   const inlineSearch = searchPanel?.querySelector('salla-search[data-vbn-inline-search]');
 
+  // Salla Search is a Web Component. Its default inline wrapper carries its
+  // own surface/padding, which is why it can look like a large white block.
+  // Style only the bottom-nav instance inside its Shadow DOM.
+  const styleBottomInlineSearch = () => {
+    if (!inlineSearch) return;
+
+    const shadowCss = `
+      :host {
+        position: relative !important;
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        min-height: 44px !important;
+        height: 44px !important;
+        max-height: 44px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        overflow: visible !important;
+      }
+
+      form,
+      .s-search-container,
+      .s-search-wrapper,
+      [part~="form"],
+      [part~="container"] {
+        position: relative !important;
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        min-height: 44px !important;
+        height: 44px !important;
+        max-height: 44px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: var(--vbn-radius, 18px) !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+      }
+
+      input,
+      .s-search-input,
+      [part~="input"] {
+        width: 100% !important;
+        min-width: 0 !important;
+        min-height: 44px !important;
+        height: 44px !important;
+        max-height: 44px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        border: 1px solid rgba(148, 163, 184, .16) !important;
+        border-radius: calc(var(--vbn-radius, 18px) - 5px) !important;
+        background: rgba(255, 255, 255, .08) !important;
+        background-color: rgba(255, 255, 255, .08) !important;
+        color: var(--vbn-text, #111827) !important;
+        box-shadow: none !important;
+      }
+
+      input::placeholder,
+      .s-search-input::placeholder {
+        color: var(--vbn-text, #111827) !important;
+        opacity: .55 !important;
+      }
+
+      .s-search-results,
+      [part~="results"] {
+        position: absolute !important;
+        inset-inline: 0 !important;
+        top: auto !important;
+        bottom: calc(100% + 10px) !important;
+        z-index: 20 !important;
+        max-height: min(52vh, 420px) !important;
+        border-radius: var(--vbn-radius, 18px) !important;
+        overflow-y: auto !important;
+      }
+    `;
+
+    const apply = () => {
+      const root = inlineSearch.shadowRoot;
+      if (!root) return;
+
+      let style = root.querySelector('style[data-veloura-vbn-search]');
+      if (!style) {
+        style = document.createElement('style');
+        style.dataset.velouraVbnSearch = 'true';
+        root.appendChild(style);
+      }
+
+      if (style.textContent !== shadowCss) {
+        style.textContent = shadowCss;
+      }
+    };
+
+    apply();
+    inlineSearch.componentOnReady?.().then(apply).catch(() => {});
+    customElements.whenDefined?.('salla-search').then(apply).catch(() => {});
+  };
+
+  styleBottomInlineSearch();
+
   const routeActiveItem =
     nav.querySelector(`${itemSelector}[aria-current="page"]`) ||
     nav.querySelector(`${itemSelector}.is-active`) ||

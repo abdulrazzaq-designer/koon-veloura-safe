@@ -51738,9 +51738,7 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
   display: none;
 }
 .veloura-bottom-search-panel {
-  padding: 14px 14px calc(18px + env(safe-area-inset-bottom, 0px));
-  background: #ffffff;
-  background: var(--color-background, #ffffff);
+  display: none;
 }
 @media (max-width: 767px) {
   body.veloura-bottom-nav-enabled {
@@ -51763,6 +51761,65 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
     margin: 0;
     padding: 0;
     pointer-events: none;
+  }
+  /* Bottom-nav inline search.
+     Keep it in the viewport, exactly above the bottom bar, instead of letting
+     Salla's inline component affect the nav flex layout. */
+  .veloura-bottom-search-panel {
+    position: fixed;
+    z-index: 2147483641;
+    display: none;
+    left: 0px;
+    right: 0px;
+    left: var(--veloura-home-container-padding, var(--veloura-site-spacing, 14px));
+    right: var(--veloura-home-container-padding, var(--veloura-site-spacing, 14px));
+    bottom: calc(18px + 0px + 56px + 8px);
+    bottom: calc(var(--vbn-bottom, 18px) + var(--vbn-safe-bottom, 0px) + var(--vbn-height, 56px) + 8px);
+    width: auto;
+    max-width: 430px;
+    min-height: 56px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 6px;
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 20px;
+    border-radius: var(--vbn-radius, 20px);
+    background: #ffffff;
+    background: var(--vbn-bg, #ffffff);
+    box-shadow: 0 12px 34px rgba(15, 23, 42, 0.14);
+    pointer-events: auto;
+    overflow: visible;
+  }
+  .veloura-bottom-search-panel[hidden] {
+    display: none !important;
+  }
+  body.veloura-bottom-nav-search-open .veloura-bottom-search-panel:not([hidden]) {
+    display: block;
+  }
+  .veloura-bottom-search-panel salla-search[data-vbn-inline-search] {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+  body.veloura-bottom-nav-glass .veloura-bottom-search-panel {
+    background: rgba(230, 232, 235, .69);
+    background: var(--veloura-glass-surface, rgba(230, 232, 235, 0.78));
+    border-top-color: rgba(100, 116, 139, .10);
+    border-top-color: var(--veloura-glass-edge-top, rgba(255, 255, 255, 0.18));
+    border-bottom-color: rgba(100, 116, 139, .045);
+    border-bottom-color: var(--veloura-glass-edge-bottom, rgba(15, 23, 42, 0.06));
+    -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%);
+    -webkit-backdrop-filter: var(--veloura-glass-filter, blur(20px) saturate(124%));
+    backdrop-filter: blur(20px) saturate(124%) brightness(101%);
+    backdrop-filter: var(--veloura-glass-filter, blur(20px) saturate(124%));
+  }
+  html.dark body.veloura-bottom-nav-enabled .veloura-bottom-search-panel,
+  html body.dark.veloura-bottom-nav-enabled .veloura-bottom-search-panel {
+    color: #ffffff;
+    color: var(--veloura-dark-primary-text, #ffffff);
+    background: #010612;
+    background: var(--veloura-dark-secondary-bg, var(--vbn-bg, #010612));
   }
   .veloura-bottom-nav__surface {
     position: relative;
@@ -51918,6 +51975,13 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
     padding-bottom: calc(4px + var(--vbn-safe-bottom));
     border-radius: 20px 20px 0 0;
     border-radius: var(--vbn-radius, 20px) var(--vbn-radius, 20px) 0 0;
+  }
+  body.veloura-bottom-nav-position-full_width .veloura-bottom-search-panel {
+    left: 8px;
+    right: 8px;
+    bottom: calc(56px + 0px + 8px);
+    bottom: calc(var(--vbn-height, 56px) + var(--vbn-safe-bottom, 0px) + 8px);
+    max-width: none;
   }
   /* Floating pill */
   body.veloura-bottom-nav-position-pill .veloura-bottom-nav {
