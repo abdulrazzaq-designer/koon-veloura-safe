@@ -4333,3 +4333,291 @@ if (document.readyState === 'loading') {
 
 document.addEventListener('theme::ready', initVelouraBottomNavTopGlassSearchV4);
 /* VELOURA BOTTOM NAV — TOP GLASS SEARCH V4 END */
+
+
+/* VELOURA BOTTOM NAV — TOP GLASS VISUAL V5
+   Visual-only refinement for the working V4 controller.
+   Keeps all search/category behavior untouched.
+*/
+const initVelouraBottomNavTopGlassVisualV5 = () => {
+  const STYLE_ID = 'veloura-vbn-top-glass-visual-v5-style';
+  const PANEL_ID = 'veloura-bottom-search-panel';
+  const BACKDROP_ID = 'veloura-bottom-search-backdrop-v4';
+
+  if (!document.getElementById(STYLE_ID)) {
+    const style = document.createElement('style');
+    style.id = STYLE_ID;
+    style.textContent = `
+      @media (max-width: 767px) {
+        /*
+         * Full-screen glass:
+         * two visual zones, but with a feathered transition instead of
+         * the hard horizontal cut that appeared in V4.
+         */
+        #${BACKDROP_ID} {
+          background:
+            radial-gradient(
+              110% 52% at 50% -8%,
+              rgba(255, 255, 255, .20) 0%,
+              rgba(255, 255, 255, .08) 42%,
+              rgba(255, 255, 255, 0) 72%
+            ),
+            linear-gradient(
+              180deg,
+              rgba(247, 249, 252, .14) 0%,
+              rgba(242, 245, 249, .18) 34%,
+              rgba(232, 237, 243, .34) 58%,
+              rgba(224, 230, 238, .56) 100%
+            ) !important;
+          -webkit-backdrop-filter: blur(17px) saturate(122%) contrast(200%) !important;
+          backdrop-filter: blur(17px) saturate(122%) contrast(200%) !important;
+        }
+
+        /* One clean glass shell — no double frame. */
+        #${PANEL_ID}.veloura-bottom-search-panel {
+          top: calc(env(safe-area-inset-top, 0px) + 14px) !important;
+          width: min(470px, calc(100vw - 32px)) !important;
+          max-width: calc(100vw - 32px) !important;
+          min-height: 58px !important;
+          padding: 5px !important;
+
+          border: 1px solid rgba(255, 255, 255, .30) !important;
+          border-radius: var(--vbn-radius, 24px) !important;
+          background:
+            linear-gradient(
+              180deg,
+              rgba(255, 255, 255, .62) 0%,
+              rgba(245, 248, 252, .48) 100%
+            ) !important;
+          box-shadow:
+            0 10px 30px rgba(15, 23, 42, .13),
+            inset 0 1px 0 rgba(255, 255, 255, .48),
+            inset 0 -1px 0 rgba(15, 23, 42, .04) !important;
+
+          -webkit-backdrop-filter: blur(22px) saturate(126%) contrast(200%) !important;
+          backdrop-filter: blur(22px) saturate(126%) contrast(200%) !important;
+        }
+
+        #${PANEL_ID} salla-search[data-vbn-inline-search] {
+          --vbn-search-input-bg: transparent;
+          --vbn-search-input-border: transparent;
+          --vbn-search-results-bg: rgba(255, 255, 255, .78);
+          --vbn-search-results-border: rgba(255, 255, 255, .38);
+          --vbn-search-results-text: #111827;
+        }
+
+        /* Keep the bottom bar visually separate and crisp in light mode. */
+        html:not(.dark) body.veloura-bottom-nav-search-open.veloura-bottom-nav-glass .veloura-bottom-nav__surface,
+        html:not(.dark) body.veloura-bottom-nav-search-open .veloura-bottom-nav__surface {
+          background: rgba(247, 249, 252, .66) !important;
+          border: 1px solid rgba(255, 255, 255, .32) !important;
+          box-shadow:
+            0 10px 30px rgba(15, 23, 42, .12),
+            inset 0 1px 0 rgba(255, 255, 255, .30) !important;
+          -webkit-backdrop-filter: blur(20px) saturate(124%) contrast(200%) !important;
+          backdrop-filter: blur(20px) saturate(124%) contrast(200%) !important;
+        }
+
+        /* Dark backdrop: same two-zone idea, no contrast(200%). */
+        html.dark body #${BACKDROP_ID},
+        html body.dark #${BACKDROP_ID} {
+          background:
+            radial-gradient(
+              110% 52% at 50% -8%,
+              rgba(24, 190, 238, .055) 0%,
+              rgba(10, 35, 50, .04) 40%,
+              rgba(1, 6, 18, 0) 72%
+            ),
+            linear-gradient(
+              180deg,
+              rgba(1, 8, 18, .24) 0%,
+              rgba(1, 8, 18, .31) 34%,
+              rgba(1, 8, 18, .48) 60%,
+              rgba(1, 8, 18, .68) 100%
+            ) !important;
+          -webkit-backdrop-filter: blur(17px) saturate(114%) !important;
+          backdrop-filter: blur(17px) saturate(114%) !important;
+        }
+
+        html.dark body #${PANEL_ID}.veloura-bottom-search-panel,
+        html body.dark #${PANEL_ID}.veloura-bottom-search-panel {
+          color: var(--veloura-dark-primary-text, #fff) !important;
+          border-color: rgba(255, 255, 255, .09) !important;
+          background:
+            linear-gradient(
+              180deg,
+              rgba(4, 28, 43, .88) 0%,
+              rgba(2, 22, 35, .80) 100%
+            ) !important;
+          box-shadow:
+            0 12px 34px rgba(0, 0, 0, .30),
+            inset 0 1px 0 rgba(255, 255, 255, .07),
+            inset 0 -1px 0 rgba(0, 0, 0, .20) !important;
+          -webkit-backdrop-filter: blur(22px) saturate(114%) !important;
+          backdrop-filter: blur(22px) saturate(114%) !important;
+        }
+
+        html.dark body #${PANEL_ID} salla-search[data-vbn-inline-search],
+        html body.dark #${PANEL_ID} salla-search[data-vbn-inline-search] {
+          --vbn-search-input-bg: transparent;
+          --vbn-search-input-border: transparent;
+          --vbn-search-results-bg: rgba(3, 18, 30, .94);
+          --vbn-search-results-border: rgba(255, 255, 255, .08);
+          --vbn-search-results-text: #fff;
+        }
+
+        /* Dark bottom bar intentionally has NO contrast(200%). */
+        html.dark body.veloura-bottom-nav-search-open .veloura-bottom-nav__surface,
+        html body.dark.veloura-bottom-nav-search-open .veloura-bottom-nav__surface {
+          -webkit-backdrop-filter: blur(20px) saturate(114%) !important;
+          backdrop-filter: blur(20px) saturate(114%) !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  const applySearchShadowVisual = () => {
+    const panel = document.getElementById(PANEL_ID);
+    const search = panel?.querySelector('salla-search[data-vbn-inline-search], salla-search');
+    const root = search?.shadowRoot;
+    if (!root) return false;
+
+    let style = root.querySelector('style[data-veloura-vbn-visual-v5]');
+    if (!style) {
+      style = document.createElement('style');
+      style.dataset.velouraVbnVisualV5 = 'true';
+      root.appendChild(style);
+    }
+
+    style.textContent = `
+      :host {
+        display: block !important;
+        width: 100% !important;
+        min-height: 48px !important;
+        height: 48px !important;
+        max-height: 48px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        color: inherit !important;
+        background: transparent !important;
+        overflow: visible !important;
+      }
+
+      form,
+      .s-search-container,
+      .s-search-wrapper,
+      [part~="form"],
+      [part~="container"] {
+        position: relative !important;
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        min-height: 48px !important;
+        height: 48px !important;
+        max-height: 48px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        outline: 0 !important;
+        border-radius: calc(var(--vbn-radius, 24px) - 5px) !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+      }
+
+      input,
+      input[type="search"],
+      .s-search-input,
+      [part~="input"] {
+        width: 100% !important;
+        min-width: 0 !important;
+        min-height: 48px !important;
+        height: 48px !important;
+        max-height: 48px !important;
+        margin: 0 !important;
+        padding-inline: 18px !important;
+        box-sizing: border-box !important;
+
+        border: 0 !important;
+        outline: 0 !important;
+        border-radius: calc(var(--vbn-radius, 24px) - 5px) !important;
+        background: var(--vbn-search-input-bg, transparent) !important;
+        color: inherit !important;
+        box-shadow: none !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+      }
+
+      input:focus,
+      input:focus-visible,
+      input[type="search"]:focus,
+      input[type="search"]:focus-visible,
+      .s-search-input:focus,
+      .s-search-input:focus-visible,
+      [part~="input"]:focus,
+      [part~="input"]:focus-visible {
+        border: 0 !important;
+        outline: 0 !important;
+        box-shadow: none !important;
+      }
+
+      input::placeholder,
+      .s-search-input::placeholder,
+      [part~="input"]::placeholder {
+        color: currentColor !important;
+        opacity: .50 !important;
+      }
+
+      button,
+      [part~="button"],
+      [part~="icon"] {
+        color: inherit !important;
+        box-shadow: none !important;
+      }
+
+      .s-search-results,
+      .s-search-results-container,
+      [part~="results"],
+      [part~="results-container"] {
+        position: absolute !important;
+        inset-inline: 0 !important;
+        top: calc(100% + 10px) !important;
+        bottom: auto !important;
+        z-index: 50 !important;
+        max-height: min(56dvh, 460px) !important;
+        overflow-y: auto !important;
+
+        color: var(--vbn-search-results-text, inherit) !important;
+        border: 1px solid var(--vbn-search-results-border, rgba(255,255,255,.22)) !important;
+        border-radius: 20px !important;
+        background: var(--vbn-search-results-bg, rgba(255,255,255,.82)) !important;
+        box-shadow: 0 18px 48px rgba(0, 0, 0, .18) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(118%) !important;
+        backdrop-filter: blur(20px) saturate(118%) !important;
+      }
+    `;
+
+    return true;
+  };
+
+  const schedule = () => {
+    applySearchShadowVisual();
+    window.setTimeout(applySearchShadowVisual, 120);
+    window.setTimeout(applySearchShadowVisual, 400);
+    window.setTimeout(applySearchShadowVisual, 900);
+  };
+
+  schedule();
+  customElements.whenDefined?.('salla-search').then(schedule).catch(() => {});
+  document.addEventListener('theme::ready', schedule, { once: true });
+
+  console.info('[Veloura] Top Glass Search Visual V5 ready');
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initVelouraBottomNavTopGlassVisualV5, { once: true });
+} else {
+  initVelouraBottomNavTopGlassVisualV5();
+}
+/* VELOURA BOTTOM NAV — TOP GLASS VISUAL V5 END */
