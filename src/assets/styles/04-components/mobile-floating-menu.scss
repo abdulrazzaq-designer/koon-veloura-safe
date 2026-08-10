@@ -1,40 +1,20 @@
 /* =========================================================
-   Veloura Bottom Navigation V2
-   - Bottom bar remains tappable above overlays.
-   - Bottom-nav search is a separate viewport layer at the TOP.
-   - Light glass may use contrast(200%); dark glass never does.
+   Veloura Bottom Navigation
+   CSS owns ONLY our bottom bar and the light-DOM search wrapper.
+   Salla Web Components keep their native internal styles.
    ========================================================= */
 
-.veloura-bottom-nav,
-.veloura-bottom-search-layer {
+.veloura-bottom-nav {
+  display: none;
+}
+
+.veloura-bottom-search-panel {
   display: none;
 }
 
 @media (max-width: 767px) {
   body.veloura-bottom-nav-enabled {
     --vbn-safe-bottom: env(safe-area-inset-bottom, 0px);
-
-    /* Light search material */
-    --vbn-search-layer-top: rgba(238, 241, 245, .10);
-    --vbn-search-layer-bottom: rgba(238, 241, 245, .72);
-    --vbn-search-layer-filter: blur(22px) saturate(122%);
-    --vbn-search-field-bg: rgba(255, 255, 255, .52);
-    --vbn-search-field-border: rgba(100, 116, 139, .16);
-    --vbn-search-field-text: var(--vbn-text, #111827);
-    --vbn-search-field-placeholder: var(--vbn-text, #111827);
-    --vbn-search-input-radius: max(18px, calc(var(--vbn-radius, 999px) - 6px));
-  }
-
-  html.dark body.veloura-bottom-nav-enabled,
-  html body.dark.veloura-bottom-nav-enabled {
-    /* Dark search material: deliberately no contrast(200%). */
-    --vbn-search-layer-top: rgba(1, 6, 18, .18);
-    --vbn-search-layer-bottom: rgba(1, 6, 18, .82);
-    --vbn-search-layer-filter: blur(22px) saturate(114%);
-    --vbn-search-field-bg: rgba(1, 6, 18, .62);
-    --vbn-search-field-border: rgba(255, 255, 255, .10);
-    --vbn-search-field-text: var(--veloura-dark-primary-text, #ffffff);
-    --vbn-search-field-placeholder: var(--veloura-dark-secondary-text, #cccccc);
   }
 
   body.veloura-bottom-nav-enabled .store-footer .veloura-footer-bottom {
@@ -46,124 +26,6 @@
     ) !important;
   }
 
-  /* =======================================================
-     SEARCH LAYER
-     It is a sibling of the nav in master.twig — never a child.
-     ======================================================= */
-  .veloura-bottom-search-layer {
-    position: fixed;
-    inset: 0;
-    z-index: 2147483500;
-
-    display: block;
-    pointer-events: none;
-    overflow: visible;
-  }
-
-  .veloura-bottom-search-layer[hidden] {
-    display: none !important;
-  }
-
-  .veloura-bottom-search-layer__backdrop {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-
-    border: 0;
-    outline: 0;
-    appearance: none;
-
-    /* Two visual zones: transparent upper glass + denser lower tint. */
-    background:
-      linear-gradient(
-        to bottom,
-        var(--vbn-search-layer-top) 0%,
-        var(--vbn-search-layer-top) 52%,
-        var(--vbn-search-layer-bottom) 100%
-      );
-
-    -webkit-backdrop-filter: var(--vbn-search-layer-filter);
-    backdrop-filter: var(--vbn-search-layer-filter);
-
-    pointer-events: auto;
-    cursor: default;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .veloura-bottom-search-panel {
-    position: absolute;
-    inset-inline: 14px;
-    top: calc(env(safe-area-inset-top, 0px) + 12px);
-    z-index: 2;
-
-    width: auto;
-    max-width: 430px;
-    min-height: 60px;
-    margin-inline: auto;
-    padding: 6px;
-
-    color: var(--vbn-text, #111827);
-    background: var(--vbn-bg, #ffffff);
-    border: 1px solid rgba(100, 116, 139, .13);
-    border-radius: var(--vbn-radius, 999px);
-    box-shadow: 0 16px 46px rgba(15, 23, 42, .14);
-
-    overflow: visible;
-    pointer-events: auto;
-  }
-
-  .veloura-bottom-search-panel salla-search[data-vbn-inline-search] {
-    display: block !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-    color: inherit !important;
-  }
-
-  /* Light glass panel: strong contrast is intentionally LIGHT-only. */
-  body.veloura-bottom-nav-glass .veloura-bottom-search-panel {
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, .24), rgba(255, 255, 255, .035)),
-      rgba(230, 232, 235, .66);
-    border-top-color: var(--veloura-glass-edge-top, rgba(255,255,255,.26));
-    border-bottom-color: var(--veloura-glass-edge-bottom, rgba(15,23,42,.07));
-
-    -webkit-backdrop-filter: blur(20px) saturate(124%) contrast(200%);
-    backdrop-filter: blur(20px) saturate(124%) contrast(200%);
-  }
-
-  /* Dark panel: same glass language, WITHOUT contrast(200%). */
-  html.dark body.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-search-panel,
-  html body.dark.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-search-panel {
-    color: var(--veloura-dark-primary-text, #ffffff);
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, .065), rgba(255, 255, 255, .012)),
-      var(--veloura-dark-secondary-bg, #010612);
-    border-top-color: rgba(255, 255, 255, .08);
-    border-bottom-color: rgba(0, 0, 0, .24);
-
-    -webkit-backdrop-filter: blur(20px) saturate(114%);
-    backdrop-filter: blur(20px) saturate(114%);
-  }
-
-  html.dark body.veloura-bottom-nav-enabled:not(.veloura-bottom-nav-glass) .veloura-bottom-search-panel,
-  html body.dark.veloura-bottom-nav-enabled:not(.veloura-bottom-nav-glass) .veloura-bottom-search-panel {
-    color: var(--veloura-dark-primary-text, #ffffff);
-    background: var(--veloura-dark-secondary-bg, var(--vbn-bg, #010612));
-  }
-
-  body.veloura-bottom-nav-search-open {
-    overflow: hidden;
-  }
-
-  /* =======================================================
-     BOTTOM NAV
-     ======================================================= */
   .veloura-bottom-nav {
     position: fixed;
     inset-inline: 0;
@@ -178,6 +40,125 @@
     padding: 0;
 
     pointer-events: none;
+  }
+
+  /* =========================================================
+     Top inline search — SAME working Salla inline component.
+     Only its visual position changes: fixed at the top of the viewport.
+     ========================================================= */
+  .veloura-bottom-search-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483000;
+
+    display: block;
+
+    /* Two-part light glass: clearer at top, denser toward the bottom. */
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, .18) 0%,
+        rgba(255, 255, 255, .18) 44%,
+        rgba(235, 239, 244, .62) 44%,
+        rgba(235, 239, 244, .72) 100%
+      );
+
+    -webkit-backdrop-filter: blur(18px) saturate(122%) contrast(200%);
+    backdrop-filter: blur(18px) saturate(122%) contrast(200%);
+
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .veloura-bottom-search-backdrop[hidden] {
+    display: none !important;
+  }
+
+  html.dark body.veloura-bottom-nav-enabled .veloura-bottom-search-backdrop,
+  html body.dark.veloura-bottom-nav-enabled .veloura-bottom-search-backdrop {
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(1, 6, 18, .20) 0%,
+        rgba(1, 6, 18, .20) 44%,
+        rgba(1, 6, 18, .66) 44%,
+        rgba(1, 6, 18, .78) 100%
+      );
+
+    /* Dark mode intentionally has NO contrast(200%). */
+    -webkit-backdrop-filter: blur(18px) saturate(116%);
+    backdrop-filter: blur(18px) saturate(116%);
+  }
+
+  .veloura-bottom-search-panel {
+    position: fixed;
+    z-index: 2147483642;
+
+    display: none;
+    inset-inline: var(
+      --veloura-home-container-padding,
+      var(--veloura-site-spacing, 14px)
+    );
+    top: calc(env(safe-area-inset-top, 0px) + 12px);
+    bottom: auto;
+
+    width: auto;
+    max-width: 430px;
+    min-height: 56px;
+    margin-inline: auto;
+    padding: 6px;
+
+    color: var(--vbn-text, #111827);
+    border: 1px solid rgba(255, 255, 255, .28);
+    border-radius: var(--vbn-radius, 20px);
+    background: rgba(245, 247, 250, .58);
+    box-shadow:
+      0 14px 42px rgba(15, 23, 42, .16),
+      inset 0 1px 0 rgba(255, 255, 255, .24);
+
+    -webkit-backdrop-filter: blur(22px) saturate(130%) contrast(200%);
+    backdrop-filter: blur(22px) saturate(130%) contrast(200%);
+
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  .veloura-bottom-search-panel[hidden] {
+    display: none !important;
+  }
+
+  body.veloura-bottom-nav-search-open .veloura-bottom-search-panel:not([hidden]) {
+    display: block;
+  }
+
+  .veloura-bottom-search-panel salla-search[data-vbn-inline-search] {
+    --vbn-search-text: var(--vbn-text, #111827);
+    --vbn-search-input-bg: rgba(255, 255, 255, .12);
+
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  html.dark body.veloura-bottom-nav-enabled .veloura-bottom-search-panel,
+  html body.dark.veloura-bottom-nav-enabled .veloura-bottom-search-panel {
+    color: var(--veloura-dark-primary-text, #ffffff);
+    border-color: rgba(255, 255, 255, .10);
+    background: rgba(3, 10, 24, .66);
+    box-shadow:
+      0 16px 44px rgba(0, 0, 0, .34),
+      inset 0 1px 0 rgba(255, 255, 255, .06);
+
+    /* Dark mode intentionally has NO contrast(200%). */
+    -webkit-backdrop-filter: blur(22px) saturate(116%);
+    backdrop-filter: blur(22px) saturate(116%);
+  }
+
+  html.dark body.veloura-bottom-nav-enabled .veloura-bottom-search-panel salla-search[data-vbn-inline-search],
+  html body.dark.veloura-bottom-nav-enabled .veloura-bottom-search-panel salla-search[data-vbn-inline-search] {
+    --vbn-search-text: var(--veloura-dark-primary-text, #ffffff);
+    --vbn-search-input-bg: rgba(255, 255, 255, .06);
   }
 
   .veloura-bottom-nav__surface {
@@ -283,6 +264,7 @@
     pointer-events: none;
   }
 
+  /* Active — same corner style as the menu. */
   .veloura-bottom-nav__item.is-active {
     z-index: 5;
 
@@ -293,6 +275,7 @@
     overflow: visible;
   }
 
+  /* بدون تكبير */
   .veloura-bottom-nav--scale-none .veloura-bottom-nav__item.is-active {
     transform: none;
   }
@@ -301,6 +284,7 @@
     content: none;
   }
 
+  /* خفيف */
   .veloura-bottom-nav--scale-soft .veloura-bottom-nav__item.is-active {
     transform: translateY(-6px) scale(1.04);
   }
@@ -321,6 +305,7 @@
     pointer-events: none;
   }
 
+  /* واضح */
   .veloura-bottom-nav--scale-strong .veloura-bottom-nav__item.is-active {
     transform: translateY(-12px) scale(1.08);
   }
@@ -368,8 +353,9 @@
 
   body.veloura-bottom-nav-position-full_width .veloura-bottom-search-panel {
     inset-inline: 8px;
+    top: calc(env(safe-area-inset-top, 0px) + 8px);
+    bottom: auto;
     max-width: none;
-    border-radius: var(--vbn-radius, 20px);
   }
 
   /* Floating pill */
@@ -387,23 +373,12 @@
     border-radius: var(--vbn-radius, 999px);
   }
 
-  body.veloura-bottom-nav-position-pill .veloura-bottom-search-panel {
-    inset-inline: var(
-      --veloura-home-container-padding,
-      var(--veloura-site-spacing, 14px)
-    );
-    max-width: 430px;
-    border-radius: var(--vbn-radius, 999px);
-  }
-
-  /* Light bottom-nav glass. */
+  /* Glass belongs to the bottom bar only. */
   body.veloura-bottom-nav-glass .veloura-bottom-nav__surface {
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, .22), rgba(255, 255, 255, .035)),
-      rgba(230, 232, 235, .64);
+    background: var(--veloura-glass-surface, rgba(230, 232, 235, .72));
 
-    border-top: 1px solid var(--veloura-glass-edge-top, rgba(255,255,255,.26));
-    border-bottom: 1px solid var(--veloura-glass-edge-bottom, rgba(15,23,42,.07));
+    border-top: 1px solid var(--veloura-glass-edge-top, rgba(255,255,255,.18));
+    border-bottom: 1px solid var(--veloura-glass-edge-bottom, rgba(15,23,42,.06));
 
     -webkit-backdrop-filter: blur(20px) saturate(124%) contrast(200%);
     backdrop-filter: blur(20px) saturate(124%) contrast(200%);
@@ -416,17 +391,11 @@
     color: var(--veloura-dark-primary-text, #ffffff);
   }
 
-  /* Dark bottom-nav glass — explicitly NO contrast(200%). */
   html.dark body.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-nav__surface,
   html body.dark.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-nav__surface {
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, .065), rgba(255, 255, 255, .012)),
-      var(--veloura-dark-secondary-bg, #010612);
-    border-top-color: rgba(255, 255, 255, .08);
-    border-bottom-color: rgba(0, 0, 0, .24);
-
-    -webkit-backdrop-filter: blur(20px) saturate(114%);
-    backdrop-filter: blur(20px) saturate(114%);
+    background: var(--veloura-dark-secondary-bg, rgba(3, 10, 24, .72));
+    -webkit-backdrop-filter: blur(20px) saturate(116%);
+    backdrop-filter: blur(20px) saturate(116%);
   }
 
   html.dark body.veloura-bottom-nav-enabled:not(.veloura-bottom-nav-glass) .veloura-bottom-nav__surface,
@@ -434,7 +403,12 @@
     background: var(--veloura-dark-secondary-bg, var(--vbn-bg, #010612));
   }
 
-  /* Search/categories: keep the bottom bar above the overlay/drawer. */
+  body.veloura-bottom-nav-search-open {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  /* Search/categories: keep bar tappable so second tap can close. */
   body.veloura-bottom-nav-search-open .veloura-bottom-nav,
   body.veloura-bottom-nav-categories-open .veloura-bottom-nav,
   body.menu-opened .veloura-bottom-nav {
@@ -447,9 +421,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .veloura-bottom-nav,
-    .veloura-bottom-nav *,
-    .veloura-bottom-search-layer,
-    .veloura-bottom-search-layer * {
+    .veloura-bottom-nav * {
       transition: none !important;
       animation: none !important;
     }
