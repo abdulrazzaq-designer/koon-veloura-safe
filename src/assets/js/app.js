@@ -3958,28 +3958,28 @@ const initVelouraBottomNavController = () => {
         max-height: 44px !important;
         margin: 0 !important;
         box-sizing: border-box !important;
-        border: 1px solid rgba(148, 163, 184, .16) !important;
+        border: 1px solid var(--vbn-search-field-border, rgba(148, 163, 184, .16)) !important;
         border-radius: calc(var(--vbn-radius, 18px) - 5px) !important;
-        background: rgba(255, 255, 255, .08) !important;
-        background-color: rgba(255, 255, 255, .08) !important;
-        color: var(--vbn-text, #111827) !important;
+        background: var(--vbn-search-field-bg, rgba(255, 255, 255, .42)) !important;
+        background-color: var(--vbn-search-field-bg, rgba(255, 255, 255, .42)) !important;
+        color: var(--vbn-search-field-text, var(--vbn-text, #111827)) !important;
         box-shadow: none !important;
       }
 
       input::placeholder,
       .s-search-input::placeholder {
-        color: var(--vbn-text, #111827) !important;
-        opacity: .55 !important;
+        color: var(--vbn-search-field-text, var(--vbn-text, #111827)) !important;
+        opacity: .58 !important;
       }
 
       .s-search-results,
       [part~="results"] {
         position: absolute !important;
         inset-inline: 0 !important;
-        top: auto !important;
-        bottom: calc(100% + 10px) !important;
+        top: calc(100% + 10px) !important;
+        bottom: auto !important;
         z-index: 20 !important;
-        max-height: min(52vh, 420px) !important;
+        max-height: min(52dvh, 420px) !important;
         border-radius: var(--vbn-radius, 18px) !important;
         overflow-y: auto !important;
       }
@@ -4158,6 +4158,18 @@ const initVelouraBottomNavController = () => {
     document.body.classList.remove('veloura-bottom-nav-categories-open');
     restoreRouteActive();
   }, true);
+
+  // Tapping the frosted page area closes search.
+  // The overlay itself is body::before, so its click is retargeted to body.
+  document.addEventListener('click', event => {
+    if (!isSearchOpen()) return;
+
+    const target = event.target;
+    if (!(target instanceof Node)) return;
+
+    if (nav.contains(target)) return;
+    closeSearch({ restore: true });
+  });
 
   document.addEventListener('keydown', event => {
     if (event.key !== 'Escape') return;
