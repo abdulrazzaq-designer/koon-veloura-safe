@@ -4621,3 +4621,223 @@ if (document.readyState === 'loading') {
   initVelouraBottomNavTopGlassVisualV5();
 }
 /* VELOURA BOTTOM NAV — TOP GLASS VISUAL V5 END */
+
+/* VELOURA BOTTOM NAV — SEARCH VISUAL V6
+   Purpose:
+   - keep the WORKING V4 search behavior exactly as-is
+   - make the top search visually match the bottom-nav surface
+   - remove the double frame from the Salla search input using inline !important
+   - use a softer, more uniform full-screen glass layer
+   - dark mode never uses contrast(200%)
+*/
+const initVelouraBottomNavSearchVisualV6 = () => {
+  const nav = document.querySelector('[data-vbn]');
+  const panel = document.getElementById('veloura-bottom-search-panel');
+  const backdrop = document.getElementById('veloura-bottom-search-backdrop-v4');
+
+  if (!nav || !panel || !backdrop) return;
+  if (document.documentElement.dataset.velouraVbnVisualV6 === 'true') return;
+  document.documentElement.dataset.velouraVbnVisualV6 = 'true';
+
+  /* V5 was already present in the previous build. Remove its stylesheet so V6
+     is the only visual override after the working V4 controller. */
+  document.getElementById('veloura-vbn-top-glass-visual-v5-style')?.remove();
+
+  const STYLE_ID = 'veloura-vbn-search-visual-v6-style';
+  if (!document.getElementById(STYLE_ID)) {
+    const style = document.createElement('style');
+    style.id = STYLE_ID;
+    style.textContent = `
+      @media (max-width: 767px) {
+        #veloura-bottom-search-backdrop-v4 {
+          position: fixed !important;
+          inset: 0 !important;
+          z-index: 2147483600 !important;
+          background: linear-gradient(
+            180deg,
+            rgba(248, 250, 252, .28) 0%,
+            rgba(241, 245, 249, .46) 48%,
+            rgba(226, 232, 240, .66) 100%
+          ) !important;
+          -webkit-backdrop-filter: blur(22px) saturate(120%) contrast(200%) !important;
+          backdrop-filter: blur(22px) saturate(120%) contrast(200%) !important;
+        }
+
+        #veloura-bottom-search-panel.veloura-bottom-search-panel {
+          top: calc(env(safe-area-inset-top, 0px) + 10px) !important;
+          right: auto !important;
+          bottom: auto !important;
+          left: 50% !important;
+          z-index: 2147483647 !important;
+          min-height: 58px !important;
+          margin: 0 !important;
+          padding: 5px !important;
+          transform: translateX(-50%) !important;
+          overflow: visible !important;
+          pointer-events: auto !important;
+        }
+
+        body.veloura-bottom-nav-search-open .veloura-bottom-nav {
+          z-index: 2147483646 !important;
+        }
+
+        /* Dark: stronger tint so bright page sections do not blow through.
+           Intentionally NO contrast(200%). */
+        html.dark body #veloura-bottom-search-backdrop-v4,
+        html body.dark #veloura-bottom-search-backdrop-v4 {
+          background: linear-gradient(
+            180deg,
+            rgba(0, 12, 22, .48) 0%,
+            rgba(0, 10, 20, .62) 52%,
+            rgba(0, 8, 17, .76) 100%
+          ) !important;
+          -webkit-backdrop-filter: blur(22px) saturate(112%) !important;
+          backdrop-filter: blur(22px) saturate(112%) !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  const surface =
+    nav.querySelector('.veloura-bottom-nav__surface') ||
+    nav.querySelector('[class*="bottom-nav__surface"]') ||
+    nav;
+
+  const setImp = (el, prop, value) => {
+    if (!el || value == null || value === '') return;
+    el.style.setProperty(prop, value, 'important');
+  };
+
+  const syncPanelToBottomNav = () => {
+    if (!surface?.isConnected || !panel?.isConnected) return;
+
+    const cs = getComputedStyle(surface);
+    const rect = surface.getBoundingClientRect();
+    const isDark =
+      document.documentElement.classList.contains('dark') ||
+      document.body.classList.contains('dark');
+
+    if (rect.width > 0) {
+      setImp(panel, 'width', `${Math.round(rect.width)}px`);
+      setImp(panel, 'max-width', 'calc(100vw - 24px)');
+    }
+
+    /* Copy the actual bottom-nav visual language instead of guessing colors. */
+    setImp(panel, 'background-color', cs.backgroundColor);
+    if (cs.backgroundImage && cs.backgroundImage !== 'none') {
+      setImp(panel, 'background-image', cs.backgroundImage);
+    } else {
+      setImp(panel, 'background-image', 'none');
+    }
+
+    setImp(panel, 'border-top-width', cs.borderTopWidth || '1px');
+    setImp(panel, 'border-right-width', cs.borderRightWidth || '1px');
+    setImp(panel, 'border-bottom-width', cs.borderBottomWidth || '1px');
+    setImp(panel, 'border-left-width', cs.borderLeftWidth || '1px');
+    setImp(panel, 'border-style', cs.borderTopStyle === 'none' ? 'solid' : cs.borderTopStyle);
+    setImp(panel, 'border-top-color', cs.borderTopColor);
+    setImp(panel, 'border-right-color', cs.borderRightColor);
+    setImp(panel, 'border-bottom-color', cs.borderBottomColor);
+    setImp(panel, 'border-left-color', cs.borderLeftColor);
+    setImp(panel, 'border-radius', cs.borderRadius || '24px');
+    setImp(panel, 'box-shadow', cs.boxShadow === 'none' ? '0 10px 32px rgba(0,0,0,.18)' : cs.boxShadow);
+    setImp(panel, 'color', cs.color);
+
+    /* The search is glass in both modes. Dark never receives contrast(200%). */
+    if (isDark) {
+      setImp(panel, '-webkit-backdrop-filter', 'blur(20px) saturate(112%)');
+      setImp(panel, 'backdrop-filter', 'blur(20px) saturate(112%)');
+    } else {
+      setImp(panel, '-webkit-backdrop-filter', 'blur(20px) saturate(120%) contrast(200%)');
+      setImp(panel, 'backdrop-filter', 'blur(20px) saturate(120%) contrast(200%)');
+    }
+  };
+
+  const getInlineSearch = () =>
+    panel.querySelector('salla-search[data-vbn-inline-search], salla-search');
+
+  const forceShadowInputVisual = () => {
+    const search = getInlineSearch();
+    const root = search?.shadowRoot;
+    if (!root) return false;
+
+    const input = root.querySelector('input[type="search"], input.s-search-input, input');
+    if (!input) return false;
+
+    /* Inline !important wins over the theme's other search-shadow injectors. */
+    setImp(input, 'height', '48px');
+    setImp(input, 'min-height', '48px');
+    setImp(input, 'max-height', '48px');
+    setImp(input, 'width', '100%');
+    setImp(input, 'margin', '0');
+    setImp(input, 'padding-inline', '18px');
+    setImp(input, 'border', '0');
+    setImp(input, 'outline', '0');
+    setImp(input, 'box-shadow', 'none');
+    setImp(input, 'background', 'transparent');
+    setImp(input, 'background-color', 'transparent');
+    setImp(input, 'color', 'inherit');
+    setImp(input, 'caret-color', 'currentColor');
+    setImp(input, '-webkit-appearance', 'none');
+    setImp(input, 'appearance', 'none');
+
+    /* Remove the second/inner frame from wrappers around the input only. */
+    let node = input.parentElement;
+    let depth = 0;
+    while (node && depth < 5) {
+      setImp(node, 'border', '0');
+      setImp(node, 'outline', '0');
+      setImp(node, 'box-shadow', 'none');
+      setImp(node, 'background', 'transparent');
+      setImp(node, 'background-color', 'transparent');
+      setImp(node, 'margin', '0');
+      setImp(node, 'min-height', '48px');
+      node = node.parentElement;
+      depth += 1;
+    }
+
+    /* Keep the results as a separate glass card below the search field. */
+    root.querySelectorAll(
+      '.s-search-results, .s-search-results-container, [part~="results"], [part~="results-container"]'
+    ).forEach(results => {
+      setImp(results, 'top', 'calc(100% + 10px)');
+      setImp(results, 'bottom', 'auto');
+      setImp(results, 'border-radius', '20px');
+      setImp(results, 'overflow', 'auto');
+    });
+
+    return true;
+  };
+
+  const refresh = () => {
+    syncPanelToBottomNav();
+    forceShadowInputVisual();
+  };
+
+  /* Apply now and again after Salla/theme injectors finish their own work. */
+  refresh();
+  [60, 180, 420, 900, 1600].forEach(delay => window.setTimeout(refresh, delay));
+  customElements.whenDefined?.('salla-search').then(() => {
+    refresh();
+    window.setTimeout(refresh, 250);
+  }).catch(() => {});
+
+  /* Re-assert only while the search is open; cheap and avoids style races. */
+  window.setInterval(() => {
+    if (document.body.classList.contains('veloura-bottom-nav-search-open')) refresh();
+  }, 700);
+
+  window.addEventListener('resize', refresh, { passive: true });
+  window.addEventListener('orientationchange', refresh, { passive: true });
+  document.addEventListener('theme::ready', refresh);
+
+  console.info('[Veloura] Search Visual V6 ready');
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initVelouraBottomNavSearchVisualV6, { once: true });
+} else {
+  initVelouraBottomNavSearchVisualV6();
+}
+/* VELOURA BOTTOM NAV — SEARCH VISUAL V6 END */
