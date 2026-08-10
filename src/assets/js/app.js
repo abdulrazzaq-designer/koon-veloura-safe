@@ -3889,105 +3889,126 @@ if (document.readyState === 'loading') {
 document.addEventListener('theme::ready', initVelouraBalancedInlineSearchV63);
 /* VELOURA V63 BALANCED INLINE SEARCH LAYOUT END */
 
-/* VELOURA BOTTOM NAV — TOP GLASS SEARCH V4
-   Self-contained hotfix:
-   - does not depend on master.twig changes
-   - does not depend on mobile-floating-menu.scss changes
-   - uses Salla's inline search component (no native full-screen search modal)
-   - portals the inline search panel directly under <body>
-   - forces the panel to the TOP of the viewport
-   - keeps the bottom navigation above the glass backdrop
-   - light mode uses contrast(200%); dark mode intentionally does not
-   - categories become active from the first tap
-*/
-const initVelouraBottomNavTopGlassSearchV4 = () => {
-  const nav = document.querySelector('[data-vbn]');
-  if (!nav || nav.dataset.vbnTopGlassV4 === 'true') return;
+/* ========================================================================
+   Veloura Bottom Navigation — Search V8 (single owner)
 
-  nav.dataset.vbnTopGlassV4 = 'true';
+   Why this version exists:
+   - The bottom-nav search is marked [data-vbn-native] BEFORE it is mounted.
+     Veloura V86 intentionally skips that marker, so V86 cannot paint a second
+     Salla-search layer inside this one-off mobile search.
+   - Exactly ONE Shadow-DOM element owns the search material: the real form
+     that contains the input. The host, wrappers and input stay transparent.
+   - No old V4/V5/V6/V7 bottom-search visual controller is used here.
+   ======================================================================== */
+const initVelouraBottomNavSearchV8 = () => {
+  const nav = document.querySelector('[data-vbn]');
+  if (!nav || nav.dataset.vbnSearchV8 === 'true') return;
 
   const itemSelector = '[data-vbn-item]';
   const searchItem = nav.querySelector(`${itemSelector}[data-vbn-key="search"]`);
+  const categoriesItem = nav.querySelector(`${itemSelector}[data-vbn-key="categories"]`);
+  const navSurface = nav.querySelector('.veloura-bottom-nav__surface');
+
   if (!searchItem) return;
+  nav.dataset.vbnSearchV8 = 'true';
 
-  const STYLE_ID = 'veloura-vbn-top-glass-v4-style';
-  const PANEL_ID = 'veloura-bottom-search-panel';
-  const BACKDROP_ID = 'veloura-bottom-search-backdrop-v4';
+  const PANEL_ID = 'veloura-bottom-search-panel-v8';
+  const BACKDROP_ID = 'veloura-bottom-search-backdrop-v8';
+  const STYLE_ID = 'veloura-bottom-search-style-v8';
 
-  /* ---------------------------------------------------------
-     1) Force the visual layer from JS so compiled SCSS/cache
-        cannot keep the search at the bottom.
-     --------------------------------------------------------- */
-  if (!document.getElementById(STYLE_ID)) {
-    const style = document.createElement('style');
+  // Remove stale runtime nodes/styles from the experimental versions.
+  [
+    'veloura-bottom-search-panel',
+    'veloura-bottom-search-backdrop-v4',
+    'veloura-bottom-search-panel-v2'
+  ].forEach(id => document.getElementById(id)?.remove());
+
+  document.querySelectorAll('[data-vbn-search-layer], [data-vbn-search-panel]').forEach(node => node.remove());
+
+  [
+    'veloura-vbn-top-glass-v4-style',
+    'veloura-vbn-top-glass-visual-v5-style',
+    'veloura-vbn-search-visual-v6-style',
+    'veloura-vbn-search-visual-v7-style'
+  ].forEach(id => document.getElementById(id)?.remove());
+
+  let style = document.getElementById(STYLE_ID);
+  if (!style) {
+    style = document.createElement('style');
     style.id = STYLE_ID;
     style.textContent = `
       @media (max-width: 767px) {
         #${BACKDROP_ID} {
           position: fixed !important;
           inset: 0 !important;
-          z-index: 2147483600 !important;
-          display: block;
-          opacity: 1;
-          pointer-events: auto;
+          z-index: 2147483000 !important;
+          display: block !important;
+          pointer-events: auto !important;
+          opacity: 1 !important;
           background:
+            radial-gradient(
+              115% 54% at 50% -8%,
+              rgba(255,255,255,.18) 0%,
+              rgba(255,255,255,.07) 44%,
+              rgba(255,255,255,0) 72%
+            ),
             linear-gradient(
-              to bottom,
-              rgba(255, 255, 255, .16) 0%,
-              rgba(255, 255, 255, .16) 42%,
-              rgba(232, 236, 242, .56) 42%,
-              rgba(232, 236, 242, .72) 100%
+              180deg,
+              rgba(248,250,252,.14) 0%,
+              rgba(244,247,250,.20) 38%,
+              rgba(235,239,244,.34) 64%,
+              rgba(226,231,237,.54) 100%
             ) !important;
-          -webkit-backdrop-filter: blur(18px) saturate(124%) contrast(200%) !important;
-          backdrop-filter: blur(18px) saturate(124%) contrast(200%) !important;
+          -webkit-backdrop-filter: blur(20px) saturate(122%) contrast(200%) !important;
+          backdrop-filter: blur(20px) saturate(122%) contrast(200%) !important;
         }
 
-        #${BACKDROP_ID}[hidden] {
+        #${BACKDROP_ID}[hidden],
+        #${PANEL_ID}[hidden] {
           display: none !important;
         }
 
-        #${PANEL_ID}.veloura-bottom-search-panel {
+        #${PANEL_ID} {
           position: fixed !important;
-          top: calc(env(safe-area-inset-top, 0px) + 12px) !important;
+          top: calc(env(safe-area-inset-top, 0px) + 14px) !important;
+          left: 50% !important;
           right: auto !important;
           bottom: auto !important;
-          left: 50% !important;
-          z-index: 2147483647 !important;
+          z-index: 2147483300 !important;
 
-          display: none !important;
-          width: min(430px, calc(100vw - 28px)) !important;
-          max-width: calc(100vw - 28px) !important;
+          display: block !important;
+          width: min(430px, calc(100vw - 32px)) !important;
+          max-width: calc(100vw - 32px) !important;
           min-height: 56px !important;
+          height: 56px !important;
           margin: 0 !important;
-          padding: 6px !important;
+          padding: 0 !important;
 
-          color: var(--vbn-text, #111827) !important;
-          border: 1px solid rgba(255, 255, 255, .34) !important;
-          border-radius: var(--vbn-radius, 20px) !important;
-          background: rgba(245, 247, 250, .58) !important;
-          box-shadow:
-            0 14px 42px rgba(15, 23, 42, .16),
-            inset 0 1px 0 rgba(255, 255, 255, .24) !important;
-
-          -webkit-backdrop-filter: blur(22px) saturate(130%) contrast(200%) !important;
-          backdrop-filter: blur(22px) saturate(130%) contrast(200%) !important;
+          border: 0 !important;
+          outline: 0 !important;
+          border-radius: 0 !important;
+          background: transparent !important;
+          box-shadow: none !important;
+          -webkit-backdrop-filter: none !important;
+          backdrop-filter: none !important;
 
           transform: translateX(-50%) !important;
-          pointer-events: auto !important;
           overflow: visible !important;
+          pointer-events: none !important;
         }
 
-        body.veloura-bottom-nav-search-open #${PANEL_ID}.veloura-bottom-search-panel:not([hidden]) {
-          display: block !important;
-        }
-
-        #${PANEL_ID} salla-search[data-vbn-inline-search] {
+        #${PANEL_ID} > salla-search {
           display: block !important;
           width: 100% !important;
-          min-width: 0 !important;
+          height: 56px !important;
+          min-height: 56px !important;
           margin: 0 !important;
           padding: 0 !important;
           background: transparent !important;
+          border: 0 !important;
+          box-shadow: none !important;
+          overflow: visible !important;
+          pointer-events: auto !important;
         }
 
         body.veloura-bottom-nav-search-open {
@@ -3996,7 +4017,7 @@ const initVelouraBottomNavTopGlassSearchV4 = () => {
         }
 
         body.veloura-bottom-nav-search-open .veloura-bottom-nav {
-          z-index: 2147483646 !important;
+          z-index: 2147483200 !important;
           pointer-events: none !important;
         }
 
@@ -4005,42 +4026,53 @@ const initVelouraBottomNavTopGlassSearchV4 = () => {
           pointer-events: auto !important;
         }
 
-        /* Light-mode glass: contrast(200%) is intentional. */
-        html:not(.dark) body.veloura-bottom-nav-glass .veloura-bottom-nav__surface,
-        html:not(.dark) body.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-nav__surface {
-          -webkit-backdrop-filter: blur(20px) saturate(124%) contrast(200%) !important;
-          backdrop-filter: blur(20px) saturate(124%) contrast(200%) !important;
+        /* Light: visible glass bar + a clearly separated active button. */
+        html:not(.dark) body.veloura-bottom-nav-search-open .veloura-bottom-nav__surface {
+          color: #0f172a !important;
+          background: rgba(255,255,255,.78) !important;
+          border: 1px solid rgba(15,23,42,.10) !important;
+          box-shadow:
+            0 12px 34px rgba(15,23,42,.16),
+            inset 0 1px 0 rgba(255,255,255,.92) !important;
+          -webkit-backdrop-filter: blur(20px) saturate(126%) contrast(200%) !important;
+          backdrop-filter: blur(20px) saturate(126%) contrast(200%) !important;
         }
 
-        /* Dark mode: NO contrast(200%) on backdrop, search, or bottom bar. */
+        html:not(.dark) body.veloura-bottom-nav-search-open .veloura-bottom-nav__item {
+          color: #111827 !important;
+        }
+
+        html:not(.dark) body.veloura-bottom-nav-search-open .veloura-bottom-nav__item.is-active {
+          color: #ffffff !important;
+          background: var(--vbn-active, #00b8ee) !important;
+          box-shadow:
+            0 0 0 1px rgba(255,255,255,.92),
+            0 8px 22px rgba(15,23,42,.22) !important;
+        }
+
+        /* Dark: deliberately NO contrast(200%). */
         html.dark body #${BACKDROP_ID},
         html body.dark #${BACKDROP_ID} {
           background:
+            radial-gradient(
+              115% 54% at 50% -8%,
+              rgba(20,170,220,.05) 0%,
+              rgba(4,24,38,.035) 44%,
+              rgba(1,6,18,0) 72%
+            ),
             linear-gradient(
-              to bottom,
-              rgba(1, 6, 18, .18) 0%,
-              rgba(1, 6, 18, .18) 42%,
-              rgba(1, 6, 18, .64) 42%,
-              rgba(1, 6, 18, .80) 100%
+              180deg,
+              rgba(1,8,18,.24) 0%,
+              rgba(1,8,18,.34) 40%,
+              rgba(1,8,18,.51) 68%,
+              rgba(1,8,18,.72) 100%
             ) !important;
-          -webkit-backdrop-filter: blur(18px) saturate(116%) !important;
-          backdrop-filter: blur(18px) saturate(116%) !important;
+          -webkit-backdrop-filter: blur(20px) saturate(114%) !important;
+          backdrop-filter: blur(20px) saturate(114%) !important;
         }
 
-        html.dark body #${PANEL_ID}.veloura-bottom-search-panel,
-        html body.dark #${PANEL_ID}.veloura-bottom-search-panel {
-          color: var(--veloura-dark-primary-text, #ffffff) !important;
-          border-color: rgba(255, 255, 255, .10) !important;
-          background: rgba(3, 10, 24, .66) !important;
-          box-shadow:
-            0 16px 44px rgba(0, 0, 0, .34),
-            inset 0 1px 0 rgba(255, 255, 255, .06) !important;
-          -webkit-backdrop-filter: blur(22px) saturate(116%) !important;
-          backdrop-filter: blur(22px) saturate(116%) !important;
-        }
-
-        html.dark body.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-nav__surface,
-        html body.dark.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-nav__surface {
+        html.dark body.veloura-bottom-nav-search-open .veloura-bottom-nav__surface,
+        html body.dark.veloura-bottom-nav-search-open .veloura-bottom-nav__surface {
           -webkit-backdrop-filter: blur(20px) saturate(116%) !important;
           backdrop-filter: blur(20px) saturate(116%) !important;
         }
@@ -4049,218 +4081,289 @@ const initVelouraBottomNavTopGlassSearchV4 = () => {
     document.head.appendChild(style);
   }
 
-  /* ---------------------------------------------------------
-     2) Reuse the panel if master.twig already has it. If not,
-        create the exact same inline Salla search dynamically.
-     --------------------------------------------------------- */
-  let searchPanel = document.getElementById(PANEL_ID);
+  const backdrop = document.createElement('div');
+  backdrop.id = BACKDROP_ID;
+  backdrop.hidden = true;
+  backdrop.setAttribute('aria-hidden', 'true');
 
-  if (!searchPanel) {
-    searchPanel = document.createElement('div');
-    searchPanel.id = PANEL_ID;
-    searchPanel.className = 'veloura-bottom-search-panel';
-    searchPanel.dataset.vbnSearchPanel = 'true';
-    searchPanel.hidden = true;
-    searchPanel.setAttribute('aria-hidden', 'true');
+  const panel = document.createElement('div');
+  panel.id = PANEL_ID;
+  panel.hidden = true;
+  panel.setAttribute('aria-hidden', 'true');
+  panel.setAttribute('data-vbn-search-panel', 'v8');
 
-    const search = document.createElement('salla-search');
-    search.setAttribute('inline', '');
-    search.setAttribute('height', '44');
-    search.dataset.vbnInlineSearch = 'true';
-    searchPanel.appendChild(search);
-  }
+  const search = document.createElement('salla-search');
+  search.setAttribute('inline', '');
+  search.setAttribute('height', '56');
+  search.setAttribute('data-vbn-inline-search', 'v8');
 
-  /* Critical: detach from the fixed bottom nav and portal to body. */
-  if (searchPanel.parentElement !== document.body) {
-    document.body.appendChild(searchPanel);
-  }
+  // CRITICAL: V86 checks this marker and skips this custom search completely.
+  search.setAttribute('data-vbn-native', '');
 
-  let inlineSearch = searchPanel.querySelector('salla-search[data-vbn-inline-search]');
-  if (!inlineSearch) {
-    inlineSearch = searchPanel.querySelector('salla-search');
-    if (inlineSearch) inlineSearch.dataset.vbnInlineSearch = 'true';
-  }
-
-  let backdrop = document.getElementById(BACKDROP_ID);
-  if (!backdrop) {
-    backdrop = document.createElement('div');
-    backdrop.id = BACKDROP_ID;
-    backdrop.hidden = true;
-    backdrop.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(backdrop);
-  }
+  panel.appendChild(search);
+  document.body.append(backdrop, panel);
 
   searchItem.removeAttribute('onclick');
   searchItem.setAttribute('aria-controls', PANEL_ID);
   searchItem.setAttribute('aria-expanded', 'false');
 
-  /* ---------------------------------------------------------
-     3) Remove Salla inline-search's large white wrapper only for
-        this instance. The search functionality remains native.
-     --------------------------------------------------------- */
-  const styleInlineSearchShadow = () => {
-    if (!inlineSearch) return;
+  const isDark = () =>
+    document.documentElement.classList.contains('dark') ||
+    document.body.classList.contains('dark');
 
-    const shadowCss = `
-      :host {
-        position: relative !important;
-        display: block !important;
-        width: 100% !important;
-        min-width: 0 !important;
-        min-height: 44px !important;
-        height: 44px !important;
-        max-height: 44px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        background: transparent !important;
-        overflow: visible !important;
-      }
-
-      form,
-      .s-search-container,
-      .s-search-wrapper,
-      [part~="form"],
-      [part~="container"] {
-        position: relative !important;
-        display: block !important;
-        width: 100% !important;
-        min-width: 0 !important;
-        min-height: 44px !important;
-        height: 44px !important;
-        max-height: 44px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border: 0 !important;
-        border-radius: calc(var(--vbn-radius, 20px) - 5px) !important;
-        background: transparent !important;
-        background-color: transparent !important;
-        box-shadow: none !important;
-        overflow: visible !important;
-      }
-
-      input,
-      .s-search-input,
-      [part~="input"] {
-        width: 100% !important;
-        min-width: 0 !important;
-        min-height: 44px !important;
-        height: 44px !important;
-        max-height: 44px !important;
-        margin: 0 !important;
-        box-sizing: border-box !important;
-        border: 1px solid rgba(148, 163, 184, .14) !important;
-        border-radius: calc(var(--vbn-radius, 20px) - 5px) !important;
-        background: rgba(255, 255, 255, .10) !important;
-        color: inherit !important;
-        box-shadow: none !important;
-      }
-
-      input::placeholder,
-      .s-search-input::placeholder {
-        color: currentColor !important;
-        opacity: .55 !important;
-      }
-
-      .s-search-results,
-      [part~="results"] {
-        position: absolute !important;
-        inset-inline: 0 !important;
-        top: calc(100% + 10px) !important;
-        bottom: auto !important;
-        z-index: 30 !important;
-        max-height: min(58dvh, 480px) !important;
-        overflow-y: auto !important;
-        border-radius: 18px !important;
-      }
-    `;
-
-    const apply = () => {
-      const root = inlineSearch.shadowRoot;
-      if (!root) return;
-
-      let style = root.querySelector('style[data-veloura-vbn-top-glass-v4]');
-      if (!style) {
-        style = document.createElement('style');
-        style.dataset.velouraVbnTopGlassV4 = 'true';
-        root.appendChild(style);
-      }
-      style.textContent = shadowCss;
-    };
-
-    apply();
-    inlineSearch.componentOnReady?.().then(apply).catch(() => {});
-    customElements.whenDefined?.('salla-search').then(apply).catch(() => {});
-    window.setTimeout(apply, 250);
-    window.setTimeout(apply, 800);
+  const setImportant = (element, property, value) => {
+    if (!element || value == null) return;
+    element.style.setProperty(property, value, 'important');
   };
 
-  styleInlineSearchShadow();
+  const rgbWithAlpha = (value, alpha, fallback) => {
+    const match = String(value || '').match(/rgba?\(\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)/i);
+    if (!match) return fallback;
+    return `rgba(${match[1]}, ${match[2]}, ${match[3]}, ${alpha})`;
+  };
+
+  let shadowObserver = null;
+  let applyingShadow = false;
+
+  const styleSearchShadow = () => {
+    const root = search.shadowRoot;
+    if (!root || applyingShadow) return false;
+
+    const input = root.querySelector(
+      'input[type="search"], input.s-search-input, [part~="input"], input'
+    );
+    if (!input) return false;
+
+    applyingShadow = true;
+
+    try {
+      // Remove every older Veloura search paint from THIS component only.
+      root.querySelector('#veloura-v86-shadow-contract')?.remove();
+      root.querySelectorAll(
+        'style[data-veloura-vbn-top-glass-v4], style[data-veloura-vbn-visual-v5], style[data-veloura-vbn-visual-v6], style[data-veloura-vbn-visual-v7]'
+      ).forEach(node => node.remove());
+
+      setImportant(search, 'background', 'transparent');
+      setImportant(search, 'border', '0');
+      setImportant(search, 'box-shadow', 'none');
+      setImportant(search, 'overflow', 'visible');
+
+      const resultsSelector = [
+        '.s-search-results',
+        '.s-search-results-container',
+        '.s-search-dropdown',
+        '[part~="results"]',
+        '[part~="results-container"]',
+        '[part~="dropdown"]',
+        '[role="listbox"]'
+      ].join(', ');
+
+      const results = Array.from(root.querySelectorAll(resultsSelector));
+      const belongsToResults = element =>
+        results.some(result => result === element || result.contains(element));
+
+      // Make every wrapper around the input visually transparent first.
+      let ancestor = input.parentElement;
+      while (ancestor) {
+        if (!belongsToResults(ancestor)) {
+          setImportant(ancestor, 'background', 'transparent');
+          setImportant(ancestor, 'background-color', 'transparent');
+          setImportant(ancestor, 'background-image', 'none');
+          setImportant(ancestor, 'border', '0');
+          setImportant(ancestor, 'outline', '0');
+          setImportant(ancestor, 'box-shadow', 'none');
+          setImportant(ancestor, '-webkit-backdrop-filter', 'none');
+          setImportant(ancestor, 'backdrop-filter', 'none');
+          setImportant(ancestor, 'overflow', 'visible');
+        }
+        ancestor = ancestor.parentElement;
+      }
+
+      // Exactly ONE paint owner: the real form containing the input.
+      const surface = input.closest('form') || input.parentElement;
+      const dark = isDark();
+      const computedNavBg = navSurface ? getComputedStyle(navSurface).backgroundColor : '';
+      const darkSurface = rgbWithAlpha(computedNavBg, .88, 'rgba(0, 36, 54, .88)');
+
+      setImportant(surface, 'position', 'relative');
+      setImportant(surface, 'display', 'flex');
+      setImportant(surface, 'align-items', 'center');
+      setImportant(surface, 'width', '100%');
+      setImportant(surface, 'min-width', '0');
+      setImportant(surface, 'height', '56px');
+      setImportant(surface, 'min-height', '56px');
+      setImportant(surface, 'margin', '0');
+      setImportant(surface, 'padding', '0 4px');
+      setImportant(surface, 'box-sizing', 'border-box');
+      setImportant(surface, 'border-radius', '999px');
+      setImportant(surface, 'overflow', 'visible');
+
+      if (dark) {
+        setImportant(surface, 'background', darkSurface);
+        setImportant(surface, 'border', '1px solid rgba(255,255,255,.10)');
+        setImportant(surface, 'box-shadow', '0 12px 34px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.055)');
+        setImportant(surface, '-webkit-backdrop-filter', 'blur(20px) saturate(116%)');
+        setImportant(surface, 'backdrop-filter', 'blur(20px) saturate(116%)');
+      } else {
+        setImportant(surface, 'background', 'rgba(255,255,255,.78)');
+        setImportant(surface, 'border', '1px solid rgba(15,23,42,.10)');
+        setImportant(surface, 'box-shadow', '0 12px 34px rgba(15,23,42,.16), inset 0 1px 0 rgba(255,255,255,.92)');
+        setImportant(surface, '-webkit-backdrop-filter', 'blur(20px) saturate(126%) contrast(200%)');
+        setImportant(surface, 'backdrop-filter', 'blur(20px) saturate(126%) contrast(200%)');
+      }
+
+      setImportant(input, 'display', 'block');
+      setImportant(input, 'flex', '1 1 auto');
+      setImportant(input, 'width', '100%');
+      setImportant(input, 'min-width', '0');
+      setImportant(input, 'height', '54px');
+      setImportant(input, 'min-height', '54px');
+      setImportant(input, 'margin', '0');
+      setImportant(input, 'padding-inline', '18px');
+      setImportant(input, 'box-sizing', 'border-box');
+      setImportant(input, 'font-size', '16px');
+      setImportant(input, 'border', '0');
+      setImportant(input, 'outline', '0');
+      setImportant(input, 'border-radius', '999px');
+      setImportant(input, 'background', 'transparent');
+      setImportant(input, 'background-color', 'transparent');
+      setImportant(input, 'background-image', 'none');
+      setImportant(input, 'box-shadow', 'none');
+      setImportant(input, '-webkit-backdrop-filter', 'none');
+      setImportant(input, 'backdrop-filter', 'none');
+      setImportant(input, 'color', dark ? '#e8f0f6' : '#334155');
+      setImportant(input, '-webkit-text-fill-color', dark ? '#e8f0f6' : '#334155');
+      setImportant(input, 'caret-color', dark ? '#ffffff' : '#0f172a');
+      setImportant(input, '-webkit-appearance', 'none');
+      setImportant(input, 'appearance', 'none');
+
+      // Keep any native search/clear buttons unpainted inside the same pill.
+      surface?.querySelectorAll('button, [part~="button"]').forEach(button => {
+        setImportant(button, 'background', 'transparent');
+        setImportant(button, 'border', '0');
+        setImportant(button, 'box-shadow', 'none');
+        setImportant(button, 'color', dark ? '#e8f0f6' : '#334155');
+      });
+
+      let helper = root.querySelector('style[data-veloura-vbn-v8]');
+      if (!helper) {
+        helper = document.createElement('style');
+        helper.setAttribute('data-veloura-vbn-v8', '');
+        root.appendChild(helper);
+      }
+
+      helper.textContent = `
+        input::placeholder,
+        .s-search-input::placeholder,
+        [part~="input"]::placeholder {
+          color: ${dark ? 'rgba(232,240,246,.56)' : 'rgba(71,85,105,.72)'} !important;
+          -webkit-text-fill-color: currentColor !important;
+          opacity: 1 !important;
+        }
+
+        input:focus,
+        input:focus-visible,
+        .s-search-input:focus,
+        .s-search-input:focus-visible,
+        [part~="input"]:focus,
+        [part~="input"]:focus-visible {
+          outline: none !important;
+          border: 0 !important;
+          box-shadow: none !important;
+        }
+      `;
+
+      results.forEach(result => {
+        setImportant(result, 'position', 'absolute');
+        setImportant(result, 'inset-inline', '0');
+        setImportant(result, 'top', 'calc(100% + 10px)');
+        setImportant(result, 'bottom', 'auto');
+        setImportant(result, 'z-index', '70');
+        setImportant(result, 'max-height', 'min(58dvh, 480px)');
+        setImportant(result, 'overflow-y', 'auto');
+        setImportant(result, 'border-radius', '20px');
+        setImportant(result, 'color', dark ? '#e8f0f6' : '#111827');
+        setImportant(result, 'background', dark ? 'rgba(2,16,28,.94)' : 'rgba(255,255,255,.94)');
+        setImportant(result, 'border', dark ? '1px solid rgba(255,255,255,.09)' : '1px solid rgba(15,23,42,.08)');
+        setImportant(result, 'box-shadow', '0 18px 48px rgba(0,0,0,.18)');
+        setImportant(result, '-webkit-backdrop-filter', dark ? 'blur(20px) saturate(116%)' : 'blur(20px) saturate(124%)');
+        setImportant(result, 'backdrop-filter', dark ? 'blur(20px) saturate(116%)' : 'blur(20px) saturate(124%)');
+      });
+
+      if (!shadowObserver && typeof MutationObserver === 'function') {
+        shadowObserver = new MutationObserver(() => {
+          window.requestAnimationFrame(styleSearchShadow);
+        });
+        shadowObserver.observe(root, { childList: true, subtree: true });
+      }
+
+      return true;
+    } finally {
+      applyingShadow = false;
+    }
+  };
 
   const routeActiveItem =
     nav.querySelector(`${itemSelector}[aria-current="page"]`) ||
     nav.querySelector(`${itemSelector}.is-active`) ||
     null;
 
-  const clearVisualActive = () => {
+  const clearActive = () => {
     nav.querySelectorAll(itemSelector).forEach(item => item.classList.remove('is-active'));
   };
 
-  const setVisualActive = item => {
-    if (!item || !nav.contains(item)) return;
-    clearVisualActive();
+  const setActive = item => {
+    if (!item) return;
+    clearActive();
     item.classList.add('is-active');
   };
 
   const restoreRouteActive = () => {
-    clearVisualActive();
-    const currentRoute =
-      nav.querySelector(`${itemSelector}[aria-current="page"]`) ||
-      routeActiveItem;
-    currentRoute?.classList.add('is-active');
+    clearActive();
+    const current = nav.querySelector(`${itemSelector}[aria-current="page"]`) || routeActiveItem;
+    current?.classList.add('is-active');
   };
 
-  const isSearchOpen = () => !searchPanel.hidden;
+  const isSearchOpen = () => !panel.hidden;
 
   const focusSearch = () => {
-    if (!inlineSearch) return;
     const focus = () => {
-      const input = inlineSearch.shadowRoot?.querySelector(
-        'input[type="search"], input.s-search-input, input'
+      const input = search.shadowRoot?.querySelector(
+        'input[type="search"], input.s-search-input, [part~="input"], input'
       );
       input?.focus?.({ preventScroll: true });
     };
     requestAnimationFrame(focus);
     window.setTimeout(focus, 120);
-    window.setTimeout(focus, 350);
+    window.setTimeout(focus, 320);
   };
 
   const openSearch = () => {
-    searchPanel.hidden = false;
-    searchPanel.setAttribute('aria-hidden', 'false');
+    panel.hidden = false;
     backdrop.hidden = false;
+    panel.setAttribute('aria-hidden', 'false');
     backdrop.setAttribute('aria-hidden', 'false');
     searchItem.setAttribute('aria-expanded', 'true');
     document.body.classList.add('veloura-bottom-nav-search-open');
-    setVisualActive(searchItem);
-    styleInlineSearchShadow();
+    setActive(searchItem);
+
+    styleSearchShadow();
+    window.setTimeout(styleSearchShadow, 80);
+    window.setTimeout(styleSearchShadow, 240);
     focusSearch();
   };
 
   const closeSearch = ({ restore = true } = {}) => {
-    searchPanel.hidden = true;
-    searchPanel.setAttribute('aria-hidden', 'true');
+    panel.hidden = true;
     backdrop.hidden = true;
+    panel.setAttribute('aria-hidden', 'true');
     backdrop.setAttribute('aria-hidden', 'true');
     searchItem.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('veloura-bottom-nav-search-open');
     if (restore) restoreRouteActive();
   };
 
-  /* ---------------------------------------------------------
-     4) Capture-phase controller.
-        Search prevents the old onclick="search::open" modal.
-        Categories still pass through to Raed's native drawer.
-     --------------------------------------------------------- */
+  // Search uses our inline instance; every other item keeps its native action.
   nav.addEventListener('click', event => {
     const item = event.target.closest?.(itemSelector);
     if (!item || !nav.contains(item)) return;
@@ -4282,639 +4385,73 @@ const initVelouraBottomNavTopGlassSearchV4 = () => {
     }
 
     if (key === 'categories') {
-      const wasOpen = document.body.classList.contains('menu-opened');
-
       if (isSearchOpen()) closeSearch({ restore: false });
 
-      if (wasOpen) {
-        document.body.classList.remove('veloura-bottom-nav-categories-open');
-        restoreRouteActive();
+      if (document.body.classList.contains('menu-opened')) {
+        window.setTimeout(restoreRouteActive, 120);
       } else {
-        document.body.classList.add('veloura-bottom-nav-categories-open');
-        setVisualActive(item);
+        setActive(item);
       }
-
-      /* Do not prevent/stop: Raed still opens/closes #mobile-menu. */
       return;
     }
 
     if (isSearchOpen()) closeSearch({ restore: false });
-    document.body.classList.remove('veloura-bottom-nav-categories-open');
-    setVisualActive(item);
+    setActive(item);
   }, true);
 
   backdrop.addEventListener('click', () => closeSearch({ restore: true }));
 
   document.addEventListener('click', event => {
     if (!event.target.closest?.('.close-mobile-menu, .mm-ocd__backdrop')) return;
-    document.body.classList.remove('veloura-bottom-nav-categories-open');
-    restoreRouteActive();
+    window.setTimeout(restoreRouteActive, 120);
   }, true);
 
   document.addEventListener('keydown', event => {
-    if (event.key !== 'Escape') return;
-    if (isSearchOpen()) closeSearch({ restore: true });
+    if (event.key === 'Escape' && isSearchOpen()) closeSearch({ restore: true });
   });
 
-  searchPanel.hidden = true;
-  backdrop.hidden = true;
-  document.body.classList.remove('veloura-bottom-nav-search-open');
-  searchItem.setAttribute('aria-expanded', 'false');
-  restoreRouteActive();
-
-  console.info('[Veloura] Top Glass Search V4 ready');
-};
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initVelouraBottomNavTopGlassSearchV4, { once: true });
-} else {
-  initVelouraBottomNavTopGlassSearchV4();
-}
-
-document.addEventListener('theme::ready', initVelouraBottomNavTopGlassSearchV4);
-/* VELOURA BOTTOM NAV — TOP GLASS SEARCH V4 END */
-
-
-/* VELOURA BOTTOM NAV — TOP GLASS VISUAL V5
-   Visual-only refinement for the working V4 controller.
-   Keeps all search/category behavior untouched.
-*/
-const initVelouraBottomNavTopGlassVisualV5 = () => {
-  const STYLE_ID = 'veloura-vbn-top-glass-visual-v5-style';
-  const PANEL_ID = 'veloura-bottom-search-panel';
-  const BACKDROP_ID = 'veloura-bottom-search-backdrop-v4';
-
-  if (!document.getElementById(STYLE_ID)) {
-    const style = document.createElement('style');
-    style.id = STYLE_ID;
-    style.textContent = `
-      @media (max-width: 767px) {
-        /*
-         * Full-screen glass:
-         * two visual zones, but with a feathered transition instead of
-         * the hard horizontal cut that appeared in V4.
-         */
-        #${BACKDROP_ID} {
-          background:
-            radial-gradient(
-              110% 52% at 50% -8%,
-              rgba(255, 255, 255, .20) 0%,
-              rgba(255, 255, 255, .08) 42%,
-              rgba(255, 255, 255, 0) 72%
-            ),
-            linear-gradient(
-              180deg,
-              rgba(247, 249, 252, .14) 0%,
-              rgba(242, 245, 249, .18) 34%,
-              rgba(232, 237, 243, .34) 58%,
-              rgba(224, 230, 238, .56) 100%
-            ) !important;
-          -webkit-backdrop-filter: blur(17px) saturate(122%) contrast(200%) !important;
-          backdrop-filter: blur(17px) saturate(122%) contrast(200%) !important;
-        }
-
-        /* One clean glass shell — no double frame. */
-        #${PANEL_ID}.veloura-bottom-search-panel {
-          top: calc(env(safe-area-inset-top, 0px) + 14px) !important;
-          width: min(470px, calc(100vw - 32px)) !important;
-          max-width: calc(100vw - 32px) !important;
-          min-height: 58px !important;
-          padding: 5px !important;
-
-          border: 1px solid rgba(255, 255, 255, .30) !important;
-          border-radius: var(--vbn-radius, 24px) !important;
-          background:
-            linear-gradient(
-              180deg,
-              rgba(255, 255, 255, .62) 0%,
-              rgba(245, 248, 252, .48) 100%
-            ) !important;
-          box-shadow:
-            0 10px 30px rgba(15, 23, 42, .13),
-            inset 0 1px 0 rgba(255, 255, 255, .48),
-            inset 0 -1px 0 rgba(15, 23, 42, .04) !important;
-
-          -webkit-backdrop-filter: blur(22px) saturate(126%) contrast(200%) !important;
-          backdrop-filter: blur(22px) saturate(126%) contrast(200%) !important;
-        }
-
-        #${PANEL_ID} salla-search[data-vbn-inline-search] {
-          --vbn-search-input-bg: transparent;
-          --vbn-search-input-border: transparent;
-          --vbn-search-results-bg: rgba(255, 255, 255, .78);
-          --vbn-search-results-border: rgba(255, 255, 255, .38);
-          --vbn-search-results-text: #111827;
-        }
-
-        /* Keep the bottom bar visually separate and crisp in light mode. */
-        html:not(.dark) body.veloura-bottom-nav-search-open.veloura-bottom-nav-glass .veloura-bottom-nav__surface,
-        html:not(.dark) body.veloura-bottom-nav-search-open .veloura-bottom-nav__surface {
-          background: rgba(247, 249, 252, .66) !important;
-          border: 1px solid rgba(255, 255, 255, .32) !important;
-          box-shadow:
-            0 10px 30px rgba(15, 23, 42, .12),
-            inset 0 1px 0 rgba(255, 255, 255, .30) !important;
-          -webkit-backdrop-filter: blur(20px) saturate(124%) contrast(200%) !important;
-          backdrop-filter: blur(20px) saturate(124%) contrast(200%) !important;
-        }
-
-        /* Dark backdrop: same two-zone idea, no contrast(200%). */
-        html.dark body #${BACKDROP_ID},
-        html body.dark #${BACKDROP_ID} {
-          background:
-            radial-gradient(
-              110% 52% at 50% -8%,
-              rgba(24, 190, 238, .055) 0%,
-              rgba(10, 35, 50, .04) 40%,
-              rgba(1, 6, 18, 0) 72%
-            ),
-            linear-gradient(
-              180deg,
-              rgba(1, 8, 18, .24) 0%,
-              rgba(1, 8, 18, .31) 34%,
-              rgba(1, 8, 18, .48) 60%,
-              rgba(1, 8, 18, .68) 100%
-            ) !important;
-          -webkit-backdrop-filter: blur(17px) saturate(114%) !important;
-          backdrop-filter: blur(17px) saturate(114%) !important;
-        }
-
-        html.dark body #${PANEL_ID}.veloura-bottom-search-panel,
-        html body.dark #${PANEL_ID}.veloura-bottom-search-panel {
-          color: var(--veloura-dark-primary-text, #fff) !important;
-          border-color: rgba(255, 255, 255, .09) !important;
-          background:
-            linear-gradient(
-              180deg,
-              rgba(4, 28, 43, .88) 0%,
-              rgba(2, 22, 35, .80) 100%
-            ) !important;
-          box-shadow:
-            0 12px 34px rgba(0, 0, 0, .30),
-            inset 0 1px 0 rgba(255, 255, 255, .07),
-            inset 0 -1px 0 rgba(0, 0, 0, .20) !important;
-          -webkit-backdrop-filter: blur(22px) saturate(114%) !important;
-          backdrop-filter: blur(22px) saturate(114%) !important;
-        }
-
-        html.dark body #${PANEL_ID} salla-search[data-vbn-inline-search],
-        html body.dark #${PANEL_ID} salla-search[data-vbn-inline-search] {
-          --vbn-search-input-bg: transparent;
-          --vbn-search-input-border: transparent;
-          --vbn-search-results-bg: rgba(3, 18, 30, .94);
-          --vbn-search-results-border: rgba(255, 255, 255, .08);
-          --vbn-search-results-text: #fff;
-        }
-
-        /* Dark bottom bar intentionally has NO contrast(200%). */
-        html.dark body.veloura-bottom-nav-search-open .veloura-bottom-nav__surface,
-        html body.dark.veloura-bottom-nav-search-open .veloura-bottom-nav__surface {
-          -webkit-backdrop-filter: blur(20px) saturate(114%) !important;
-          backdrop-filter: blur(20px) saturate(114%) !important;
-        }
+  // Sync category active state with Raed's actual drawer state.
+  let menuWasOpen = document.body.classList.contains('menu-opened');
+  if (typeof MutationObserver === 'function') {
+    const bodyObserver = new MutationObserver(() => {
+      const menuOpen = document.body.classList.contains('menu-opened');
+      if (menuOpen && categoriesItem) {
+        if (isSearchOpen()) closeSearch({ restore: false });
+        setActive(categoriesItem);
+      } else if (menuWasOpen && !menuOpen && !isSearchOpen()) {
+        restoreRouteActive();
       }
-    `;
-    document.head.appendChild(style);
+      menuWasOpen = menuOpen;
+    });
+    bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
   }
 
-  const applySearchShadowVisual = () => {
-    const panel = document.getElementById(PANEL_ID);
-    const search = panel?.querySelector('salla-search[data-vbn-inline-search], salla-search');
-    const root = search?.shadowRoot;
-    if (!root) return false;
-
-    let style = root.querySelector('style[data-veloura-vbn-visual-v5]');
-    if (!style) {
-      style = document.createElement('style');
-      style.dataset.velouraVbnVisualV5 = 'true';
-      root.appendChild(style);
-    }
-
-    style.textContent = `
-      :host {
-        display: block !important;
-        width: 100% !important;
-        min-height: 48px !important;
-        height: 48px !important;
-        max-height: 48px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        color: inherit !important;
-        background: transparent !important;
-        overflow: visible !important;
-      }
-
-      form,
-      .s-search-container,
-      .s-search-wrapper,
-      [part~="form"],
-      [part~="container"] {
-        position: relative !important;
-        display: block !important;
-        width: 100% !important;
-        min-width: 0 !important;
-        min-height: 48px !important;
-        height: 48px !important;
-        max-height: 48px !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border: 0 !important;
-        outline: 0 !important;
-        border-radius: calc(var(--vbn-radius, 24px) - 5px) !important;
-        background: transparent !important;
-        box-shadow: none !important;
-        overflow: visible !important;
-      }
-
-      input,
-      input[type="search"],
-      .s-search-input,
-      [part~="input"] {
-        width: 100% !important;
-        min-width: 0 !important;
-        min-height: 48px !important;
-        height: 48px !important;
-        max-height: 48px !important;
-        margin: 0 !important;
-        padding-inline: 18px !important;
-        box-sizing: border-box !important;
-
-        border: 0 !important;
-        outline: 0 !important;
-        border-radius: calc(var(--vbn-radius, 24px) - 5px) !important;
-        background: var(--vbn-search-input-bg, transparent) !important;
-        color: inherit !important;
-        box-shadow: none !important;
-        -webkit-appearance: none !important;
-        appearance: none !important;
-      }
-
-      input:focus,
-      input:focus-visible,
-      input[type="search"]:focus,
-      input[type="search"]:focus-visible,
-      .s-search-input:focus,
-      .s-search-input:focus-visible,
-      [part~="input"]:focus,
-      [part~="input"]:focus-visible {
-        border: 0 !important;
-        outline: 0 !important;
-        box-shadow: none !important;
-      }
-
-      input::placeholder,
-      .s-search-input::placeholder,
-      [part~="input"]::placeholder {
-        color: currentColor !important;
-        opacity: .50 !important;
-      }
-
-      button,
-      [part~="button"],
-      [part~="icon"] {
-        color: inherit !important;
-        box-shadow: none !important;
-      }
-
-      .s-search-results,
-      .s-search-results-container,
-      [part~="results"],
-      [part~="results-container"] {
-        position: absolute !important;
-        inset-inline: 0 !important;
-        top: calc(100% + 10px) !important;
-        bottom: auto !important;
-        z-index: 50 !important;
-        max-height: min(56dvh, 460px) !important;
-        overflow-y: auto !important;
-
-        color: var(--vbn-search-results-text, inherit) !important;
-        border: 1px solid var(--vbn-search-results-border, rgba(255,255,255,.22)) !important;
-        border-radius: 20px !important;
-        background: var(--vbn-search-results-bg, rgba(255,255,255,.82)) !important;
-        box-shadow: 0 18px 48px rgba(0, 0, 0, .18) !important;
-        -webkit-backdrop-filter: blur(20px) saturate(118%) !important;
-        backdrop-filter: blur(20px) saturate(118%) !important;
-      }
-    `;
-
-    return true;
-  };
-
-  const schedule = () => {
-    applySearchShadowVisual();
-    window.setTimeout(applySearchShadowVisual, 120);
-    window.setTimeout(applySearchShadowVisual, 400);
-    window.setTimeout(applySearchShadowVisual, 900);
-  };
-
-  schedule();
-  customElements.whenDefined?.('salla-search').then(schedule).catch(() => {});
-  document.addEventListener('theme::ready', schedule, { once: true });
-
-  console.info('[Veloura] Top Glass Search Visual V5 ready');
-};
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initVelouraBottomNavTopGlassVisualV5, { once: true });
-} else {
-  initVelouraBottomNavTopGlassVisualV5();
-}
-/* VELOURA BOTTOM NAV — TOP GLASS VISUAL V5 END */
-
-/* VELOURA BOTTOM NAV — SEARCH VISUAL V7
-   Visual-only refinement for the WORKING V4 controller.
-   - ONE visible glass layer for the top search field
-   - stronger light-mode bottom-nav/readability
-   - dark mode keeps blur/saturation WITHOUT contrast(200%)
-   - search/category behavior remains untouched
-*/
-const initVelouraBottomNavSearchVisualV7 = () => {
-  const nav = document.querySelector('[data-vbn]');
-  const panel = document.getElementById('veloura-bottom-search-panel');
-  const backdrop = document.getElementById('veloura-bottom-search-backdrop-v4');
-
-  if (!nav || !panel || !backdrop) return;
-  if (document.documentElement.dataset.velouraVbnVisualV7 === 'true') return;
-  document.documentElement.dataset.velouraVbnVisualV7 = 'true';
-
-  // Remove old visual-only overrides. V4 stays because it owns the working behavior.
-  document.getElementById('veloura-vbn-top-glass-visual-v5-style')?.remove();
-  document.getElementById('veloura-vbn-search-visual-v6-style')?.remove();
-
-  const STYLE_ID = 'veloura-vbn-search-visual-v7-style';
-  if (!document.getElementById(STYLE_ID)) {
-    const style = document.createElement('style');
-    style.id = STYLE_ID;
-    style.textContent = `
-      @media (max-width: 767px) {
-        /* Full-screen glass veil. Keep the page visible in LIGHT mode. */
-        #veloura-bottom-search-backdrop-v4 {
-          position: fixed !important;
-          inset: 0 !important;
-          z-index: 2147483600 !important;
-          background: linear-gradient(
-            180deg,
-            rgba(248, 250, 252, .22) 0%,
-            rgba(248, 250, 252, .32) 42%,
-            rgba(226, 232, 240, .50) 100%
-          ) !important;
-          -webkit-backdrop-filter: blur(22px) saturate(122%) contrast(200%) !important;
-          backdrop-filter: blur(22px) saturate(122%) contrast(200%) !important;
-        }
-
-        /* IMPORTANT: the outer panel is now INVISIBLE.
-           The Salla input itself is the only visible glass pill. */
-        #veloura-bottom-search-panel.veloura-bottom-search-panel {
-          top: calc(env(safe-area-inset-top, 0px) + 14px) !important;
-          right: auto !important;
-          bottom: auto !important;
-          left: 50% !important;
-          z-index: 2147483647 !important;
-          width: min(430px, calc(100vw - 28px)) !important;
-          max-width: calc(100vw - 28px) !important;
-          min-height: 52px !important;
-          height: 52px !important;
-          margin: 0 !important;
-          padding: 0 !important;
-          border: 0 !important;
-          outline: 0 !important;
-          border-radius: 0 !important;
-          background: transparent !important;
-          background-color: transparent !important;
-          background-image: none !important;
-          box-shadow: none !important;
-          -webkit-backdrop-filter: none !important;
-          backdrop-filter: none !important;
-          transform: translateX(-50%) !important;
-          overflow: visible !important;
-          pointer-events: auto !important;
-        }
-
-        #veloura-bottom-search-panel salla-search[data-vbn-inline-search],
-        #veloura-bottom-search-panel salla-search {
-          display: block !important;
-          width: 100% !important;
-          height: 52px !important;
-          min-height: 52px !important;
-          margin: 0 !important;
-          padding: 0 !important;
-          color: #334155 !important;
-          background: transparent !important;
-        }
-
-        body.veloura-bottom-nav-search-open .veloura-bottom-nav {
-          z-index: 2147483646 !important;
-        }
-
-        /* LIGHT: give the bar enough definition against the bright veil. */
-        html:not(.dark) body.veloura-bottom-nav-search-open .veloura-bottom-nav__surface {
-          color: #0f172a !important;
-          background: rgba(255, 255, 255, .82) !important;
-          border: 1px solid rgba(15, 23, 42, .10) !important;
-          box-shadow:
-            0 12px 32px rgba(15, 23, 42, .16),
-            inset 0 1px 0 rgba(255, 255, 255, .86) !important;
-          -webkit-backdrop-filter: blur(20px) saturate(128%) contrast(200%) !important;
-          backdrop-filter: blur(20px) saturate(128%) contrast(200%) !important;
-        }
-
-        html:not(.dark) body.veloura-bottom-nav-search-open .veloura-bottom-nav__item.is-active {
-          color: #ffffff !important;
-          background: var(--vbn-active, #00b8ee) !important;
-          box-shadow:
-            0 0 0 1px rgba(255, 255, 255, .72),
-            0 7px 18px rgba(2, 132, 199, .34) !important;
-        }
-
-        /* DARK: NO contrast(200%) here. */
-        html.dark body #veloura-bottom-search-backdrop-v4,
-        html body.dark #veloura-bottom-search-backdrop-v4 {
-          background: linear-gradient(
-            180deg,
-            rgba(0, 10, 20, .34) 0%,
-            rgba(0, 10, 20, .48) 46%,
-            rgba(0, 8, 17, .68) 100%
-          ) !important;
-          -webkit-backdrop-filter: blur(22px) saturate(112%) !important;
-          backdrop-filter: blur(22px) saturate(112%) !important;
-        }
-
-        html.dark body #veloura-bottom-search-panel salla-search,
-        html body.dark #veloura-bottom-search-panel salla-search {
-          color: #e5eef5 !important;
-        }
-
-        html.dark body.veloura-bottom-nav-search-open .veloura-bottom-nav__surface,
-        html body.dark.veloura-bottom-nav-search-open .veloura-bottom-nav__surface {
-          -webkit-backdrop-filter: blur(20px) saturate(116%) !important;
-          backdrop-filter: blur(20px) saturate(116%) !important;
-        }
-      }
-    `;
-    document.head.appendChild(style);
-  }
-
-  const setImp = (el, prop, value) => {
-    if (!el || value == null || value === '') return;
-    el.style.setProperty(prop, value, 'important');
-  };
-
-  const getSearch = () =>
-    panel.querySelector('salla-search[data-vbn-inline-search], salla-search');
-
-  const isDarkMode = () =>
-    document.documentElement.classList.contains('dark') ||
-    document.body.classList.contains('dark');
-
-  const makeOuterPanelInvisible = () => {
-    setImp(panel, 'padding', '0');
-    setImp(panel, 'height', '52px');
-    setImp(panel, 'min-height', '52px');
-    setImp(panel, 'border', '0');
-    setImp(panel, 'outline', '0');
-    setImp(panel, 'border-radius', '0');
-    setImp(panel, 'background', 'transparent');
-    setImp(panel, 'background-color', 'transparent');
-    setImp(panel, 'background-image', 'none');
-    setImp(panel, 'box-shadow', 'none');
-    setImp(panel, '-webkit-backdrop-filter', 'none');
-    setImp(panel, 'backdrop-filter', 'none');
-  };
-
-  const styleSearchShadow = () => {
-    const search = getSearch();
-    const root = search?.shadowRoot;
-    if (!search || !root) return false;
-
-    // Old visual injectors are the main reason the field looked like two pills.
-    root.querySelector('style[data-veloura-vbn-visual-v5]')?.remove();
-    root.querySelector('style[data-veloura-vbn-top-glass-v4]')?.remove();
-
-    const input = root.querySelector(
-      'input[type="search"], input.s-search-input, [part~="input"], input'
-    );
-    if (!input) return false;
-
-    const RESULTS = '.s-search-results, .s-search-results-container, [part~="results"], [part~="results-container"]';
-
-    // Clear ALL visual shells around the input. Do not touch the results card.
-    root.querySelectorAll('*').forEach(el => {
-      if (el === input || el.matches?.(RESULTS) || el.closest?.(RESULTS)) return;
-      setImp(el, 'background', 'transparent');
-      setImp(el, 'background-color', 'transparent');
-      setImp(el, 'background-image', 'none');
-      setImp(el, 'border', '0');
-      setImp(el, 'outline', '0');
-      setImp(el, 'box-shadow', 'none');
-    });
-
-    const dark = isDarkMode();
-    const radius = '24px';
-
-    // ONE AND ONLY ONE visible layer = the real input.
-    setImp(input, 'display', 'block');
-    setImp(input, 'width', '100%');
-    setImp(input, 'height', '52px');
-    setImp(input, 'min-height', '52px');
-    setImp(input, 'max-height', '52px');
-    setImp(input, 'margin', '0');
-    setImp(input, 'padding-inline', '20px');
-    setImp(input, 'box-sizing', 'border-box');
-    setImp(input, 'border-radius', radius);
-    setImp(input, 'outline', '0');
-    setImp(input, '-webkit-appearance', 'none');
-    setImp(input, 'appearance', 'none');
-    setImp(input, 'caret-color', dark ? '#ffffff' : '#0f172a');
-
-    if (dark) {
-      setImp(input, 'color', '#e5eef5');
-      setImp(input, 'background', 'rgba(0, 42, 62, .78)');
-      setImp(input, 'border', '1px solid rgba(255, 255, 255, .11)');
-      setImp(input, 'box-shadow', '0 12px 32px rgba(0, 0, 0, .28), inset 0 1px 0 rgba(255, 255, 255, .05)');
-      setImp(input, '-webkit-backdrop-filter', 'blur(20px) saturate(116%)');
-      setImp(input, 'backdrop-filter', 'blur(20px) saturate(116%)');
-    } else {
-      setImp(input, 'color', '#334155');
-      setImp(input, 'background', 'rgba(255, 255, 255, .82)');
-      setImp(input, 'border', '1px solid rgba(15, 23, 42, .10)');
-      setImp(input, 'box-shadow', '0 12px 32px rgba(15, 23, 42, .14), inset 0 1px 0 rgba(255, 255, 255, .90)');
-      setImp(input, '-webkit-backdrop-filter', 'blur(20px) saturate(128%) contrast(200%)');
-      setImp(input, 'backdrop-filter', 'blur(20px) saturate(128%) contrast(200%)');
-    }
-
-    // Placeholder color cannot be reliably set inline; inject only this tiny style.
-    let helper = root.querySelector('style[data-veloura-vbn-visual-v7]');
-    if (!helper) {
-      helper = document.createElement('style');
-      helper.dataset.velouraVbnVisualV7 = 'true';
-      root.appendChild(helper);
-    }
-    helper.textContent = `
-      input::placeholder,
-      .s-search-input::placeholder,
-      [part~="input"]::placeholder {
-        color: ${dark ? 'rgba(229, 238, 245, .58)' : 'rgba(71, 85, 105, .72)'} !important;
-        opacity: 1 !important;
-      }
-
-      input:focus,
-      input:focus-visible,
-      .s-search-input:focus,
-      .s-search-input:focus-visible,
-      [part~="input"]:focus,
-      [part~="input"]:focus-visible {
-        outline: none !important;
-      }
-    `;
-
-    root.querySelectorAll(RESULTS).forEach(results => {
-      setImp(results, 'position', 'absolute');
-      setImp(results, 'inset-inline', '0');
-      setImp(results, 'top', 'calc(100% + 10px)');
-      setImp(results, 'bottom', 'auto');
-      setImp(results, 'z-index', '60');
-      setImp(results, 'max-height', 'min(56dvh, 460px)');
-      setImp(results, 'overflow-y', 'auto');
-      setImp(results, 'border-radius', '20px');
-      setImp(results, 'border', dark ? '1px solid rgba(255,255,255,.10)' : '1px solid rgba(15,23,42,.08)');
-      setImp(results, 'background', dark ? 'rgba(2, 16, 28, .92)' : 'rgba(255,255,255,.94)');
-      setImp(results, 'box-shadow', '0 18px 48px rgba(0,0,0,.18)');
-      setImp(results, '-webkit-backdrop-filter', dark ? 'blur(20px) saturate(116%)' : 'blur(20px) saturate(124%)');
-      setImp(results, 'backdrop-filter', dark ? 'blur(20px) saturate(116%)' : 'blur(20px) saturate(124%)');
-    });
-
-    return true;
-  };
-
-  const refresh = () => {
-    makeOuterPanelInvisible();
+  const refreshTheme = () => {
+    if (!isSearchOpen()) return;
     styleSearchShadow();
   };
 
-  refresh();
-  [60, 180, 420, 900, 1600].forEach(delay => window.setTimeout(refresh, delay));
+  window.addEventListener('veloura:theme-changed', refreshTheme);
+  document.addEventListener('theme::ready', refreshTheme);
 
   customElements.whenDefined?.('salla-search').then(() => {
-    refresh();
-    window.setTimeout(refresh, 250);
+    search.componentOnReady?.().then(() => {
+      styleSearchShadow();
+    }).catch(() => styleSearchShadow());
   }).catch(() => {});
 
-  // V4/V5 can re-style after theme readiness; reassert while search is open.
-  window.setInterval(() => {
-    if (document.body.classList.contains('veloura-bottom-nav-search-open')) refresh();
-  }, 500);
+  panel.hidden = true;
+  backdrop.hidden = true;
+  restoreRouteActive();
 
-  window.addEventListener('resize', refresh, { passive: true });
-  window.addEventListener('orientationchange', refresh, { passive: true });
-  document.addEventListener('theme::ready', refresh);
-
-  console.info('[Veloura] Search Visual V7 — single layer ready');
+  console.info('[Veloura] Bottom Nav Search V8 ready');
 };
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initVelouraBottomNavSearchVisualV7, { once: true });
+  document.addEventListener('DOMContentLoaded', initVelouraBottomNavSearchV8, { once: true });
 } else {
-  initVelouraBottomNavSearchVisualV7();
+  initVelouraBottomNavSearchV8();
 }
-/* VELOURA BOTTOM NAV — SEARCH VISUAL V7 END */
+
+document.addEventListener('theme::ready', initVelouraBottomNavSearchV8);
+/* Veloura Bottom Navigation — Search V8 END */
