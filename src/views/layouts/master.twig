@@ -3028,6 +3028,20 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       --vbn-active-scale: {{ vbn_active_scale }};
     "
   >
+    <div
+      id="veloura-bottom-search-panel"
+      class="veloura-bottom-search-panel"
+      data-vbn-search-panel
+      hidden
+      aria-hidden="true"
+    >
+      <salla-search
+        inline
+        height="44"
+        data-vbn-inline-search
+      ></salla-search>
+    </div>
+
     <div class="veloura-bottom-nav__surface">
       {% if vbn_show_home %}
         <a
@@ -3062,7 +3076,8 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
           class="veloura-bottom-nav__item"
           data-vbn-item
           data-vbn-key="search"
-          onclick="salla.event.dispatch('search::open')"
+          aria-controls="veloura-bottom-search-panel"
+          aria-expanded="false"
           aria-label="{{ vbn_search_label|e }}"
         >
           <i class="sicon-search" aria-hidden="true"></i>
