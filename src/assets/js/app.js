@@ -3890,7 +3890,7 @@ document.addEventListener('theme::ready', initVelouraBalancedInlineSearchV63);
 /* VELOURA V63 BALANCED INLINE SEARCH LAYOUT END */
 
 /* ========================================================================
-   Veloura Bottom Navigation — Search V8 (single owner)
+   Veloura Bottom Navigation — Search V9 (single owner)
 
    Why this version exists:
    - The bottom-nav search is marked [data-vbn-native] BEFORE it is mounted.
@@ -3900,9 +3900,9 @@ document.addEventListener('theme::ready', initVelouraBalancedInlineSearchV63);
      that contains the input. The host, wrappers and input stay transparent.
    - No old V4/V5/V6/V7 bottom-search visual controller is used here.
    ======================================================================== */
-const initVelouraBottomNavSearchV8 = () => {
+const initVelouraBottomNavSearchV9 = () => {
   const nav = document.querySelector('[data-vbn]');
-  if (!nav || nav.dataset.vbnSearchV8 === 'true') return;
+  if (!nav || nav.dataset.vbnSearchV9 === 'true') return;
 
   const itemSelector = '[data-vbn-item]';
   const searchItem = nav.querySelector(`${itemSelector}[data-vbn-key="search"]`);
@@ -3910,11 +3910,11 @@ const initVelouraBottomNavSearchV8 = () => {
   const navSurface = nav.querySelector('.veloura-bottom-nav__surface');
 
   if (!searchItem) return;
-  nav.dataset.vbnSearchV8 = 'true';
+  nav.dataset.vbnSearchV9 = 'true';
 
-  const PANEL_ID = 'veloura-bottom-search-panel-v8';
-  const BACKDROP_ID = 'veloura-bottom-search-backdrop-v8';
-  const STYLE_ID = 'veloura-bottom-search-style-v8';
+  const PANEL_ID = 'veloura-bottom-search-panel-v9';
+  const BACKDROP_ID = 'veloura-bottom-search-backdrop-v9';
+  const STYLE_ID = 'veloura-bottom-search-style-v9';
 
   // Remove stale runtime nodes/styles from the experimental versions.
   [
@@ -4090,12 +4090,12 @@ const initVelouraBottomNavSearchV8 = () => {
   panel.id = PANEL_ID;
   panel.hidden = true;
   panel.setAttribute('aria-hidden', 'true');
-  panel.setAttribute('data-vbn-search-panel', 'v8');
+  panel.setAttribute('data-vbn-search-panel', 'v9');
 
   const search = document.createElement('salla-search');
   search.setAttribute('inline', '');
   search.setAttribute('height', '56');
-  search.setAttribute('data-vbn-inline-search', 'v8');
+  search.setAttribute('data-vbn-inline-search', 'v9');
 
   // CRITICAL: V86 checks this marker and skips this custom search completely.
   search.setAttribute('data-vbn-native', '');
@@ -4184,6 +4184,7 @@ const initVelouraBottomNavSearchV8 = () => {
       const dark = isDark();
       const computedNavBg = navSurface ? getComputedStyle(navSurface).backgroundColor : '';
       const darkSurface = rgbWithAlpha(computedNavBg, .88, 'rgba(0, 36, 54, .88)');
+      const navRadius = (getComputedStyle(nav).getPropertyValue('--vbn-radius') || '').trim() || '20px';
 
       setImportant(surface, 'position', 'relative');
       setImportant(surface, 'display', 'flex');
@@ -4195,7 +4196,7 @@ const initVelouraBottomNavSearchV8 = () => {
       setImportant(surface, 'margin', '0');
       setImportant(surface, 'padding', '0 4px');
       setImportant(surface, 'box-sizing', 'border-box');
-      setImportant(surface, 'border-radius', '999px');
+      setImportant(surface, 'border-radius', navRadius);
       setImportant(surface, 'overflow', 'visible');
 
       if (dark) {
@@ -4205,9 +4206,11 @@ const initVelouraBottomNavSearchV8 = () => {
         setImportant(surface, '-webkit-backdrop-filter', 'blur(20px) saturate(116%)');
         setImportant(surface, 'backdrop-filter', 'blur(20px) saturate(116%)');
       } else {
-        setImportant(surface, 'background', 'rgba(255,255,255,.78)');
-        setImportant(surface, 'border', '1px solid rgba(15,23,42,.10)');
-        setImportant(surface, 'box-shadow', '0 12px 34px rgba(15,23,42,.16), inset 0 1px 0 rgba(255,255,255,.92)');
+        /* Light mode: a very soft silver/gray glass so the search stays visibly
+           separate from a white page without looking like a solid card. */
+        setImportant(surface, 'background', 'rgba(230,232,235,.86)');
+        setImportant(surface, 'border', '1px solid rgba(100,116,139,.16)');
+        setImportant(surface, 'box-shadow', '0 10px 28px rgba(15,23,42,.14), inset 0 1px 0 rgba(255,255,255,.76)');
         setImportant(surface, '-webkit-backdrop-filter', 'blur(20px) saturate(126%) contrast(200%)');
         setImportant(surface, 'backdrop-filter', 'blur(20px) saturate(126%) contrast(200%)');
       }
@@ -4224,7 +4227,7 @@ const initVelouraBottomNavSearchV8 = () => {
       setImportant(input, 'font-size', '16px');
       setImportant(input, 'border', '0');
       setImportant(input, 'outline', '0');
-      setImportant(input, 'border-radius', '999px');
+      setImportant(input, 'border-radius', navRadius);
       setImportant(input, 'background', 'transparent');
       setImportant(input, 'background-color', 'transparent');
       setImportant(input, 'background-image', 'none');
@@ -4245,10 +4248,10 @@ const initVelouraBottomNavSearchV8 = () => {
         setImportant(button, 'color', dark ? '#e8f0f6' : '#334155');
       });
 
-      let helper = root.querySelector('style[data-veloura-vbn-v8]');
+      let helper = root.querySelector('style[data-veloura-vbn-v9]');
       if (!helper) {
         helper = document.createElement('style');
-        helper.setAttribute('data-veloura-vbn-v8', '');
+        helper.setAttribute('data-veloura-vbn-v9', '');
         root.appendChild(helper);
       }
 
@@ -4281,7 +4284,7 @@ const initVelouraBottomNavSearchV8 = () => {
         setImportant(result, 'z-index', '70');
         setImportant(result, 'max-height', 'min(58dvh, 480px)');
         setImportant(result, 'overflow-y', 'auto');
-        setImportant(result, 'border-radius', '20px');
+        setImportant(result, 'border-radius', navRadius);
         setImportant(result, 'color', dark ? '#e8f0f6' : '#111827');
         setImportant(result, 'background', dark ? 'rgba(2,16,28,.94)' : 'rgba(255,255,255,.94)');
         setImportant(result, 'border', dark ? '1px solid rgba(255,255,255,.09)' : '1px solid rgba(15,23,42,.08)');
@@ -4444,14 +4447,14 @@ const initVelouraBottomNavSearchV8 = () => {
   backdrop.hidden = true;
   restoreRouteActive();
 
-  console.info('[Veloura] Bottom Nav Search V8 ready');
+  console.info('[Veloura] Bottom Nav Search V9 ready');
 };
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initVelouraBottomNavSearchV8, { once: true });
+  document.addEventListener('DOMContentLoaded', initVelouraBottomNavSearchV9, { once: true });
 } else {
-  initVelouraBottomNavSearchV8();
+  initVelouraBottomNavSearchV9();
 }
 
-document.addEventListener('theme::ready', initVelouraBottomNavSearchV8);
-/* Veloura Bottom Navigation — Search V8 END */
+document.addEventListener('theme::ready', initVelouraBottomNavSearchV9);
+/* Veloura Bottom Navigation — Search V9 END */
