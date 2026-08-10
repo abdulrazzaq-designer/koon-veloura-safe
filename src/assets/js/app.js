@@ -3889,37 +3889,216 @@ if (document.readyState === 'loading') {
 document.addEventListener('theme::ready', initVelouraBalancedInlineSearchV63);
 /* VELOURA V63 BALANCED INLINE SEARCH LAYOUT END */
 
-/* VELOURA BOTTOM NAV CONTROLLER
-   - Search keeps Salla's working inline mode, but the panel is fixed at the top with a glass backdrop.
-   - Categories visual state is decided in capture phase BEFORE Raed toggles mmenu.
-   - Search and Categories are mutually exclusive.
+/* VELOURA BOTTOM NAV — TOP GLASS SEARCH V4
+   Self-contained hotfix:
+   - does not depend on master.twig changes
+   - does not depend on mobile-floating-menu.scss changes
+   - uses Salla's inline search component (no native full-screen search modal)
+   - portals the inline search panel directly under <body>
+   - forces the panel to the TOP of the viewport
+   - keeps the bottom navigation above the glass backdrop
+   - light mode uses contrast(200%); dark mode intentionally does not
+   - categories become active from the first tap
 */
-const initVelouraBottomNavController = () => {
+const initVelouraBottomNavTopGlassSearchV4 = () => {
   const nav = document.querySelector('[data-vbn]');
-  if (!nav || nav.dataset.vbnControllerReady === 'true') return;
+  if (!nav || nav.dataset.vbnTopGlassV4 === 'true') return;
 
-  nav.dataset.vbnControllerReady = 'true';
+  nav.dataset.vbnTopGlassV4 = 'true';
 
   const itemSelector = '[data-vbn-item]';
-  const searchPanel = nav.querySelector('[data-vbn-search-panel]');
   const searchItem = nav.querySelector(`${itemSelector}[data-vbn-key="search"]`);
-  const inlineSearch = searchPanel?.querySelector('salla-search[data-vbn-inline-search]');
+  if (!searchItem) return;
 
-  let searchBackdrop = document.querySelector('[data-vbn-search-backdrop]');
+  const STYLE_ID = 'veloura-vbn-top-glass-v4-style';
+  const PANEL_ID = 'veloura-bottom-search-panel';
+  const BACKDROP_ID = 'veloura-bottom-search-backdrop-v4';
 
-  if (!searchBackdrop) {
-    searchBackdrop = document.createElement('div');
-    searchBackdrop.className = 'veloura-bottom-search-backdrop';
-    searchBackdrop.dataset.vbnSearchBackdrop = 'true';
-    searchBackdrop.hidden = true;
-    searchBackdrop.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(searchBackdrop);
+  /* ---------------------------------------------------------
+     1) Force the visual layer from JS so compiled SCSS/cache
+        cannot keep the search at the bottom.
+     --------------------------------------------------------- */
+  if (!document.getElementById(STYLE_ID)) {
+    const style = document.createElement('style');
+    style.id = STYLE_ID;
+    style.textContent = `
+      @media (max-width: 767px) {
+        #${BACKDROP_ID} {
+          position: fixed !important;
+          inset: 0 !important;
+          z-index: 2147483600 !important;
+          display: block;
+          opacity: 1;
+          pointer-events: auto;
+          background:
+            linear-gradient(
+              to bottom,
+              rgba(255, 255, 255, .16) 0%,
+              rgba(255, 255, 255, .16) 42%,
+              rgba(232, 236, 242, .56) 42%,
+              rgba(232, 236, 242, .72) 100%
+            ) !important;
+          -webkit-backdrop-filter: blur(18px) saturate(124%) contrast(200%) !important;
+          backdrop-filter: blur(18px) saturate(124%) contrast(200%) !important;
+        }
+
+        #${BACKDROP_ID}[hidden] {
+          display: none !important;
+        }
+
+        #${PANEL_ID}.veloura-bottom-search-panel {
+          position: fixed !important;
+          top: calc(env(safe-area-inset-top, 0px) + 12px) !important;
+          right: auto !important;
+          bottom: auto !important;
+          left: 50% !important;
+          z-index: 2147483647 !important;
+
+          display: none !important;
+          width: min(430px, calc(100vw - 28px)) !important;
+          max-width: calc(100vw - 28px) !important;
+          min-height: 56px !important;
+          margin: 0 !important;
+          padding: 6px !important;
+
+          color: var(--vbn-text, #111827) !important;
+          border: 1px solid rgba(255, 255, 255, .34) !important;
+          border-radius: var(--vbn-radius, 20px) !important;
+          background: rgba(245, 247, 250, .58) !important;
+          box-shadow:
+            0 14px 42px rgba(15, 23, 42, .16),
+            inset 0 1px 0 rgba(255, 255, 255, .24) !important;
+
+          -webkit-backdrop-filter: blur(22px) saturate(130%) contrast(200%) !important;
+          backdrop-filter: blur(22px) saturate(130%) contrast(200%) !important;
+
+          transform: translateX(-50%) !important;
+          pointer-events: auto !important;
+          overflow: visible !important;
+        }
+
+        body.veloura-bottom-nav-search-open #${PANEL_ID}.veloura-bottom-search-panel:not([hidden]) {
+          display: block !important;
+        }
+
+        #${PANEL_ID} salla-search[data-vbn-inline-search] {
+          display: block !important;
+          width: 100% !important;
+          min-width: 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          background: transparent !important;
+        }
+
+        body.veloura-bottom-nav-search-open {
+          overflow: hidden !important;
+          overscroll-behavior: none !important;
+        }
+
+        body.veloura-bottom-nav-search-open .veloura-bottom-nav {
+          z-index: 2147483646 !important;
+          pointer-events: none !important;
+        }
+
+        body.veloura-bottom-nav-search-open .veloura-bottom-nav__surface,
+        body.veloura-bottom-nav-search-open .veloura-bottom-nav__item {
+          pointer-events: auto !important;
+        }
+
+        /* Light-mode glass: contrast(200%) is intentional. */
+        html:not(.dark) body.veloura-bottom-nav-glass .veloura-bottom-nav__surface,
+        html:not(.dark) body.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-nav__surface {
+          -webkit-backdrop-filter: blur(20px) saturate(124%) contrast(200%) !important;
+          backdrop-filter: blur(20px) saturate(124%) contrast(200%) !important;
+        }
+
+        /* Dark mode: NO contrast(200%) on backdrop, search, or bottom bar. */
+        html.dark body #${BACKDROP_ID},
+        html body.dark #${BACKDROP_ID} {
+          background:
+            linear-gradient(
+              to bottom,
+              rgba(1, 6, 18, .18) 0%,
+              rgba(1, 6, 18, .18) 42%,
+              rgba(1, 6, 18, .64) 42%,
+              rgba(1, 6, 18, .80) 100%
+            ) !important;
+          -webkit-backdrop-filter: blur(18px) saturate(116%) !important;
+          backdrop-filter: blur(18px) saturate(116%) !important;
+        }
+
+        html.dark body #${PANEL_ID}.veloura-bottom-search-panel,
+        html body.dark #${PANEL_ID}.veloura-bottom-search-panel {
+          color: var(--veloura-dark-primary-text, #ffffff) !important;
+          border-color: rgba(255, 255, 255, .10) !important;
+          background: rgba(3, 10, 24, .66) !important;
+          box-shadow:
+            0 16px 44px rgba(0, 0, 0, .34),
+            inset 0 1px 0 rgba(255, 255, 255, .06) !important;
+          -webkit-backdrop-filter: blur(22px) saturate(116%) !important;
+          backdrop-filter: blur(22px) saturate(116%) !important;
+        }
+
+        html.dark body.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-nav__surface,
+        html body.dark.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-nav__surface {
+          -webkit-backdrop-filter: blur(20px) saturate(116%) !important;
+          backdrop-filter: blur(20px) saturate(116%) !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
   }
 
-  // Salla Search is a Web Component. Its default inline wrapper carries its
-  // own surface/padding, which is why it can look like a large white block.
-  // Style only the bottom-nav instance inside its Shadow DOM.
-  const styleBottomInlineSearch = () => {
+  /* ---------------------------------------------------------
+     2) Reuse the panel if master.twig already has it. If not,
+        create the exact same inline Salla search dynamically.
+     --------------------------------------------------------- */
+  let searchPanel = document.getElementById(PANEL_ID);
+
+  if (!searchPanel) {
+    searchPanel = document.createElement('div');
+    searchPanel.id = PANEL_ID;
+    searchPanel.className = 'veloura-bottom-search-panel';
+    searchPanel.dataset.vbnSearchPanel = 'true';
+    searchPanel.hidden = true;
+    searchPanel.setAttribute('aria-hidden', 'true');
+
+    const search = document.createElement('salla-search');
+    search.setAttribute('inline', '');
+    search.setAttribute('height', '44');
+    search.dataset.vbnInlineSearch = 'true';
+    searchPanel.appendChild(search);
+  }
+
+  /* Critical: detach from the fixed bottom nav and portal to body. */
+  if (searchPanel.parentElement !== document.body) {
+    document.body.appendChild(searchPanel);
+  }
+
+  let inlineSearch = searchPanel.querySelector('salla-search[data-vbn-inline-search]');
+  if (!inlineSearch) {
+    inlineSearch = searchPanel.querySelector('salla-search');
+    if (inlineSearch) inlineSearch.dataset.vbnInlineSearch = 'true';
+  }
+
+  let backdrop = document.getElementById(BACKDROP_ID);
+  if (!backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.id = BACKDROP_ID;
+    backdrop.hidden = true;
+    backdrop.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(backdrop);
+  }
+
+  searchItem.removeAttribute('onclick');
+  searchItem.setAttribute('aria-controls', PANEL_ID);
+  searchItem.setAttribute('aria-expanded', 'false');
+
+  /* ---------------------------------------------------------
+     3) Remove Salla inline-search's large white wrapper only for
+        this instance. The search functionality remains native.
+     --------------------------------------------------------- */
+  const styleInlineSearchShadow = () => {
     if (!inlineSearch) return;
 
     const shadowCss = `
@@ -3952,7 +4131,7 @@ const initVelouraBottomNavController = () => {
         margin: 0 !important;
         padding: 0 !important;
         border: 0 !important;
-        border-radius: var(--vbn-radius, 18px) !important;
+        border-radius: calc(var(--vbn-radius, 20px) - 5px) !important;
         background: transparent !important;
         background-color: transparent !important;
         box-shadow: none !important;
@@ -3969,17 +4148,16 @@ const initVelouraBottomNavController = () => {
         max-height: 44px !important;
         margin: 0 !important;
         box-sizing: border-box !important;
-        border: 1px solid rgba(148, 163, 184, .16) !important;
-        border-radius: calc(var(--vbn-radius, 18px) - 5px) !important;
-        background: var(--vbn-search-input-bg, rgba(255, 255, 255, .08)) !important;
-        background-color: var(--vbn-search-input-bg, rgba(255, 255, 255, .08)) !important;
-        color: var(--vbn-search-text, var(--vbn-text, #111827)) !important;
+        border: 1px solid rgba(148, 163, 184, .14) !important;
+        border-radius: calc(var(--vbn-radius, 20px) - 5px) !important;
+        background: rgba(255, 255, 255, .10) !important;
+        color: inherit !important;
         box-shadow: none !important;
       }
 
       input::placeholder,
       .s-search-input::placeholder {
-        color: var(--vbn-search-text, var(--vbn-text, #111827)) !important;
+        color: currentColor !important;
         opacity: .55 !important;
       }
 
@@ -3989,10 +4167,10 @@ const initVelouraBottomNavController = () => {
         inset-inline: 0 !important;
         top: calc(100% + 10px) !important;
         bottom: auto !important;
-        z-index: 20 !important;
-        max-height: min(56dvh, 460px) !important;
-        border-radius: var(--vbn-radius, 18px) !important;
+        z-index: 30 !important;
+        max-height: min(58dvh, 480px) !important;
         overflow-y: auto !important;
+        border-radius: 18px !important;
       }
     `;
 
@@ -4000,24 +4178,23 @@ const initVelouraBottomNavController = () => {
       const root = inlineSearch.shadowRoot;
       if (!root) return;
 
-      let style = root.querySelector('style[data-veloura-vbn-search]');
+      let style = root.querySelector('style[data-veloura-vbn-top-glass-v4]');
       if (!style) {
         style = document.createElement('style');
-        style.dataset.velouraVbnSearch = 'true';
+        style.dataset.velouraVbnTopGlassV4 = 'true';
         root.appendChild(style);
       }
-
-      if (style.textContent !== shadowCss) {
-        style.textContent = shadowCss;
-      }
+      style.textContent = shadowCss;
     };
 
     apply();
     inlineSearch.componentOnReady?.().then(apply).catch(() => {});
     customElements.whenDefined?.('salla-search').then(apply).catch(() => {});
+    window.setTimeout(apply, 250);
+    window.setTimeout(apply, 800);
   };
 
-  styleBottomInlineSearch();
+  styleInlineSearchShadow();
 
   const routeActiveItem =
     nav.querySelector(`${itemSelector}[aria-current="page"]`) ||
@@ -4025,9 +4202,7 @@ const initVelouraBottomNavController = () => {
     null;
 
   const clearVisualActive = () => {
-    nav.querySelectorAll(itemSelector).forEach(item => {
-      item.classList.remove('is-active');
-    });
+    nav.querySelectorAll(itemSelector).forEach(item => item.classList.remove('is-active'));
   };
 
   const setVisualActive = item => {
@@ -4038,88 +4213,54 @@ const initVelouraBottomNavController = () => {
 
   const restoreRouteActive = () => {
     clearVisualActive();
-
     const currentRoute =
       nav.querySelector(`${itemSelector}[aria-current="page"]`) ||
       routeActiveItem;
-
-    if (currentRoute && nav.contains(currentRoute)) {
-      currentRoute.classList.add('is-active');
-    }
+    currentRoute?.classList.add('is-active');
   };
 
-  const isSearchOpen = () =>
-    Boolean(searchPanel && !searchPanel.hidden);
+  const isSearchOpen = () => !searchPanel.hidden;
 
-  const focusInlineSearch = () => {
+  const focusSearch = () => {
     if (!inlineSearch) return;
-
     const focus = () => {
       const input = inlineSearch.shadowRoot?.querySelector(
         'input[type="search"], input.s-search-input, input'
       );
       input?.focus?.({ preventScroll: true });
     };
-
-    window.requestAnimationFrame(focus);
+    requestAnimationFrame(focus);
     window.setTimeout(focus, 120);
+    window.setTimeout(focus, 350);
   };
 
   const openSearch = () => {
-    if (!searchPanel || !searchItem) return;
-
     searchPanel.hidden = false;
     searchPanel.setAttribute('aria-hidden', 'false');
+    backdrop.hidden = false;
+    backdrop.setAttribute('aria-hidden', 'false');
     searchItem.setAttribute('aria-expanded', 'true');
-
-    if (searchBackdrop) {
-      searchBackdrop.hidden = false;
-      searchBackdrop.setAttribute('aria-hidden', 'false');
-    }
-
     document.body.classList.add('veloura-bottom-nav-search-open');
     setVisualActive(searchItem);
-    focusInlineSearch();
+    styleInlineSearchShadow();
+    focusSearch();
   };
 
   const closeSearch = ({ restore = true } = {}) => {
-    if (!searchPanel) return;
-
     searchPanel.hidden = true;
     searchPanel.setAttribute('aria-hidden', 'true');
-    searchItem?.setAttribute('aria-expanded', 'false');
-
-    if (searchBackdrop) {
-      searchBackdrop.hidden = true;
-      searchBackdrop.setAttribute('aria-hidden', 'true');
-    }
-
+    backdrop.hidden = true;
+    backdrop.setAttribute('aria-hidden', 'true');
+    searchItem.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('veloura-bottom-nav-search-open');
-
     if (restore) restoreRouteActive();
   };
 
-  const closeCategories = ({ restore = false } = {}) => {
-    const drawer = window.__velouraNativeMobileMenuDrawer;
-
-    document.body.classList.remove(
-      'menu-opened',
-      'veloura-bottom-nav-categories-open'
-    );
-
-    if (drawer && typeof drawer.close === 'function') {
-      drawer.close();
-    }
-
-    if (restore) restoreRouteActive();
-  };
-
-  /*
-   * Capture phase is important here.
-   * Raed attaches its handler directly to a[href="#mobile-menu"].
-   * We read the state BEFORE that target handler toggles body.menu-opened,
-   * so Categories becomes active on the very first tap.
-   */
+  /* ---------------------------------------------------------
+     4) Capture-phase controller.
+        Search prevents the old onclick="search::open" modal.
+        Categories still pass through to Raed's native drawer.
+     --------------------------------------------------------- */
   nav.addEventListener('click', event => {
     const item = event.target.closest?.(itemSelector);
     if (!item || !nav.contains(item)) return;
@@ -4128,27 +4269,22 @@ const initVelouraBottomNavController = () => {
 
     if (key === 'search') {
       event.preventDefault();
-      event.stopPropagation();
+      event.stopImmediatePropagation();
 
       if (document.body.classList.contains('menu-opened')) {
-        closeCategories({ restore: false });
+        window.__velouraNativeMobileMenuDrawer?.close?.();
+        document.body.classList.remove('menu-opened', 'veloura-bottom-nav-categories-open');
       }
 
-      if (isSearchOpen()) {
-        closeSearch({ restore: true });
-      } else {
-        openSearch();
-      }
-
+      if (isSearchOpen()) closeSearch({ restore: true });
+      else openSearch();
       return;
     }
 
     if (key === 'categories') {
       const wasOpen = document.body.classList.contains('menu-opened');
 
-      if (isSearchOpen()) {
-        closeSearch({ restore: false });
-      }
+      if (isSearchOpen()) closeSearch({ restore: false });
 
       if (wasOpen) {
         document.body.classList.remove('veloura-bottom-nav-categories-open');
@@ -4158,69 +4294,42 @@ const initVelouraBottomNavController = () => {
         setVisualActive(item);
       }
 
-      // Do not prevent this event: Raed still owns the actual drawer open/close.
+      /* Do not prevent/stop: Raed still opens/closes #mobile-menu. */
       return;
     }
 
-    if (isSearchOpen()) {
-      closeSearch({ restore: false });
-    }
-
+    if (isSearchOpen()) closeSearch({ restore: false });
     document.body.classList.remove('veloura-bottom-nav-categories-open');
     setVisualActive(item);
   }, true);
 
-  searchBackdrop?.addEventListener('click', () => {
-    if (isSearchOpen()) {
-      closeSearch({ restore: true });
-    }
-  });
+  backdrop.addEventListener('click', () => closeSearch({ restore: true }));
 
-  // Closing the native mmenu by its own controls restores the page route state.
   document.addEventListener('click', event => {
-    const closeTarget = event.target.closest?.(
-      '.close-mobile-menu, .mm-ocd__backdrop'
-    );
-
-    if (!closeTarget) return;
-
+    if (!event.target.closest?.('.close-mobile-menu, .mm-ocd__backdrop')) return;
     document.body.classList.remove('veloura-bottom-nav-categories-open');
     restoreRouteActive();
   }, true);
 
   document.addEventListener('keydown', event => {
     if (event.key !== 'Escape') return;
-
-    if (isSearchOpen()) {
-      closeSearch({ restore: true });
-      return;
-    }
-
-    if (document.body.classList.contains('menu-opened')) {
-      closeCategories({ restore: true });
-    }
+    if (isSearchOpen()) closeSearch({ restore: true });
   });
 
-  // Initial state comes from Twig's current route only.
-  searchPanel && (searchPanel.hidden = true);
-  searchPanel?.setAttribute('aria-hidden', 'true');
-  searchItem?.setAttribute('aria-expanded', 'false');
-  if (searchBackdrop) {
-    searchBackdrop.hidden = true;
-    searchBackdrop.setAttribute('aria-hidden', 'true');
-  }
-  document.body.classList.remove(
-    'veloura-bottom-nav-search-open',
-    'veloura-bottom-nav-categories-open'
-  );
+  searchPanel.hidden = true;
+  backdrop.hidden = true;
+  document.body.classList.remove('veloura-bottom-nav-search-open');
+  searchItem.setAttribute('aria-expanded', 'false');
   restoreRouteActive();
+
+  console.info('[Veloura] Top Glass Search V4 ready');
 };
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initVelouraBottomNavController, { once: true });
+  document.addEventListener('DOMContentLoaded', initVelouraBottomNavTopGlassSearchV4, { once: true });
 } else {
-  initVelouraBottomNavController();
+  initVelouraBottomNavTopGlassSearchV4();
 }
 
-document.addEventListener('theme::ready', initVelouraBottomNavController);
-/* VELOURA BOTTOM NAV CONTROLLER */
+document.addEventListener('theme::ready', initVelouraBottomNavTopGlassSearchV4);
+/* VELOURA BOTTOM NAV — TOP GLASS SEARCH V4 END */
