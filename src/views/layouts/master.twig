@@ -3044,17 +3044,16 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       {% endif %}
 
       {% if vbn_show_categories %}
-        <button
-          type="button"
+        <a
+          href="#mobile-menu"
           class="veloura-bottom-nav__item"
           data-vbn-item
           data-vbn-key="categories"
-          data-vbn-action="categories"
           aria-label="{{ vbn_categories_label|e }}"
         >
           <i class="sicon-grid" aria-hidden="true"></i>
           {% if vbn_show_labels %}<span>{{ vbn_categories_label }}</span>{% endif %}
-        </button>
+        </a>
       {% endif %}
 
       {% if vbn_show_search %}
@@ -3063,7 +3062,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
           class="veloura-bottom-nav__item"
           data-vbn-item
           data-vbn-key="search"
-          data-vbn-action="search"
+          onclick="salla.event.dispatch('search::open')"
           aria-label="{{ vbn_search_label|e }}"
         >
           <i class="sicon-search" aria-hidden="true"></i>
@@ -3091,7 +3090,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
           class="veloura-bottom-nav__item"
           data-vbn-item
           data-vbn-key="account"
-          data-vbn-action="login"
+          onclick="salla.event.dispatch('login::open')"
           aria-label="{{ vbn_account_label|e }}"
         >
           <i class="sicon-user" aria-hidden="true"></i>
