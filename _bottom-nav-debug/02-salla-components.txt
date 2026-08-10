@@ -1,17 +1,11 @@
-﻿D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:13: - Search = documented <salla-modal> open()/close() + inline <salla-search>.
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:14: - Login  = documented <salla-login-modal>.open().
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:221: const modal = await waitForComponent('salla-modal', searchModal);
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:255: const login = document.querySelector('salla-login-modal[data-testid="store-login-modal"]')
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:256: || document.querySelector('salla-login-modal');
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:258: const component = await waitForComponent('salla-login-modal', login);
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:787: 'salla-user-menu',
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:834: .s-salla-modal-overlay,
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:851: .s-salla-modal-body,
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:911: if (host.matches?.('[data-vbn-native], salla-login-modal[data-vbn-native-login]')) return;
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1112: scope.querySelectorAll?.('salla-search.veloura-header-search-component')
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1201: if (node.matches?.('salla-search.veloura-header-search-component')) {
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1674: this.toggleClassIf(`${id} .s-salla-modal-overlay`, 'ease-out duration-300 opacity-100', 'opacity-0', () => isOpen)
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1675: .toggleClassIf(`${id} .s-salla-modal-body`,
+﻿D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:404: 'salla-user-menu',
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:451: .s-salla-modal-overlay,
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:468: .s-salla-modal-body,
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:528: if (host.matches?.('[data-vbn-native], salla-login-modal[data-vbn-native-login]')) return;
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:729: scope.querySelectorAll?.('salla-search.veloura-header-search-component')
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:818: if (node.matches?.('salla-search.veloura-header-search-component')) {
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1291: this.toggleClassIf(`${id} .s-salla-modal-overlay`, 'ease-out duration-300 opacity-100', 'opacity-0', () => isOpen)
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1292: .toggleClassIf(`${id} .s-salla-modal-body`,
 D:\salla-theme\koon-veloura-safe\src\assets\js\partials\veloura-dark-search-v71.js:150: scope.querySelectorAll?.('salla-search').forEach(installShadowStyle);
 D:\salla-theme\koon-veloura-safe\src\assets\js\partials\veloura-dark-search-v71.js:154: document.querySelectorAll('salla-search').forEach(applyHostTheme);
 D:\salla-theme\koon-veloura-safe\src\assets\js\partials\veloura-dark-search-v71.js:168: if (node.matches?.('salla-search')) {
@@ -271,10 +265,8 @@ D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:2735: <salla-sear
 D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:2738: <salla-search class="veloura-header-search-component" inline height="36"></salla-search>
 D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:2999: <salla-search data-testid="store-search-modal"></salla-search>
 D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3000: <salla-login-modal data-testid="store-login-modal"></salla-login-modal>
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3003: <salla-modal
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3011: <salla-search
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3016: ></salla-search>
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3018: </salla-modal>
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3065: onclick="salla.event.dispatch('search::open')"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3093: onclick="salla.event.dispatch('login::open')"
 D:\salla-theme\koon-veloura-safe\src\views\pages\customer\orders\single.twig:489: <salla-modal width="sm" sub-title="{{ trans('pages.orders.reorder_confirmation')|raw }}"
 D:\salla-theme\koon-veloura-safe\src\views\pages\customer\orders\single.twig:501: </salla-modal>
 D:\salla-theme\koon-veloura-safe\src\views\pages\customer\orders\single.twig:506: <salla-modal width="sm" sub-title="{{ trans('pages.orders.cancel_confirmation') }}"

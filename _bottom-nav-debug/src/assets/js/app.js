@@ -9,395 +9,12 @@ import AppHelpers from "./app-helpers";
 
 /* ========================================================================
    Veloura Bottom Navigation
-   Functional contract:
-   - Search = documented <salla-modal> open()/close() + inline <salla-search>.
-   - Login  = documented <salla-login-modal>.open().
-   - Categories = Theme Raed native #mobile-menu trigger/drawer.
-   - Home/Cart/Custom items = ordinary links.
-   - This controller never edits Salla Shadow DOM.
+   No custom runtime controller.
+   Search/Login/Categories are delegated directly from master.twig to the
+   same native triggers already used by Theme Raed / the current header.
    ======================================================================== */
-const initVelouraBottomNav = (() => {
-  let menu = null;
-  let searchModal = null;
-  let searchOpened = false;
-  let activeAction = '';
 
-  const itemSelector = '[data-vbn-item]';
 
-  const items = () => Array.from(menu?.querySelectorAll(itemSelector) || []);
-
-  const clearActive = () => {
-    items().forEach(item => {
-      item.classList.remove('is-active');
-      item.removeAttribute('aria-current');
-    });
-  };
-
-  const activate = item => {
-    clearActive();
-    if (!item) return;
-    item.classList.add('is-active');
-    item.setAttribute('aria-current', 'page');
-  };
-
-  const itemByKey = key =>
-    menu?.querySelector(`${itemSelector}[data-vbn-key="${key}"]`) || null;
-
-  const itemByAction = action =>
-    menu?.querySelector(`${itemSelector}[data-vbn-action="${action}"]`) || null;
-
-  const normalizeUrl = value => {
-    if (typeof value !== 'string') return '';
-
-    try {
-      const url = new URL(value, window.location.href);
-      let path = (url.pathname || '/').replace(/\/{2,}/g, '/');
-      if (path.length > 1) path = path.replace(/\/+$/, '');
-      return `${url.origin}${path}${url.search || ''}`;
-    } catch (error) {
-      return '';
-    }
-  };
-
-  const sameUrl = (left, right) => {
-    const a = normalizeUrl(left);
-    const b = normalizeUrl(right);
-    return Boolean(a && b && a === b);
-  };
-
-  const resolveCustomUrl = item => {
-    if (!item) return '';
-
-    const direct = item.getAttribute('data-vbn-url') || item.getAttribute('href') || '';
-    if (direct && direct !== '#') return direct;
-
-    const payload = item.getAttribute('data-vbn-payload');
-    if (!payload) return '';
-
-    let value;
-    try {
-      value = JSON.parse(payload);
-    } catch (error) {
-      return '';
-    }
-
-    const walk = (entry, depth = 0) => {
-      if (depth > 8 || entry == null) return '';
-
-      if (typeof entry === 'string') {
-        const candidate = entry.trim();
-        if (
-          /^https?:\/\//i.test(candidate) ||
-          /^\/\//.test(candidate) ||
-          /^[/?]/.test(candidate)
-        ) {
-          return candidate;
-        }
-
-        try {
-          const parsed = JSON.parse(candidate);
-          return walk(parsed, depth + 1);
-        } catch (error) {
-          return '';
-        }
-      }
-
-      if (Array.isArray(entry)) {
-        for (const child of entry) {
-          const found = walk(child, depth + 1);
-          if (found) return found;
-        }
-        return '';
-      }
-
-      if (typeof entry === 'object') {
-        const preferred = [
-          'url', 'href', 'link', 'permalink', 'public_url',
-          'store_url', 'web_url', 'target_url', 'link_url',
-          'selected', 'selection', 'item', 'data', 'value'
-        ];
-
-        for (const key of preferred) {
-          if (!Object.prototype.hasOwnProperty.call(entry, key)) continue;
-          const found = walk(entry[key], depth + 1);
-          if (found) return found;
-        }
-
-        for (const key of Object.keys(entry)) {
-          const found = walk(entry[key], depth + 1);
-          if (found) return found;
-        }
-      }
-
-      return '';
-    };
-
-    return walk(value);
-  };
-
-  const routeItem = () => {
-    if (!menu) return null;
-
-    const currentUrl = window.location.href;
-
-    for (const customItem of menu.querySelectorAll('[data-vbn-link]')) {
-      const customUrl = resolveCustomUrl(customItem);
-      if (customUrl && sameUrl(customUrl, currentUrl)) return customItem;
-    }
-
-    const home = itemByKey('home');
-    if (home && sameUrl(home.getAttribute('href') || '/', currentUrl)) {
-      return home;
-    }
-
-    const path = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
-
-    if (/(?:^|\/)cart(?:\/|$)/i.test(path)) return itemByKey('cart');
-
-    return null;
-  };
-
-  const restoreRouteActive = () => {
-    if (activeAction) {
-      const transient = itemByAction(activeAction) || itemByKey(activeAction);
-      if (transient) {
-        activate(transient);
-        return;
-      }
-    }
-
-    activate(routeItem());
-  };
-
-  const setTransient = action => {
-    activeAction = action || '';
-    restoreRouteActive();
-  };
-
-  const clearTransient = action => {
-    if (!action || activeAction === action) activeAction = '';
-    window.setTimeout(restoreRouteActive, 20);
-  };
-
-  const waitForComponent = async (tagName, element) => {
-    if (!element) return null;
-
-    try {
-      if (window.customElements?.whenDefined) {
-        await window.customElements.whenDefined(tagName);
-      }
-
-      if (typeof element.componentOnReady === 'function') {
-        await element.componentOnReady();
-      }
-    } catch (error) {}
-
-    return element;
-  };
-
-  /* ---------------- Search: native Salla Modal + inline Search ---------------- */
-
-  const setSearchState = opened => {
-    searchOpened = Boolean(opened);
-    document.body.classList.toggle('veloura-bottom-nav-search-open', searchOpened);
-
-    if (searchOpened) setTransient('search');
-    else clearTransient('search');
-  };
-
-  const bindSearchModal = () => {
-    searchModal = document.getElementById('veloura-bottom-search-modal');
-    if (!searchModal || searchModal.dataset.vbnBound === 'true') return;
-
-    searchModal.dataset.vbnBound = 'true';
-
-    searchModal.addEventListener('modalVisibilityChanged', event => {
-      setSearchState(Boolean(event.detail));
-    });
-  };
-
-  const toggleSearch = async () => {
-    bindSearchModal();
-    const modal = await waitForComponent('salla-modal', searchModal);
-    if (!modal) return;
-
-    try {
-      if (searchOpened) {
-        await modal.close();
-        setSearchState(false);
-      } else {
-        setTransient('search');
-        await modal.open();
-        setSearchState(true);
-      }
-    } catch (error) {
-      setSearchState(false);
-      salla.logger?.error?.('veloura-bottom-nav::search', error);
-    }
-  };
-
-  /* ---------------- Login: exact Salla login component ---------------- */
-
-  const bindReturnedLoginModal = modal => {
-    if (!modal || typeof modal.addEventListener !== 'function') return;
-    if (modal.dataset?.vbnLoginBound === 'true') return;
-
-    if (modal.dataset) modal.dataset.vbnLoginBound = 'true';
-
-    modal.addEventListener('modalVisibilityChanged', event => {
-      const opened = Boolean(event.detail);
-      if (opened) setTransient('account');
-      else clearTransient('account');
-    });
-  };
-
-  const openLogin = async () => {
-    const login = document.querySelector('salla-login-modal[data-testid="store-login-modal"]')
-      || document.querySelector('salla-login-modal');
-
-    const component = await waitForComponent('salla-login-modal', login);
-    if (!component || typeof component.open !== 'function') return;
-
-    setTransient('account');
-
-    try {
-      const returned = await component.open();
-      bindReturnedLoginModal(returned);
-    } catch (error) {
-      clearTransient('account');
-      salla.logger?.error?.('veloura-bottom-nav::login', error);
-    }
-  };
-
-  /* ---------------- Categories: same trigger contract as Theme Raed ---------------- */
-
-  const categoriesAreOpen = () =>
-    Boolean(
-      document.body.classList.contains('menu-opened')
-      || document.querySelector('.mm-ocd.mm-ocd--open')
-    );
-
-  const syncCategories = () => {
-    if (categoriesAreOpen()) {
-      setTransient('categories');
-      document.body.classList.add('veloura-bottom-nav-categories-open');
-    } else {
-      document.body.classList.remove('veloura-bottom-nav-categories-open');
-      if (activeAction === 'categories') clearTransient('categories');
-    }
-  };
-
-  const toggleCategories = () => {
-    if (categoriesAreOpen()) {
-      const closeButton = document.querySelector('.close-mobile-menu')
-        || document.querySelector('.mm-ocd__backdrop');
-
-      closeButton?.click();
-      window.setTimeout(syncCategories, 50);
-      return;
-    }
-
-    setTransient('categories');
-
-    const nativeTrigger =
-      document.querySelector('.veloura-menu-trigger-mobile[href="#mobile-menu"]')
-      || document.querySelector('a.mburger[href="#mobile-menu"]')
-      || document.querySelector('a[href="#mobile-menu"]');
-
-    nativeTrigger?.click();
-    window.setTimeout(syncCategories, 50);
-  };
-
-  /* ---------------- Clicks ---------------- */
-
-  const handleClick = event => {
-    const item = event.target.closest?.(itemSelector);
-    if (!item || !menu?.contains(item)) return;
-
-    const action = item.getAttribute('data-vbn-action');
-
-    if (action === 'search') {
-      event.preventDefault();
-      event.stopPropagation();
-      toggleSearch();
-      return;
-    }
-
-    if (action === 'categories') {
-      event.preventDefault();
-      event.stopPropagation();
-      toggleCategories();
-      return;
-    }
-
-    if (action === 'login') {
-      event.preventDefault();
-      event.stopPropagation();
-      openLogin();
-      return;
-    }
-
-    if (item.hasAttribute('data-vbn-link')) {
-      const url = resolveCustomUrl(item);
-
-      if (!url) {
-        event.preventDefault();
-        return;
-      }
-
-      activate(item);
-
-      if (item.getAttribute('href') === '#' || !item.getAttribute('href')) {
-        event.preventDefault();
-
-        if (item.getAttribute('target') === '_blank') {
-          window.open(url, '_blank', 'noopener');
-        } else {
-          window.location.assign(url);
-        }
-      }
-
-      return;
-    }
-
-    activeAction = '';
-    activate(item);
-  };
-
-  const init = () => {
-    menu = document.querySelector('[data-vbn]');
-    if (!menu || menu.dataset.vbnReady === 'true') return;
-
-    menu.dataset.vbnReady = 'true';
-    menu.addEventListener('click', handleClick);
-
-    bindSearchModal();
-
-    const bodyObserver = new MutationObserver(syncCategories);
-    bodyObserver.observe(document.body, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
-
-    window.addEventListener('pageshow', restoreRouteActive);
-    window.addEventListener('popstate', restoreRouteActive);
-    window.addEventListener('hashchange', restoreRouteActive);
-
-    syncCategories();
-    restoreRouteActive();
-  };
-
-  return init;
-})();
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initVelouraBottomNav, { once: true });
-} else {
-  initVelouraBottomNav();
-}
-
-document.addEventListener('theme::ready', initVelouraBottomNav);
-/* VELOURA BOTTOM NAVIGATION CONTROLLER END */
 
 /* ========================================================================
    Veloura Footer Controller — embedded in the existing app.js
@@ -4271,3 +3888,85 @@ if (document.readyState === 'loading') {
 }
 document.addEventListener('theme::ready', initVelouraBalancedInlineSearchV63);
 /* VELOURA V63 BALANCED INLINE SEARCH LAYOUT END */
+
+/* VELOURA BOTTOM NAV ACTIVE STATE ONLY
+   Visual state only:
+   - never prevents clicks
+   - never opens/closes Search, Login, Cart or Categories
+   - never observes body mutations
+*/
+const initVelouraBottomNavActiveState = () => {
+  const nav = document.querySelector('[data-vbn]');
+  if (!nav || nav.dataset.vbnActiveReady === 'true') return;
+
+  nav.dataset.vbnActiveReady = 'true';
+
+  const itemSelector = '[data-vbn-item]';
+  const routeActiveItem =
+    nav.querySelector(`${itemSelector}[aria-current="page"]`) ||
+    nav.querySelector(`${itemSelector}.is-active`) ||
+    null;
+
+  const clearVisualActive = () => {
+    nav.querySelectorAll(itemSelector).forEach(item => {
+      item.classList.remove('is-active');
+    });
+  };
+
+  const setVisualActive = item => {
+    if (!item || !nav.contains(item)) return;
+    clearVisualActive();
+    item.classList.add('is-active');
+  };
+
+  const restoreRouteActive = () => {
+    clearVisualActive();
+
+    const currentRoute =
+      nav.querySelector(`${itemSelector}[aria-current="page"]`) ||
+      routeActiveItem;
+
+    if (currentRoute && nav.contains(currentRoute)) {
+      currentRoute.classList.add('is-active');
+    }
+  };
+
+  nav.addEventListener('click', event => {
+    const item = event.target.closest?.(itemSelector);
+    if (!item || !nav.contains(item)) return;
+
+    const key = item.getAttribute('data-vbn-key') || '';
+
+    // Theme Raed handles #mobile-menu after this click.
+    // If the drawer is already open, this click is a close/toggle action.
+    if (key === 'categories' && document.body.classList.contains('menu-opened')) {
+      window.setTimeout(restoreRouteActive, 100);
+      return;
+    }
+
+    // Search/Login/Categories native actions remain untouched.
+    setVisualActive(item);
+  });
+
+  // Native category drawer close buttons/backdrop restore the route state.
+  document.addEventListener('click', event => {
+    const closeTarget = event.target.closest?.(
+      '.close-mobile-menu, .mm-ocd__backdrop'
+    );
+
+    if (!closeTarget) return;
+    window.setTimeout(restoreRouteActive, 100);
+  }, true);
+
+  // Keep server-side Twig route state on initial render.
+  restoreRouteActive();
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initVelouraBottomNavActiveState, { once: true });
+} else {
+  initVelouraBottomNavActiveState();
+}
+
+document.addEventListener('theme::ready', initVelouraBottomNavActiveState);
+/* VELOURA BOTTOM NAV ACTIVE STATE ONLY */

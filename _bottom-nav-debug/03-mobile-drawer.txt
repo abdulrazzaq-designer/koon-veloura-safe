@@ -1,30 +1,25 @@
 ﻿D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:3: import MobileMenu from 'mmenu-light';
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:15: - Categories = Theme Raed native #mobile-menu trigger/drawer.
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:276: document.body.classList.contains('menu-opened')
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:277: || document.querySelector('.mm-ocd.mm-ocd--open')
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:292: const closeButton = document.querySelector('.close-mobile-menu')
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:293: || document.querySelector('.mm-ocd__backdrop');
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:303: document.querySelector('.veloura-menu-trigger-mobile[href="#mobile-menu"]')
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:304: || document.querySelector('a.mburger[href="#mobile-menu"]')
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:305: || document.querySelector('a[href="#mobile-menu"]');
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1366: * - نهيئ mmenu-light مرة واحدة فقط.
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1375: window.__velouraNativeMobileMenuInitPromise = this.isElementLoaded('#mobile-menu').then((menu) => {
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1381: if (menu.dataset.velouraMmenuReady === '1') {
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1385: menu.dataset.velouraMmenuReady = '1';
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1403: window.__velouraNativeMobileMenuDrawer = drawer;
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1411: this.onClick("a[href='#mobile-menu']", event => {
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1414: const activeDrawer = window.__velouraNativeMobileMenuDrawer || drawer;
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1420: if (document.body.classList.contains('menu-opened')) {
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1421: document.body.classList.remove('menu-opened');
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1426: document.body.classList.add('menu-opened');
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1430: this.onClick(".close-mobile-menu", event => {
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1433: const activeDrawer = window.__velouraNativeMobileMenuDrawer || drawer;
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1435: document.body.classList.remove('menu-opened');
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1442: this.onClick(".mm-ocd__backdrop", event => {
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1443: const activeDrawer = window.__velouraNativeMobileMenuDrawer || drawer;
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1445: document.body.classList.remove('menu-opened');
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:2089: return document.querySelector('#mobile-menu.mm-spn');
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:2456: if (event.target.closest("a[href='#mobile-menu']")) {
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:983: * - نهيئ mmenu-light مرة واحدة فقط.
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:992: window.__velouraNativeMobileMenuInitPromise = this.isElementLoaded('#mobile-menu').then((menu) => {
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:998: if (menu.dataset.velouraMmenuReady === '1') {
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1002: menu.dataset.velouraMmenuReady = '1';
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1020: window.__velouraNativeMobileMenuDrawer = drawer;
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1028: this.onClick("a[href='#mobile-menu']", event => {
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1031: const activeDrawer = window.__velouraNativeMobileMenuDrawer || drawer;
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1037: if (document.body.classList.contains('menu-opened')) {
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1038: document.body.classList.remove('menu-opened');
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1043: document.body.classList.add('menu-opened');
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1047: this.onClick(".close-mobile-menu", event => {
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1050: const activeDrawer = window.__velouraNativeMobileMenuDrawer || drawer;
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1052: document.body.classList.remove('menu-opened');
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1059: this.onClick(".mm-ocd__backdrop", event => {
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1060: const activeDrawer = window.__velouraNativeMobileMenuDrawer || drawer;
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1062: document.body.classList.remove('menu-opened');
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:1706: return document.querySelector('#mobile-menu.mm-spn');
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:2073: if (event.target.closest("a[href='#mobile-menu']")) {
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:3940: // Theme Raed handles #mobile-menu after this click.
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:3942: if (key === 'categories' && document.body.classList.contains('menu-opened')) {
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:3954: '.close-mobile-menu, .mm-ocd__backdrop'
 D:\salla-theme\koon-veloura-safe\src\assets\js\products.js:2: import MobileMenu from 'mmenu-light';
 D:\salla-theme\koon-veloura-safe\src\assets\js\partials\main-menu.js:93: <li class="text-sm font-bold veloura-mobile-menu-item" ${menu.attrs}>
 D:\salla-theme\koon-veloura-safe\src\assets\js\partials\main-menu.js:321: <nav id="mobile-menu" class="mobile-menu veloura-mobile-main-menu">
@@ -209,3 +204,4 @@ D:\salla-theme\koon-veloura-safe\src\assets\styles\05-utilities\_veloura-exact-d
 D:\salla-theme\koon-veloura-safe\src\assets\styles\05-utilities\_veloura-header-product-stability-v55.scss:181: /* Real desktop category tree is separate from the mmenu mobile tree. */
 D:\salla-theme\koon-veloura-safe\src\assets\styles\05-utilities\_veloura-header-product-stability-v55.scss:188: html body .store-header.veloura-top-enabled custom-main-menu > #mobile-menu {
 D:\salla-theme\koon-veloura-safe\src\views\components\header\header.twig:473: <a class="veloura-header-icon veloura-menu-trigger-mobile mburger mburger--collapse" href="#mobile-menu" aria-label="فتح القائمة">
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3048: href="#mobile-menu"

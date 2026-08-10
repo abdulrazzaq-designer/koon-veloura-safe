@@ -1,19 +1,8 @@
-﻿D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:25: const itemSelector = '[data-vbn-item]';
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:44: menu?.querySelector(`${itemSelector}[data-vbn-key="${key}"]`) || null;
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:47: menu?.querySelector(`${itemSelector}[data-vbn-action="${action}"]`) || null;
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:71: const direct = item.getAttribute('data-vbn-url') || item.getAttribute('href') || '';
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:74: const payload = item.getAttribute('data-vbn-payload');
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:143: for (const customItem of menu.querySelectorAll('[data-vbn-link]')) {
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:202: document.body.classList.toggle('veloura-bottom-nav-search-open', searchOpened);
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:235: salla.logger?.error?.('veloura-bottom-nav::search', error);
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:268: salla.logger?.error?.('veloura-bottom-nav::login', error);
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:283: document.body.classList.add('veloura-bottom-nav-categories-open');
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:285: document.body.classList.remove('veloura-bottom-nav-categories-open');
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:317: const action = item.getAttribute('data-vbn-action');
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:340: if (item.hasAttribute('data-vbn-link')) {
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:368: menu = document.querySelector('[data-vbn]');
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:911: if (host.matches?.('[data-vbn-native], salla-login-modal[data-vbn-native-login]')) return;
-D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:912: if (host.closest?.('[data-vbn-native]')) return;
+﻿D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:528: if (host.matches?.('[data-vbn-native], salla-login-modal[data-vbn-native-login]')) return;
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:529: if (host.closest?.('[data-vbn-native]')) return;
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:3899: const nav = document.querySelector('[data-vbn]');
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:3904: const itemSelector = '[data-vbn-item]';
+D:\salla-theme\koon-veloura-safe\src\assets\js\app.js:3938: const key = item.getAttribute('data-vbn-key') || '';
 D:\salla-theme\koon-veloura-safe\src\assets\js\partials\veloura-exact-dark-light-plus3-v86.js:389: if (host.matches?.('[data-vbn-native]')) return;
 D:\salla-theme\koon-veloura-safe\src\assets\js\partials\veloura-exact-dark-light-plus3-v86.js:390: if (host.closest?.('[data-vbn-native]')) return;
 D:\salla-theme\koon-veloura-safe\src\assets\styles\04-components\mobile-floating-menu.scss:7: .veloura-bottom-nav {
@@ -106,102 +95,99 @@ D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:2230: {{ (vbn_ena
 D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:2231: {{ (vbn_enabled and not vbn_is_product_page) ? ' veloura-bottom-nav-position-' ~ vbn_position : '' }}
 D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:2232: {{ (vbn_enabled and not vbn_is_product_page and vbn_glass) ? ' veloura-bottom-nav-glass' : '' }}
 D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:2233: {{ (vbn_enabled and not vbn_is_product_page and not vbn_show_labels) ? ' veloura-bottom-nav-no-labels' : '' }}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3030: {% if vbn_enabled and not vbn_is_product_page %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3032: class="veloura-bottom-nav veloura-bottom-nav--{{ vbn_position }} veloura-bottom-nav--scale-{{ vbn_active_mode }}"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3033: data-vbn
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3034: data-vbn-home-url="{{ store.url|default('/')|e('html_attr') }}"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3037: --vbn-height: {{ vbn_height }}px;
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3038: --vbn-bottom: {{ vbn_bottom }}px;
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3039: --vbn-bg: {{ vbn_bg }};
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3040: --vbn-text: {{ vbn_text }};
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3041: --vbn-active: {{ vbn_active }};
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3042: --vbn-radius: {{ vbn_radius_map[vbn_radius]|default('999px') }};
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3043: --vbn-icon-size: {{ vbn_icon_size }}px;
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3044: --vbn-font-size: {{ vbn_font_size }}px;
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3045: --vbn-active-scale: {{ vbn_active_scale }};
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3048: <div class="veloura-bottom-nav__surface">
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3049: {% if vbn_show_home %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3052: class="veloura-bottom-nav__item{% if is_page('index') %} is-active{% endif %}"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3053: data-vbn-item
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3054: data-vbn-key="home"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3055: aria-label="{{ vbn_home_label|e }}"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3059: {% if vbn_show_labels %}<span>{{ vbn_home_label }}</span>{% endif %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3063: {% if vbn_show_categories %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3066: class="veloura-bottom-nav__item"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3067: data-vbn-item
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3068: data-vbn-key="categories"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3069: data-vbn-action="categories"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3070: aria-label="{{ vbn_categories_label|e }}"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3073: {% if vbn_show_labels %}<span>{{ vbn_categories_label }}</span>{% endif %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3077: {% if vbn_show_search %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3080: class="veloura-bottom-nav__item"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3081: data-vbn-item
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3082: data-vbn-key="search"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3083: data-vbn-action="search"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3084: aria-label="{{ vbn_search_label|e }}"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3087: {% if vbn_show_labels %}<span>{{ vbn_search_label }}</span>{% endif %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3091: {% if vbn_show_cart %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3094: class="veloura-bottom-nav__item{% if is_page('cart') %} is-active{% endif %}"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3095: data-vbn-item
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3096: data-vbn-key="cart"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3097: aria-label="{{ vbn_cart_label|e }}"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3101: {% if vbn_show_labels %}<span>{{ vbn_cart_label }}</span>{% endif %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3105: {% if vbn_show_account %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3108: class="veloura-bottom-nav__item"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3109: data-vbn-item
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3110: data-vbn-key="account"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3111: data-vbn-action="login"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3112: aria-label="{{ vbn_account_label|e }}"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3115: {% if vbn_show_labels %}<span>{{ vbn_account_label }}</span>{% endif %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3119: {% for item in vbn_custom_items %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3120: {% set vbn_item_enabled_raw = item.enabled is defined ? item.enabled : true %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3121: {% set vbn_item_enabled = vbn_item_enabled_raw == true or vbn_item_enabled_raw == 'true' or vbn_item_enabled_raw == 1 or vbn_item_enabled_raw == '1' or vbn_item_enabled_raw == 'on' %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3123: {% if vbn_item_enabled %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3124: {% set vbn_item_label = item.label|default('رابط') %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3125: {% set vbn_item_url_raw = item.url is defined ? item.url : '' %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3126: {% set vbn_item_url = '' %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3128: {% if vbn_item_url_raw is not iterable %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3129: {% set vbn_item_url = vbn_item_url_raw %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3130: {% elseif vbn_item_url_raw.url is defined and vbn_item_url_raw.url is not iterable %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3131: {% set vbn_item_url = vbn_item_url_raw.url %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3132: {% elseif vbn_item_url_raw.href is defined and vbn_item_url_raw.href is not iterable %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3133: {% set vbn_item_url = vbn_item_url_raw.href %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3134: {% elseif vbn_item_url_raw.value is defined and vbn_item_url_raw.value is not iterable %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3135: {% set vbn_item_url = vbn_item_url_raw.value %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3136: {% elseif vbn_item_url_raw[0] is defined and vbn_item_url_raw[0].url is defined and vbn_item_url_raw[0].url is not iterable %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3137: {% set vbn_item_url = vbn_item_url_raw[0].url %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3138: {% elseif vbn_item_url_raw[0] is defined and vbn_item_url_raw[0].href is defined and vbn_item_url_raw[0].href is not iterable %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3139: {% set vbn_item_url = vbn_item_url_raw[0].href %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3140: {% elseif vbn_item_url_raw[0] is defined and vbn_item_url_raw[0].value is defined and vbn_item_url_raw[0].value is not iterable %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3141: {% set vbn_item_url = vbn_item_url_raw[0].value %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3142: {% elseif vbn_item_url_raw.selected is defined and vbn_item_url_raw.selected.url is defined and vbn_item_url_raw.selected.url is not iterable %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3143: {% set vbn_item_url = vbn_item_url_raw.selected.url %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3144: {% elseif vbn_item_url_raw.selected is defined and vbn_item_url_raw.selected.href is defined and vbn_item_url_raw.selected.href is not iterable %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3145: {% set vbn_item_url = vbn_item_url_raw.selected.href %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3146: {% elseif vbn_item_url_raw.selected[0] is defined and vbn_item_url_raw.selected[0].url is defined and vbn_item_url_raw.selected[0].url is not iterable %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3147: {% set vbn_item_url = vbn_item_url_raw.selected[0].url %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3148: {% elseif vbn_item_url_raw.selected[0] is defined and vbn_item_url_raw.selected[0].href is defined and vbn_item_url_raw.selected[0].href is not iterable %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3149: {% set vbn_item_url = vbn_item_url_raw.selected[0].href %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3150: {% elseif vbn_item_url_raw.value is defined and vbn_item_url_raw.value.url is defined and vbn_item_url_raw.value.url is not iterable %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3151: {% set vbn_item_url = vbn_item_url_raw.value.url %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3152: {% elseif vbn_item_url_raw.value is defined and vbn_item_url_raw.value.href is defined and vbn_item_url_raw.value.href is not iterable %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3153: {% set vbn_item_url = vbn_item_url_raw.value.href %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3156: {% set vbn_item_new_tab_raw = item.open_new_tab is defined ? item.open_new_tab : false %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3157: {% set vbn_item_new_tab = vbn_item_new_tab_raw == true or vbn_item_new_tab_raw == 'true' or vbn_item_new_tab_raw == 1 or vbn_item_new_tab_raw == '1' or vbn_item_new_tab_raw == 'on' %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3159: {% set vbn_item_icon_raw = item.icon|default('sicon-link') %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3160: {% if vbn_item_icon_raw is iterable and vbn_item_icon_raw[0] is defined and vbn_item_icon_raw[0].value is defined %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3161: {% set vbn_item_icon = vbn_item_icon_raw[0].value %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3162: {% elseif vbn_item_icon_raw.value is defined %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3163: {% set vbn_item_icon = vbn_item_icon_raw.value %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3165: {% set vbn_item_icon = vbn_item_icon_raw %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3169: href="{{ (vbn_item_url ? vbn_item_url : '#')|e('html_attr') }}"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3170: class="veloura-bottom-nav__item"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3171: data-vbn-item
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3172: data-vbn-key="custom-{{ loop.index }}"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3173: data-vbn-link
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3174: data-vbn-payload="{{ vbn_item_url_raw|json_encode|e('html_attr') }}"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3175: {% if vbn_item_url %}data-vbn-url="{{ vbn_item_url|e('html_attr') }}"{% endif %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3176: aria-label="{{ vbn_item_label|e }}"
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3177: {% if vbn_item_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3179: <i class="{{ vbn_item_icon|e('html_attr') }}" aria-hidden="true"></i>
-D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3180: {% if vbn_show_labels %}<span>{{ vbn_item_label }}</span>{% endif %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3013: {% if vbn_enabled and not vbn_is_product_page %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3015: class="veloura-bottom-nav veloura-bottom-nav--{{ vbn_position }} veloura-bottom-nav--scale-{{ vbn_active_mode }}"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3016: data-vbn
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3017: data-vbn-home-url="{{ store.url|default('/')|e('html_attr') }}"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3020: --vbn-height: {{ vbn_height }}px;
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3021: --vbn-bottom: {{ vbn_bottom }}px;
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3022: --vbn-bg: {{ vbn_bg }};
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3023: --vbn-text: {{ vbn_text }};
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3024: --vbn-active: {{ vbn_active }};
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3025: --vbn-radius: {{ vbn_radius_map[vbn_radius]|default('999px') }};
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3026: --vbn-icon-size: {{ vbn_icon_size }}px;
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3027: --vbn-font-size: {{ vbn_font_size }}px;
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3028: --vbn-active-scale: {{ vbn_active_scale }};
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3031: <div class="veloura-bottom-nav__surface">
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3032: {% if vbn_show_home %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3035: class="veloura-bottom-nav__item{% if is_page('index') %} is-active{% endif %}"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3036: data-vbn-item
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3037: data-vbn-key="home"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3038: aria-label="{{ vbn_home_label|e }}"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3042: {% if vbn_show_labels %}<span>{{ vbn_home_label }}</span>{% endif %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3046: {% if vbn_show_categories %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3049: class="veloura-bottom-nav__item"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3050: data-vbn-item
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3051: data-vbn-key="categories"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3052: aria-label="{{ vbn_categories_label|e }}"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3055: {% if vbn_show_labels %}<span>{{ vbn_categories_label }}</span>{% endif %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3059: {% if vbn_show_search %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3062: class="veloura-bottom-nav__item"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3063: data-vbn-item
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3064: data-vbn-key="search"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3066: aria-label="{{ vbn_search_label|e }}"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3069: {% if vbn_show_labels %}<span>{{ vbn_search_label }}</span>{% endif %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3073: {% if vbn_show_cart %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3076: class="veloura-bottom-nav__item{% if is_page('cart') %} is-active{% endif %}"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3077: data-vbn-item
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3078: data-vbn-key="cart"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3079: aria-label="{{ vbn_cart_label|e }}"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3083: {% if vbn_show_labels %}<span>{{ vbn_cart_label }}</span>{% endif %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3087: {% if vbn_show_account %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3090: class="veloura-bottom-nav__item"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3091: data-vbn-item
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3092: data-vbn-key="account"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3094: aria-label="{{ vbn_account_label|e }}"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3097: {% if vbn_show_labels %}<span>{{ vbn_account_label }}</span>{% endif %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3101: {% for item in vbn_custom_items %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3102: {% set vbn_item_enabled_raw = item.enabled is defined ? item.enabled : true %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3103: {% set vbn_item_enabled = vbn_item_enabled_raw == true or vbn_item_enabled_raw == 'true' or vbn_item_enabled_raw == 1 or vbn_item_enabled_raw == '1' or vbn_item_enabled_raw == 'on' %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3105: {% if vbn_item_enabled %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3106: {% set vbn_item_label = item.label|default('رابط') %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3107: {% set vbn_item_url_raw = item.url is defined ? item.url : '' %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3108: {% set vbn_item_url = '' %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3110: {% if vbn_item_url_raw is not iterable %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3111: {% set vbn_item_url = vbn_item_url_raw %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3112: {% elseif vbn_item_url_raw.url is defined and vbn_item_url_raw.url is not iterable %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3113: {% set vbn_item_url = vbn_item_url_raw.url %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3114: {% elseif vbn_item_url_raw.href is defined and vbn_item_url_raw.href is not iterable %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3115: {% set vbn_item_url = vbn_item_url_raw.href %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3116: {% elseif vbn_item_url_raw.value is defined and vbn_item_url_raw.value is not iterable %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3117: {% set vbn_item_url = vbn_item_url_raw.value %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3118: {% elseif vbn_item_url_raw[0] is defined and vbn_item_url_raw[0].url is defined and vbn_item_url_raw[0].url is not iterable %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3119: {% set vbn_item_url = vbn_item_url_raw[0].url %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3120: {% elseif vbn_item_url_raw[0] is defined and vbn_item_url_raw[0].href is defined and vbn_item_url_raw[0].href is not iterable %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3121: {% set vbn_item_url = vbn_item_url_raw[0].href %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3122: {% elseif vbn_item_url_raw[0] is defined and vbn_item_url_raw[0].value is defined and vbn_item_url_raw[0].value is not iterable %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3123: {% set vbn_item_url = vbn_item_url_raw[0].value %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3124: {% elseif vbn_item_url_raw.selected is defined and vbn_item_url_raw.selected.url is defined and vbn_item_url_raw.selected.url is not iterable %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3125: {% set vbn_item_url = vbn_item_url_raw.selected.url %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3126: {% elseif vbn_item_url_raw.selected is defined and vbn_item_url_raw.selected.href is defined and vbn_item_url_raw.selected.href is not iterable %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3127: {% set vbn_item_url = vbn_item_url_raw.selected.href %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3128: {% elseif vbn_item_url_raw.selected[0] is defined and vbn_item_url_raw.selected[0].url is defined and vbn_item_url_raw.selected[0].url is not iterable %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3129: {% set vbn_item_url = vbn_item_url_raw.selected[0].url %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3130: {% elseif vbn_item_url_raw.selected[0] is defined and vbn_item_url_raw.selected[0].href is defined and vbn_item_url_raw.selected[0].href is not iterable %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3131: {% set vbn_item_url = vbn_item_url_raw.selected[0].href %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3132: {% elseif vbn_item_url_raw.value is defined and vbn_item_url_raw.value.url is defined and vbn_item_url_raw.value.url is not iterable %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3133: {% set vbn_item_url = vbn_item_url_raw.value.url %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3134: {% elseif vbn_item_url_raw.value is defined and vbn_item_url_raw.value.href is defined and vbn_item_url_raw.value.href is not iterable %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3135: {% set vbn_item_url = vbn_item_url_raw.value.href %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3138: {% set vbn_item_new_tab_raw = item.open_new_tab is defined ? item.open_new_tab : false %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3139: {% set vbn_item_new_tab = vbn_item_new_tab_raw == true or vbn_item_new_tab_raw == 'true' or vbn_item_new_tab_raw == 1 or vbn_item_new_tab_raw == '1' or vbn_item_new_tab_raw == 'on' %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3141: {% set vbn_item_icon_raw = item.icon|default('sicon-link') %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3142: {% if vbn_item_icon_raw is iterable and vbn_item_icon_raw[0] is defined and vbn_item_icon_raw[0].value is defined %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3143: {% set vbn_item_icon = vbn_item_icon_raw[0].value %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3144: {% elseif vbn_item_icon_raw.value is defined %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3145: {% set vbn_item_icon = vbn_item_icon_raw.value %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3147: {% set vbn_item_icon = vbn_item_icon_raw %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3151: href="{{ (vbn_item_url ? vbn_item_url : '#')|e('html_attr') }}"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3152: class="veloura-bottom-nav__item"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3153: data-vbn-item
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3154: data-vbn-key="custom-{{ loop.index }}"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3155: data-vbn-link
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3156: data-vbn-payload="{{ vbn_item_url_raw|json_encode|e('html_attr') }}"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3157: {% if vbn_item_url %}data-vbn-url="{{ vbn_item_url|e('html_attr') }}"{% endif %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3158: aria-label="{{ vbn_item_label|e }}"
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3159: {% if vbn_item_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3161: <i class="{{ vbn_item_icon|e('html_attr') }}" aria-hidden="true"></i>
+D:\salla-theme\koon-veloura-safe\src\views\layouts\master.twig:3162: {% if vbn_show_labels %}<span>{{ vbn_item_label }}</span>{% endif %}

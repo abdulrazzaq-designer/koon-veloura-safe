@@ -2999,23 +2999,6 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 <salla-search data-testid="store-search-modal"></salla-search>
 <salla-login-modal data-testid="store-login-modal"></salla-login-modal>
 
-{# Bottom-nav Search: documented Salla Modal + documented inline Search. #}
-<salla-modal
-  id="veloura-bottom-search-modal"
-  data-testid="veloura-bottom-search-modal"
-  position="bottom"
-  width="full"
-  no-padding
->
-  <div class="veloura-bottom-search-panel">
-    <salla-search
-      data-testid="veloura-bottom-search"
-      inline
-      oval
-      height="52"
-    ></salla-search>
-  </div>
-</salla-modal>
 
 {% if store.scope %}
     <salla-scopes selection="{{ store.scope.display_as == 'popup' ? 'mandatory' : 'optional' }}"></salla-scopes>
@@ -3061,17 +3044,16 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       {% endif %}
 
       {% if vbn_show_categories %}
-        <button
-          type="button"
+        <a
+          href="#mobile-menu"
           class="veloura-bottom-nav__item"
           data-vbn-item
           data-vbn-key="categories"
-          data-vbn-action="categories"
           aria-label="{{ vbn_categories_label|e }}"
         >
           <i class="sicon-grid" aria-hidden="true"></i>
           {% if vbn_show_labels %}<span>{{ vbn_categories_label }}</span>{% endif %}
-        </button>
+        </a>
       {% endif %}
 
       {% if vbn_show_search %}
@@ -3080,7 +3062,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
           class="veloura-bottom-nav__item"
           data-vbn-item
           data-vbn-key="search"
-          data-vbn-action="search"
+          onclick="salla.event.dispatch('search::open')"
           aria-label="{{ vbn_search_label|e }}"
         >
           <i class="sicon-search" aria-hidden="true"></i>
@@ -3108,12 +3090,12 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
           class="veloura-bottom-nav__item"
           data-vbn-item
           data-vbn-key="account"
-          data-vbn-action="login"
+          onclick="salla.event.dispatch('login::open')"
           aria-label="{{ vbn_account_label|e }}"
         >
           <i class="sicon-user" aria-hidden="true"></i>
           {% if vbn_show_labels %}<span>{{ vbn_account_label }}</span>{% endif %}
-        </a>
+        </button>
       {% endif %}
 
       {% for item in vbn_custom_items %}

@@ -3889,11 +3889,11 @@ if (document.readyState === 'loading') {
 document.addEventListener('theme::ready', initVelouraBalancedInlineSearchV63);
 /* VELOURA V63 BALANCED INLINE SEARCH LAYOUT END */
 
-/* VELOURA BOTTOM NAV ACTIVE STATE ONLY
-   Visual state only:
-   - never prevents clicks
-   - never opens/closes Search, Login, Cart or Categories
-   - never observes body mutations
+/* VELOURA BOTTOM NAV INTERACTION STATE
+   Fixes:
+   - Search stays above Salla's modal overlay and toggles closed on second tap.
+   - Categories becomes active on the first tap (after Raed updates menu-opened).
+   - Native Search / Categories close actions restore the route active item.
 */
 const initVelouraBottomNavActiveState = () => {
   const nav = document.querySelector('[data-vbn]');
@@ -3902,10 +3902,14 @@ const initVelouraBottomNavActiveState = () => {
   nav.dataset.vbnActiveReady = 'true';
 
   const itemSelector = '[data-vbn-item]';
+  const searchItem = nav.querySelector(`${itemSelector}[data-vbn-key="search"]`);
   const routeActiveItem =
     nav.querySelector(`${itemSelector}[aria-current="page"]`) ||
     nav.querySelector(`${itemSelector}.is-active`) ||
     null;
+
+  const watchedSearchRoots = new WeakSet();
+  let searchOpen = false;
 
   const clearVisualActive = () => {
     nav.querySelectorAll(itemSelector).forEach(item => {
@@ -3931,20 +3935,239 @@ const initVelouraBottomNavActiveState = () => {
     }
   };
 
+  const setSearchVisualState = isOpen => {
+    searchOpen = Boolean(isOpen);
+    document.body.classList.toggle('veloura-bottom-nav-search-open', searchOpen);
+
+    if (searchOpen) {
+      setVisualActive(searchItem);
+    } else {
+      restoreRouteActive();
+    }
+  };
+
+  const getGlobalSearch = () => {
+    return (
+      document.querySelector('salla-search[data-testid="store-search-modal"]') ||
+      Array.from(document.querySelectorAll('salla-search:not([inline])')).find(host => {
+        return !host.closest('.veloura-search-surface');
+      }) ||
+      null
+    );
+  };
+
+  const getSearchOverlay = search => {
+    const root = search?.shadowRoot;
+    if (!root) return null;
+
+    return root.querySelector(
+      '.s-search-overlay, .s-salla-modal-overlay, .s-modal-overlay, .s-modal-backdrop, .modal-backdrop, .backdrop, [part~="overlay"], [part~="backdrop"]'
+    );
+  };
+
+  const isVisible = element => {
+    if (!element || element.hidden || element.getAttribute('aria-hidden') === 'true') {
+      return false;
+    }
+
+    const style = window.getComputedStyle(element);
+    const opacity = Number.parseFloat(style.opacity || '1');
+
+    return (
+      style.display !== 'none' &&
+      style.visibility !== 'hidden' &&
+      opacity > 0.01 &&
+      element.getClientRects().length > 0
+    );
+  };
+
+  const syncSearchAfterNativeInteraction = () => {
+    if (!searchOpen) return;
+
+    const search = getGlobalSearch();
+    const overlay = getSearchOverlay(search);
+
+    // Only infer "closed" when Salla exposes an overlay we can verify.
+    if (overlay && !isVisible(overlay)) {
+      setSearchVisualState(false);
+    }
+  };
+
+  const bindNativeSearchCloseWatcher = async () => {
+    const search = getGlobalSearch();
+    if (!search) return;
+
+    try {
+      await customElements.whenDefined('salla-search');
+      await search.componentOnReady?.();
+    } catch (error) {
+      // Search may already be usable even when componentOnReady is unavailable.
+    }
+
+    const root = search.shadowRoot;
+    if (!root || watchedSearchRoots.has(root)) return;
+
+    watchedSearchRoots.add(root);
+
+    // Clicking Salla's X/backdrop should also restore the route active item.
+    root.addEventListener('click', () => {
+      if (!searchOpen) return;
+
+      [80, 220, 500].forEach(delay => {
+        window.setTimeout(syncSearchAfterNativeInteraction, delay);
+      });
+    }, true);
+  };
+
+  const closeNativeSearch = async () => {
+    const search = getGlobalSearch();
+    if (!search) return;
+
+    try {
+      await customElements.whenDefined('salla-search');
+      await search.componentOnReady?.();
+    } catch (error) {
+      // Continue with the DOM fallbacks below.
+    }
+
+    const root = search.shadowRoot;
+
+    // Prefer Salla's documented modal close method when Search contains salla-modal.
+    const modal = root?.querySelector('salla-modal');
+    if (modal) {
+      try {
+        await modal.componentOnReady?.();
+        if (typeof modal.close === 'function') {
+          await modal.close();
+          return;
+        }
+      } catch (error) {
+        // Continue to Search/DOM fallbacks.
+      }
+    }
+
+    // Some component versions expose close() directly on salla-search.
+    if (typeof search.close === 'function') {
+      try {
+        await search.close();
+        return;
+      } catch (error) {
+        // Continue to DOM fallbacks.
+      }
+    }
+
+    const closeButton = root?.querySelector(
+      '.s-search-close, .s-search-close-btn, .s-search-close-button, .s-modal-close, [data-close], [data-dismiss], [part~="close"], button[aria-label*="close" i], button[title*="close" i], button[aria-label*="إغلاق"], button[title*="إغلاق"]'
+    );
+
+    if (closeButton) {
+      closeButton.click();
+      return;
+    }
+
+    const overlay = getSearchOverlay(search);
+    if (overlay) {
+      overlay.click();
+      return;
+    }
+
+    // Last-resort native modal convention.
+    document.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'Escape',
+        code: 'Escape',
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+  };
+
+  const closeCategories = () => {
+    if (!document.body.classList.contains('menu-opened')) return;
+
+    document.body.classList.remove(
+      'menu-opened',
+      'veloura-bottom-nav-categories-open'
+    );
+
+    const drawer = window.__velouraNativeMobileMenuDrawer;
+    if (drawer && typeof drawer.close === 'function') {
+      drawer.close();
+    }
+  };
+
+  /*
+   * Search needs capture phase:
+   * master.twig has an inline search::open onclick on the button. On the second
+   * tap we must stop the event BEFORE it reaches that inline handler; otherwise
+   * Salla receives another "open" dispatch instead of a toggle-close action.
+   */
+  nav.addEventListener('click', event => {
+    const item = event.target.closest?.(itemSelector);
+    if (!item || !nav.contains(item)) return;
+
+    const key = item.getAttribute('data-vbn-key') || '';
+    if (key !== 'search') return;
+
+    const isSecondTap =
+      searchOpen ||
+      document.body.classList.contains('veloura-bottom-nav-search-open');
+
+    if (isSecondTap) {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+
+      setSearchVisualState(false);
+      void closeNativeSearch();
+      return;
+    }
+
+    // Keep only one bottom-nav surface open at a time.
+    closeCategories();
+
+    // This class already raises .veloura-bottom-nav above the Salla overlay in SCSS.
+    setSearchVisualState(true);
+    void bindNativeSearchCloseWatcher();
+
+    // Do NOT stop this first tap: the existing inline search::open must still run.
+  }, true);
+
+  /*
+   * Bubble phase is intentional for Categories. Raed's direct
+   * a[href="#mobile-menu"] handler runs first on the target and updates
+   * body.menu-opened. We then read the FINAL state here.
+   */
   nav.addEventListener('click', event => {
     const item = event.target.closest?.(itemSelector);
     if (!item || !nav.contains(item)) return;
 
     const key = item.getAttribute('data-vbn-key') || '';
 
-    // Theme Raed handles #mobile-menu after this click.
-    // If the drawer is already open, this click is a close/toggle action.
-    if (key === 'categories' && document.body.classList.contains('menu-opened')) {
-      window.setTimeout(restoreRouteActive, 100);
+    if (key === 'search') {
       return;
     }
 
-    // Search/Login/Categories native actions remain untouched.
+    if (key === 'categories') {
+      const categoriesAreOpen = document.body.classList.contains('menu-opened');
+
+      if (categoriesAreOpen) {
+        // If Search was open, close it before keeping Categories active.
+        if (searchOpen || document.body.classList.contains('veloura-bottom-nav-search-open')) {
+          setSearchVisualState(false);
+          void closeNativeSearch();
+        }
+
+        document.body.classList.add('veloura-bottom-nav-categories-open');
+        setVisualActive(item);
+      } else {
+        document.body.classList.remove('veloura-bottom-nav-categories-open');
+        restoreRouteActive();
+      }
+
+      return;
+    }
+
     setVisualActive(item);
   });
 
@@ -3955,10 +4178,36 @@ const initVelouraBottomNavActiveState = () => {
     );
 
     if (!closeTarget) return;
+
+    document.body.classList.remove('veloura-bottom-nav-categories-open');
     window.setTimeout(restoreRouteActive, 100);
   }, true);
 
+  // Escape may close Salla Search or the categories drawer natively.
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+
+    if (searchOpen) {
+      [100, 250].forEach(delay => {
+        window.setTimeout(syncSearchAfterNativeInteraction, delay);
+      });
+    }
+
+    if (document.body.classList.contains('menu-opened')) {
+      window.setTimeout(() => {
+        if (!document.body.classList.contains('menu-opened')) {
+          document.body.classList.remove('veloura-bottom-nav-categories-open');
+          restoreRouteActive();
+        }
+      }, 120);
+    }
+  });
+
   // Keep server-side Twig route state on initial render.
+  document.body.classList.remove(
+    'veloura-bottom-nav-search-open',
+    'veloura-bottom-nav-categories-open'
+  );
   restoreRouteActive();
 };
 
@@ -3969,4 +4218,4 @@ if (document.readyState === 'loading') {
 }
 
 document.addEventListener('theme::ready', initVelouraBottomNavActiveState);
-/* VELOURA BOTTOM NAV ACTIVE STATE ONLY */
+/* VELOURA BOTTOM NAV INTERACTION STATE */
