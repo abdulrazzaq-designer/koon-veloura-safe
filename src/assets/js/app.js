@@ -3888,3 +3888,85 @@ if (document.readyState === 'loading') {
 }
 document.addEventListener('theme::ready', initVelouraBalancedInlineSearchV63);
 /* VELOURA V63 BALANCED INLINE SEARCH LAYOUT END */
+
+/* VELOURA BOTTOM NAV ACTIVE STATE ONLY
+   Visual state only:
+   - never prevents clicks
+   - never opens/closes Search, Login, Cart or Categories
+   - never observes body mutations
+*/
+const initVelouraBottomNavActiveState = () => {
+  const nav = document.querySelector('[data-vbn]');
+  if (!nav || nav.dataset.vbnActiveReady === 'true') return;
+
+  nav.dataset.vbnActiveReady = 'true';
+
+  const itemSelector = '[data-vbn-item]';
+  const routeActiveItem =
+    nav.querySelector(`${itemSelector}[aria-current="page"]`) ||
+    nav.querySelector(`${itemSelector}.is-active`) ||
+    null;
+
+  const clearVisualActive = () => {
+    nav.querySelectorAll(itemSelector).forEach(item => {
+      item.classList.remove('is-active');
+    });
+  };
+
+  const setVisualActive = item => {
+    if (!item || !nav.contains(item)) return;
+    clearVisualActive();
+    item.classList.add('is-active');
+  };
+
+  const restoreRouteActive = () => {
+    clearVisualActive();
+
+    const currentRoute =
+      nav.querySelector(`${itemSelector}[aria-current="page"]`) ||
+      routeActiveItem;
+
+    if (currentRoute && nav.contains(currentRoute)) {
+      currentRoute.classList.add('is-active');
+    }
+  };
+
+  nav.addEventListener('click', event => {
+    const item = event.target.closest?.(itemSelector);
+    if (!item || !nav.contains(item)) return;
+
+    const key = item.getAttribute('data-vbn-key') || '';
+
+    // Theme Raed handles #mobile-menu after this click.
+    // If the drawer is already open, this click is a close/toggle action.
+    if (key === 'categories' && document.body.classList.contains('menu-opened')) {
+      window.setTimeout(restoreRouteActive, 100);
+      return;
+    }
+
+    // Search/Login/Categories native actions remain untouched.
+    setVisualActive(item);
+  });
+
+  // Native category drawer close buttons/backdrop restore the route state.
+  document.addEventListener('click', event => {
+    const closeTarget = event.target.closest?.(
+      '.close-mobile-menu, .mm-ocd__backdrop'
+    );
+
+    if (!closeTarget) return;
+    window.setTimeout(restoreRouteActive, 100);
+  }, true);
+
+  // Keep server-side Twig route state on initial render.
+  restoreRouteActive();
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initVelouraBottomNavActiveState, { once: true });
+} else {
+  initVelouraBottomNavActiveState();
+}
+
+document.addEventListener('theme::ready', initVelouraBottomNavActiveState);
+/* VELOURA BOTTOM NAV ACTIVE STATE ONLY */
