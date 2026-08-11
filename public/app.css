@@ -52048,13 +52048,27 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
     color: #ffffff;
     color: var(--veloura-dark-primary-text, #ffffff);
   }
+  /* Dark floating glass — Telegram-like material.
+     Keep the configured secondary hue while allowing the page behind it to blur. */
   html.dark body.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-nav__surface,
   html body.dark.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-nav__surface {
-    background: rgba(3, 10, 24, 0.72);
-    background: var(--veloura-dark-secondary-bg, rgba(3, 10, 24, 0.72));
-    -webkit-backdrop-filter: blur(20px) saturate(116%);
-    backdrop-filter: blur(20px) saturate(116%);
+    background: rgba(0, 31, 51, 0.78) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.045) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.075) !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    -webkit-backdrop-filter: blur(22px) saturate(130%) !important;
+    backdrop-filter: blur(22px) saturate(130%) !important;
+    filter: none !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22) !important;
   }
+
+@supports (color: color-mix(in lch, red, blue)) and (top: var(--f)){
+html.dark body.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-nav__surface,
+  html body.dark.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-nav__surface {
+    background: color-mix(in srgb, var(--veloura-dark-secondary-bg, #001f33) 78%, transparent) !important;
+  }
+}
   html.dark body.veloura-bottom-nav-enabled:not(.veloura-bottom-nav-glass) .veloura-bottom-nav__surface,
   html body.dark.veloura-bottom-nav-enabled:not(.veloura-bottom-nav-glass) .veloura-bottom-nav__surface {
     background: #010612;
