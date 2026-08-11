@@ -4034,8 +4034,7 @@ const initVelouraBottomNavOverlaysV12 = () => {
         --color-muted: #64748b !important;
       }
 
-      /* Salla officially exposes an `oval` property. V12 toggles it from the
-         actual bottom-nav radius in JS; these rules cover exposed parts too. */
+      
       #${SEARCH_PANEL_ID} > salla-search::part(form),
       #${SEARCH_PANEL_ID} > salla-search::part(container),
       #${SEARCH_PANEL_ID} > salla-search::part(wrapper),

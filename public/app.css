@@ -840,11 +840,11 @@ input:where([type='file']):focus{
 .pointer-events-none{
     pointer-events: none;
 }
-.visible{
-    visibility: visible;
-}
 .\!visible{
     visibility: visible !important;
+}
+.visible{
+    visibility: visible;
 }
 .static{
     position: static;
@@ -1073,9 +1073,6 @@ input:where([type='file']):focus{
 }
 .grid{
     display: grid;
-}
-.inline-grid{
-    display: inline-grid;
 }
 .\!hidden{
     display: none !important;
