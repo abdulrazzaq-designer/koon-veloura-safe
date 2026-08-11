@@ -3890,9 +3890,9 @@ document.addEventListener('theme::ready', initVelouraBalancedInlineSearchV63);
 /* VELOURA V63 BALANCED INLINE SEARCH LAYOUT END */
 
 /* ========================================================================
-   Veloura Bottom Nav overlays V11
+   Veloura Bottom Nav Search V13 + native Login
 
-   Key change from V10:
+   V13 behavior:
    - Salla Search/Login in this storefront expose no OPEN shadowRoot.
    - Therefore V11 does not depend on search.shadowRoot/login.shadowRoot.
    - Search is styled through the host, CSS custom properties and ::part()
@@ -3901,9 +3901,9 @@ document.addEventListener('theme::ready', initVelouraBalancedInlineSearchV63);
      inside a Veloura-owned glass shell, so the native modal white sheet and
      its white close-button tile are not used by this bottom-nav flow.
    ======================================================================== */
-const initVelouraBottomNavOverlaysV12 = () => {
+const initVelouraBottomNavOverlaysV13 = () => {
   const nav = document.querySelector('[data-vbn]');
-  if (!nav || nav.dataset.vbnOverlaysV12 === 'true') return;
+  if (!nav || nav.dataset.vbnOverlaysV13 === 'true') return;
 
   const itemSelector = '[data-vbn-item]';
   const searchItem = nav.querySelector(`${itemSelector}[data-vbn-key="search"]`);
@@ -3912,12 +3912,20 @@ const initVelouraBottomNavOverlaysV12 = () => {
   const navSurface = nav.querySelector('.veloura-bottom-nav__surface');
 
   if (!searchItem && !accountItem) return;
-  nav.dataset.vbnOverlaysV12 = 'true';
+  nav.dataset.vbnOverlaysV13 = 'true';
 
-  const SEARCH_PANEL_ID = 'veloura-bottom-search-panel-v12';
-  const SEARCH_BACKDROP_ID = 'veloura-bottom-search-backdrop-v12';
-  const STYLE_ID = 'veloura-bottom-overlays-style-v12';
+  const SEARCH_PANEL_ID = 'veloura-bottom-search-panel-v13';
+  const SEARCH_BACKDROP_ID = 'veloura-bottom-search-backdrop-v13';
+  const STYLE_ID = 'veloura-bottom-overlays-style-v13';
   const LOGIN_OPEN_CLASS = 'veloura-bottom-nav-login-open';
+
+  // V13 never owns the Login modal. Clear any stale class left by V12/HMR.
+  document.body.classList.remove(LOGIN_OPEN_CLASS);
+  document.querySelectorAll('[data-v12-login-surface], [data-v12-login-clear], [data-v12-login-close]').forEach(el => {
+    el.removeAttribute('data-v12-login-surface');
+    el.removeAttribute('data-v12-login-clear');
+    el.removeAttribute('data-v12-login-close');
+  });
 
   // Clean all previous bottom-nav experiments. V12 owns search only; login goes
   // back to Salla's native login modal and is styled from the light DOM.
@@ -3928,11 +3936,13 @@ const initVelouraBottomNavOverlaysV12 = () => {
     'veloura-bottom-search-panel-v9',
     'veloura-bottom-search-panel-v10',
     'veloura-bottom-search-panel-v11',
+    'veloura-bottom-search-panel-v12',
     'veloura-bottom-search-backdrop-v4',
     'veloura-bottom-search-backdrop-v8',
     'veloura-bottom-search-backdrop-v9',
     'veloura-bottom-search-backdrop-v10',
     'veloura-bottom-search-backdrop-v11',
+    'veloura-bottom-search-backdrop-v12',
     'veloura-bottom-login-panel-v10',
     'veloura-bottom-login-backdrop-v10',
     'veloura-bottom-login-panel-v11',
@@ -3945,6 +3955,7 @@ const initVelouraBottomNavOverlaysV12 = () => {
     'veloura-bottom-search-style-v10',
     'veloura-login-glass-v10',
     'veloura-bottom-overlays-style-v11',
+    'veloura-bottom-overlays-style-v12',
     'veloura-vbn-top-glass-v4-style',
     'veloura-vbn-top-glass-visual-v5-style',
     'veloura-vbn-search-visual-v6-style',
@@ -4034,7 +4045,8 @@ const initVelouraBottomNavOverlaysV12 = () => {
         --color-muted: #64748b !important;
       }
 
-      
+      /* Salla officially exposes an oval property. V12 toggles it from the
+         actual bottom-nav radius in JS; these rules cover exposed parts too. */
       #${SEARCH_PANEL_ID} > salla-search::part(form),
       #${SEARCH_PANEL_ID} > salla-search::part(container),
       #${SEARCH_PANEL_ID} > salla-search::part(wrapper),
@@ -4226,11 +4238,11 @@ const initVelouraBottomNavOverlaysV12 = () => {
     searchItem.setAttribute('aria-expanded', 'false');
   }
 
-  // Account goes back to the native Salla login modal. This retains the real
-  // login flow/content while V12 patches the visible modal material.
+  // V13: leave Login 100% native. The bottom-nav account button uses the same
+  // login::open action as the original Twig, and this controller never blocks it.
   if (accountItem) {
-    accountItem.removeAttribute('onclick');
-    accountItem.setAttribute('aria-expanded', 'false');
+    accountItem.setAttribute('onclick', "salla.event.dispatch('login::open')");
+    accountItem.removeAttribute('aria-expanded');
   }
 
   const routeActiveItem =
@@ -4512,10 +4524,14 @@ const initVelouraBottomNavOverlaysV12 = () => {
     }
 
     if (key === 'account' && accountItem) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      if (isLoginOpen()) closeNativeLogin({ restore: true });
-      else openNativeLogin();
+      // Do NOT preventDefault / stopPropagation here. The original inline
+      // salla.event.dispatch('login::open') must reach Salla untouched.
+      closeSearch({ restore: false });
+      if (document.body.classList.contains('menu-opened')) {
+        window.__velouraNativeMobileMenuDrawer?.close?.();
+        document.body.classList.remove('menu-opened', 'veloura-bottom-nav-categories-open');
+      }
+      setActive(accountItem);
       return;
     }
 
@@ -4610,11 +4626,11 @@ const initVelouraBottomNavOverlaysV12 = () => {
   closeSearch({ restore: false });
   restoreRouteActive();
 
-  console.info('[Veloura] Bottom Nav Overlays V12 ready');
+  console.info('[Veloura] Bottom Nav Search V13 ready — Login native');
 };
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initVelouraBottomNavOverlaysV12, { once: true });
+  document.addEventListener('DOMContentLoaded', initVelouraBottomNavOverlaysV13, { once: true });
 } else {
-  initVelouraBottomNavOverlaysV12();
+  initVelouraBottomNavOverlaysV13();
 }
