@@ -2890,13 +2890,6 @@ html body .s-product-card-entry
   }
 }
 
-/* Coupon preview shown only in Salla preview when the merchant enabled the card
-   but has not entered the actual coupon code yet. Live storefront still hides it. */
-.veloura-product-page .veloura-product-coupon.is-preview-empty .veloura-product-coupon__code.is-empty {
-  opacity: .62 !important;
-  cursor: default !important;
-  user-select: none !important;
-}
 
 /* Light-DOM fallback for the related-products navigation setting.
    Shadow DOM is handled by the existing product-page script. */
@@ -2913,3 +2906,35 @@ html body .s-product-card-entry
   pointer-events: none !important;
 }
 
+
+
+/* ========================================================================
+   Veloura Product Related V97 — deterministic light-DOM fallbacks
+   Runtime applies the matching settings inside Salla's slider Shadow DOM.
+   ======================================================================== */
+.veloura-product-related-products {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.veloura-product-related-products.is-title-centered .veloura-product-related-heading,
+.veloura-product-related-products.is-title-centered .veloura-product-related-title {
+  display: flex !important;
+  width: 100% !important;
+  justify-content: center !important;
+  text-align: center !important;
+  margin-inline: auto !important;
+}
+
+.veloura-product-related-products.is-arrows-hidden :is(
+  .s-slider-next,
+  .s-slider-prev,
+  .swiper-button-next,
+  .swiper-button-prev,
+  [part~="next"],
+  [part~="prev"]
+) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

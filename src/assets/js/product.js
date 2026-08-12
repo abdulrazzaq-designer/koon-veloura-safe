@@ -16,9 +16,9 @@ class Product extends BasePage {
 
         this.initVelouraProductPageState();
         this.initVelouraDetailsOrder();
+        this.initVelouraProductSliders();
         this.initVelouraProductThumbnails();
         this.initProductOptionValidations();
-        this.initVelouraCouponCopy();
         this.initVelouraPurchaseButtons();
         this.initVelouraReadMore();
 
@@ -61,7 +61,6 @@ class Product extends BasePage {
             title: 'data-v42-order-title',
             price: 'data-v42-order-price',
             status: 'data-v42-order-status',
-            coupon: 'data-v42-order-coupon',
             description: 'data-v42-order-description',
             data: 'data-v42-order-data',
             extras: 'data-v42-order-extras',
@@ -141,6 +140,280 @@ class Product extends BasePage {
 
         main.classList.toggle('veloura-details-order-enabled', enabled);
         page.dataset.velouraOrderApplied = enabled ? 'true' : 'false';
+    }
+
+    initVelouraProductSliders() {
+        const page = document.querySelector('.veloura-product-page');
+        if (!page) return;
+
+        const settings = window.velouraProductSliderSettings || {};
+        const relatedHost = document.querySelector('[data-veloura-related-slider]');
+        const relatedSection = relatedHost?.closest('.veloura-product-related-products');
+
+        const clamp = (value, min, max, fallback) => {
+            const number = Number(value);
+            if (!Number.isFinite(number)) return fallback;
+            return Math.max(min, Math.min(max, Math.round(number)));
+        };
+
+        const related = {
+            mobileColumns: clamp(settings.related?.mobileColumns ?? relatedHost?.dataset.velouraRelatedMobile, 1, 3, 2),
+            desktopColumns: clamp(settings.related?.desktopColumns ?? relatedHost?.dataset.velouraRelatedDesktop, 1, 6, 4),
+            hideArrows: Boolean(settings.related?.hideArrows ?? (relatedHost?.dataset.velouraRelatedHideArrows === 'true')),
+            centerTitle: Boolean(settings.related?.centerTitle ?? (relatedHost?.dataset.velouraRelatedCenterTitle === 'true')),
+        };
+
+        if (relatedSection) {
+            relatedSection.classList.toggle('is-title-centered', related.centerTitle);
+            relatedSection.classList.toggle('is-arrows-hidden', related.hideArrows);
+
+            const heading = relatedSection.querySelector('.veloura-product-related-heading');
+            const title = relatedSection.querySelector('.veloura-product-related-title');
+            [heading, title].filter(Boolean).forEach((element) => {
+                if (related.centerTitle) {
+                    element.style.setProperty('display', 'flex', 'important');
+                    element.style.setProperty('width', '100%', 'important');
+                    element.style.setProperty('justify-content', 'center', 'important');
+                    element.style.setProperty('text-align', 'center', 'important');
+                    element.style.setProperty('margin-inline', 'auto', 'important');
+                } else {
+                    element.style.removeProperty('display');
+                    element.style.removeProperty('width');
+                    element.style.removeProperty('justify-content');
+                    element.style.removeProperty('text-align');
+                    element.style.removeProperty('margin-inline');
+                }
+            });
+        }
+
+        const sliderConfig = (config) => ({
+            slidesPerView: config.mobileColumns,
+            slidesPerGroup: 1,
+            spaceBetween: 12,
+            centeredSlides: false,
+            freeMode: false,
+            allowTouchMove: true,
+            simulateTouch: true,
+            grabCursor: true,
+            watchOverflow: true,
+            breakpoints: {
+                768: {
+                    slidesPerView: config.desktopColumns,
+                    slidesPerGroup: 1,
+                    spaceBetween: 16,
+                },
+            },
+        });
+
+        const currentColumns = (config) => (
+            window.matchMedia('(min-width: 768px)').matches
+                ? config.desktopColumns
+                : config.mobileColumns
+        );
+
+        const currentGap = () => window.matchMedia('(min-width: 768px)').matches ? 16 : 12;
+
+        const injectShadowFallback = (root, config, hideArrows, styleId) => {
+            if (!root || !root.appendChild) return;
+
+            let style = root.querySelector(`#${styleId}`);
+            if (!style) {
+                style = document.createElement('style');
+                style.id = styleId;
+                root.appendChild(style);
+            }
+
+            const mobileWidth = `calc((100% - ${(config.mobileColumns - 1) * 12}px) / ${config.mobileColumns})`;
+            const desktopWidth = `calc((100% - ${(config.desktopColumns - 1) * 16}px) / ${config.desktopColumns})`;
+            const hideCss = hideArrows ? `
+                .s-slider-next,.s-slider-prev,
+                .swiper-button-next,.swiper-button-prev,
+                [part~="next"],[part~="prev"],
+                [class*="arrow-next"],[class*="arrow-prev"] {
+                    display:none !important;
+                    visibility:hidden !important;
+                    pointer-events:none !important;
+                }
+            ` : '';
+
+            style.textContent = `
+                ::slotted(.swiper-slide),
+                .swiper-slide,
+                .swiper-wrapper > * {
+                    width:${mobileWidth} !important;
+                    max-width:${mobileWidth} !important;
+                    flex:0 0 ${mobileWidth} !important;
+                }
+                ${hideCss}
+                @media (min-width:768px) {
+                    ::slotted(.swiper-slide),
+                    .swiper-slide,
+                    .swiper-wrapper > * {
+                        width:${desktopWidth} !important;
+                        max-width:${desktopWidth} !important;
+                        flex:0 0 ${desktopWidth} !important;
+                    }
+                }
+            `;
+        };
+
+        const forceSlides = (root, config) => {
+            if (!root?.querySelectorAll) return;
+            const columns = currentColumns(config);
+            const gap = currentGap();
+            const width = `calc((100% - ${(columns - 1) * gap}px) / ${columns})`;
+
+            root.querySelectorAll('.swiper-slide').forEach((slide) => {
+                slide.style.setProperty('width', width, 'important');
+                slide.style.setProperty('max-width', width, 'important');
+                slide.style.setProperty('flex', `0 0 ${width}`, 'important');
+            });
+        };
+
+        const applyInnerSlider = (inner, config, hideArrows, prefix) => {
+            if (!inner) return;
+
+            const value = sliderConfig(config);
+            const columns = currentColumns(config);
+            const json = JSON.stringify(value);
+
+            inner.setAttribute('slides-per-view', String(columns));
+            inner.setAttribute('slider-config', json);
+            inner.setAttribute('show-controls', hideArrows ? 'false' : 'true');
+
+            try { inner.slidesPerView = String(columns); } catch (_) {}
+            try { inner.sliderConfig = value; } catch (_) {}
+            try { inner.showControls = !hideArrows; } catch (_) {}
+
+            injectShadowFallback(inner.shadowRoot, config, hideArrows, `${prefix}-inner-style`);
+            forceSlides(inner, config);
+            forceSlides(inner.shadowRoot, config);
+
+            const update = () => {
+                const swiper = inner.swiper || inner.slider || inner.swiperInstance ||
+                    inner.shadowRoot?.querySelector('.swiper,.swiper-container')?.swiper;
+
+                if (swiper?.params) {
+                    swiper.params.slidesPerView = columns;
+                    swiper.params.slidesPerGroup = 1;
+                    swiper.params.spaceBetween = currentGap();
+                    swiper.params.breakpoints = value.breakpoints;
+                    if (swiper.originalParams) {
+                        swiper.originalParams.slidesPerView = config.mobileColumns;
+                        swiper.originalParams.slidesPerGroup = 1;
+                        swiper.originalParams.spaceBetween = 12;
+                        swiper.originalParams.breakpoints = value.breakpoints;
+                    }
+                    try { swiper.setBreakpoint?.(); } catch (_) {}
+                    try { swiper.update?.(); } catch (_) {}
+                }
+
+                forceSlides(inner, config);
+                forceSlides(inner.shadowRoot, config);
+                try { inner.updateSlides?.(); } catch (_) {}
+                try { inner.update?.(); } catch (_) {}
+            };
+
+            update();
+            if (typeof inner.componentOnReady === 'function') {
+                Promise.resolve(inner.componentOnReady()).then(update).catch(() => {});
+            }
+            if (!inner.dataset.velouraV97AfterInit) {
+                inner.dataset.velouraV97AfterInit = '1';
+                inner.addEventListener('afterInit', update);
+            }
+        };
+
+        const collectInnerSliders = (host) => {
+            const sliders = [];
+            const add = (root) => {
+                if (!root?.querySelectorAll) return;
+                root.querySelectorAll('salla-slider').forEach((slider) => {
+                    if (!sliders.includes(slider)) sliders.push(slider);
+                });
+            };
+            add(host);
+            add(host?.shadowRoot);
+            return sliders;
+        };
+
+        const applyRelated = () => {
+            if (!relatedHost) return;
+
+            injectShadowFallback(relatedHost.shadowRoot, related, related.hideArrows, 'veloura-v97-related-host-style');
+            forceSlides(relatedHost, related);
+            forceSlides(relatedHost.shadowRoot, related);
+
+            const inners = collectInnerSliders(relatedHost);
+            inners.forEach((inner, index) => {
+                applyInnerSlider(inner, related, related.hideArrows, `veloura-v97-related-${index}`);
+            });
+
+            relatedHost.dataset.velouraV97Applied = '1';
+            relatedHost.dataset.velouraV97Columns = String(currentColumns(related));
+        };
+
+        if (relatedHost) {
+            applyRelated();
+            if (typeof relatedHost.componentOnReady === 'function') {
+                Promise.resolve(relatedHost.componentOnReady()).then(applyRelated).catch(() => {});
+            }
+
+            [80, 250, 600, 1200, 2200].forEach((delay) => {
+                window.setTimeout(applyRelated, delay);
+            });
+
+            const observer = new MutationObserver(() => {
+                window.requestAnimationFrame(applyRelated);
+            });
+            observer.observe(relatedHost, { childList: true, subtree: true });
+
+            let resizeFrame = 0;
+            window.addEventListener('resize', () => {
+                if (resizeFrame) cancelAnimationFrame(resizeFrame);
+                resizeFrame = requestAnimationFrame(() => {
+                    resizeFrame = 0;
+                    applyRelated();
+                });
+            }, { passive: true });
+        }
+
+        /* Recently viewed settings are kept working after removing the old
+           inline slider runtime. We only touch matching recent components. */
+        const recentSettings = settings.recent || {};
+        const recent = {
+            hide: Boolean(recentSettings.hide),
+            customize: Boolean(recentSettings.customize),
+            mobileColumns: clamp(recentSettings.mobileColumns, 1, 3, 2),
+            desktopColumns: clamp(recentSettings.desktopColumns, 1, 6, 4),
+            centerTitle: Boolean(recentSettings.centerTitle),
+        };
+
+        const isRecent = (node) => {
+            const text = `${node?.textContent || ''} ${node?.getAttribute?.('block-title') || ''} ${node?.className || ''}`.toLowerCase();
+            return text.includes('شاهدتها مؤخ') || text.includes('recently viewed') || text.includes('recently-viewed');
+        };
+
+        const applyRecent = () => {
+            document.querySelectorAll('salla-products-slider,salla-products-list').forEach((host) => {
+                if (host === relatedHost || !isRecent(host) && !isRecent(host.parentElement)) return;
+                const section = host.closest('section,.container,[class*="recent"],[class*="slider"]') || host.parentElement;
+                if (section) {
+                    section.classList.add('veloura-recent-stable-section');
+                    if (recent.hide) section.style.setProperty('display', 'none', 'important');
+                    else section.style.removeProperty('display');
+                    section.classList.toggle('is-title-centered', recent.customize && recent.centerTitle);
+                }
+                if (!recent.customize || recent.hide) return;
+                injectShadowFallback(host.shadowRoot, recent, false, 'veloura-v97-recent-host-style');
+                collectInnerSliders(host).forEach((inner, index) => {
+                    applyInnerSlider(inner, recent, false, `veloura-v97-recent-${index}`);
+                });
+            });
+        };
+
+        applyRecent();
+        [250, 800, 1600].forEach((delay) => window.setTimeout(applyRecent, delay));
     }
 
     initVelouraProductThumbnails() {
@@ -663,49 +936,6 @@ class Product extends BasePage {
         });
     }
 
-    initVelouraCouponCopy() {
-        document.querySelectorAll('.veloura-product-coupon__code').forEach(button => {
-            if (button.dataset.velouraCouponReady === '1') {
-                return;
-            }
-
-            button.dataset.velouraCouponReady = '1';
-
-            button.addEventListener('click', async () => {
-                const code =
-                    button.getAttribute('data-code') ||
-                    button.textContent.trim();
-
-                if (!code) {
-                    return;
-                }
-
-                try {
-                    if (navigator.clipboard && navigator.clipboard.writeText) {
-                        await navigator.clipboard.writeText(code);
-                    } else {
-                        const input = document.createElement('input');
-                        input.value = code;
-                        document.body.appendChild(input);
-                        input.select();
-                        document.execCommand('copy');
-                        input.remove();
-                    }
-
-                    const oldText = button.textContent;
-                    button.classList.add('is-copied');
-                    button.textContent = 'تم النسخ';
-
-                    setTimeout(() => {
-                        button.textContent = oldText;
-                        button.classList.remove('is-copied');
-                    }, 1200);
-                } catch (error) {
-                    console.warn('Veloura coupon copy failed:', error);
-                }
-            });
-        });
-    }
 
     registerEvents() {
         salla.event.on('product::price.updated.failed', () => {

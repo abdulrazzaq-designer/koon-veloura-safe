@@ -7071,7 +7071,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_page_subtitle_marketing_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>العروض والتفاعل داخل صفحة المنتج</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>التفاعل داخل صفحة المنتج</span></div>",
       "variant": "h6",
       "conditions": [
         {
@@ -7080,86 +7080,6 @@
           "value": true
         }
       ]
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تفعيل كود خصم داخل صفحة المنتج",
-      "id": "veloura_product_coupon_enabled_2026",
-      "format": "switch",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
-      "description": "عند التفعيل وكتابة كود فعلي يظهر صندوق الخصم داخل تفاصيل المنتج فوق الوصف مباشرة، ويمكن للعميل نسخه."
-    },
-    {
-      "id": "veloura_product_coupon_title_2026",
-      "type": "string",
-      "format": "text",
-      "label": "عنوان كود الخصم",
-      "value": "خصم إضافي 10%",
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_coupon_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_product_coupon_subtitle_2026",
-      "type": "string",
-      "format": "text",
-      "label": "عنوان فرعي لكود الخصم",
-      "value": "انسخ الكود واحصل على خصم إضافي عند الدفع",
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_coupon_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_product_coupon_code_2026",
-      "type": "string",
-      "format": "text",
-      "label": "كود الخصم",
-      "value": "",
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_coupon_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
-      "placeholder": "اكتب الكود الفعلي، مثال: VEL10",
-      "description": "لا تكتب كلمة مثال. أنشئ الكود نفسه ضمن كوبونات المتجر، ثم اكتبه هنا ليظهر فوق وصف المنتج."
     },
     {
       "type": "boolean",
@@ -7429,89 +7349,6 @@
           "label": "الترتيب 3",
           "value": "3",
           "key": "veloura-v42-order-3-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "الترتيب 1",
-          "value": "1",
-          "key": "veloura-v42-order-1-2026"
-        },
-        {
-          "label": "الترتيب 2",
-          "value": "2",
-          "key": "veloura-v42-order-2-2026"
-        },
-        {
-          "label": "الترتيب 3",
-          "value": "3",
-          "key": "veloura-v42-order-3-2026"
-        },
-        {
-          "label": "الترتيب 4",
-          "value": "4",
-          "key": "veloura-v42-order-4-2026"
-        },
-        {
-          "label": "الترتيب 5",
-          "value": "5",
-          "key": "veloura-v42-order-5-2026"
-        },
-        {
-          "label": "الترتيب 6",
-          "value": "6",
-          "key": "veloura-v42-order-6-2026"
-        },
-        {
-          "label": "الترتيب 7",
-          "value": "7",
-          "key": "veloura-v42-order-7-2026"
-        },
-        {
-          "label": "الترتيب 8",
-          "value": "8",
-          "key": "veloura-v42-order-8-2026"
-        },
-        {
-          "label": "الترتيب 9",
-          "value": "9",
-          "key": "veloura-v42-order-9-2026"
-        },
-        {
-          "label": "الترتيب 10",
-          "value": "10",
-          "key": "veloura-v42-order-10-2026"
-        }
-      ],
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_details_order_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_product_order_coupon_2026",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "ترتيب كود الخصم",
-      "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": false,
-      "value": "4",
-      "default": "4",
-      "selected": [
-        {
-          "label": "الترتيب 4",
-          "value": "4",
-          "key": "veloura-v42-order-4-2026"
         }
       ],
       "options": [
