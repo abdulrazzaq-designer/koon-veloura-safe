@@ -649,8 +649,8 @@ const initVelouraAdaptiveHeaderLayout = (() => {
       max-height: var(--veloura-v60-search-height, 36px) !important;
       border-radius: var(--veloura-v55-search-radius, 24px) !important;
 
-      /* V88: the LIGHT-DOM .veloura-search-surface is the only glass owner.
-         The Salla host and every field wrapper stay fully transparent. */
+      /* Single-layer search:
+         .veloura-search-surface in light DOM owns all glass paint. */
       background: transparent !important;
       background-color: transparent !important;
       background-image: none !important;
@@ -692,7 +692,6 @@ const initVelouraAdaptiveHeaderLayout = (() => {
       border-color: transparent !important;
       border-radius: var(--veloura-v55-search-radius, 24px) !important;
 
-      /* Critical: never paint a second dark layer inside the search glass. */
       background: transparent !important;
       background-color: transparent !important;
       background-image: none !important;
@@ -3955,61 +3954,7 @@ document.addEventListener('theme::ready', initVelouraBalancedInlineSearchV63);
      inside a Veloura-owned glass shell, so the native modal white sheet and
      its white close-button tile are not used by this bottom-nav flow.
    ======================================================================== */
-const ensureVelouraNativeMenuRepairStyleV92 = () => {
-  const STYLE_ID = 'veloura-native-menu-repair-v92';
-  if (document.getElementById(STYLE_ID)) return;
-
-  const style = document.createElement('style');
-  style.id = STYLE_ID;
-  style.textContent = `
-    /* V92: the mmenu backdrop must never cover the actual drawer panel. */
-    body.menu-opened .mm-ocd.mm-ocd--open {
-      display: block !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-      pointer-events: auto !important;
-      bottom: 0 !important;
-    }
-
-    body.menu-opened .mm-ocd.mm-ocd--open .mm-ocd__content {
-      display: block !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-      pointer-events: auto !important;
-      transform: translate3d(0, 0, 0) !important;
-      -webkit-transform: translate3d(0, 0, 0) !important;
-      z-index: 2 !important;
-      width: min(84vw, 440px) !important;
-      max-width: 440px !important;
-      height: 100% !important;
-      top: 0 !important;
-      bottom: 0 !important;
-    }
-
-    body.menu-opened .mm-ocd.mm-ocd--open.mm-ocd--right .mm-ocd__content {
-      right: 0 !important;
-      left: auto !important;
-    }
-
-    body.menu-opened .mm-ocd.mm-ocd--open.mm-ocd--left .mm-ocd__content {
-      left: 0 !important;
-      right: auto !important;
-    }
-
-    body.menu-opened .mm-ocd.mm-ocd--open .mm-ocd__backdrop {
-      display: block !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-      pointer-events: auto !important;
-      z-index: 1 !important;
-    }
-  `;
-  document.head.appendChild(style);
-};
-
 const initVelouraBottomNavOverlaysV13 = () => {
-  ensureVelouraNativeMenuRepairStyleV92();
-
   const nav = document.querySelector('[data-vbn]');
   if (!nav || nav.dataset.vbnOverlaysV13 === 'true') return;
 
@@ -4078,19 +4023,12 @@ const initVelouraBottomNavOverlaysV13 = () => {
   style.id = STYLE_ID;
   style.textContent = `
     @media (max-width: 767px) {
-      /* V90 SAFETY GATE:
-         Search overlay is inert by default. It becomes interactive ONLY while
-         body.veloura-bottom-nav-search-open is present AND hidden is removed. */
       #${SEARCH_BACKDROP_ID} {
         position: fixed !important;
         inset: 0 !important;
         z-index: 2147483000 !important;
-
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-
+        display: block !important;
+        pointer-events: auto !important;
         background:
           linear-gradient(
             180deg,
@@ -4105,16 +4043,6 @@ const initVelouraBottomNavOverlaysV13 = () => {
       #${SEARCH_BACKDROP_ID}[hidden],
       #${SEARCH_PANEL_ID}[hidden] {
         display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-      }
-
-      body.veloura-bottom-nav-search-open #${SEARCH_BACKDROP_ID}:not([hidden]) {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
       }
 
       #${SEARCH_PANEL_ID} {
@@ -4267,21 +4195,6 @@ const initVelouraBottomNavOverlaysV13 = () => {
       }
 
       /* Dark mode: never use contrast(200%) on our glass surfaces. */
-      /* Panel is also inert unless search state is explicitly open. */
-      #${SEARCH_PANEL_ID} {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-      }
-
-      body.veloura-bottom-nav-search-open #${SEARCH_PANEL_ID}:not([hidden]) {
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-      }
-
       html.dark body #${SEARCH_BACKDROP_ID},
       html body.dark #${SEARCH_BACKDROP_ID} {
         background:
@@ -4377,30 +4290,6 @@ const initVelouraBottomNavOverlaysV13 = () => {
     searchItem.setAttribute('aria-controls', SEARCH_PANEL_ID);
     searchItem.setAttribute('aria-expanded', 'false');
   }
-
-  /* V90: no phantom full-screen search layer is allowed.
-     Body class is the single source of truth for whether the overlay may exist. */
-  const reconcileSearchOverlayState = () => {
-    const open = document.body.classList.contains('veloura-bottom-nav-search-open');
-
-    if (!open) {
-      if (searchPanel) {
-        searchPanel.hidden = true;
-        searchPanel.setAttribute('aria-hidden', 'true');
-      }
-
-      searchBackdrop.hidden = true;
-      searchBackdrop.setAttribute('aria-hidden', 'true');
-      searchItem?.setAttribute('aria-expanded', 'false');
-    }
-  };
-
-  reconcileSearchOverlayState();
-
-  window.addEventListener('pageshow', reconcileSearchOverlayState);
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) reconcileSearchOverlayState();
-  });
 
   // V13: leave Login 100% native. The bottom-nav account button uses the same
   // login::open action as the original Twig, and this controller never blocks it.
@@ -4700,106 +4589,14 @@ const initVelouraBottomNavOverlaysV13 = () => {
     }
 
     if (key === 'categories') {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-
       closeSearch({ restore: false });
       if (isLoginOpen()) closeNativeLogin({ restore: false });
 
-      const repairOpenDrawer = () => {
-        const root = document.querySelector('.mm-ocd.mm-ocd--open');
-        if (!root) return;
-
-        const content = root.querySelector('.mm-ocd__content');
-        const backdrop = root.querySelector('.mm-ocd__backdrop');
-
-        if (content) {
-          content.style.setProperty('display', 'block', 'important');
-          content.style.setProperty('visibility', 'visible', 'important');
-          content.style.setProperty('opacity', '1', 'important');
-          content.style.setProperty('pointer-events', 'auto', 'important');
-          content.style.setProperty('transform', 'translate3d(0,0,0)', 'important');
-          content.style.setProperty('-webkit-transform', 'translate3d(0,0,0)', 'important');
-          content.style.setProperty('z-index', '2', 'important');
-
-          const rect = content.getBoundingClientRect();
-          if (rect.width < 40) {
-            content.style.setProperty('width', 'min(84vw, 440px)', 'important');
-            content.style.setProperty('max-width', '440px', 'important');
-          }
-        }
-
-        if (backdrop) {
-          backdrop.style.setProperty('z-index', '1', 'important');
-          backdrop.style.setProperty('pointer-events', 'auto', 'important');
-        }
-      };
-
-      const toggleCategories = async () => {
-        let drawer = window.__velouraNativeMobileMenuDrawer;
-
-        if (!drawer) {
-          try {
-            const initResult = window.app?.initiateMobileMenu?.();
-            if (initResult && typeof initResult.then === 'function') {
-              await initResult;
-            } else if (
-              window.__velouraNativeMobileMenuInitPromise &&
-              typeof window.__velouraNativeMobileMenuInitPromise.then === 'function'
-            ) {
-              await window.__velouraNativeMobileMenuInitPromise;
-            }
-          } catch (_) {}
-
-          drawer = window.__velouraNativeMobileMenuDrawer;
-        }
-
-        if (!drawer) {
-          /* Do not create a dead transparent state if mmenu is not ready. */
-          document.body.classList.remove(
-            'menu-opened',
-            'veloura-bottom-nav-categories-open'
-          );
-          restoreRouteActive();
-          return;
-        }
-
-        if (document.body.classList.contains('menu-opened')) {
-          document.body.classList.remove(
-            'menu-opened',
-            'veloura-bottom-nav-categories-open'
-          );
-          try { drawer.close?.(); } catch (_) {}
-          window.setTimeout(restoreRouteActive, 120);
-          return;
-        }
-
-        document.body.classList.add(
-          'menu-opened',
-          'veloura-bottom-nav-categories-open'
-        );
+      if (document.body.classList.contains('menu-opened')) {
+        window.setTimeout(restoreRouteActive, 120);
+      } else {
         setActive(item);
-
-        try {
-          drawer.open?.();
-        } catch (_) {
-          document.body.classList.remove(
-            'menu-opened',
-            'veloura-bottom-nav-categories-open'
-          );
-          restoreRouteActive();
-          return;
-        }
-
-        /* mmenu applies its open class asynchronously in some builds.
-           Repair after several frames so backdrop can never sit above the panel. */
-        requestAnimationFrame(repairOpenDrawer);
-        window.setTimeout(repairOpenDrawer, 40);
-        window.setTimeout(repairOpenDrawer, 120);
-        window.setTimeout(repairOpenDrawer, 260);
-      };
-
-      void toggleCategories();
+      }
       return;
     }
 
@@ -4807,9 +4604,6 @@ const initVelouraBottomNavOverlaysV13 = () => {
     if (isLoginOpen()) closeNativeLogin({ restore: false });
     setActive(item);
   }, true);
-
-  /* V91: custom category state is presentation-only; Theme Raed owns menu-opened. */
-  document.body.classList.remove('veloura-bottom-nav-categories-open');
 
   searchBackdrop.addEventListener('click', () => closeSearch({ restore: true }));
 
@@ -4828,12 +4622,6 @@ const initVelouraBottomNavOverlaysV13 = () => {
 
   document.addEventListener('click', event => {
     if (!event.target.closest?.('.close-mobile-menu, .mm-ocd__backdrop')) return;
-
-    document.body.classList.remove(
-      'menu-opened',
-      'veloura-bottom-nav-categories-open'
-    );
-
     window.setTimeout(restoreRouteActive, 120);
   }, true);
 
