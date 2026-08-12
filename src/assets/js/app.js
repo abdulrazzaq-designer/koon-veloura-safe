@@ -648,26 +648,80 @@ const initVelouraAdaptiveHeaderLayout = (() => {
       height: var(--veloura-v60-search-height, 36px) !important;
       max-height: var(--veloura-v60-search-height, 36px) !important;
       border-radius: var(--veloura-v55-search-radius, 24px) !important;
+
+      /* V88: the LIGHT-DOM .veloura-search-surface is the only glass owner.
+         The Salla host and every field wrapper stay fully transparent. */
       background: transparent !important;
+      background-color: transparent !important;
+      background-image: none !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+      filter: none !important;
       overflow: visible !important;
+
+      --s-search-bg: transparent !important;
+      --s-search-input-bg: transparent !important;
+      --s-search-input-background: transparent !important;
+      --search-input-bg: transparent !important;
+      --search-background: transparent !important;
     }
-    form, .s-search-container, .s-search-wrapper, .s-search-input,
-    input, [part~="input"], [part~="form"], [part~="container"] {
+
+    form,
+    .s-search,
+    .s-search-container,
+    .s-search-wrapper,
+    .s-search-input-wrapper,
+    .s-search-input,
+    .s-search-field,
+    input,
+    [part~="form"],
+    [part~="container"],
+    [part~="wrapper"],
+    [part~="input-wrapper"],
+    [part~="input"],
+    [part~="field"] {
       width: 100% !important;
       min-width: 0 !important;
       min-height: var(--veloura-v60-search-height, 36px) !important;
       height: var(--veloura-v60-search-height, 36px) !important;
       max-height: var(--veloura-v60-search-height, 36px) !important;
       box-sizing: border-box !important;
-      border: 1px solid transparent !important;
+      border: 0 !important;
+      border-color: transparent !important;
       border-radius: var(--veloura-v55-search-radius, 24px) !important;
-      background: var(--veloura-v60-search-inner-bg, transparent) !important;
-      background-color: var(--veloura-v60-search-inner-bg, transparent) !important;
+
+      /* Critical: never paint a second dark layer inside the search glass. */
+      background: transparent !important;
+      background-color: transparent !important;
       background-image: none !important;
+
       color: var(--veloura-top-text, currentColor) !important;
       box-shadow: none !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+      filter: none !important;
     }
-    .s-search-results, [part~="results"] {
+
+    form::before,
+    form::after,
+    .s-search-container::before,
+    .s-search-container::after,
+    .s-search-wrapper::before,
+    .s-search-wrapper::after,
+    .s-search-input-wrapper::before,
+    .s-search-input-wrapper::after,
+    .s-search-input::before,
+    .s-search-input::after {
+      background: transparent !important;
+      background-image: none !important;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+
+    .s-search-results,
+    [part~="results"] {
       border-radius: var(--veloura-v55-search-radius, 24px) !important;
       overflow: hidden !important;
     }

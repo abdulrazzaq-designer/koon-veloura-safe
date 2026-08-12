@@ -614,3 +614,209 @@
     init();
   }
 })();
+
+/* ==========================================================================
+   Veloura V88 — Dark Telegram Glass single-layer refinement
+   - Dark glass stays genuinely translucent.
+   - saturation is fixed at 200%.
+   - top edge is visibly stronger than bottom edge.
+   - detached header search has exactly ONE painted glass layer.
+   ========================================================================== */
+(() => {
+  'use strict';
+
+  const STYLE_ID = 'veloura-v88-dark-glass-single-layer';
+
+  const CSS = `
+    html.dark,
+    html.dark body,
+    html body.dark {
+      /* Keep the same configured dark-secondary hue and the current high transparency. */
+      --veloura-v88-source: var(--veloura-dark-secondary-bg, #010612);
+      --veloura-v88-tint: color-mix(in srgb, var(--veloura-v88-source) 94%, white 6%);
+      --veloura-v88-glass: color-mix(in srgb, var(--veloura-v88-tint) 60%, transparent);
+
+      /* Telegram-like edge hierarchy:
+         TOP is deliberately more visible; BOTTOM remains present but softer. */
+      --veloura-v86-edge-top: rgba(255, 255, 255, .120);
+      --veloura-v86-edge-bottom: rgba(255, 255, 255, .055);
+      --veloura-glass-edge-top: var(--veloura-v86-edge-top);
+      --veloura-glass-edge-bottom: var(--veloura-v86-edge-bottom);
+      --veloura-global-glass-edge-top: var(--veloura-v86-edge-top);
+      --veloura-global-glass-edge-bottom: var(--veloura-v86-edge-bottom);
+
+      --veloura-v86-filter: blur(24px) saturate(200%);
+      --veloura-glass-filter: var(--veloura-v86-filter);
+      --veloura-global-glass-filter: var(--veloura-v86-filter);
+    }
+
+    html.dark body.veloura-glass-effect #veloura-header-tabs-stack,
+    html body.dark.veloura-glass-effect #veloura-header-tabs-stack {
+      --veloura-header-solid-bg: var(--veloura-dark-secondary-bg, #010612) !important;
+      --veloura-v87-glass: var(--veloura-v88-glass) !important;
+      --veloura-v87-edge-top: rgba(255, 255, 255, .120) !important;
+      --veloura-v87-edge-bottom: rgba(255, 255, 255, .055) !important;
+      --veloura-v87-filter: blur(24px) saturate(200%) !important;
+    }
+
+    /* Header: one paint owner. */
+    html.dark body.veloura-glass-effect #veloura-header-tabs-stack .veloura-header-tabs-stack__surface,
+    html body.dark.veloura-glass-effect #veloura-header-tabs-stack .veloura-header-tabs-stack__surface {
+      background: var(--veloura-v88-glass) !important;
+      background-color: var(--veloura-v88-glass) !important;
+      background-image: none !important;
+      border-top: 1px solid rgba(255, 255, 255, .120) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, .055) !important;
+      border-inline: 0 !important;
+      -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
+      backdrop-filter: blur(24px) saturate(200%) !important;
+      filter: none !important;
+      box-shadow:
+        0 10px 28px rgba(0, 0, 0, .24),
+        inset 0 1px 0 rgba(255,255,255,.025) !important;
+    }
+
+    /* Never let nested header wrappers paint over the glass. */
+    html.dark body.veloura-glass-effect #veloura-header-tabs-stack .veloura-header-tabs-stack__surface :is(
+      .store-header,
+      #mainnav.main-nav-container,
+      #mainnav.main-nav-container > .inner,
+      .main-nav-container,
+      .main-nav-container > .inner,
+      .veloura-header-container,
+      .veloura-header-grid,
+      .veloura-home-tabs,
+      .veloura-home-tabs__inner
+    ),
+    html body.dark.veloura-glass-effect #veloura-header-tabs-stack .veloura-header-tabs-stack__surface :is(
+      .store-header,
+      #mainnav.main-nav-container,
+      #mainnav.main-nav-container > .inner,
+      .main-nav-container,
+      .main-nav-container > .inner,
+      .veloura-header-container,
+      .veloura-header-grid,
+      .veloura-home-tabs,
+      .veloura-home-tabs__inner
+    ) {
+      background: transparent !important;
+      background-color: transparent !important;
+      background-image: none !important;
+      border-color: transparent !important;
+      box-shadow: none !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+      filter: none !important;
+    }
+
+    /* Detached-search SHELL is layout only. It must never create layer #1. */
+    html.dark body #veloura-header-tabs-stack .veloura-detached-search-shell,
+    html body.dark #veloura-header-tabs-stack .veloura-detached-search-shell {
+      background: transparent !important;
+      background-color: transparent !important;
+      background-image: none !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+      filter: none !important;
+    }
+
+    html.dark body #veloura-header-tabs-stack .veloura-detached-search-shell::before,
+    html.dark body #veloura-header-tabs-stack .veloura-detached-search-shell::after,
+    html body.dark #veloura-header-tabs-stack .veloura-detached-search-shell::before,
+    html body.dark #veloura-header-tabs-stack .veloura-detached-search-shell::after {
+      content: none !important;
+      display: none !important;
+      background: none !important;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+
+    /* Search surface is the SINGLE glass paint owner. */
+    html.dark body.veloura-glass-effect #veloura-header-tabs-stack .veloura-detached-search.veloura-search-surface,
+    html body.dark.veloura-glass-effect #veloura-header-tabs-stack .veloura-detached-search.veloura-search-surface {
+      --veloura-v60-search-inner-bg: transparent !important;
+      --veloura-top-text: var(--veloura-dark-primary-text, #fff) !important;
+
+      --s-search-bg: transparent !important;
+      --s-search-input-bg: transparent !important;
+      --s-search-input-background: transparent !important;
+      --search-input-bg: transparent !important;
+      --search-background: transparent !important;
+
+      background: var(--veloura-v88-glass) !important;
+      background-color: var(--veloura-v88-glass) !important;
+      background-image: none !important;
+
+      border-top: 1px solid rgba(255, 255, 255, .120) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, .055) !important;
+      border-inline: 0 !important;
+
+      -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
+      backdrop-filter: blur(24px) saturate(200%) !important;
+      filter: none !important;
+
+      box-shadow:
+        0 8px 24px rgba(0,0,0,.22),
+        inset 0 1px 0 rgba(255,255,255,.025) !important;
+    }
+
+    /* Salla host is transparent; app.js V88 also clears its Shadow DOM wrappers. */
+    html.dark body #veloura-header-tabs-stack .veloura-detached-search.veloura-search-surface > salla-search.veloura-header-search-component,
+    html body.dark #veloura-header-tabs-stack .veloura-detached-search.veloura-search-surface > salla-search.veloura-header-search-component {
+      background: transparent !important;
+      background-color: transparent !important;
+      background-image: none !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+      filter: none !important;
+
+      --s-search-bg: transparent !important;
+      --s-search-input-bg: transparent !important;
+      --s-search-input-background: transparent !important;
+      --search-input-bg: transparent !important;
+      --search-background: transparent !important;
+    }
+
+    html.dark body #veloura-header-tabs-stack .veloura-search-surface salla-search::part(form),
+    html.dark body #veloura-header-tabs-stack .veloura-search-surface salla-search::part(container),
+    html.dark body #veloura-header-tabs-stack .veloura-search-surface salla-search::part(wrapper),
+    html.dark body #veloura-header-tabs-stack .veloura-search-surface salla-search::part(input-wrapper),
+    html.dark body #veloura-header-tabs-stack .veloura-search-surface salla-search::part(input),
+    html body.dark #veloura-header-tabs-stack .veloura-search-surface salla-search::part(form),
+    html body.dark #veloura-header-tabs-stack .veloura-search-surface salla-search::part(container),
+    html body.dark #veloura-header-tabs-stack .veloura-search-surface salla-search::part(wrapper),
+    html body.dark #veloura-header-tabs-stack .veloura-search-surface salla-search::part(input-wrapper),
+    html body.dark #veloura-header-tabs-stack .veloura-search-surface salla-search::part(input) {
+      background: transparent !important;
+      background-color: transparent !important;
+      background-image: none !important;
+      border-color: transparent !important;
+      box-shadow: none !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+      filter: none !important;
+    }
+  `;
+
+  function install() {
+    if (!document.head) return;
+    document.getElementById(STYLE_ID)?.remove();
+    const style = document.createElement('style');
+    style.id = STYLE_ID;
+    style.textContent = CSS;
+    document.head.appendChild(style);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', install, { once: true });
+  } else {
+    install();
+  }
+
+  window.addEventListener('veloura:theme-changed', install);
+  document.addEventListener('theme::ready', install);
+})();
