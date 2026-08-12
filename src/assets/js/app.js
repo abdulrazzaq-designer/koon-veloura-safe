@@ -4024,12 +4024,19 @@ const initVelouraBottomNavOverlaysV13 = () => {
   style.id = STYLE_ID;
   style.textContent = `
     @media (max-width: 767px) {
+      /* V90 SAFETY GATE:
+         Search overlay is inert by default. It becomes interactive ONLY while
+         body.veloura-bottom-nav-search-open is present AND hidden is removed. */
       #${SEARCH_BACKDROP_ID} {
         position: fixed !important;
         inset: 0 !important;
         z-index: 2147483000 !important;
-        display: block !important;
-        pointer-events: auto !important;
+
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+
         background:
           linear-gradient(
             180deg,
@@ -4044,6 +4051,16 @@ const initVelouraBottomNavOverlaysV13 = () => {
       #${SEARCH_BACKDROP_ID}[hidden],
       #${SEARCH_PANEL_ID}[hidden] {
         display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+      }
+
+      body.veloura-bottom-nav-search-open #${SEARCH_BACKDROP_ID}:not([hidden]) {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
       }
 
       #${SEARCH_PANEL_ID} {
@@ -4196,6 +4213,21 @@ const initVelouraBottomNavOverlaysV13 = () => {
       }
 
       /* Dark mode: never use contrast(200%) on our glass surfaces. */
+      /* Panel is also inert unless search state is explicitly open. */
+      #${SEARCH_PANEL_ID} {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+      }
+
+      body.veloura-bottom-nav-search-open #${SEARCH_PANEL_ID}:not([hidden]) {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+      }
+
       html.dark body #${SEARCH_BACKDROP_ID},
       html body.dark #${SEARCH_BACKDROP_ID} {
         background:
@@ -4291,6 +4323,30 @@ const initVelouraBottomNavOverlaysV13 = () => {
     searchItem.setAttribute('aria-controls', SEARCH_PANEL_ID);
     searchItem.setAttribute('aria-expanded', 'false');
   }
+
+  /* V90: no phantom full-screen search layer is allowed.
+     Body class is the single source of truth for whether the overlay may exist. */
+  const reconcileSearchOverlayState = () => {
+    const open = document.body.classList.contains('veloura-bottom-nav-search-open');
+
+    if (!open) {
+      if (searchPanel) {
+        searchPanel.hidden = true;
+        searchPanel.setAttribute('aria-hidden', 'true');
+      }
+
+      searchBackdrop.hidden = true;
+      searchBackdrop.setAttribute('aria-hidden', 'true');
+      searchItem?.setAttribute('aria-expanded', 'false');
+    }
+  };
+
+  reconcileSearchOverlayState();
+
+  window.addEventListener('pageshow', reconcileSearchOverlayState);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) reconcileSearchOverlayState();
+  });
 
   // V13: leave Login 100% native. The bottom-nav account button uses the same
   // login::open action as the original Twig, and this controller never blocks it.
