@@ -3955,7 +3955,61 @@ document.addEventListener('theme::ready', initVelouraBalancedInlineSearchV63);
      inside a Veloura-owned glass shell, so the native modal white sheet and
      its white close-button tile are not used by this bottom-nav flow.
    ======================================================================== */
+const ensureVelouraNativeMenuRepairStyleV92 = () => {
+  const STYLE_ID = 'veloura-native-menu-repair-v92';
+  if (document.getElementById(STYLE_ID)) return;
+
+  const style = document.createElement('style');
+  style.id = STYLE_ID;
+  style.textContent = `
+    /* V92: the mmenu backdrop must never cover the actual drawer panel. */
+    body.menu-opened .mm-ocd.mm-ocd--open {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      bottom: 0 !important;
+    }
+
+    body.menu-opened .mm-ocd.mm-ocd--open .mm-ocd__content {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      transform: translate3d(0, 0, 0) !important;
+      -webkit-transform: translate3d(0, 0, 0) !important;
+      z-index: 2 !important;
+      width: min(84vw, 440px) !important;
+      max-width: 440px !important;
+      height: 100% !important;
+      top: 0 !important;
+      bottom: 0 !important;
+    }
+
+    body.menu-opened .mm-ocd.mm-ocd--open.mm-ocd--right .mm-ocd__content {
+      right: 0 !important;
+      left: auto !important;
+    }
+
+    body.menu-opened .mm-ocd.mm-ocd--open.mm-ocd--left .mm-ocd__content {
+      left: 0 !important;
+      right: auto !important;
+    }
+
+    body.menu-opened .mm-ocd.mm-ocd--open .mm-ocd__backdrop {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      z-index: 1 !important;
+    }
+  `;
+  document.head.appendChild(style);
+};
+
 const initVelouraBottomNavOverlaysV13 = () => {
+  ensureVelouraNativeMenuRepairStyleV92();
+
   const nav = document.querySelector('[data-vbn]');
   if (!nav || nav.dataset.vbnOverlaysV13 === 'true') return;
 
@@ -4646,21 +4700,106 @@ const initVelouraBottomNavOverlaysV13 = () => {
     }
 
     if (key === 'categories') {
-      /* V91: leave categories 100% to Theme Raed's native
-         a[href="#mobile-menu"] delegated handler.
-         Do NOT preventDefault, stopPropagation, toggle menu-opened,
-         or call the drawer manually here. */
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
       closeSearch({ restore: false });
+      if (isLoginOpen()) closeNativeLogin({ restore: false });
 
-      if (isLoginOpen()) {
-        closeNativeLogin({ restore: false });
-      }
+      const repairOpenDrawer = () => {
+        const root = document.querySelector('.mm-ocd.mm-ocd--open');
+        if (!root) return;
 
-      document.body.classList.remove('veloura-bottom-nav-categories-open');
-      setActive(item);
+        const content = root.querySelector('.mm-ocd__content');
+        const backdrop = root.querySelector('.mm-ocd__backdrop');
 
-      /* Returning from this capture listener does NOT cancel the click.
-         The same click continues to Theme Raed's native mobile-menu handler. */
+        if (content) {
+          content.style.setProperty('display', 'block', 'important');
+          content.style.setProperty('visibility', 'visible', 'important');
+          content.style.setProperty('opacity', '1', 'important');
+          content.style.setProperty('pointer-events', 'auto', 'important');
+          content.style.setProperty('transform', 'translate3d(0,0,0)', 'important');
+          content.style.setProperty('-webkit-transform', 'translate3d(0,0,0)', 'important');
+          content.style.setProperty('z-index', '2', 'important');
+
+          const rect = content.getBoundingClientRect();
+          if (rect.width < 40) {
+            content.style.setProperty('width', 'min(84vw, 440px)', 'important');
+            content.style.setProperty('max-width', '440px', 'important');
+          }
+        }
+
+        if (backdrop) {
+          backdrop.style.setProperty('z-index', '1', 'important');
+          backdrop.style.setProperty('pointer-events', 'auto', 'important');
+        }
+      };
+
+      const toggleCategories = async () => {
+        let drawer = window.__velouraNativeMobileMenuDrawer;
+
+        if (!drawer) {
+          try {
+            const initResult = window.app?.initiateMobileMenu?.();
+            if (initResult && typeof initResult.then === 'function') {
+              await initResult;
+            } else if (
+              window.__velouraNativeMobileMenuInitPromise &&
+              typeof window.__velouraNativeMobileMenuInitPromise.then === 'function'
+            ) {
+              await window.__velouraNativeMobileMenuInitPromise;
+            }
+          } catch (_) {}
+
+          drawer = window.__velouraNativeMobileMenuDrawer;
+        }
+
+        if (!drawer) {
+          /* Do not create a dead transparent state if mmenu is not ready. */
+          document.body.classList.remove(
+            'menu-opened',
+            'veloura-bottom-nav-categories-open'
+          );
+          restoreRouteActive();
+          return;
+        }
+
+        if (document.body.classList.contains('menu-opened')) {
+          document.body.classList.remove(
+            'menu-opened',
+            'veloura-bottom-nav-categories-open'
+          );
+          try { drawer.close?.(); } catch (_) {}
+          window.setTimeout(restoreRouteActive, 120);
+          return;
+        }
+
+        document.body.classList.add(
+          'menu-opened',
+          'veloura-bottom-nav-categories-open'
+        );
+        setActive(item);
+
+        try {
+          drawer.open?.();
+        } catch (_) {
+          document.body.classList.remove(
+            'menu-opened',
+            'veloura-bottom-nav-categories-open'
+          );
+          restoreRouteActive();
+          return;
+        }
+
+        /* mmenu applies its open class asynchronously in some builds.
+           Repair after several frames so backdrop can never sit above the panel. */
+        requestAnimationFrame(repairOpenDrawer);
+        window.setTimeout(repairOpenDrawer, 40);
+        window.setTimeout(repairOpenDrawer, 120);
+        window.setTimeout(repairOpenDrawer, 260);
+      };
+
+      void toggleCategories();
       return;
     }
 
@@ -4689,6 +4828,12 @@ const initVelouraBottomNavOverlaysV13 = () => {
 
   document.addEventListener('click', event => {
     if (!event.target.closest?.('.close-mobile-menu, .mm-ocd__backdrop')) return;
+
+    document.body.classList.remove(
+      'menu-opened',
+      'veloura-bottom-nav-categories-open'
+    );
+
     window.setTimeout(restoreRouteActive, 120);
   }, true);
 
