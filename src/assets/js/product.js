@@ -15,6 +15,7 @@ class Product extends BasePage {
         });
 
         this.initVelouraProductPageState();
+        this.initVelouraDetailsOrder();
         this.initVelouraProductThumbnails();
         this.initProductOptionValidations();
         this.initVelouraCouponCopy();
@@ -47,6 +48,58 @@ class Product extends BasePage {
             document.body.classList.remove('is-sticky-product-bar');
         }
     }
+
+    initVelouraDetailsOrder() {
+        const page = document.querySelector('.veloura-product-page');
+        const main = page?.querySelector('.main-content');
+
+        if (!page || !main) {
+            return;
+        }
+
+        const nodes = Array.from(main.children).filter((node) =>
+            node.nodeType === 1 && node.hasAttribute('data-v42-group')
+        );
+
+        if (!nodes.length) {
+            return;
+        }
+
+        const enabled = page.getAttribute('data-v42-order-enabled') === 'true';
+        const attributes = {
+            title: 'data-v42-order-title',
+            price: 'data-v42-order-price',
+            status: 'data-v42-order-status',
+            coupon: 'data-v42-order-coupon',
+            description: 'data-v42-order-description',
+            data: 'data-v42-order-data',
+            extras: 'data-v42-order-extras',
+            options: 'data-v42-order-options',
+            quick: 'data-v42-order-quick',
+            payments: 'data-v42-order-payments',
+        };
+
+        const readOrder = (group) => {
+            const raw = Number(page.getAttribute(attributes[group]));
+            if (!Number.isFinite(raw)) return 10;
+            return Math.max(1, Math.min(10, Math.round(raw)));
+        };
+
+        if (!enabled) {
+            nodes.forEach((node) => node.style.removeProperty('order'));
+            main.classList.remove('veloura-details-order-enabled');
+            return;
+        }
+
+        main.classList.add('veloura-details-order-enabled');
+
+        nodes.forEach((node) => {
+            const group = node.getAttribute('data-v42-group');
+            if (!attributes[group]) return;
+            node.style.setProperty('order', String(readOrder(group)), 'important');
+        });
+    }
+
     initVelouraProductThumbnails() {
         const page = document.querySelector('.veloura-product-page');
         const slider = page?.querySelector('salla-slider.details-slider.image-slider');
