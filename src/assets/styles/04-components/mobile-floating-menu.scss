@@ -377,8 +377,8 @@
   body.veloura-bottom-nav-glass .veloura-bottom-nav__surface {
     background: var(--veloura-glass-surface, rgba(230, 232, 235, .72));
 
-    border-top: 1px solid var(--veloura-glass-edge-top, rgba(255,255,255,.18));
-    border-bottom: 1px solid var(--veloura-glass-edge-bottom, rgba(15,23,42,.06));
+    border-top: 1px solid var(--veloura-glass-edge-top, rgba(100,116,139,.11));
+    border-bottom: 1px solid var(--veloura-glass-edge-bottom, rgba(100,116,139,.0495));
 
     -webkit-backdrop-filter: blur(20px) saturate(124%) contrast(200%);
     backdrop-filter: blur(20px) saturate(124%) contrast(200%);

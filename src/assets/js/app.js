@@ -4590,13 +4590,43 @@ const initVelouraBottomNavOverlaysV13 = () => {
     }
 
     if (key === 'categories') {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
       closeSearch({ restore: false });
       if (isLoginOpen()) closeNativeLogin({ restore: false });
 
-      if (document.body.classList.contains('menu-opened')) {
-        window.setTimeout(restoreRouteActive, 120);
-      } else {
+      const drawer = window.__velouraNativeMobileMenuDrawer;
+
+      if (drawer) {
+        if (document.body.classList.contains('menu-opened')) {
+          document.body.classList.remove(
+            'menu-opened',
+            'veloura-bottom-nav-categories-open'
+          );
+          try { drawer.close?.(); } catch (_) {}
+          window.setTimeout(restoreRouteActive, 120);
+        } else {
+          document.body.classList.add(
+            'menu-opened',
+            'veloura-bottom-nav-categories-open'
+          );
+          setActive(item);
+          try { drawer.open?.(); } catch (_) {}
+        }
+        return;
+      }
+
+      /* Fallback: use Theme Raed's native menu trigger if the drawer is not
+         ready yet. Avoid the current bottom-nav link to prevent recursion. */
+      const nativeTrigger = [...document.querySelectorAll("a[href='#mobile-menu']")]
+        .find(link => link !== item && !link.closest('[data-vbn]'));
+
+      if (nativeTrigger) {
         setActive(item);
+        nativeTrigger.click();
+      } else {
+        restoreRouteActive();
       }
       return;
     }
