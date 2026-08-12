@@ -4646,44 +4646,21 @@ const initVelouraBottomNavOverlaysV13 = () => {
     }
 
     if (key === 'categories') {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-
+      /* V91: leave categories 100% to Theme Raed's native
+         a[href="#mobile-menu"] delegated handler.
+         Do NOT preventDefault, stopPropagation, toggle menu-opened,
+         or call the drawer manually here. */
       closeSearch({ restore: false });
-      if (isLoginOpen()) closeNativeLogin({ restore: false });
 
-      const drawer = window.__velouraNativeMobileMenuDrawer;
-
-      if (drawer) {
-        if (document.body.classList.contains('menu-opened')) {
-          document.body.classList.remove(
-            'menu-opened',
-            'veloura-bottom-nav-categories-open'
-          );
-          try { drawer.close?.(); } catch (_) {}
-          window.setTimeout(restoreRouteActive, 120);
-        } else {
-          document.body.classList.add(
-            'menu-opened',
-            'veloura-bottom-nav-categories-open'
-          );
-          setActive(item);
-          try { drawer.open?.(); } catch (_) {}
-        }
-        return;
+      if (isLoginOpen()) {
+        closeNativeLogin({ restore: false });
       }
 
-      /* Fallback: use Theme Raed's native menu trigger if the drawer is not
-         ready yet. Avoid the current bottom-nav link to prevent recursion. */
-      const nativeTrigger = [...document.querySelectorAll("a[href='#mobile-menu']")]
-        .find(link => link !== item && !link.closest('[data-vbn]'));
+      document.body.classList.remove('veloura-bottom-nav-categories-open');
+      setActive(item);
 
-      if (nativeTrigger) {
-        setActive(item);
-        nativeTrigger.click();
-      } else {
-        restoreRouteActive();
-      }
+      /* Returning from this capture listener does NOT cancel the click.
+         The same click continues to Theme Raed's native mobile-menu handler. */
       return;
     }
 
@@ -4691,6 +4668,9 @@ const initVelouraBottomNavOverlaysV13 = () => {
     if (isLoginOpen()) closeNativeLogin({ restore: false });
     setActive(item);
   }, true);
+
+  /* V91: custom category state is presentation-only; Theme Raed owns menu-opened. */
+  document.body.classList.remove('veloura-bottom-nav-categories-open');
 
   searchBackdrop.addEventListener('click', () => closeSearch({ restore: true }));
 
