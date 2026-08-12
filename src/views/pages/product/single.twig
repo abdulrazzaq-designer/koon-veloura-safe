@@ -344,9 +344,128 @@
     } %}
     {% set vpp_general_radius = vpp_radius_map[vpp_general_radius_key]|default('28px') %}
 
+{# VELOURA PRODUCT DATA V96 CRITICAL START #}
+<style id="veloura-product-data-v96-critical">
+  /*
+   * This block intentionally lives in product/single.twig.
+   * It guarantees these product-data fixes are present even if product.scss
+   * is not currently imported by the app.css entry bundle.
+   */
+
+  /* ---------------------------------------------------------------
+     1) Availability pulse — direct box-shadow animation, no hidden
+        negative-z-index pseudo layer.
+     --------------------------------------------------------------- */
+  .veloura-product-page .veloura-product-stock-radar {
+    overflow: visible !important;
+  }
+
+  .veloura-product-page .veloura-product-stock-radar__dot {
+    display: inline-block !important;
+    width: 9px !important;
+    height: 9px !important;
+    min-width: 9px !important;
+    min-height: 9px !important;
+    flex: 0 0 9px !important;
+    border-radius: 9999px !important;
+    background: #22c55e !important;
+    opacity: 1 !important;
+    transform: translateZ(0);
+  }
+
+  .veloura-product-page
+  .veloura-product-stock-radar.is-pulse
+  .veloura-product-stock-radar__dot {
+    animation: veloura-v96-stock-pulse 1.55s ease-out infinite !important;
+  }
+
+  @keyframes veloura-v96-stock-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(34,197,94,.58);
+    }
+    70% {
+      box-shadow: 0 0 0 9px rgba(34,197,94,0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(34,197,94,0);
+    }
+  }
+
+  /* ---------------------------------------------------------------
+     2) "قراءة المزيد" separation gap.
+        Light = configured site/product background.
+        Dark  = configured dark site/product background.
+     --------------------------------------------------------------- */
+  .veloura-product-page #btn-show-more.veloura-product-read-more,
+  .veloura-product-page #btn-show-more.veloura-product-read-more:hover,
+  .veloura-product-page #btn-show-more.veloura-product-read-more:focus,
+  .veloura-product-page #btn-show-more.veloura-product-read-more:active,
+  .veloura-product-page #btn-show-more.veloura-product-read-more.is-expanded {
+    box-shadow:
+      0 0 0 7px var(--veloura-product-bg-inline, #ffffff),
+      0 9px 22px rgba(15,23,42,.14) !important;
+  }
+
+  html.dark .veloura-product-page #btn-show-more.veloura-product-read-more,
+  body.dark .veloura-product-page #btn-show-more.veloura-product-read-more,
+  html.dark .veloura-product-page #btn-show-more.veloura-product-read-more:hover,
+  body.dark .veloura-product-page #btn-show-more.veloura-product-read-more:hover,
+  html.dark .veloura-product-page #btn-show-more.veloura-product-read-more:focus,
+  body.dark .veloura-product-page #btn-show-more.veloura-product-read-more:focus,
+  html.dark .veloura-product-page #btn-show-more.veloura-product-read-more:active,
+  body.dark .veloura-product-page #btn-show-more.veloura-product-read-more:active,
+  html.dark .veloura-product-page #btn-show-more.veloura-product-read-more.is-expanded,
+  body.dark .veloura-product-page #btn-show-more.veloura-product-read-more.is-expanded {
+    box-shadow:
+      0 0 0 7px var(--veloura-product-dark-bg-inline, var(--veloura-dark-body-bg, #010202)),
+      0 9px 22px rgba(0,0,0,.24) !important;
+  }
+
+  /* ---------------------------------------------------------------
+     3) Sticky OFF: normal purchase card = general global radius on
+        all four corners. No sharp-bottom hotfix is allowed to win.
+     --------------------------------------------------------------- */
+  @media (max-width: 767px) {
+    .veloura-product-page.veloura-product-mobile-sticky-disabled
+    .sticky-product-bar.veloura-product-sticky-bar {
+      position: static !important;
+      inset: auto !important;
+      width: 100% !important;
+      margin: 16px 0 0 !important;
+
+      border-radius: var(--veloura-product-radius, 28px) !important;
+      border-start-start-radius: var(--veloura-product-radius, 28px) !important;
+      border-start-end-radius: var(--veloura-product-radius, 28px) !important;
+      border-end-start-radius: var(--veloura-product-radius, 28px) !important;
+      border-end-end-radius: var(--veloura-product-radius, 28px) !important;
+
+      overflow: visible !important;
+    }
+
+    .veloura-product-page.veloura-product-mobile-sticky-disabled
+    .sticky-product-bar.veloura-product-sticky-bar::after {
+      content: none !important;
+      display: none !important;
+    }
+  }
+
+  /* ---------------------------------------------------------------
+     4) Tags visual-only setting now has a real target.
+     --------------------------------------------------------------- */
+  .veloura-product-page.veloura-product-tags-visual-hidden
+  .veloura-product-tags {
+    display: none !important;
+  }
+</style>
+{# VELOURA PRODUCT DATA V96 CRITICAL END #}
+
 <div
   data-veloura-v50-recovered="true"
+  data-veloura-product-data-build="v96"
   data-v42-order-enabled="{{ vpp_details_order_enabled ? 'true' : 'false' }}"
+  data-v96-coupon-enabled="{{ vpp_coupon_enabled ? 'true' : 'false' }}"
+  data-v96-coupon-has-code="{{ vpp_coupon_code ? 'true' : 'false' }}"
+  data-v96-stock-pulse="{{ vpp_show_stock_radar ? 'true' : 'false' }}"
   data-v42-order-title="{{ vpp_order_title }}"
   data-v42-order-price="{{ vpp_order_price }}"
   data-v42-order-status="{{ vpp_order_status }}"

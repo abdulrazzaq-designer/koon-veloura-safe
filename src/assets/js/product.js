@@ -57,15 +57,6 @@ class Product extends BasePage {
             return;
         }
 
-        const nodes = Array.from(main.children).filter((node) =>
-            node.nodeType === 1 && node.hasAttribute('data-v42-group')
-        );
-
-        if (!nodes.length) {
-            return;
-        }
-
-        const enabled = page.getAttribute('data-v42-order-enabled') === 'true';
         const attributes = {
             title: 'data-v42-order-title',
             price: 'data-v42-order-price',
@@ -79,25 +70,77 @@ class Product extends BasePage {
             payments: 'data-v42-order-payments',
         };
 
+        const directGroups = () =>
+            Array.from(main.children).filter((node) =>
+                node.nodeType === 1 &&
+                node.hasAttribute('data-v42-group') &&
+                attributes[node.getAttribute('data-v42-group')]
+            );
+
         const readOrder = (group) => {
             const raw = Number(page.getAttribute(attributes[group]));
             if (!Number.isFinite(raw)) return 10;
             return Math.max(1, Math.min(10, Math.round(raw)));
         };
 
-        if (!enabled) {
-            nodes.forEach((node) => node.style.removeProperty('order'));
-            main.classList.remove('veloura-details-order-enabled');
+        const nodes = directGroups();
+
+        if (!nodes.length) {
             return;
         }
 
-        main.classList.add('veloura-details-order-enabled');
-
-        nodes.forEach((node) => {
-            const group = node.getAttribute('data-v42-group');
-            if (!attributes[group]) return;
-            node.style.setProperty('order', String(readOrder(group)), 'important');
+        /* Preserve the server-rendered order once, so disabling the feature can
+           restore the exact original structure without guessing. */
+        nodes.forEach((node, index) => {
+            if (!node.hasAttribute('data-v42-original-index')) {
+                node.setAttribute('data-v42-original-index', String(index));
+            }
         });
+
+        const enabled = page.getAttribute('data-v42-order-enabled') === 'true';
+
+        const targetOrder = [...nodes].sort((a, b) => {
+            if (!enabled) {
+                return (
+                    Number(a.getAttribute('data-v42-original-index')) -
+                    Number(b.getAttribute('data-v42-original-index'))
+                );
+            }
+
+            const groupA = a.getAttribute('data-v42-group');
+            const groupB = b.getAttribute('data-v42-group');
+            const orderA = readOrder(groupA);
+            const orderB = readOrder(groupB);
+
+            if (orderA !== orderB) return orderA - orderB;
+
+            /* Same selected number = keep original sequence, exactly as the
+               setting description promises. */
+            return (
+                Number(a.getAttribute('data-v42-original-index')) -
+                Number(b.getAttribute('data-v42-original-index'))
+            );
+        });
+
+        /*
+         * Real DOM reorder.
+         *
+         * We temporarily replace only the sortable direct children with comment
+         * placeholders. Ungrouped elements stay exactly where they are. Then
+         * each placeholder receives the correctly sorted node.
+         */
+        const placeholders = nodes.map((node, index) => {
+            const placeholder = document.createComment(`veloura-v42-order-slot-${index}`);
+            main.replaceChild(placeholder, node);
+            return placeholder;
+        });
+
+        placeholders.forEach((placeholder, index) => {
+            main.replaceChild(targetOrder[index], placeholder);
+        });
+
+        main.classList.toggle('veloura-details-order-enabled', enabled);
+        page.dataset.velouraOrderApplied = enabled ? 'true' : 'false';
     }
 
     initVelouraProductThumbnails() {

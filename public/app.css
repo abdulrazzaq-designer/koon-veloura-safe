@@ -49781,6 +49781,143 @@ html body .s-product-card-entry .s-product-card-content-footer::after {
 html body .s-product-card-entry .veloura-card-bottom::after {
   pointer-events: none !important;
 }
+/* ========================================================================
+   Veloura Product Data Final Fix — existing product.scss only
+   1) stock pulse is visibly animated
+   2) read-more separation ring follows the actual site background in Light/Dark
+   3) non-sticky purchase card uses the global radius on all four corners
+   4) sticky-price toggle actually controls the mobile fixed price summary
+   5) sortable groups do not introduce wrapper spacing
+   6) coupon preview state is visually clear in theme preview
+   ======================================================================== */
+.veloura-product-page .veloura-product-order-hook:empty {
+  display: none !important;
+}
+.veloura-product-page .veloura-product-stock-radar {
+  overflow: visible !important;
+}
+.veloura-product-page .veloura-product-stock-radar__dot {
+  position: relative !important;
+  display: inline-block !important;
+  flex: 0 0 9px !important;
+  width: 9px !important;
+  height: 9px !important;
+  min-width: 9px !important;
+  min-height: 9px !important;
+  overflow: visible !important;
+}
+.veloura-product-page .veloura-product-stock-radar__dot {
+  isolation: isolate;
+}
+.veloura-product-page .veloura-product-stock-radar.is-pulse .veloura-product-stock-radar__dot {
+  animation: none !important;
+  box-shadow: none !important;
+}
+.veloura-product-page .veloura-product-stock-radar.is-pulse .veloura-product-stock-radar__dot::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  z-index: -1 !important;
+  border-radius: inherit !important;
+  background: rgba(34, 197, 94, 0.48) !important;
+  animation: veloura-stock-radar-wave 1.55s cubic-bezier(0.2, 0.65, 0.3, 1) infinite !important;
+  pointer-events: none !important;
+}
+.veloura-product-page .veloura-product-stock-radar.is-pulse .veloura-product-stock-radar__dot::after {
+  transform: scale(1);
+  opacity: 0.72;
+}
+@keyframes veloura-stock-radar-wave {
+  0% {
+    transform: scale(1);
+    opacity: 0.72;
+  }
+  72% {
+    transform: scale(2.55);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.55);
+    opacity: 0;
+  }
+}
+/* The gap around "قراءة المزيد" must be the REAL page background,
+   not the hard-coded light background variable. */
+.veloura-product-page #btn-show-more.veloura-product-read-more,
+.veloura-product-page #btn-show-more.veloura-product-read-more:hover,
+.veloura-product-page #btn-show-more.veloura-product-read-more:focus,
+.veloura-product-page #btn-show-more.veloura-product-read-more:active,
+.veloura-product-page #btn-show-more.veloura-product-read-more.is-expanded {
+  box-shadow: 0 0 0 7px #ffffff, 0 9px 22px rgba(15, 23, 42, 0.16) !important;
+  box-shadow: 0 0 0 7px var(--veloura-product-basic-bg, #ffffff), 0 9px 22px rgba(15, 23, 42, 0.16) !important;
+}
+/* Sticky OFF = normal card in document flow, therefore all corners use
+   the merchant's global radius. This intentionally beats old sharp-bottom hotfixes. */
+@media (max-width: 767px) {
+  .veloura-product-page.veloura-product-mobile-sticky-disabled .sticky-product-bar.veloura-product-sticky-bar,
+  .veloura-product-page.veloura-product-mobile-sticky-disabled section.sticky-product-bar {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    margin: 16px 0 0 !important;
+    border-top-left-radius: 28px !important;
+    border-top-left-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+    border-top-right-radius: 28px !important;
+    border-top-right-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+    border-bottom-left-radius: 28px !important;
+    border-bottom-left-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+    border-bottom-right-radius: 28px !important;
+    border-bottom-right-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+    border-start-start-radius: 28px !important;
+    border-start-start-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+    border-start-end-radius: 28px !important;
+    border-start-end-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+    border-end-start-radius: 28px !important;
+    border-end-start-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+    border-end-end-radius: 28px !important;
+    border-end-end-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+  }
+  .veloura-product-page.veloura-product-mobile-sticky-disabled .sticky-product-bar.veloura-product-sticky-bar::after,
+  .veloura-product-page.veloura-product-mobile-sticky-disabled section.sticky-product-bar::after {
+    content: none !important;
+    display: none !important;
+  }
+  /* This setting was previously defeated by a late "always show" rule. */
+  .veloura-product-page.veloura-product-mobile-sticky-enabled:not(.veloura-product-mobile-sticky-price) .veloura-product-cart-price-row {
+    display: none !important;
+  }
+  .veloura-product-page.veloura-product-mobile-sticky-enabled.veloura-product-mobile-sticky-price .veloura-product-cart-price-row,
+  .veloura-product-page.veloura-product-mobile-sticky-disabled .veloura-product-cart-price-row {
+    display: flex !important;
+  }
+}
+/* Coupon preview shown only in Salla preview when the merchant enabled the card
+   but has not entered the actual coupon code yet. Live storefront still hides it. */
+.veloura-product-page .veloura-product-coupon.is-preview-empty .veloura-product-coupon__code.is-empty {
+  opacity: 0.62 !important;
+  cursor: default !important;
+  -webkit-user-select: none !important;
+     -moz-user-select: none !important;
+          user-select: none !important;
+}
+/* Light-DOM fallback for the related-products navigation setting.
+   Shadow DOM is handled by the existing product-page script. */
+.veloura-product-related-products.is-arrows-hidden .s-slider-next,
+.veloura-product-related-products.is-arrows-hidden .s-slider-prev,
+.veloura-product-related-products.is-arrows-hidden .swiper-button-next,
+.veloura-product-related-products.is-arrows-hidden .swiper-button-prev,
+.veloura-product-related-products.is-arrows-hidden [part~=next],
+.veloura-product-related-products.is-arrows-hidden [part~=prev] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
 .brands-nav{
     display: flex;
     flex-wrap: wrap;
