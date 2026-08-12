@@ -1032,93 +1032,145 @@ isElementLoaded(selector){
 
   initiateMobileMenu() {
     /**
-     * Veloura fix:
-     * - نهيئ mmenu-light مرة واحدة فقط.
-     * - يعمل على الجوال واللابتوب بعد تغيير media query إلى min-width: 0px.
-     * - لا يعمل close ثم open بنفس الضغطة.
-     * - لا يكرر عناصر القائمة ولا يكرر event listeners.
+     * V94 — restore Theme Raed's responsive mmenu lifecycle.
+     *
+     * Critical:
+     * mmenu-light must NOT be active at every viewport width.
+     * Salla Theme Raed uses "(max-width: 1024px)".
+     *
+     * Keeping it on "(min-width: 0px)" leaves the offcanvas lifecycle alive
+     * while the Salla editor switches Mobile <-> Laptop, which can leave a
+     * backdrop / scroll lock / stale open state behind.
      */
     if (window.__velouraNativeMobileMenuInitPromise) {
       return window.__velouraNativeMobileMenuInitPromise;
     }
 
-    window.__velouraNativeMobileMenuInitPromise = this.isElementLoaded('#mobile-menu').then((menu) => {
-      if (!menu) {
-        window.__velouraNativeMobileMenuInitPromise = null;
-        return;
-      }
+    window.__velouraNativeMobileMenuInitPromise =
+      this.isElementLoaded('#mobile-menu').then((menu) => {
+        if (!menu) {
+          window.__velouraNativeMobileMenuInitPromise = null;
+          return;
+        }
 
-      if (menu.dataset.velouraMmenuReady === '1') {
-        return;
-      }
+        if (menu.dataset.velouraMmenuReady === '1') {
+          return window.__velouraNativeMobileMenuDrawer;
+        }
 
-      menu.dataset.velouraMmenuReady = '1';
+        menu.dataset.velouraMmenuReady = '1';
 
-      const mobileMenu = new MobileMenu(
-        menu,
-        "(min-width: 0px)",
-        "( slidingSubmenus: false)"
-      );
+        const mobileMenu = new MobileMenu(
+          menu,
+          "(max-width: 1024px)",
+          "( slidingSubmenus: false)"
+        );
 
-      salla.lang.onLoaded(() => {
-        mobileMenu.navigation({
-          title: salla.lang.get('blocks.header.main_menu')
+        salla.lang.onLoaded(() => {
+          mobileMenu.navigation({
+            title: salla.lang.get('blocks.header.main_menu')
+          });
         });
-      });
 
-      const drawer = mobileMenu.offcanvas({
-        position: salla.config.get('theme.is_rtl') ? "right" : "left"
-      });
+        const drawer = mobileMenu.offcanvas({
+          position: salla.config.get('theme.is_rtl') ? "right" : "left"
+        });
 
-      window.__velouraNativeMobileMenuDrawer = drawer;
+        window.__velouraNativeMobileMenuDrawer = drawer;
 
-      if (window.__velouraNativeMobileMenuEventsBound) {
-        return;
-      }
+        const closeNativeMenu = () => {
+          document.body.classList.remove(
+            'menu-opened',
+            'veloura-bottom-nav-categories-open'
+          );
 
-      window.__velouraNativeMobileMenuEventsBound = true;
+          try {
+            drawer.close();
+          } catch (_) {}
+        };
 
-      this.onClick("a[href='#mobile-menu']", event => {
-        event.preventDefault();
+        const openNativeMenu = () => {
+          document.body.classList.add('menu-opened');
 
-        const activeDrawer = window.__velouraNativeMobileMenuDrawer || drawer;
+          try {
+            drawer.open();
+          } catch (_) {
+            document.body.classList.remove(
+              'menu-opened',
+              'veloura-bottom-nav-categories-open'
+            );
+          }
+        };
 
-        if (!activeDrawer) {
-          return;
+        if (!window.__velouraNativeMobileMenuEventsBound) {
+          window.__velouraNativeMobileMenuEventsBound = true;
+
+          this.onClick("a[href='#mobile-menu']", event => {
+            event.preventDefault();
+
+            if (!window.matchMedia('(max-width: 1024px)').matches) {
+              closeNativeMenu();
+              return;
+            }
+
+            if (document.body.classList.contains('menu-opened')) {
+              closeNativeMenu();
+              return;
+            }
+
+            openNativeMenu();
+          });
+
+          this.onClick(".close-mobile-menu", event => {
+            event.preventDefault();
+            closeNativeMenu();
+          });
+
+          this.onClick(".mm-ocd__backdrop", () => {
+            closeNativeMenu();
+          });
+
+          const desktopGuard = window.matchMedia('(max-width: 1024px)');
+
+          const syncResponsiveMenu = mediaEvent => {
+            const isMobileRange =
+              typeof mediaEvent?.matches === 'boolean'
+                ? mediaEvent.matches
+                : desktopGuard.matches;
+
+            if (!isMobileRange) {
+              closeNativeMenu();
+            }
+          };
+
+          if (typeof desktopGuard.addEventListener === 'function') {
+            desktopGuard.addEventListener('change', syncResponsiveMenu);
+          } else if (typeof desktopGuard.addListener === 'function') {
+            desktopGuard.addListener(syncResponsiveMenu);
+          }
+
+          window.addEventListener('resize', () => {
+            if (window.innerWidth > 1024) {
+              closeNativeMenu();
+            }
+          }, { passive: true });
+
+          window.addEventListener('orientationchange', () => {
+            window.setTimeout(() => {
+              if (window.innerWidth > 1024) {
+                closeNativeMenu();
+              }
+            }, 50);
+          }, { passive: true });
+
+          window.addEventListener('pageshow', () => {
+            if (!desktopGuard.matches) {
+              closeNativeMenu();
+            }
+          });
         }
 
-        if (document.body.classList.contains('menu-opened')) {
-          document.body.classList.remove('menu-opened');
-          activeDrawer.close();
-          return;
-        }
-
-        document.body.classList.add('menu-opened');
-        activeDrawer.open();
+        return drawer;
       });
-
-      this.onClick(".close-mobile-menu", event => {
-        event.preventDefault();
-
-        const activeDrawer = window.__velouraNativeMobileMenuDrawer || drawer;
-
-        document.body.classList.remove('menu-opened');
-
-        if (activeDrawer) {
-          activeDrawer.close();
-        }
-      });
-
-      this.onClick(".mm-ocd__backdrop", event => {
-        const activeDrawer = window.__velouraNativeMobileMenuDrawer || drawer;
-
-        document.body.classList.remove('menu-opened');
-
-        if (activeDrawer) {
-          activeDrawer.close();
-        }
-      });
-    });
 
     return window.__velouraNativeMobileMenuInitPromise;
   }
