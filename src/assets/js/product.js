@@ -69,77 +69,46 @@ class Product extends BasePage {
             payments: 'data-v42-order-payments',
         };
 
-        const directGroups = () =>
-            Array.from(main.children).filter((node) =>
-                node.nodeType === 1 &&
-                node.hasAttribute('data-v42-group') &&
-                attributes[node.getAttribute('data-v42-group')]
-            );
-
-        const readOrder = (group) => {
-            const raw = Number(page.getAttribute(attributes[group]));
-            if (!Number.isFinite(raw)) return 10;
-            return Math.max(1, Math.min(10, Math.round(raw)));
-        };
-
-        const nodes = directGroups();
+        const nodes = Array.from(main.children).filter((node) => {
+            if (!(node instanceof HTMLElement)) return false;
+            const group = node.getAttribute('data-v42-group');
+            return Boolean(group && attributes[group]);
+        });
 
         if (!nodes.length) {
             return;
         }
 
-        /* Preserve the server-rendered order once, so disabling the feature can
-           restore the exact original structure without guessing. */
+        const enabled = page.getAttribute('data-v42-order-enabled') === 'true';
+
+        const readOrder = (group) => {
+            const value = Number(page.getAttribute(attributes[group]));
+            if (!Number.isFinite(value)) return 10;
+            return Math.max(1, Math.min(10, Math.round(value)));
+        };
+
+        /*
+         * V99:
+         * Never move the product form or any Salla Web Component in the DOM.
+         * Detaching/re-attaching salla-product-options / salla-add-product-button
+         * can re-run component lifecycle and desynchronize native cart/quick-buy
+         * state. .main-content is a flex column, so CSS order is sufficient.
+         */
         nodes.forEach((node, index) => {
             if (!node.hasAttribute('data-v42-original-index')) {
                 node.setAttribute('data-v42-original-index', String(index));
             }
-        });
 
-        const enabled = page.getAttribute('data-v42-order-enabled') === 'true';
-
-        const targetOrder = [...nodes].sort((a, b) => {
-            if (!enabled) {
-                return (
-                    Number(a.getAttribute('data-v42-original-index')) -
-                    Number(b.getAttribute('data-v42-original-index'))
-                );
+            if (enabled) {
+                const group = node.getAttribute('data-v42-group');
+                node.style.setProperty('order', String(readOrder(group)), 'important');
+            } else {
+                node.style.removeProperty('order');
             }
-
-            const groupA = a.getAttribute('data-v42-group');
-            const groupB = b.getAttribute('data-v42-group');
-            const orderA = readOrder(groupA);
-            const orderB = readOrder(groupB);
-
-            if (orderA !== orderB) return orderA - orderB;
-
-            /* Same selected number = keep original sequence, exactly as the
-               setting description promises. */
-            return (
-                Number(a.getAttribute('data-v42-original-index')) -
-                Number(b.getAttribute('data-v42-original-index'))
-            );
-        });
-
-        /*
-         * Real DOM reorder.
-         *
-         * We temporarily replace only the sortable direct children with comment
-         * placeholders. Ungrouped elements stay exactly where they are. Then
-         * each placeholder receives the correctly sorted node.
-         */
-        const placeholders = nodes.map((node, index) => {
-            const placeholder = document.createComment(`veloura-v42-order-slot-${index}`);
-            main.replaceChild(placeholder, node);
-            return placeholder;
-        });
-
-        placeholders.forEach((placeholder, index) => {
-            main.replaceChild(targetOrder[index], placeholder);
         });
 
         main.classList.toggle('veloura-details-order-enabled', enabled);
-        page.dataset.velouraOrderApplied = enabled ? 'true' : 'false';
+        page.dataset.velouraOrderApplied = enabled ? 'css-v99' : 'native';
     }
 
     initVelouraProductSliders() {
@@ -147,8 +116,6 @@ class Product extends BasePage {
         if (!page) return;
 
         const settings = window.velouraProductSliderSettings || {};
-        const host = document.querySelector('[data-veloura-related-slider]');
-        const section = host?.closest('.veloura-product-related-products');
 
         const clamp = (value, min, max, fallback) => {
             const number = Number(value);
@@ -156,159 +123,287 @@ class Product extends BasePage {
             return Math.max(min, Math.min(max, Math.round(number)));
         };
 
-        const config = {
-            mobileColumns: clamp(
-                settings.related?.mobileColumns ?? host?.dataset.velouraRelatedMobile,
+        /* ==========================================================
+         * Related products — V99 controlled slider
+         * ========================================================== */
+        const section = document.querySelector('[data-veloura-related-controller]');
+        const slider = section?.querySelector('salla-slider[data-veloura-related-slider]');
+        const items = slider?.querySelector('[data-veloura-related-items]');
+
+        if (section && slider && items) {
+            const mobileColumns = clamp(
+                section.dataset.velouraRelatedMobile ??
+                settings.related?.mobileColumns,
                 1,
                 3,
                 2
-            ),
-            desktopColumns: clamp(
-                settings.related?.desktopColumns ?? host?.dataset.velouraRelatedDesktop,
+            );
+
+            const desktopColumns = clamp(
+                section.dataset.velouraRelatedDesktop ??
+                settings.related?.desktopColumns,
                 1,
                 6,
                 4
-            ),
-            hideArrows: Boolean(
-                settings.related?.hideArrows ??
-                (host?.dataset.velouraRelatedHideArrows === 'true')
-            ),
-            centerTitle: Boolean(
-                settings.related?.centerTitle ??
-                (host?.dataset.velouraRelatedCenterTitle === 'true')
-            ),
-        };
+            );
 
-        if (section) {
-            section.classList.toggle('is-title-centered', config.centerTitle);
-            section.classList.toggle('is-arrows-hidden', config.hideArrows);
+            const hideArrows =
+                section.dataset.velouraRelatedHideArrows === 'true' ||
+                settings.related?.hideArrows === true;
 
-            const heading = section.querySelector('.veloura-product-related-heading');
-            const title = section.querySelector('.veloura-product-related-title');
+            const centerTitle =
+                section.dataset.velouraRelatedCenterTitle === 'true' ||
+                settings.related?.centerTitle === true;
 
-            [heading, title].filter(Boolean).forEach((element) => {
-                if (config.centerTitle) {
-                    element.style.setProperty('width', '100%', 'important');
-                    element.style.setProperty('text-align', 'center', 'important');
-                    element.style.setProperty('justify-content', 'center', 'important');
-                    element.style.setProperty('margin-inline', 'auto', 'important');
-                } else {
-                    element.style.removeProperty('width');
-                    element.style.removeProperty('text-align');
-                    element.style.removeProperty('justify-content');
-                    element.style.removeProperty('margin-inline');
-                }
-            });
-        }
+            section.classList.toggle('is-title-centered', centerTitle);
+            section.classList.toggle('is-arrows-hidden', hideArrows);
 
-        if (!host) return;
-
-        /*
-         * salla-products-slider has a real sliderConfig property and forwards it
-         * to its internal salla-slider. Assign the PROPERTY, not only an HTML
-         * attribute, so Stencil receives a real object instead of a JSON string.
-         */
-        const sliderConfig = {
-            slidesPerView: config.mobileColumns,
-            slidesPerGroup: 1,
-            spaceBetween: 12,
-            centeredSlides: false,
-            centerInsufficientSlides: false,
-            watchOverflow: true,
-            allowTouchMove: true,
-            simulateTouch: true,
-            grabCursor: true,
-            breakpoints: {
-                768: {
-                    slidesPerView: config.desktopColumns,
-                    slidesPerGroup: 1,
-                    spaceBetween: 16,
+            const sliderConfig = {
+                slidesPerView: mobileColumns,
+                slidesPerGroup: 1,
+                spaceBetween: 12,
+                watchOverflow: true,
+                allowTouchMove: true,
+                simulateTouch: true,
+                grabCursor: true,
+                breakpoints: {
+                    768: {
+                        slidesPerView: desktopColumns,
+                        slidesPerGroup: 1,
+                        spaceBetween: 16,
+                    },
                 },
-            },
-        };
+            };
 
-        const assignHostConfig = () => {
-            try {
-                host.sliderConfig = sliderConfig;
-            } catch (_) {}
+            const applySliderConfig = async () => {
+                try {
+                    slider.sliderConfig = sliderConfig;
+                    slider.slidesPerView = String(mobileColumns);
+                    slider.showControls = !hideArrows;
+                } catch (_) {}
 
-            /* Keep a readable copy in DevTools as well. */
-            host.setAttribute('slider-config', JSON.stringify(sliderConfig));
-            host.dataset.velouraV98ConfigApplied = 'true';
-            host.dataset.velouraV98Mobile = String(config.mobileColumns);
-            host.dataset.velouraV98Desktop = String(config.desktopColumns);
-        };
+                slider.setAttribute('slider-config', JSON.stringify(sliderConfig));
+                slider.setAttribute('slides-per-view', String(mobileColumns));
+                slider.setAttribute('show-controls', hideArrows ? 'false' : 'true');
 
-        const applyInnerSlider = () => {
-            const inner = host.querySelector('salla-slider.s-products-slider-slider') ||
-                host.querySelector('salla-slider');
+                try {
+                    if (typeof slider.componentOnReady === 'function') {
+                        await slider.componentOnReady();
+                    }
+                } catch (_) {}
 
-            if (!inner) return false;
+                try {
+                    if (typeof slider.update === 'function') {
+                        await slider.update();
+                    }
+                } catch (_) {}
+            };
 
-            try { inner.sliderConfig = sliderConfig; } catch (_) {}
-            inner.setAttribute('slider-config', JSON.stringify(sliderConfig));
+            const parseSourceValue = () => {
+                const source = String(section.dataset.velouraRelatedSource || 'related').trim();
+                const raw = String(section.dataset.velouraRelatedSourceValue || '').trim();
 
-            try { inner.showControls = !config.hideArrows; } catch (_) {}
-            inner.setAttribute('show-controls', config.hideArrows ? 'false' : 'true');
-
-            const swiper = inner.swiper || inner.slider || inner.swiperInstance;
-            if (swiper?.params) {
-                swiper.params.slidesPerView = window.matchMedia('(min-width: 768px)').matches
-                    ? config.desktopColumns
-                    : config.mobileColumns;
-                swiper.params.slidesPerGroup = 1;
-                swiper.params.spaceBetween = window.matchMedia('(min-width: 768px)').matches ? 16 : 12;
-                swiper.params.breakpoints = sliderConfig.breakpoints;
-
-                if (swiper.originalParams) {
-                    swiper.originalParams.slidesPerView = config.mobileColumns;
-                    swiper.originalParams.slidesPerGroup = 1;
-                    swiper.originalParams.spaceBetween = 12;
-                    swiper.originalParams.breakpoints = sliderConfig.breakpoints;
+                if (['selected', 'categories', 'brands', 'tags'].includes(source)) {
+                    try {
+                        const parsed = JSON.parse(raw);
+                        return Array.isArray(parsed) ? parsed : [parsed];
+                    } catch (_) {
+                        return raw
+                            .split(',')
+                            .map((value) => value.trim())
+                            .filter(Boolean);
+                    }
                 }
 
-                try { swiper.setBreakpoint?.(); } catch (_) {}
-                try { swiper.update?.(); } catch (_) {}
+                return raw;
+            };
+
+            const normalizeProducts = (response) => {
+                const candidates = [
+                    response?.data?.data,
+                    response?.data?.products,
+                    response?.data?.items,
+                    response?.data,
+                    response?.products,
+                    response?.items,
+                    response,
+                ];
+
+                for (const candidate of candidates) {
+                    if (Array.isArray(candidate)) {
+                        return candidate.filter(Boolean);
+                    }
+                }
+
+                return [];
+            };
+
+            const fetchProducts = async (payload) => {
+                if (!window.salla?.product) {
+                    throw new Error('Salla product SDK is not ready');
+                }
+
+                const attempts = [];
+
+                if (typeof salla.product.fetch === 'function') {
+                    attempts.push(() => salla.product.fetch(payload));
+                }
+
+                if (typeof salla.product.api?.fetch === 'function') {
+                    attempts.push(() => salla.product.api.fetch(payload));
+                }
+
+                if (!attempts.length) {
+                    throw new Error('Salla product fetch API is unavailable');
+                }
+
+                let lastError = null;
+
+                for (const attempt of attempts) {
+                    try {
+                        const response = await attempt();
+                        const products = normalizeProducts(response);
+                        if (products.length) return products;
+                    } catch (error) {
+                        lastError = error;
+                    }
+                }
+
+                if (lastError) throw lastError;
+                return [];
+            };
+
+            const createProductSlide = (product) => {
+                const slide = document.createElement('div');
+                slide.className = 'swiper-slide veloura-related-product-slide';
+
+                const useCustomCard =
+                    typeof window.customElements !== 'undefined' &&
+                    Boolean(customElements.get('custom-salla-product-card'));
+
+                const card = document.createElement(
+                    useCustomCard ? 'custom-salla-product-card' : 'salla-product-card'
+                );
+
+                card.classList.add('veloura-related-product-card');
+
+                const productJson = JSON.stringify(product);
+
+                /*
+                 * Salla's native product card accepts serialized product data.
+                 * Theme custom cards usually receive the product object as a
+                 * property, so set both forms before connecting the element.
+                 */
+                try {
+                    card.product = useCustomCard ? product : productJson;
+                } catch (_) {}
+
+                try {
+                    card.setAttribute('product', productJson);
+                } catch (_) {}
+
+                slide.appendChild(card);
+                return slide;
+            };
+
+            const renderFallback = () => {
+                const source = String(section.dataset.velouraRelatedSource || 'related');
+                const sourceValue = String(section.dataset.velouraRelatedSourceValue || '');
+
+                const fallback = document.createElement('salla-products-slider');
+                fallback.setAttribute('source', source);
+                fallback.setAttribute('source-value', sourceValue);
+                fallback.setAttribute('product-card-component', 'custom-salla-product-card');
+                fallback.setAttribute('data-veloura-related-native-fallback', 'true');
+
+                slider.replaceWith(fallback);
+                section.dataset.velouraRelatedState = 'native-fallback';
+            };
+
+            const loadRelated = async () => {
+                if (section.dataset.velouraRelatedLoading === 'true' ||
+                    section.dataset.velouraRelatedLoaded === 'true') {
+                    return;
+                }
+
+                section.dataset.velouraRelatedLoading = 'true';
+                await applySliderConfig();
+
+                const source = String(section.dataset.velouraRelatedSource || 'related').trim();
+                const sourceValue = parseSourceValue();
+
+                const payload = {
+                    source,
+                    source_value: sourceValue,
+                };
+
+                try {
+                    let products = await fetchProducts(payload);
+
+                    const currentProductId = String(
+                        section.dataset.velouraCurrentProductId || ''
+                    ).replace(/\D/g, '');
+
+                    if (source !== 'related' && currentProductId) {
+                        products = products.filter((product) => {
+                            const id = String(
+                                product?.id ??
+                                product?.product_id ??
+                                ''
+                            ).replace(/\D/g, '');
+
+                            return !id || id !== currentProductId;
+                        });
+                    }
+
+                    if (!products.length) {
+                        section.hidden = true;
+                        section.dataset.velouraRelatedState = 'empty';
+                        return;
+                    }
+
+                    const fragment = document.createDocumentFragment();
+                    products.forEach((product) => {
+                        fragment.appendChild(createProductSlide(product));
+                    });
+
+                    items.replaceChildren(fragment);
+
+                    section.hidden = false;
+                    section.dataset.velouraRelatedLoaded = 'true';
+                    section.dataset.velouraRelatedState = 'controlled-v99';
+                    section.dataset.velouraRelatedCount = String(products.length);
+
+                    await applySliderConfig();
+
+                    /* Salla documents update() for custom DOM modifications. */
+                    try {
+                        await slider.updateSlides?.();
+                        await slider.updateSlidesClasses?.();
+                        await slider.update?.();
+                    } catch (_) {}
+                } catch (error) {
+                    console.warn('[Veloura V99] Related products controlled slider failed; using native fallback.', error);
+                    renderFallback();
+                } finally {
+                    section.dataset.velouraRelatedLoading = 'false';
+                }
+            };
+
+            const start = () => {
+                loadRelated().catch(() => renderFallback());
+            };
+
+            if (window.salla?.onReady) {
+                salla.onReady(start);
+            } else {
+                start();
             }
-
-            inner.dataset.velouraV98Applied = 'true';
-            return true;
-        };
-
-        assignHostConfig();
-        applyInnerSlider();
-
-        if (typeof host.componentOnReady === 'function') {
-            Promise.resolve(host.componentOnReady())
-                .then(() => {
-                    assignHostConfig();
-                    applyInnerSlider();
-                })
-                .catch(() => {});
         }
 
-        /* The products component creates its inner salla-slider after fetching
-           products. Observe only until that native slider appears, then stop. */
-        const observer = new MutationObserver(() => {
-            if (applyInnerSlider()) {
-                observer.disconnect();
-            }
-        });
-        observer.observe(host, { childList: true, subtree: true });
-
-        [50, 180, 450, 900].forEach((delay) => {
-            window.setTimeout(() => {
-                assignHostConfig();
-                applyInnerSlider();
-            }, delay);
-        });
-
-        window.addEventListener('resize', () => {
-            window.requestAnimationFrame(applyInnerSlider);
-        }, { passive: true });
-
-        /* Keep the existing recently-viewed behavior independent from the
-           related-products slider. */
+        /* ==========================================================
+         * Recently viewed — keep existing independent behavior.
+         * ========================================================== */
         const recent = settings.recent || {};
         const recentHide = Boolean(recent.hide);
         const recentCustomize = Boolean(recent.customize);
@@ -318,24 +413,33 @@ class Product extends BasePage {
 
         const isRecent = (node) => {
             if (!node) return false;
-            const haystack = `${node.id || ''} ${node.className || ''} ${node.getAttribute?.('block-title') || ''}`.toLowerCase();
+
+            const haystack = `${node.id || ''} ${node.className || ''} ${
+                node.getAttribute?.('block-title') || ''
+            }`.toLowerCase();
+
             return /recent|recently|viewed|شاهد/.test(haystack);
         };
 
         document.querySelectorAll('salla-products-slider,salla-products-list').forEach((recentHost) => {
-            if (recentHost === host || !isRecent(recentHost) && !isRecent(recentHost.parentElement)) return;
+            if (!isRecent(recentHost) && !isRecent(recentHost.parentElement)) return;
 
-            const recentSection = recentHost.closest('section,.container,[class*="recent"],[class*="slider"]') || recentHost.parentElement;
+            const recentSection =
+                recentHost.closest('section,.container,[class*="recent"],[class*="slider"]') ||
+                recentHost.parentElement;
+
             if (recentHide && recentSection) {
                 recentSection.style.setProperty('display', 'none', 'important');
                 return;
             }
 
             if (recentCenterTitle && recentSection) {
-                recentSection.querySelectorAll('h2,h3,.s-slider-block__title').forEach((title) => {
-                    title.style.setProperty('text-align', 'center', 'important');
-                    title.style.setProperty('justify-content', 'center', 'important');
-                });
+                recentSection
+                    .querySelectorAll('h2,h3,.s-slider-block__title')
+                    .forEach((title) => {
+                        title.style.setProperty('text-align', 'center', 'important');
+                        title.style.setProperty('justify-content', 'center', 'important');
+                    });
             }
 
             if (recentCustomize && recentHost.tagName === 'SALLA-PRODUCTS-SLIDER') {
@@ -343,10 +447,17 @@ class Product extends BasePage {
                     slidesPerView: recentMobile,
                     spaceBetween: 12,
                     breakpoints: {
-                        768: { slidesPerView: recentDesktop, spaceBetween: 16 },
+                        768: {
+                            slidesPerView: recentDesktop,
+                            spaceBetween: 16,
+                        },
                     },
                 };
-                try { recentHost.sliderConfig = recentConfig; } catch (_) {}
+
+                try {
+                    recentHost.sliderConfig = recentConfig;
+                } catch (_) {}
+
                 recentHost.setAttribute('slider-config', JSON.stringify(recentConfig));
             }
         });
@@ -527,26 +638,19 @@ class Product extends BasePage {
 
 
     initVelouraPurchaseButtons() {
-        const page = document.querySelector('.veloura-product-page');
-        if (!page) return;
+        const button = document.querySelector(
+            '.veloura-product-page salla-add-product-button.sticky-product-bar__btn'
+        );
+
+        if (!button) return;
 
         /*
-         * V98: leave Salla's native salla-add-product-button completely in
-         * charge of Add to cart / Buy now behavior. Previous versions changed
-         * its rendered children, forced hidden quick-buy nodes visible and
-         * repeatedly rewrote its internal layout. That can desynchronize the
-         * component from its own state after product-option changes.
+         * V99:
+         * Salla owns Add to cart, Quick Buy / Buy now, validation and option
+         * synchronization. Do not alter children, hidden state, display,
+         * click handlers, or component properties here.
          */
-        page.querySelectorAll('salla-add-product-button.sticky-product-bar__btn')
-            .forEach((button) => {
-                button.dataset.velouraPurchaseMode = 'native-v98';
-                button.style.setProperty('width', '100%', 'important');
-                button.style.setProperty('min-width', '0', 'important');
-                button.style.removeProperty('overflow');
-
-                /* Do not touch shadow/light children, hidden state, click
-                   handlers, quick-buy widget, or native component props. */
-            });
+        button.dataset.velouraPurchaseMode = 'native-v99';
     }
 
     initVelouraReadMore() {
