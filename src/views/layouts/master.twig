@@ -2163,7 +2163,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
 
 
-<style id="veloura-product-card-v104-style">
+<style id="veloura-product-card-v105-style">
   body.veloura-product-card-enabled
   .s-product-card-entry
   salla-add-product-button.veloura-card-add-button
@@ -2201,20 +2201,12 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   .veloura-quick-view-under-cart-wrap {
     position: relative !important;
     display: block !important;
-    width:
-      var(
-        --veloura-qv-measured-width,
-        calc(100% - (var(--veloura-product-button-margin-x, 10px) * 2))
-      ) !important;
+    width: auto !important;
     max-width: none !important;
     min-width: 0 !important;
-    margin:
-      var(--veloura-qv-under-cart-gap, 8px)
-      0
-      var(--veloura-product-button-margin-bottom, 10px) !important;
+    margin: 0 !important;
     padding: 0 !important;
-    transform:
-      translateX(var(--veloura-qv-shift-x, 0px)) !important;
+    transform: none !important;
     box-sizing: border-box !important;
     flex: 0 0 auto !important;
     align-self: flex-start !important;
@@ -2293,23 +2285,51 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       var(--veloura-dark-product-card-bg, #111111) !important;
   }
 
+  /*
+   * Image-outside mode keeps its original protrusion geometry.
+   * The card remains transparent above the configured offset and the
+   * ::before surface starts at --veloura-product-image-outside-offset.
+   */
   html.dark body.veloura-product-card-enabled.veloura-product-card-image-outside
   .s-product-card-entry,
   html body.dark.veloura-product-card-enabled.veloura-product-card-image-outside
   .s-product-card-entry {
-    background:
-      var(--veloura-dark-product-card-bg, #111111) !important;
-    border-radius:
-      var(--veloura-product-card-radius, 18px) !important;
+    background: transparent !important;
+    border-radius: 0 !important;
   }
 
   html.dark body.veloura-product-card-enabled.veloura-product-card-image-outside
   .s-product-card-entry::before,
   html body.dark.veloura-product-card-enabled.veloura-product-card-image-outside
   .s-product-card-entry::before {
-    top: 0 !important;
+    top:
+      var(--veloura-product-image-outside-offset, 0px) !important;
     background:
       var(--veloura-dark-product-card-bg, #111111) !important;
+    border-radius:
+      var(--veloura-product-card-radius, 18px) !important;
+  }
+
+  /*
+   * Do not paint a dark rectangle behind the protruding image itself.
+   * Otherwise the protrusion visually disappears even though overflow is visible.
+   */
+  html.dark body.veloura-product-card-enabled.veloura-product-card-image-outside
+  .s-product-card-entry
+  :is(
+    .s-product-card-image,
+    .s-product-card-image > a,
+    .s-product-card-image-cover
+  ),
+  html body.dark.veloura-product-card-enabled.veloura-product-card-image-outside
+  .s-product-card-entry
+  :is(
+    .s-product-card-image,
+    .s-product-card-image > a,
+    .s-product-card-image-cover
+  ) {
+    background: transparent !important;
+    background-color: transparent !important;
   }
 </style>
 
@@ -3504,48 +3524,153 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       '<span>' + label + '</span>';
   }
 
-  function measureQuickViewToCart(card, wrapper) {
+  function syncQuickViewGeometry(card, wrapper) {
     if (!card || !wrapper) return;
 
-    var addButton =
-      card.querySelector('salla-add-product-button.veloura-card-add-button') ||
-      card.querySelector('salla-add-product-button');
+    var content =
+      wrapper.closest('.s-product-card-content') ||
+      card.querySelector('.s-product-card-content');
 
-    if (!addButton) return;
+    if (!content) return;
 
-    window.requestAnimationFrame(function () {
+    function number(value, fallback) {
+      var parsed = parseFloat(String(value || '').replace(',', '.'));
+      return Number.isFinite(parsed) ? parsed : fallback;
+    }
+
+    function apply() {
       if (
         !card.isConnected ||
         !wrapper.isConnected ||
-        !addButton.isConnected
+        !content.isConnected
       ) {
         return;
       }
 
-      var addRect = addButton.getBoundingClientRect();
-      if (!addRect.width) return;
+      var contentStyle = window.getComputedStyle(content);
+      var cardStyle = window.getComputedStyle(card);
+
+      /*
+       * The under-cart button lives inside .s-product-card-content.
+       * To reach the same physical edges as Add-to-cart we compensate
+       * the content padding:
+       *
+       * final margin = button slider value - content padding
+       *
+       * Example:
+       * padding = 10px, slider = 0px  -> margin = -10px
+       * padding = 10px, slider = 6px  -> margin =  -4px
+       */
+      var paddingStart = number(
+        contentStyle.getPropertyValue('padding-inline-start'),
+        contentStyle.direction === 'rtl'
+          ? number(contentStyle.paddingRight, 0)
+          : number(contentStyle.paddingLeft, 0)
+      );
+
+      var paddingEnd = number(
+        contentStyle.getPropertyValue('padding-inline-end'),
+        contentStyle.direction === 'rtl'
+          ? number(contentStyle.paddingLeft, 0)
+          : number(contentStyle.paddingRight, 0)
+      );
+
+      var buttonMarginX = number(
+        cardStyle.getPropertyValue('--veloura-product-button-margin-x'),
+        0
+      );
+
+      var buttonMarginBottom = number(
+        cardStyle.getPropertyValue('--veloura-product-button-margin-bottom'),
+        0
+      );
+
+      var configGap = number(
+        (window.velouraQuickView || {}).underCartGap,
+        number(
+          cardStyle.getPropertyValue('--veloura-qv-under-cart-gap'),
+          8
+        )
+      );
 
       wrapper.style.setProperty(
-        '--veloura-qv-measured-width',
-        addRect.width.toFixed(2) + 'px'
+        'width',
+        'auto',
+        'important'
       );
+
       wrapper.style.setProperty(
-        '--veloura-qv-shift-x',
-        '0px'
+        'max-width',
+        'none',
+        'important'
       );
 
-      window.requestAnimationFrame(function () {
-        if (!wrapper.isConnected) return;
+      wrapper.style.setProperty(
+        'margin-inline-start',
+        (buttonMarginX - paddingStart).toFixed(2) + 'px',
+        'important'
+      );
 
-        var wrapperRect = wrapper.getBoundingClientRect();
-        var shift = addRect.left - wrapperRect.left;
+      wrapper.style.setProperty(
+        'margin-inline-end',
+        (buttonMarginX - paddingEnd).toFixed(2) + 'px',
+        'important'
+      );
 
-        wrapper.style.setProperty(
-          '--veloura-qv-shift-x',
-          shift.toFixed(2) + 'px'
-        );
-      });
-    });
+      wrapper.style.setProperty(
+        'margin-block-start',
+        configGap.toFixed(2) + 'px',
+        'important'
+      );
+
+      wrapper.style.setProperty(
+        'margin-block-end',
+        buttonMarginBottom.toFixed(2) + 'px',
+        'important'
+      );
+
+      wrapper.style.setProperty(
+        'transform',
+        'none',
+        'important'
+      );
+
+      wrapper.dataset.velouraQvPaddingStart =
+        paddingStart.toFixed(2);
+
+      wrapper.dataset.velouraQvPaddingEnd =
+        paddingEnd.toFixed(2);
+
+      wrapper.dataset.velouraQvMarginX =
+        buttonMarginX.toFixed(2);
+
+      wrapper.dataset.velouraQvGap =
+        configGap.toFixed(2);
+    }
+
+    /*
+     * First apply immediately, then once after the current frame.
+     * This handles editor/style recalculation without moving DOM nodes.
+     */
+    apply();
+    window.requestAnimationFrame(apply);
+
+    /*
+     * Local observer only: if the content box changes size because the
+     * editor changes padding/layout, recompute the compensation.
+     */
+    if (
+      !wrapper.__velouraQuickViewGeometryObserver &&
+      window.ResizeObserver
+    ) {
+      wrapper.__velouraQuickViewGeometryObserver =
+        new ResizeObserver(function () {
+          window.requestAnimationFrame(apply);
+        });
+
+      wrapper.__velouraQuickViewGeometryObserver.observe(content);
+      wrapper.__velouraQuickViewGeometryObserver.observe(card);
+    }
   }
 
   function placeQuickViewUnderCart(card, button) {
@@ -3594,7 +3719,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       content.appendChild(wrapper);
     }
 
-    measureQuickViewToCart(card, wrapper);
+    syncQuickViewGeometry(card, wrapper);
   }
 
   function placeQuickViewOnImage(card, button) {
