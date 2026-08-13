@@ -2163,7 +2163,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
 
 
-<style id="veloura-product-card-v105-style">
+<style id="veloura-product-card-v106-style">
   body.veloura-product-card-enabled
   .s-product-card-entry
   salla-add-product-button.veloura-card-add-button
@@ -2209,7 +2209,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     transform: none !important;
     box-sizing: border-box !important;
     flex: 0 0 auto !important;
-    align-self: flex-start !important;
+    align-self: stretch !important;
   }
 
   body.veloura-product-card-enabled
@@ -3585,23 +3585,44 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         0
       );
 
+      /*
+       * Prefer the live CSS variable because Salla's editor can update theme
+       * settings without rebuilding window.velouraQuickView immediately.
+       */
       var configGap = number(
-        (window.velouraQuickView || {}).underCartGap,
+        cardStyle.getPropertyValue('--veloura-qv-under-cart-gap'),
         number(
-          cardStyle.getPropertyValue('--veloura-qv-under-cart-gap'),
+          (window.velouraQuickView || {}).underCartGap,
           8
         )
       );
 
+      /*
+       * Explicit width prevents flex shrink-to-fit after Salla re-hydrates
+       * the product card. content.clientWidth includes its horizontal padding,
+       * so subtracting the card-button gutter gives the same physical width
+       * as Add to cart.
+       */
+      var explicitWidth = Math.max(
+        0,
+        content.clientWidth - (buttonMarginX * 2)
+      );
+
       wrapper.style.setProperty(
         'width',
-        'auto',
+        explicitWidth.toFixed(2) + 'px',
         'important'
       );
 
       wrapper.style.setProperty(
         'max-width',
-        'none',
+        explicitWidth.toFixed(2) + 'px',
+        'important'
+      );
+
+      wrapper.style.setProperty(
+        'min-width',
+        explicitWidth.toFixed(2) + 'px',
         'important'
       );
 
@@ -3646,6 +3667,9 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
       wrapper.dataset.velouraQvGap =
         configGap.toFixed(2);
+
+      wrapper.dataset.velouraQvWidth =
+        explicitWidth.toFixed(2);
     }
 
     /*
@@ -3670,6 +3694,36 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
       wrapper.__velouraQuickViewGeometryObserver.observe(content);
       wrapper.__velouraQuickViewGeometryObserver.observe(card);
+    }
+
+    /*
+     * Theme-editor updates can mutate style/class attributes without changing
+     * box size immediately. Observe only this card/content pair.
+     */
+    if (
+      !wrapper.__velouraQuickViewAttributeObserver &&
+      window.MutationObserver
+    ) {
+      wrapper.__velouraQuickViewAttributeObserver =
+        new MutationObserver(function () {
+          window.requestAnimationFrame(apply);
+        });
+
+      wrapper.__velouraQuickViewAttributeObserver.observe(
+        content,
+        {
+          attributes: true,
+          attributeFilter: ['class', 'style']
+        }
+      );
+
+      wrapper.__velouraQuickViewAttributeObserver.observe(
+        card,
+        {
+          attributes: true,
+          attributeFilter: ['class', 'style']
+        }
+      );
     }
   }
 
@@ -3840,20 +3894,72 @@ function markCard(card) {
     setTimeout(scanCards, 900);
     setTimeout(scanCards, 1800);
 
-    var timer = null;
-    var observer = new MutationObserver(function () {
-      clearTimeout(timer);
-      timer = setTimeout(scanCards, 140);
-    });
+    /*
+     * Salla Theme Editor can re-render a product card at any time, not only
+     * during the first 10 seconds. Keep one lightweight observer alive, but
+     * react ONLY when added nodes are product cards or contain product cards.
+     */
+    if (!window.__velouraProductCardLiveObserver) {
+      var pendingCards = new Set();
+      var scheduled = false;
 
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
+      function scheduleCards() {
+        if (scheduled) return;
+        scheduled = true;
 
-    setTimeout(function () {
-      observer.disconnect();
-    }, 10000);
+        window.requestAnimationFrame(function () {
+          scheduled = false;
+
+          pendingCards.forEach(function (card) {
+            if (card && card.isConnected) {
+              markCard(card);
+            }
+          });
+
+          pendingCards.clear();
+        });
+      }
+
+      window.__velouraProductCardLiveObserver =
+        new MutationObserver(function (mutations) {
+          mutations.forEach(function (mutation) {
+            mutation.addedNodes.forEach(function (node) {
+              if (!(node instanceof Element)) return;
+
+              if (node.matches('.s-product-card-entry')) {
+                pendingCards.add(node);
+              }
+
+              if (node.matches('product-card')) {
+                var directCard =
+                  node.querySelector('.s-product-card-entry');
+
+                if (directCard) pendingCards.add(directCard);
+              }
+
+              node
+                .querySelectorAll?.(
+                  'product-card .s-product-card-entry, .s-product-card-entry'
+                )
+                .forEach(function (card) {
+                  pendingCards.add(card);
+                });
+            });
+          });
+
+          if (pendingCards.size) {
+            scheduleCards();
+          }
+        });
+
+      window.__velouraProductCardLiveObserver.observe(
+        document.body,
+        {
+          childList: true,
+          subtree: true
+        }
+      );
+    }
   });
 
   document.addEventListener('theme::ready', function () {
