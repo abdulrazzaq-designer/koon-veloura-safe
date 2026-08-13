@@ -2938,3 +2938,92 @@ html body .s-product-card-entry
   visibility: hidden !important;
   pointer-events: none !important;
 }
+
+
+/* ========================================================================
+   Veloura Product Data V98 — final targeted corrections
+   ======================================================================== */
+
+/* Dark option controls use the dark PAGE background while the surrounding
+   options card remains on the configured secondary background. */
+html.dark .veloura-product-page .s-product-options-option :is(
+  .s-select,
+  .s-select-control,
+  select,
+  input:not([type="radio"]):not([type="checkbox"]):not([type="hidden"]),
+  textarea,
+  .s-form-control,
+  .form-input
+),
+body.dark .veloura-product-page .s-product-options-option :is(
+  .s-select,
+  .s-select-control,
+  select,
+  input:not([type="radio"]):not([type="checkbox"]):not([type="hidden"]),
+  textarea,
+  .s-form-control,
+  .form-input
+) {
+  background: var(--veloura-product-dark-bg-inline, var(--veloura-dark-body-bg, #010202)) !important;
+  background-color: var(--veloura-product-dark-bg-inline, var(--veloura-dark-body-bg, #010202)) !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+  -webkit-text-fill-color: currentColor !important;
+  border-color: rgba(255,255,255,.10) !important;
+  box-shadow: none !important;
+}
+
+/* Read-more keeps the background-colored separation edge but has zero shadow. */
+.veloura-product-page #btn-show-more.veloura-product-read-more,
+.veloura-product-page #btn-show-more.veloura-product-read-more:hover,
+.veloura-product-page #btn-show-more.veloura-product-read-more:focus,
+.veloura-product-page #btn-show-more.veloura-product-read-more:active,
+.veloura-product-page #btn-show-more.veloura-product-read-more.is-expanded {
+  border: 7px solid var(--veloura-product-bg-inline, #ffffff) !important;
+  box-shadow: none !important;
+}
+
+html.dark .veloura-product-page #btn-show-more.veloura-product-read-more,
+body.dark .veloura-product-page #btn-show-more.veloura-product-read-more,
+html.dark .veloura-product-page #btn-show-more.veloura-product-read-more:hover,
+body.dark .veloura-product-page #btn-show-more.veloura-product-read-more:hover,
+html.dark .veloura-product-page #btn-show-more.veloura-product-read-more:focus,
+body.dark .veloura-product-page #btn-show-more.veloura-product-read-more:focus,
+html.dark .veloura-product-page #btn-show-more.veloura-product-read-more:active,
+body.dark .veloura-product-page #btn-show-more.veloura-product-read-more:active,
+html.dark .veloura-product-page #btn-show-more.veloura-product-read-more.is-expanded,
+body.dark .veloura-product-page #btn-show-more.veloura-product-read-more.is-expanded {
+  border-color: var(--veloura-product-dark-bg-inline, var(--veloura-dark-body-bg, #010202)) !important;
+  box-shadow: none !important;
+}
+
+/* The add-product host only receives layout dimensions. Its native children
+   and quick-buy state are no longer forced by Veloura. */
+.veloura-product-page salla-add-product-button.sticky-product-bar__btn {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+}
+
+/* Related heading/arrows light-DOM fallback. The actual column count is
+   delivered through the component's sliderConfig property in product.js. */
+.veloura-product-related-products.is-title-centered .veloura-product-related-heading,
+.veloura-product-related-products.is-title-centered .veloura-product-related-title {
+  width: 100% !important;
+  text-align: center !important;
+  justify-content: center !important;
+  margin-inline: auto !important;
+}
+
+.veloura-product-related-products.is-arrows-hidden :is(
+  .s-slider-next,
+  .s-slider-prev,
+  .swiper-button-next,
+  .swiper-button-prev,
+  [part~="next"],
+  [part~="prev"]
+) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

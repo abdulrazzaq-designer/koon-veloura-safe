@@ -2502,6 +2502,30 @@ textarea.s-input{
   outline: 0;
   box-shadow: none;
 }
+html.dark .veloura-product-page .s-product-options-option .s-select:not(.does-not-exist):not(.does-not-exist):not(does-not-exist),
+html.dark .veloura-product-page .s-product-options-option .s-select-control:not(.does-not-exist):not(.does-not-exist):not(does-not-exist),
+html.dark .veloura-product-page .s-product-options-option select:not(.does-not-exist):not(.does-not-exist):not(.does-not-exist),
+html.dark .veloura-product-page .s-product-options-option input:not([type=radio]):not([type=checkbox]):not([type=hidden]),
+html.dark .veloura-product-page .s-product-options-option textarea:not(.does-not-exist):not(.does-not-exist):not(.does-not-exist),
+html.dark .veloura-product-page .s-product-options-option .s-form-control:not(.does-not-exist):not(.does-not-exist):not(does-not-exist),
+html.dark .veloura-product-page .s-product-options-option .s-input:not(.does-not-exist):not(.does-not-exist):not(does-not-exist),
+body.dark .veloura-product-page .s-product-options-option .s-select:not(.does-not-exist):not(.does-not-exist):not(does-not-exist),
+body.dark .veloura-product-page .s-product-options-option .s-select-control:not(.does-not-exist):not(.does-not-exist):not(does-not-exist),
+body.dark .veloura-product-page .s-product-options-option select:not(.does-not-exist):not(.does-not-exist):not(.does-not-exist),
+body.dark .veloura-product-page .s-product-options-option input:not([type=radio]):not([type=checkbox]):not([type=hidden]),
+body.dark .veloura-product-page .s-product-options-option textarea:not(.does-not-exist):not(.does-not-exist):not(.does-not-exist),
+body.dark .veloura-product-page .s-product-options-option .s-form-control:not(.does-not-exist):not(.does-not-exist):not(does-not-exist),
+body.dark .veloura-product-page .s-product-options-option .s-input:not(.does-not-exist):not(.does-not-exist):not(does-not-exist) {
+  background: #010202;
+  background: var(--veloura-product-dark-bg-inline, var(--veloura-dark-body-bg, #010202));
+  background-color: #010202;
+  background-color: var(--veloura-product-dark-bg-inline, var(--veloura-dark-body-bg, #010202));
+  color: #ffffff;
+  color: var(--veloura-dark-primary-text, #ffffff);
+  -webkit-text-fill-color: currentColor;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
 html body.veloura-glass-effect .veloura-popup__box input:not(.does-not-exist),
 html body.veloura-glass-effect .veloura-popup__box select:not(.does-not-exist),
 html body.veloura-glass-effect .veloura-popup__box textarea:not(.does-not-exist),
@@ -49923,6 +49947,87 @@ html body .s-product-card-entry .veloura-card-bottom::after {
   width: 100% !important;
   justify-content: center !important;
   text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.veloura-product-related-products.is-arrows-hidden .s-slider-next,
+.veloura-product-related-products.is-arrows-hidden .s-slider-prev,
+.veloura-product-related-products.is-arrows-hidden .swiper-button-next,
+.veloura-product-related-products.is-arrows-hidden .swiper-button-prev,
+.veloura-product-related-products.is-arrows-hidden [part~=next],
+.veloura-product-related-products.is-arrows-hidden [part~=prev] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+/* ========================================================================
+   Veloura Product Data V98 — final targeted corrections
+   ======================================================================== */
+/* Dark option controls use the dark PAGE background while the surrounding
+   options card remains on the configured secondary background. */
+html.dark .veloura-product-page .s-product-options-option .s-select:not(.does-not-exist):not(.does-not-exist):not(does-not-exist),
+html.dark .veloura-product-page .s-product-options-option .s-select-control:not(.does-not-exist):not(.does-not-exist):not(does-not-exist),
+html.dark .veloura-product-page .s-product-options-option select:not(.does-not-exist):not(.does-not-exist):not(.does-not-exist),
+html.dark .veloura-product-page .s-product-options-option input:not([type=radio]):not([type=checkbox]):not([type=hidden]),
+html.dark .veloura-product-page .s-product-options-option textarea:not(.does-not-exist):not(.does-not-exist):not(.does-not-exist),
+html.dark .veloura-product-page .s-product-options-option .s-form-control:not(.does-not-exist):not(.does-not-exist):not(does-not-exist),
+html.dark .veloura-product-page .s-product-options-option .form-input:not(.does-not-exist):not(.does-not-exist):not(does-not-exist),
+body.dark .veloura-product-page .s-product-options-option .s-select:not(.does-not-exist):not(.does-not-exist):not(does-not-exist),
+body.dark .veloura-product-page .s-product-options-option .s-select-control:not(.does-not-exist):not(.does-not-exist):not(does-not-exist),
+body.dark .veloura-product-page .s-product-options-option select:not(.does-not-exist):not(.does-not-exist):not(.does-not-exist),
+body.dark .veloura-product-page .s-product-options-option input:not([type=radio]):not([type=checkbox]):not([type=hidden]),
+body.dark .veloura-product-page .s-product-options-option textarea:not(.does-not-exist):not(.does-not-exist):not(.does-not-exist),
+body.dark .veloura-product-page .s-product-options-option .s-form-control:not(.does-not-exist):not(.does-not-exist):not(does-not-exist),
+body.dark .veloura-product-page .s-product-options-option .form-input:not(.does-not-exist):not(.does-not-exist):not(does-not-exist) {
+  background: #010202 !important;
+  background: var(--veloura-product-dark-bg-inline, var(--veloura-dark-body-bg, #010202)) !important;
+  background-color: #010202 !important;
+  background-color: var(--veloura-product-dark-bg-inline, var(--veloura-dark-body-bg, #010202)) !important;
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+  -webkit-text-fill-color: currentColor !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: none !important;
+}
+/* Read-more keeps the background-colored separation edge but has zero shadow. */
+.veloura-product-page #btn-show-more.veloura-product-read-more,
+.veloura-product-page #btn-show-more.veloura-product-read-more:hover,
+.veloura-product-page #btn-show-more.veloura-product-read-more:focus,
+.veloura-product-page #btn-show-more.veloura-product-read-more:active,
+.veloura-product-page #btn-show-more.veloura-product-read-more.is-expanded {
+  border: 7px solid #ffffff !important;
+  border: 7px solid var(--veloura-product-bg-inline, #ffffff) !important;
+  box-shadow: none !important;
+}
+html.dark .veloura-product-page #btn-show-more.veloura-product-read-more,
+body.dark .veloura-product-page #btn-show-more.veloura-product-read-more,
+html.dark .veloura-product-page #btn-show-more.veloura-product-read-more:hover,
+body.dark .veloura-product-page #btn-show-more.veloura-product-read-more:hover,
+html.dark .veloura-product-page #btn-show-more.veloura-product-read-more:focus,
+body.dark .veloura-product-page #btn-show-more.veloura-product-read-more:focus,
+html.dark .veloura-product-page #btn-show-more.veloura-product-read-more:active,
+body.dark .veloura-product-page #btn-show-more.veloura-product-read-more:active,
+html.dark .veloura-product-page #btn-show-more.veloura-product-read-more.is-expanded,
+body.dark .veloura-product-page #btn-show-more.veloura-product-read-more.is-expanded {
+  border-color: #010202 !important;
+  border-color: var(--veloura-product-dark-bg-inline, var(--veloura-dark-body-bg, #010202)) !important;
+  box-shadow: none !important;
+}
+/* The add-product host only receives layout dimensions. Its native children
+   and quick-buy state are no longer forced by Veloura. */
+.veloura-product-page salla-add-product-button.sticky-product-bar__btn {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+}
+/* Related heading/arrows light-DOM fallback. The actual column count is
+   delivered through the component's sliderConfig property in product.js. */
+.veloura-product-related-products.is-title-centered .veloura-product-related-heading,
+.veloura-product-related-products.is-title-centered .veloura-product-related-title {
+  width: 100% !important;
+  text-align: center !important;
+  justify-content: center !important;
   margin-left: auto !important;
   margin-right: auto !important;
 }

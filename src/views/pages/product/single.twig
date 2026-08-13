@@ -337,18 +337,9 @@
     } %}
     {% set vpp_general_radius = vpp_radius_map[vpp_general_radius_key]|default('28px') %}
 
-{# VELOURA PRODUCT DATA V96 CRITICAL START #}
-<style id="veloura-product-data-v96-critical">
-  /*
-   * This block intentionally lives in product/single.twig.
-   * It guarantees these product-data fixes are present even if product.scss
-   * is not currently imported by the app.css entry bundle.
-   */
-
-  /* ---------------------------------------------------------------
-     1) Availability pulse — direct box-shadow animation, no hidden
-        negative-z-index pseudo layer.
-     --------------------------------------------------------------- */
+{# VELOURA PRODUCT DATA V98 CRITICAL START #}
+<style id="veloura-product-data-v98-critical">
+  /* Availability pulse */
   .veloura-product-page .veloura-product-stock-radar {
     overflow: visible !important;
   }
@@ -363,40 +354,74 @@
     border-radius: 9999px !important;
     background: #22c55e !important;
     opacity: 1 !important;
-    transform: translateZ(0);
   }
 
   .veloura-product-page
   .veloura-product-stock-radar.is-pulse
   .veloura-product-stock-radar__dot {
-    animation: veloura-v96-stock-pulse 1.55s ease-out infinite !important;
+    animation: veloura-v98-stock-pulse 1.55s ease-out infinite !important;
   }
 
-  @keyframes veloura-v96-stock-pulse {
-    0% {
-      box-shadow: 0 0 0 0 rgba(34,197,94,.58);
-    }
-    70% {
-      box-shadow: 0 0 0 9px rgba(34,197,94,0);
-    }
-    100% {
-      box-shadow: 0 0 0 0 rgba(34,197,94,0);
-    }
+  @keyframes veloura-v98-stock-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(34,197,94,.58); }
+    70% { box-shadow: 0 0 0 9px rgba(34,197,94,0); }
+    100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
   }
 
-  /* ---------------------------------------------------------------
-     2) "قراءة المزيد" separation gap.
-        Light = configured site/product background.
-        Dark  = configured dark site/product background.
-     --------------------------------------------------------------- */
+  /* Product option fields: the outer options card uses secondary background;
+     the actual controls use the PAGE background, same visual hierarchy in
+     Light and Dark. */
+  .veloura-product-page .s-product-options-option :is(
+    .s-select,
+    .s-select-control,
+    select,
+    input:not([type="radio"]):not([type="checkbox"]):not([type="hidden"]),
+    textarea,
+    .s-form-control,
+    .form-input
+  ) {
+    background: var(--veloura-product-bg-inline, #ffffff) !important;
+    background-color: var(--veloura-product-bg-inline, #ffffff) !important;
+    color: inherit !important;
+    box-shadow: none !important;
+  }
+
+  html.dark .veloura-product-page .s-product-options-option :is(
+    .s-select,
+    .s-select-control,
+    select,
+    input:not([type="radio"]):not([type="checkbox"]):not([type="hidden"]),
+    textarea,
+    .s-form-control,
+    .form-input
+  ),
+  body.dark .veloura-product-page .s-product-options-option :is(
+    .s-select,
+    .s-select-control,
+    select,
+    input:not([type="radio"]):not([type="checkbox"]):not([type="hidden"]),
+    textarea,
+    .s-form-control,
+    .form-input
+  ) {
+    background: var(--veloura-product-dark-bg-inline, var(--veloura-dark-body-bg, #010202)) !important;
+    background-color: var(--veloura-product-dark-bg-inline, var(--veloura-dark-body-bg, #010202)) !important;
+    color: var(--veloura-dark-primary-text, #ffffff) !important;
+    -webkit-text-fill-color: currentColor !important;
+    border-color: rgba(255,255,255,.10) !important;
+    box-shadow: none !important;
+  }
+
+  /* Read-more: retain the background-colored separation ring as a real border,
+     but remove EVERY shadow. */
   .veloura-product-page #btn-show-more.veloura-product-read-more,
   .veloura-product-page #btn-show-more.veloura-product-read-more:hover,
   .veloura-product-page #btn-show-more.veloura-product-read-more:focus,
   .veloura-product-page #btn-show-more.veloura-product-read-more:active,
   .veloura-product-page #btn-show-more.veloura-product-read-more.is-expanded {
-    box-shadow:
-      0 0 0 7px var(--veloura-product-bg-inline, #ffffff),
-      0 9px 22px rgba(15,23,42,.14) !important;
+    border: 7px solid var(--veloura-product-bg-inline, #ffffff) !important;
+    box-shadow: none !important;
+    outline: 0 !important;
   }
 
   html.dark .veloura-product-page #btn-show-more.veloura-product-read-more,
@@ -409,15 +434,11 @@
   body.dark .veloura-product-page #btn-show-more.veloura-product-read-more:active,
   html.dark .veloura-product-page #btn-show-more.veloura-product-read-more.is-expanded,
   body.dark .veloura-product-page #btn-show-more.veloura-product-read-more.is-expanded {
-    box-shadow:
-      0 0 0 7px var(--veloura-product-dark-bg-inline, var(--veloura-dark-body-bg, #010202)),
-      0 9px 22px rgba(0,0,0,.24) !important;
+    border-color: var(--veloura-product-dark-bg-inline, var(--veloura-dark-body-bg, #010202)) !important;
+    box-shadow: none !important;
   }
 
-  /* ---------------------------------------------------------------
-     3) Sticky OFF: normal purchase card = general global radius on
-        all four corners. No sharp-bottom hotfix is allowed to win.
-     --------------------------------------------------------------- */
+  /* Sticky OFF = normal rounded purchase card. */
   @media (max-width: 767px) {
     .veloura-product-page.veloura-product-mobile-sticky-disabled
     .sticky-product-bar.veloura-product-sticky-bar {
@@ -425,13 +446,7 @@
       inset: auto !important;
       width: 100% !important;
       margin: 16px 0 0 !important;
-
       border-radius: var(--veloura-product-radius, 28px) !important;
-      border-start-start-radius: var(--veloura-product-radius, 28px) !important;
-      border-start-end-radius: var(--veloura-product-radius, 28px) !important;
-      border-end-start-radius: var(--veloura-product-radius, 28px) !important;
-      border-end-end-radius: var(--veloura-product-radius, 28px) !important;
-
       overflow: visible !important;
     }
 
@@ -442,19 +457,37 @@
     }
   }
 
-  /* ---------------------------------------------------------------
-     4) Tags visual-only setting now has a real target.
-     --------------------------------------------------------------- */
-  .veloura-product-page.veloura-product-tags-visual-hidden
-  .veloura-product-tags {
+  .veloura-product-page.veloura-product-tags-visual-hidden .veloura-product-tags {
     display: none !important;
   }
+
+  /* Related-products settings that do not depend on component internals. */
+  .veloura-product-related-products.is-title-centered .veloura-product-related-heading,
+  .veloura-product-related-products.is-title-centered .veloura-product-related-title {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+    margin-inline: auto !important;
+  }
+
+  .veloura-product-related-products.is-arrows-hidden :is(
+    .s-slider-next,
+    .s-slider-prev,
+    .swiper-button-next,
+    .swiper-button-prev,
+    [part~="next"],
+    [part~="prev"]
+  ) {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
 </style>
-{# VELOURA PRODUCT DATA V96 CRITICAL END #}
+{# VELOURA PRODUCT DATA V98 CRITICAL END #}
 
 <div
   data-veloura-v50-recovered="true"
-  data-veloura-product-data-build="v97"
+  data-veloura-product-data-build="v98"
   data-v42-order-enabled="{{ vpp_details_order_enabled ? 'true' : 'false' }}"
   data-v96-stock-pulse="{{ vpp_show_stock_radar ? 'true' : 'false' }}"
   data-v42-order-title="{{ vpp_order_title }}"
@@ -987,6 +1020,7 @@
                 </div>
             {% endif %}
             <salla-products-slider
+                id="veloura-related-products-slider"
                 source="{{ veloura_related_source }}"
                 source-value="{{ veloura_related_source_value_attr|e('html_attr') }}"
                 product-card-component="custom-salla-product-card"
@@ -999,50 +1033,7 @@
                 data-veloura-related-hide-arrows="{{ vpp_related_hide_arrows|default(false) ? 'true' : 'false' }}"
                 data-veloura-related-center-title="{{ vpp_related_center_title|default(false) ? 'true' : 'false' }}"
                 data-veloura-related-snap="one"
-                slider-config='{
-                  "slidesPerView": {{ vpp_related_mobile_columns|default(2) }},
-                  "slidesPerGroup": 1,
-                  "spaceBetween": 12,
-                  "centeredSlides": false,
-                  "centeredSlidesBounds": false,
-                  "centerInsufficientSlides": false,
-                  "freeMode": false,
-                  "allowTouchMove": true,
-                  "simulateTouch": true,
-                  "grabCursor": true,
-                  "threshold": 4,
-                  "touchStartPreventDefault": false,
-                  "touchMoveStopPropagation": false,
-                  "touchReleaseOnEdges": true,
-                  "resistance": true,
-                  "resistanceRatio": 0.85,
-                  "preventInteractionOnTransition": false,
-                  "observer": false,
-                  "observeParents": false,
-                  "observeSlideChildren": false,
-                  "roundLengths": true,
-                  "slidesOffsetBefore": 0,
-                  "slidesOffsetAfter": 0,
-                  "breakpoints": {
-                    "768": {
-                      "slidesPerView": {{ vpp_related_desktop_columns|default(4) }},
-                      "slidesPerGroup": 1,
-                      "spaceBetween": 16,
-                      "centeredSlides": false,
-                      "freeMode": false,
-                      "allowTouchMove": true,
-                      "simulateTouch": true,
-                      "grabCursor": true,
-                      "threshold": 4,
-                      "touchReleaseOnEdges": true,
-                      "resistance": true,
-                      "resistanceRatio": 0.85,
-                      "roundLengths": true,
-                      "slidesOffsetBefore": 0,
-                      "slidesOffsetAfter": 0
-                    }
-                  }
-                }'>
+                >
             </salla-products-slider>
         </div>
     {% endif %}
