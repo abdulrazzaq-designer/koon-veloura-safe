@@ -5845,6 +5845,38 @@
       ]
     },
     {
+      "id": "veloura_quick_view_under_cart_gap_2026",
+      "type": "number",
+      "format": "slider",
+      "label": "المسافة بين زر العرض السريع وإضافة السلة",
+      "description": "تتحكم بالمسافة العمودية بين زر أضف للسلة وزر العرض السريع عندما يكون العرض السريع أسفل زر السلة.",
+      "inputType": "range",
+      "icon": "sicon-pin",
+      "value": "8",
+      "default": "8",
+      "required": false,
+      "step": "1",
+      "minimum": "0",
+      "maximum": "40",
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_quick_view_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_quick_view_button_position_2026",
+          "operation": "=",
+          "value": "below_add_to_cart"
+        }
+      ]
+    },
+    {
       "id": "veloura_product_card_action_size_2026",
       "type": "number",
       "format": "slider",
@@ -6222,29 +6254,6 @@
     {
       "type": "boolean",
       "icon": "sicon-toggle-off",
-      "label": "تفعيل الوضع الزجاجي",
-      "description": "عند التفعيل تصبح نافذة العرض السريع بلورية بنفس خامة زجاج الهيدر، بدون تغبيش خلفية الصفحة.",
-      "id": "veloura_quick_view_overlay_blur_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true,
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
       "label": "إظهار الخصم داخل العرض السريع",
       "description": "عند التفعيل يظهر السعر قبل التخفيض أو نسبة الخصم إذا كانت متوفرة",
       "id": "veloura_quick_view_show_discount_2026",
@@ -6532,6 +6541,82 @@
           "id": "veloura_product_card_panel_open_2026",
           "operation": "=",
           "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "icon": "sicon-toggle-off",
+      "label": "إخفاء أيقونة زر أضف للسلة",
+      "description": "يخفي الأيقونة فقط مع إبقاء زر أضف للسلة ونصه يعملان بشكل طبيعي.",
+      "id": "veloura_product_card_hide_cart_icon_2026",
+      "format": "switch",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_product_card_cart_icon_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "أيقونة زر أضف للسلة",
+      "description": "اختر أيقونة زر أضف للسلة من الأشكال المحددة.",
+      "icon": "sicon-shopping-bag",
+      "source": "Manual",
+      "required": true,
+      "value": "sicon-shopping-bag",
+      "default": "sicon-shopping-bag",
+      "selected": [
+        {
+          "label": "حقيبة تسوق",
+          "value": "sicon-shopping-bag",
+          "key": "veloura-product-card-cart-icon-shopping-bag"
+        }
+      ],
+      "options": [
+        {
+          "label": "حقيبة تسوق",
+          "value": "sicon-shopping-bag",
+          "key": "veloura-product-card-cart-icon-shopping-bag"
+        },
+        {
+          "label": "عربة تسوق",
+          "value": "sicon-luggage-cart",
+          "key": "veloura-product-card-cart-icon-luggage-cart"
+        },
+        {
+          "label": "صندوق",
+          "value": "sicon-box",
+          "key": "veloura-product-card-cart-icon-box"
+        },
+        {
+          "label": "طرد",
+          "value": "sicon-packed-box",
+          "key": "veloura-product-card-cart-icon-packed-box"
+        },
+        {
+          "label": "هدية",
+          "value": "sicon-gift",
+          "key": "veloura-product-card-cart-icon-gift"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_card_hide_cart_icon_2026",
+          "operation": "=",
+          "value": false
         }
       ]
     },

@@ -3061,7 +3061,7 @@ document.addEventListener('DOMContentLoaded', () => {
           max-width:430px!important;
           max-height:86vh!important;
           overflow:auto!important;
-          border-radius:22px!important;
+          border-radius:var(--veloura-quick-view-modal-radius,26px)!important;
           margin:0 auto!important;
         }
         .veloura-qv-full__grid{
@@ -3080,7 +3080,7 @@ document.addEventListener('DOMContentLoaded', () => {
           height:315px!important;
           max-height:315px!important;
           overflow:hidden!important;
-          border-radius:22px 22px 0 0!important;
+          border-radius:var(--veloura-quick-view-modal-radius,26px) var(--veloura-quick-view-modal-radius,26px) 0 0!important;
         }
         .veloura-qv-full__image{
           min-height:0!important;
@@ -3250,7 +3250,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.setAttribute('aria-hidden', 'true');
     modal.innerHTML = `
       <div class="veloura-qv-full__overlay" data-veloura-qv-full-close></div>
-      <div class="veloura-qv-full__dialog veloura-glass-surface" role="dialog" aria-modal="true">
+      <div class="veloura-qv-full__dialog" role="dialog" aria-modal="true">
         <button type="button" class="veloura-qv-full__close" data-veloura-qv-full-close aria-label="إغلاق">×</button>
         <div class="veloura-qv-full__grid">
           <div class="veloura-qv-full__media">
