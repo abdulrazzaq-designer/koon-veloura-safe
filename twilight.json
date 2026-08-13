@@ -6157,6 +6157,30 @@
       ]
     },
     {
+      "type": "boolean",
+      "icon": "sicon-toggle-off",
+      "label": "تفعيل الوضع الزجاجي لنافذة العرض السريع",
+      "description": "يجعل نافذة العرض السريع زجاجية بشكل مستقل، بدون الحاجة لتفعيل خيار الزجاج العام.",
+      "id": "veloura_quick_view_overlay_blur_2026",
+      "format": "switch",
+      "required": false,
+      "value": true,
+      "selected": true,
+      "default": true,
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_quick_view_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "id": "veloura_quick_view_modal_radius_2026",
       "type": "items",
       "format": "dropdown-list",
@@ -6191,6 +6215,49 @@
           "label": "ناعم جدًا",
           "value": "large",
           "key": "veloura-quick-view-modal-radius-large-2026"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_quick_view_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_quick_view_image_fit_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "طريقة عرض صورة العرض السريع",
+      "description": "احتواء يعرض الصورة كاملة، وتعبئة تملأ مساحة الصورة وقد تقص جزءًا منها.",
+      "icon": "sicon-image",
+      "source": "Manual",
+      "required": true,
+      "value": "contain",
+      "default": "contain",
+      "selected": [
+        {
+          "label": "احتواء الصورة",
+          "value": "contain",
+          "key": "veloura-qv-image-fit-contain-2026"
+        }
+      ],
+      "options": [
+        {
+          "label": "احتواء الصورة",
+          "value": "contain",
+          "key": "veloura-qv-image-fit-contain-2026"
+        },
+        {
+          "label": "تعبئة المساحة",
+          "value": "cover",
+          "key": "veloura-qv-image-fit-cover-2026"
         }
       ],
       "conditions": [
