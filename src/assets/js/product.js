@@ -112,9 +112,6 @@ class Product extends BasePage {
     }
 
     initVelouraProductSliders() {
-        const page = document.querySelector('.veloura-product-page');
-        if (!page) return;
-
         const settings = window.velouraProductSliderSettings || {};
 
         const clamp = (value, min, max, fallback) => {
@@ -123,343 +120,421 @@ class Product extends BasePage {
             return Math.max(min, Math.min(max, Math.round(number)));
         };
 
-        /* ==========================================================
-         * Related products — V99 controlled slider
-         * ========================================================== */
-        const section = document.querySelector('[data-veloura-related-controller]');
-        const slider = section?.querySelector('salla-slider[data-veloura-related-slider]');
-        const items = slider?.querySelector('[data-veloura-related-items]');
+        const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-        if (section && slider && items) {
-            const mobileColumns = clamp(
-                section.dataset.velouraRelatedMobile ??
-                settings.related?.mobileColumns,
+        const buildConfig = (mobile, desktop) => ({
+            slidesPerView: mobile,
+            slidesPerGroup: 1,
+            spaceBetween: 12,
+            watchOverflow: true,
+            allowTouchMove: true,
+            simulateTouch: true,
+            grabCursor: true,
+            breakpoints: {
+                768: {
+                    slidesPerView: desktop,
+                    slidesPerGroup: 1,
+                    spaceBetween: 16,
+                },
+            },
+        });
+
+        const injectShadowStyle = (root, id, css) => {
+            if (!root || root.getElementById?.(id)) return;
+
+            const style = document.createElement('style');
+            style.id = id;
+            style.textContent = css;
+            root.appendChild(style);
+        };
+
+        const applyInnerSlider = async (inner, config, hideArrows, marker) => {
+            if (!inner) return false;
+
+            try {
+                inner.sliderConfig = config;
+                inner.slidesPerView = String(config.slidesPerView);
+                inner.showControls = !hideArrows;
+            } catch (_) {}
+
+            inner.setAttribute('slider-config', JSON.stringify(config));
+            inner.setAttribute('slides-per-view', String(config.slidesPerView));
+            inner.setAttribute('show-controls', hideArrows ? 'false' : 'true');
+            inner.dataset.velouraSliderMode = marker;
+
+            try {
+                if (typeof inner.componentOnReady === 'function') {
+                    await inner.componentOnReady();
+                }
+            } catch (_) {}
+
+            if (hideArrows && inner.shadowRoot) {
+                injectShadowStyle(
+                    inner.shadowRoot,
+                    `veloura-${marker}-hide-controls`,
+                    `
+                    .s-slider-next,
+                    .s-slider-prev,
+                    .swiper-button-next,
+                    .swiper-button-prev,
+                    [part~="next"],
+                    [part~="prev"] {
+                      display: none !important;
+                      opacity: 0 !important;
+                      visibility: hidden !important;
+                      pointer-events: none !important;
+                    }
+                    `
+                );
+            }
+
+            try {
+                await inner.updateSlides?.();
+                await inner.updateSlidesClasses?.();
+                await inner.update?.();
+            } catch (_) {}
+
+            return true;
+        };
+
+        const waitForInnerSlider = async (host, tries = 30) => {
+            for (let i = 0; i < tries; i += 1) {
+                const inner =
+                    host?.querySelector?.('salla-slider') ||
+                    host?.shadowRoot?.querySelector?.('salla-slider');
+
+                if (inner) return inner;
+                await sleep(80);
+            }
+
+            return null;
+        };
+
+        const applyProductsSlider = async (host, options = {}) => {
+            if (!host || host.dataset.velouraSliderApplying === 'true') return;
+
+            const mobile = clamp(options.mobile, 1, 3, 2);
+            const desktop = clamp(options.desktop, 1, 6, 4);
+            const hideArrows = Boolean(options.hideArrows);
+            const config = buildConfig(mobile, desktop);
+            const marker = options.marker || 'products';
+
+            host.dataset.velouraSliderApplying = 'true';
+            host.dataset.velouraSliderMode = marker;
+            host.dataset.velouraSliderMobile = String(mobile);
+            host.dataset.velouraSliderDesktop = String(desktop);
+            host.dataset.velouraSliderHideArrows = hideArrows ? 'true' : 'false';
+
+            try {
+                /*
+                 * Current Salla products-slider supports sliderConfig and passes
+                 * it to its internal salla-slider. Set property + attribute so
+                 * both initial and late component renders receive the config.
+                 */
+                try {
+                    host.sliderConfig = config;
+                } catch (_) {}
+
+                host.setAttribute('slider-config', JSON.stringify(config));
+
+                try {
+                    if (typeof host.componentOnReady === 'function') {
+                        await host.componentOnReady();
+                    }
+                } catch (_) {}
+
+                let inner = await waitForInnerSlider(host);
+
+                if (inner) {
+                    await applyInnerSlider(inner, config, hideArrows, marker);
+                }
+
+                /*
+                 * Products can render after the host reports ready. Observe only
+                 * this host and re-apply when the internal slider is replaced.
+                 */
+                if (!host.__velouraSliderObserver && typeof MutationObserver === 'function') {
+                    host.__velouraSliderObserver = new MutationObserver(async () => {
+                        const nextInner =
+                            host.querySelector?.('salla-slider') ||
+                            host.shadowRoot?.querySelector?.('salla-slider');
+
+                        if (nextInner && nextInner !== host.__velouraLastInnerSlider) {
+                            host.__velouraLastInnerSlider = nextInner;
+                            await applyInnerSlider(nextInner, config, hideArrows, marker);
+                        }
+                    });
+
+                    host.__velouraSliderObserver.observe(host, {
+                        childList: true,
+                        subtree: true,
+                    });
+                }
+
+                host.__velouraLastInnerSlider = inner;
+            } finally {
+                host.dataset.velouraSliderApplying = 'false';
+            }
+        };
+
+        /* ==========================================================
+         * 1) Products you may like
+         * ========================================================== */
+        const relatedSection = document.querySelector('[data-veloura-related-section]');
+        const relatedHost = relatedSection?.querySelector(
+            'salla-products-slider[data-veloura-related-slider]'
+        );
+
+        if (relatedSection && relatedHost) {
+            const related = settings.related || {};
+            const mobile = clamp(
+                relatedSection.dataset.velouraRelatedMobile ?? related.mobileColumns,
                 1,
                 3,
                 2
             );
-
-            const desktopColumns = clamp(
-                section.dataset.velouraRelatedDesktop ??
-                settings.related?.desktopColumns,
+            const desktop = clamp(
+                relatedSection.dataset.velouraRelatedDesktop ?? related.desktopColumns,
                 1,
                 6,
                 4
             );
-
             const hideArrows =
-                section.dataset.velouraRelatedHideArrows === 'true' ||
-                settings.related?.hideArrows === true;
-
+                relatedSection.dataset.velouraRelatedHideArrows === 'true' ||
+                related.hideArrows === true;
             const centerTitle =
-                section.dataset.velouraRelatedCenterTitle === 'true' ||
-                settings.related?.centerTitle === true;
+                relatedSection.dataset.velouraRelatedCenterTitle === 'true' ||
+                related.centerTitle === true;
 
-            section.classList.toggle('is-title-centered', centerTitle);
-            section.classList.toggle('is-arrows-hidden', hideArrows);
+            relatedSection.classList.toggle('is-title-centered', centerTitle);
+            relatedSection.classList.toggle('is-arrows-hidden', hideArrows);
 
-            const sliderConfig = {
-                slidesPerView: mobileColumns,
-                slidesPerGroup: 1,
-                spaceBetween: 12,
-                watchOverflow: true,
-                allowTouchMove: true,
-                simulateTouch: true,
-                grabCursor: true,
-                breakpoints: {
-                    768: {
-                        slidesPerView: desktopColumns,
-                        slidesPerGroup: 1,
-                        spaceBetween: 16,
-                    },
-                },
-            };
-
-            const applySliderConfig = async () => {
-                try {
-                    slider.sliderConfig = sliderConfig;
-                    slider.slidesPerView = String(mobileColumns);
-                    slider.showControls = !hideArrows;
-                } catch (_) {}
-
-                slider.setAttribute('slider-config', JSON.stringify(sliderConfig));
-                slider.setAttribute('slides-per-view', String(mobileColumns));
-                slider.setAttribute('show-controls', hideArrows ? 'false' : 'true');
-
-                try {
-                    if (typeof slider.componentOnReady === 'function') {
-                        await slider.componentOnReady();
-                    }
-                } catch (_) {}
-
-                try {
-                    if (typeof slider.update === 'function') {
-                        await slider.update();
-                    }
-                } catch (_) {}
-            };
-
-            const parseSourceValue = () => {
-                const source = String(section.dataset.velouraRelatedSource || 'related').trim();
-                const raw = String(section.dataset.velouraRelatedSourceValue || '').trim();
-
-                if (['selected', 'categories', 'brands', 'tags'].includes(source)) {
-                    try {
-                        const parsed = JSON.parse(raw);
-                        return Array.isArray(parsed) ? parsed : [parsed];
-                    } catch (_) {
-                        return raw
-                            .split(',')
-                            .map((value) => value.trim())
-                            .filter(Boolean);
-                    }
-                }
-
-                return raw;
-            };
-
-            const normalizeProducts = (response) => {
-                const candidates = [
-                    response?.data?.data,
-                    response?.data?.products,
-                    response?.data?.items,
-                    response?.data,
-                    response?.products,
-                    response?.items,
-                    response,
-                ];
-
-                for (const candidate of candidates) {
-                    if (Array.isArray(candidate)) {
-                        return candidate.filter(Boolean);
-                    }
-                }
-
-                return [];
-            };
-
-            const fetchProducts = async (payload) => {
-                if (!window.salla?.product) {
-                    throw new Error('Salla product SDK is not ready');
-                }
-
-                const attempts = [];
-
-                if (typeof salla.product.fetch === 'function') {
-                    attempts.push(() => salla.product.fetch(payload));
-                }
-
-                if (typeof salla.product.api?.fetch === 'function') {
-                    attempts.push(() => salla.product.api.fetch(payload));
-                }
-
-                if (!attempts.length) {
-                    throw new Error('Salla product fetch API is unavailable');
-                }
-
-                let lastError = null;
-
-                for (const attempt of attempts) {
-                    try {
-                        const response = await attempt();
-                        const products = normalizeProducts(response);
-                        if (products.length) return products;
-                    } catch (error) {
-                        lastError = error;
-                    }
-                }
-
-                if (lastError) throw lastError;
-                return [];
-            };
-
-            const createProductSlide = (product) => {
-                const slide = document.createElement('div');
-                slide.className = 'swiper-slide veloura-related-product-slide';
-
-                const useCustomCard =
-                    typeof window.customElements !== 'undefined' &&
-                    Boolean(customElements.get('custom-salla-product-card'));
-
-                const card = document.createElement(
-                    useCustomCard ? 'custom-salla-product-card' : 'salla-product-card'
-                );
-
-                card.classList.add('veloura-related-product-card');
-
-                const productJson = JSON.stringify(product);
-
-                /*
-                 * Salla's native product card accepts serialized product data.
-                 * Theme custom cards usually receive the product object as a
-                 * property, so set both forms before connecting the element.
-                 */
-                try {
-                    card.product = useCustomCard ? product : productJson;
-                } catch (_) {}
-
-                try {
-                    card.setAttribute('product', productJson);
-                } catch (_) {}
-
-                slide.appendChild(card);
-                return slide;
-            };
-
-            const renderFallback = () => {
-                const source = String(section.dataset.velouraRelatedSource || 'related');
-                const sourceValue = String(section.dataset.velouraRelatedSourceValue || '');
-
-                const fallback = document.createElement('salla-products-slider');
-                fallback.setAttribute('source', source);
-                fallback.setAttribute('source-value', sourceValue);
-                fallback.setAttribute('product-card-component', 'custom-salla-product-card');
-                fallback.setAttribute('data-veloura-related-native-fallback', 'true');
-
-                slider.replaceWith(fallback);
-                section.dataset.velouraRelatedState = 'native-fallback';
-            };
-
-            const loadRelated = async () => {
-                if (section.dataset.velouraRelatedLoading === 'true' ||
-                    section.dataset.velouraRelatedLoaded === 'true') {
-                    return;
-                }
-
-                section.dataset.velouraRelatedLoading = 'true';
-                await applySliderConfig();
-
-                const source = String(section.dataset.velouraRelatedSource || 'related').trim();
-                const sourceValue = parseSourceValue();
-
-                const payload = {
-                    source,
-                    source_value: sourceValue,
-                };
-
-                try {
-                    let products = await fetchProducts(payload);
-
-                    const currentProductId = String(
-                        section.dataset.velouraCurrentProductId || ''
-                    ).replace(/\D/g, '');
-
-                    if (source !== 'related' && currentProductId) {
-                        products = products.filter((product) => {
-                            const id = String(
-                                product?.id ??
-                                product?.product_id ??
-                                ''
-                            ).replace(/\D/g, '');
-
-                            return !id || id !== currentProductId;
-                        });
-                    }
-
-                    if (!products.length) {
-                        section.hidden = true;
-                        section.dataset.velouraRelatedState = 'empty';
-                        return;
-                    }
-
-                    const fragment = document.createDocumentFragment();
-                    products.forEach((product) => {
-                        fragment.appendChild(createProductSlide(product));
-                    });
-
-                    items.replaceChildren(fragment);
-
-                    section.hidden = false;
-                    section.dataset.velouraRelatedLoaded = 'true';
-                    section.dataset.velouraRelatedState = 'controlled-v99';
-                    section.dataset.velouraRelatedCount = String(products.length);
-
-                    await applySliderConfig();
-
-                    /* Salla documents update() for custom DOM modifications. */
-                    try {
-                        await slider.updateSlides?.();
-                        await slider.updateSlidesClasses?.();
-                        await slider.update?.();
-                    } catch (_) {}
-                } catch (error) {
-                    console.warn('[Veloura V99] Related products controlled slider failed; using native fallback.', error);
-                    renderFallback();
-                } finally {
-                    section.dataset.velouraRelatedLoading = 'false';
-                }
-            };
-
-            const start = () => {
-                loadRelated().catch(() => renderFallback());
-            };
-
-            if (window.salla?.onReady) {
-                salla.onReady(start);
-            } else {
-                start();
-            }
+            applyProductsSlider(relatedHost, {
+                mobile,
+                desktop,
+                hideArrows,
+                marker: 'related-v100',
+            }).catch(() => {});
         }
 
         /* ==========================================================
-         * Recently viewed — keep existing independent behavior.
+         * 2) Recently viewed
          * ========================================================== */
         const recent = settings.recent || {};
         const recentHide = Boolean(recent.hide);
         const recentCustomize = Boolean(recent.customize);
-        const recentCenterTitle = Boolean(recent.centerTitle);
         const recentMobile = clamp(recent.mobileColumns, 1, 3, 2);
         const recentDesktop = clamp(recent.desktopColumns, 1, 6, 4);
+        const recentCenterTitle = Boolean(recent.centerTitle);
 
-        const isRecent = (node) => {
-            if (!node) return false;
+        const normalizeText = (value) =>
+            String(value || '')
+                .replace(/\s+/g, ' ')
+                .trim()
+                .toLowerCase();
 
-            const haystack = `${node.id || ''} ${node.className || ''} ${
-                node.getAttribute?.('block-title') || ''
-            }`.toLowerCase();
+        const elementSignature = (element) => {
+            if (!element || element.nodeType !== 1) return '';
 
-            return /recent|recently|viewed|شاهد/.test(haystack);
+            const attrs = [
+                'id',
+                'class',
+                'block-title',
+                'sub-title',
+                'title',
+                'aria-label',
+                'data-title',
+                'data-section-title',
+                'data-testid',
+            ];
+
+            const parts = attrs.map((name) => element.getAttribute?.(name) || '');
+
+            if (element.children?.length < 20) {
+                parts.push(element.textContent || '');
+            }
+
+            return normalizeText(parts.join(' '));
         };
 
-        document.querySelectorAll('salla-products-slider,salla-products-list').forEach((recentHost) => {
-            if (!isRecent(recentHost) && !isRecent(recentHost.parentElement)) return;
+        const isRecentSignature = (value) => {
+            const text = normalizeText(value);
 
-            const recentSection =
-                recentHost.closest('section,.container,[class*="recent"],[class*="slider"]') ||
-                recentHost.parentElement;
+            return (
+                /شاهدتها\s*مؤخ/.test(text) ||
+                /شوهدت\s*مؤخ/.test(text) ||
+                /شاهدت.{0,16}مؤخ/.test(text) ||
+                /recent(?:ly)?[\s_-]*viewed/.test(text) ||
+                /recent[\s_-]*products/.test(text)
+            );
+        };
 
-            if (recentHide && recentSection) {
-                recentSection.style.setProperty('display', 'none', 'important');
-                return;
+        const findRecentWrapper = (host) => {
+            let node = host;
+
+            for (let depth = 0; node && depth < 9; depth += 1) {
+                if (isRecentSignature(elementSignature(node))) {
+                    return node;
+                }
+
+                node = node.parentElement;
             }
 
-            if (recentCenterTitle && recentSection) {
-                recentSection
-                    .querySelectorAll('h2,h3,.s-slider-block__title')
-                    .forEach((title) => {
-                        title.style.setProperty('text-align', 'center', 'important');
-                        title.style.setProperty('justify-content', 'center', 'important');
-                    });
+            return host;
+        };
+
+        const isRecentHost = (host) => {
+            if (!host || host.matches?.('[data-veloura-related-slider]')) return false;
+
+            if (isRecentSignature(elementSignature(host))) return true;
+
+            let node = host.parentElement;
+            for (let depth = 0; node && depth < 8; depth += 1) {
+                if (isRecentSignature(elementSignature(node))) return true;
+                node = node.parentElement;
             }
 
-            if (recentCustomize && recentHost.tagName === 'SALLA-PRODUCTS-SLIDER') {
-                const recentConfig = {
-                    slidesPerView: recentMobile,
-                    spaceBetween: 12,
-                    breakpoints: {
-                        768: {
-                            slidesPerView: recentDesktop,
-                            spaceBetween: 16,
-                        },
-                    },
-                };
+            return false;
+        };
 
-                try {
-                    recentHost.sliderConfig = recentConfig;
-                } catch (_) {}
+        const centerRecentTitle = (wrapper) => {
+            if (!wrapper || !recentCenterTitle) return;
 
-                recentHost.setAttribute('slider-config', JSON.stringify(recentConfig));
+            wrapper.classList?.add('veloura-recent-title-centered');
+
+            wrapper
+                .querySelectorAll?.(
+                    'h1,h2,h3,h4,.s-block__title,.s-slider-block__title,[class*="title"]'
+                )
+                .forEach((title) => {
+                    if (!isRecentSignature(elementSignature(title)) &&
+                        !isRecentSignature(title.textContent)) {
+                        return;
+                    }
+
+                    title.style.setProperty('width', '100%', 'important');
+                    title.style.setProperty('text-align', 'center', 'important');
+                    title.style.setProperty('justify-content', 'center', 'important');
+                    title.style.setProperty('margin-inline', 'auto', 'important');
+                });
+        };
+
+        const patchRecentHost = async (host) => {
+            if (!isRecentHost(host)) return false;
+
+            const wrapper = findRecentWrapper(host);
+            host.dataset.velouraRecentDetected = 'true';
+            wrapper?.classList?.add('veloura-recent-stable-section');
+
+            if (recentHide) {
+                (wrapper || host).style.setProperty('display', 'none', 'important');
+                host.dataset.velouraRecentMode = 'hidden-v100';
+                return true;
             }
+
+            (wrapper || host).style.removeProperty('display');
+            centerRecentTitle(wrapper || host);
+
+            if (recentCustomize && host.tagName === 'SALLA-PRODUCTS-SLIDER') {
+                await applyProductsSlider(host, {
+                    mobile: recentMobile,
+                    desktop: recentDesktop,
+                    hideArrows: false,
+                    marker: 'recent-v100',
+                });
+            }
+
+            host.dataset.velouraRecentMode = recentCustomize
+                ? 'custom-v100'
+                : 'native-v100';
+
+            return true;
+        };
+
+        const scanRecent = async (root = document) => {
+            const hosts = Array.from(
+                root.querySelectorAll?.('salla-products-slider,salla-products-list') || []
+            );
+
+            for (const host of hosts) {
+                await patchRecentHost(host);
+            }
+        };
+
+        scanRecent().catch(() => {});
+
+        /*
+         * Recently viewed can be injected after load. Observe the page and keep
+         * the scan scoped to actual products components.
+         */
+        if (!window.__velouraRecentProductsObserver && typeof MutationObserver === 'function') {
+            window.__velouraRecentProductsObserver = new MutationObserver((mutations) => {
+                let shouldScan = false;
+
+                for (const mutation of mutations) {
+                    for (const node of mutation.addedNodes) {
+                        if (!(node instanceof Element)) continue;
+
+                        if (
+                            node.matches?.('salla-products-slider,salla-products-list') ||
+                            node.querySelector?.('salla-products-slider,salla-products-list')
+                        ) {
+                            shouldScan = true;
+                            break;
+                        }
+                    }
+
+                    if (shouldScan) break;
+                }
+
+                if (shouldScan) {
+                    scanRecent().catch(() => {});
+                }
+            });
+
+            window.__velouraRecentProductsObserver.observe(document.body, {
+                childList: true,
+                subtree: true,
+            });
+        }
+
+        /*
+         * Salla component hooks/events catch cases where the host existed before
+         * its title/products were populated.
+         */
+        const registerHooks = () => {
+            if (window.__velouraRecentProductsHooksRegistered) return;
+
+            const api = window.Salla || window.salla;
+            if (!api?.hooks?.registerHook) return;
+
+            window.__velouraRecentProductsHooksRegistered = true;
+
+            ['salla-products-slider', 'salla-products-list'].forEach((tagName) => {
+                api.hooks.registerHook(tagName, 'componentDidLoad', () => {
+                    scanRecent().catch(() => {});
+                });
+            });
+        };
+
+        if (window.salla?.onReady) {
+            salla.onReady(registerHooks);
+        } else {
+            registerHooks();
+        }
+
+        document.addEventListener('salla-products-slider::products.fetched', () => {
+            scanRecent().catch(() => {});
+        });
+
+        /*
+         * Bounded retries only; enough for editor/late Salla hydration without
+         * leaving a permanent timer.
+         */
+        [250, 700, 1400, 2600, 4200].forEach((delay) => {
+            window.setTimeout(() => {
+                scanRecent().catch(() => {});
+            }, delay);
         });
     }
 
@@ -650,7 +725,7 @@ class Product extends BasePage {
          * synchronization. Do not alter children, hidden state, display,
          * click handlers, or component properties here.
          */
-        button.dataset.velouraPurchaseMode = 'native-v99';
+        button.dataset.velouraPurchaseMode = 'native-v100';
     }
 
     initVelouraReadMore() {

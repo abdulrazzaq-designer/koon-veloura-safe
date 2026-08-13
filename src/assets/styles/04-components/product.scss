@@ -2981,38 +2981,87 @@ body.dark .veloura-product-page #btn-show-more.veloura-product-read-more.is-expa
   flex-direction: column !important;
 }
 
-/* Controlled related-products slider. */
-.veloura-product-related-products .veloura-owned-products-slider {
+/* Related and recent products use Salla's native products-slider in V100. */
+.veloura-product-related-products salla-products-slider[data-veloura-related-slider],
+.veloura-recent-stable-section salla-products-slider,
+.veloura-recent-stable-section salla-products-list {
   display: block !important;
   width: 100% !important;
   max-width: 100% !important;
   min-width: 0 !important;
-  touch-action: pan-y !important;
 }
 
-.veloura-product-related-products .veloura-related-products-items {
-  min-width: 0 !important;
-}
-
-.veloura-product-related-products .veloura-related-product-slide {
-  height: auto !important;
-  min-width: 0 !important;
-  box-sizing: border-box !important;
-}
-
-.veloura-product-related-products .veloura-related-product-slide
-:is(custom-salla-product-card, salla-product-card) {
-  display: block !important;
+.veloura-product-related-products.is-title-centered .veloura-product-related-heading,
+.veloura-product-related-products.is-title-centered .veloura-product-related-title,
+.veloura-recent-stable-section.veloura-recent-title-centered
+:is(h1,h2,h3,h4,.s-block__title,.s-slider-block__title) {
   width: 100% !important;
-  min-width: 0 !important;
-  height: 100% !important;
+  text-align: center !important;
+  justify-content: center !important;
+  margin-inline: auto !important;
+}
+
+
+/* ========================================================================
+   Veloura Product Data V100
+   Native Salla related products + late-safe recently viewed controls
+   ======================================================================== */
+
+.veloura-product-related-products {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.veloura-product-related-products .veloura-product-related-heading {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
 }
 
 .veloura-product-related-products.is-title-centered .veloura-product-related-heading,
 .veloura-product-related-products.is-title-centered .veloura-product-related-title {
-  display: flex !important;
-  width: 100% !important;
   justify-content: center !important;
   text-align: center !important;
   margin-inline: auto !important;
+}
+
+/* Light-DOM control fallback while product.js also configures the inner salla-slider. */
+.veloura-product-related-products.is-arrows-hidden
+:is(
+  .s-slider-next,
+  .s-slider-prev,
+  .swiper-button-next,
+  .swiper-button-prev,
+  [part~="next"],
+  [part~="prev"]
+) {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.veloura-recent-stable-section.veloura-recent-title-centered
+:is(
+  h1,
+  h2,
+  h3,
+  h4,
+  .s-block__title,
+  .s-slider-block__title
+) {
+  width: 100% !important;
+  text-align: center !important;
+  justify-content: center !important;
+  margin-inline: auto !important;
+}
+
+/* Do not modify card widths manually; Swiper receives the exact column counts. */
+.veloura-product-related-products
+salla-products-slider[data-veloura-related-slider],
+.veloura-recent-stable-section
+:is(salla-products-slider,salla-products-list) {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
 }

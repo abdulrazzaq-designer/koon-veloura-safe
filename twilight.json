@@ -8029,211 +8029,6 @@
       ]
     },
     {
-      "id": "veloura_related_mobile_columns",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
-      "label": "عدد المنتجات في الجوال",
-      "description": null,
-      "labelHTML": null,
-      "icon": "sicon-pin",
-      "value": "2",
-      "required": false,
-      "step": "1",
-      "minimum": "1",
-      "maximum": "3",
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_related_desktop_columns",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
-      "label": "عدد المنتجات في الكمبيوتر",
-      "description": null,
-      "labelHTML": null,
-      "icon": "sicon-pin",
-      "value": "4",
-      "required": false,
-      "step": "1",
-      "minimum": "1",
-      "maximum": "6",
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_related_hide_arrows_2026",
-      "type": "boolean",
-      "format": "switch",
-      "label": "إخفاء أسهم التنقل في منتجات قد تعجبك",
-      "description": "يخفي سهمي السابق والتالي مع بقاء السحب باللمس أو الماوس.",
-      "value": false,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_related_center_title_2026",
-      "type": "boolean",
-      "format": "switch",
-      "label": "توسيط عنوان منتجات قد تعجبك",
-      "description": "يوسّط عنوان القسم دون تغيير محاذاة بطاقات المنتجات.",
-      "value": false,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_recently_viewed_hide_2026",
-      "type": "boolean",
-      "format": "switch",
-      "icon": "sicon-toggle-off",
-      "label": "إخفاء قسم شاهدتها مؤخرًا",
-      "description": "يخفي عنوان وبطاقات قسم شاهدتها مؤخرًا من صفحة المنتج.",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_recently_viewed_customize_2026",
-      "type": "boolean",
-      "format": "switch",
-      "icon": "sicon-settings",
-      "label": "تخصيص قسم شاهدتها مؤخرًا",
-      "description": "عند التفعيل تظهر خيارات عدد الأعمدة في الجوال والكمبيوتر وتوسيط عنوان القسم.",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_recently_viewed_hide_2026",
-          "operation": "=",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": "veloura_recently_viewed_mobile_columns_2026",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
-      "label": "عدد منتجات شاهدتها مؤخرًا في الجوال",
-      "description": "يظهر ويعمل عند تفعيل تخصيص قسم شاهدتها مؤخرًا.",
-      "icon": "sicon-pin",
-      "value": "2",
-      "required": false,
-      "step": "1",
-      "minimum": "1",
-      "maximum": "3",
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_recently_viewed_hide_2026",
-          "operation": "=",
-          "value": false
-        },
-        {
-          "id": "veloura_recently_viewed_customize_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_recently_viewed_desktop_columns_2026",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
-      "label": "عدد منتجات شاهدتها مؤخرًا في الكمبيوتر",
-      "description": "يظهر ويعمل عند تفعيل تخصيص قسم شاهدتها مؤخرًا.",
-      "icon": "sicon-pin",
-      "value": "4",
-      "required": false,
-      "step": "1",
-      "minimum": "1",
-      "maximum": "6",
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_recently_viewed_hide_2026",
-          "operation": "=",
-          "value": false
-        },
-        {
-          "id": "veloura_recently_viewed_customize_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_recently_viewed_center_title_2026",
-      "type": "boolean",
-      "format": "switch",
-      "icon": "sicon-align-center",
-      "label": "توسيط عنوان شاهدتها مؤخرًا",
-      "description": "يظهر ويعمل عند تفعيل تخصيص قسم شاهدتها مؤخرًا.",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_recently_viewed_hide_2026",
-          "operation": "=",
-          "value": false
-        },
-        {
-          "id": "veloura_recently_viewed_customize_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "id": "veloura_product_custom_related_source_2026",
       "type": "items",
       "format": "dropdown-list",
@@ -8353,6 +8148,231 @@
       "selected": [],
       "options": [],
       "maxLength": 10
+    },
+    {
+      "id": "veloura_related_mobile_columns",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
+      "label": "عدد المنتجات في الجوال",
+      "description": null,
+      "labelHTML": null,
+      "icon": "sicon-pin",
+      "value": "2",
+      "required": false,
+      "step": "1",
+      "minimum": "1",
+      "maximum": "3",
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_hide_liked_products_2026",
+          "operation": "=",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "veloura_related_desktop_columns",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
+      "label": "عدد المنتجات في الكمبيوتر",
+      "description": null,
+      "labelHTML": null,
+      "icon": "sicon-pin",
+      "value": "4",
+      "required": false,
+      "step": "1",
+      "minimum": "1",
+      "maximum": "6",
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_hide_liked_products_2026",
+          "operation": "=",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "veloura_related_hide_arrows_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إخفاء أسهم التنقل في منتجات قد تعجبك",
+      "description": "يخفي سهمي السابق والتالي مع بقاء السحب باللمس أو الماوس.",
+      "value": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_hide_liked_products_2026",
+          "operation": "=",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "veloura_related_center_title_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "توسيط عنوان منتجات قد تعجبك",
+      "description": "يوسّط عنوان القسم دون تغيير محاذاة بطاقات المنتجات.",
+      "value": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_hide_liked_products_2026",
+          "operation": "=",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "veloura_recently_viewed_hide_2026",
+      "type": "boolean",
+      "format": "switch",
+      "icon": "sicon-toggle-off",
+      "label": "إخفاء قسم شاهدتها مؤخرًا",
+      "description": "يخفي قسم «شاهدتها مؤخرًا» كاملًا من صفحة المنتج.",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_recently_viewed_customize_2026",
+      "type": "boolean",
+      "format": "switch",
+      "icon": "sicon-settings",
+      "label": "تخصيص قسم شاهدتها مؤخرًا",
+      "description": "عند التفعيل تعمل إعدادات عدد الأعمدة وتوسيط عنوان قسم «شاهدتها مؤخرًا» في الجوال والكمبيوتر.",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_recently_viewed_hide_2026",
+          "operation": "=",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "veloura_recently_viewed_mobile_columns_2026",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
+      "label": "عدد منتجات شاهدتها مؤخرًا في الجوال",
+      "description": "يظهر ويعمل عند تفعيل تخصيص قسم شاهدتها مؤخرًا.",
+      "icon": "sicon-pin",
+      "value": "2",
+      "required": false,
+      "step": "1",
+      "minimum": "1",
+      "maximum": "3",
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_recently_viewed_hide_2026",
+          "operation": "=",
+          "value": false
+        },
+        {
+          "id": "veloura_recently_viewed_customize_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_recently_viewed_desktop_columns_2026",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
+      "label": "عدد منتجات شاهدتها مؤخرًا في الكمبيوتر",
+      "description": "يظهر ويعمل عند تفعيل تخصيص قسم شاهدتها مؤخرًا.",
+      "icon": "sicon-pin",
+      "value": "4",
+      "required": false,
+      "step": "1",
+      "minimum": "1",
+      "maximum": "6",
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_recently_viewed_hide_2026",
+          "operation": "=",
+          "value": false
+        },
+        {
+          "id": "veloura_recently_viewed_customize_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_recently_viewed_center_title_2026",
+      "type": "boolean",
+      "format": "switch",
+      "icon": "sicon-align-center",
+      "label": "توسيط عنوان شاهدتها مؤخرًا",
+      "description": "يظهر ويعمل عند تفعيل تخصيص قسم شاهدتها مؤخرًا.",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_recently_viewed_hide_2026",
+          "operation": "=",
+          "value": false
+        },
+        {
+          "id": "veloura_recently_viewed_customize_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
     },
     {
       "type": "static",

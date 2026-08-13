@@ -48713,70 +48713,7 @@ html.veloura-dark .veloura-product-page {
 .veloura-product-page.veloura-product-mobile-sticky-enabled .veloura-product-cart-price-row {
   display: flex !important;
 }
-/* ---------- Add to cart + Buy now: equal columns and equal height ---------- */
-.veloura-product-page salla-add-product-button.sticky-product-bar__btn {
-  display: block !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-.veloura-product-page .sticky-product-bar__btn .s-add-product-button-main,
-.veloura-product-page salla-add-product-button.sticky-product-bar__btn .s-add-product-button-main {
-  width: 100% !important;
-  min-width: 0 !important;
-  display: flex !important;
-  flex-flow: row nowrap !important;
-  align-items: stretch !important;
-  gap: 12px !important;
-  direction: rtl !important;
-}
-.veloura-product-page .sticky-product-bar__btn .s-add-product-button-main > *,
-.veloura-product-page salla-add-product-button.sticky-product-bar__btn .s-add-product-button-main > *,
-.veloura-product-page .sticky-product-bar__btn .s-add-product-button-main > salla-button,
-.veloura-product-page .sticky-product-bar__btn .s-add-product-button-main > salla-mini-checkout-widget {
-  flex: 1 1 0 !important;
-  width: 0 !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  justify-self: stretch !important;
-  align-self: stretch !important;
-  margin: 0 !important;
-}
-.veloura-product-page .sticky-product-bar__btn .s-add-product-button-main salla-button,
-.veloura-product-page .sticky-product-bar__btn .s-add-product-button-main .s-button-wrap,
-.veloura-product-page .sticky-product-bar__btn .s-add-product-button-main .s-button-element,
-.veloura-product-page .sticky-product-bar__btn .s-add-product-button-main .s-button-btn,
-.veloura-product-page .sticky-product-bar__btn .s-add-product-button-main button,
-.veloura-product-page .sticky-product-bar__btn .s-add-product-button-main a {
-  width: 100% !important;
-  min-width: 0 !important;
-  height: 46px !important;
-  min-height: 46px !important;
-  max-height: 46px !important;
-  margin: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  line-height: 1 !important;
-  border-radius: 28px !important;
-  border-radius: var(--veloura-product-radius-final, 28px) !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
-}
-.veloura-product-page salla-mini-checkout-widget,
-.veloura-product-page .s-add-product-button-mini-checkout {
-  --salla-fast-checkout-button-height: 46px !important;
-  --salla-fast-checkout-button-width: 100% !important;
-  --salla-fast-checkout-button-border-radius: var(--veloura-product-radius-final, 28px) !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  height: 46px !important;
-  min-height: 46px !important;
-  max-height: 46px !important;
-}
+/* ---------- Add to cart / Buy now: Salla native component owns its internals (V99) ---------- */
 /* ---------- Payment methods remain the final details block ---------- */
 .veloura-product-page .main-content {
   display: flex !important;
@@ -48793,10 +48730,6 @@ html.veloura-dark .veloura-product-page {
   }
   .veloura-product-page .veloura-product-header-price .total-price {
     font-size: 19px !important;
-  }
-  .veloura-product-page .sticky-product-bar__btn .s-add-product-button-main,
-  .veloura-product-page salla-add-product-button.sticky-product-bar__btn .s-add-product-button-main {
-    gap: 10px !important;
   }
   body.veloura-product-sticky-active {
     padding-bottom: 225px !important;
@@ -49703,11 +49636,11 @@ body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-
   min-width: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
-  border-radius: 28px !important;
-  border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
-  overflow: hidden !important;
-  --salla-button-border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
-  --salla-fast-checkout-button-border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
+  overflow: visible !important;
+}
+.veloura-product-page salla-add-product-button.sticky-product-bar__btn {
+  --salla-fast-checkout-button-width: 100%;
+  --salla-fast-checkout-button-border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px));
 }
 body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image::before,
 body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image::after {
@@ -49719,7 +49652,7 @@ body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image im
 body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image img[src="#"] {
   display: none !important;
 }
-.veloura-product-related-products salla-products-slider,
+.veloura-product-related-products salla-slider.veloura-owned-products-slider,
 .veloura-recent-stable-section salla-products-slider,
 .veloura-recent-stable-section salla-products-list {
   display: block !important;
@@ -49757,7 +49690,7 @@ body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image im
   margin-top: 0 !important;
   margin-bottom: 18px !important;
 }
-.veloura-product-related-products salla-products-slider,
+.veloura-product-related-products salla-slider.veloura-owned-products-slider,
 .veloura-recent-stable-section salla-products-slider,
 .veloura-recent-stable-section salla-products-list,
 .veloura-product-related-products salla-slider,
@@ -49767,21 +49700,16 @@ body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image im
   margin-top: 0 !important;
   touch-action: pan-y !important;
 }
-.veloura-product-related-products salla-products-slider,
+.veloura-product-related-products salla-slider.veloura-owned-products-slider,
 .veloura-recent-stable-section salla-products-slider,
 .veloura-recent-stable-section salla-products-list,
 .veloura-product-related-products salla-slider,
 .veloura-recent-stable-section salla-slider {
   overscroll-behavior-inline: contain;
 }
-.veloura-product-page salla-add-product-button.sticky-product-bar__btn,
-.veloura-product-page salla-add-product-button.sticky-product-bar__btn::part(button) {
+.veloura-product-page salla-add-product-button.sticky-product-bar__btn {
   width: 100% !important;
   min-width: 0 !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  border-radius: 28px !important;
-  border-radius: var(--veloura-product-radius-final, var(--veloura-product-radius, 28px)) !important;
 }
 /* ========================================================================
    Veloura V79 — native product-card cart interaction guard
@@ -50027,8 +49955,7 @@ body.dark .veloura-product-page #btn-show-more.veloura-product-read-more.is-expa
   min-width: 0 !important;
   overflow: visible !important;
 }
-/* Related heading/arrows light-DOM fallback. The actual column count is
-   delivered through the component's sliderConfig property in product.js. */
+/* Related heading/arrows for the V99 owned salla-slider. */
 .veloura-product-related-products.is-title-centered .veloura-product-related-heading,
 .veloura-product-related-products.is-title-centered .veloura-product-related-title {
   width: 100% !important;
@@ -50046,6 +49973,65 @@ body.dark .veloura-product-page #btn-show-more.veloura-product-read-more.is-expa
   display: none !important;
   visibility: hidden !important;
   pointer-events: none !important;
+}
+/* ========================================================================
+   Veloura Product Data V99
+   Native purchase lifecycle + controlled related-products slider
+   ======================================================================== */
+/*
+ * Never style Salla add-product internals.
+ * The native component controls Add to cart, Quick Buy / Buy now,
+ * option validation and Fast Checkout visibility.
+ */
+.veloura-product-page salla-add-product-button.sticky-product-bar__btn {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+.veloura-product-page salla-add-product-button.sticky-product-bar__btn {
+  /* Salla officially allows Fast Checkout width / radius customization. */
+  --salla-fast-checkout-button-width: 100%;
+  --salla-fast-checkout-button-border-radius:
+    var(--veloura-product-radius-final, var(--veloura-product-radius, 28px));
+}
+/* CSS ordering is safe because the product form is never detached. */
+.veloura-product-page .main-content {
+  display: flex !important;
+  flex-direction: column !important;
+}
+/* Controlled related-products slider. */
+.veloura-product-related-products .veloura-owned-products-slider {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  touch-action: pan-y !important;
+}
+.veloura-product-related-products .veloura-related-products-items {
+  min-width: 0 !important;
+}
+.veloura-product-related-products .veloura-related-product-slide {
+  height: auto !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+.veloura-product-related-products .veloura-related-product-slide custom-salla-product-card, .veloura-product-related-products .veloura-related-product-slide salla-product-card {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 100% !important;
+}
+.veloura-product-related-products.is-title-centered .veloura-product-related-heading,
+.veloura-product-related-products.is-title-centered .veloura-product-related-title {
+  display: flex !important;
+  width: 100% !important;
+  justify-content: center !important;
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 .brands-nav{
     display: flex;
