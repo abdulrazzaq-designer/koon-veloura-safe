@@ -6122,7 +6122,7 @@
       "id": "veloura_quick_view_modal_bg_color_2026",
       "type": "string",
       "format": "color",
-      "label": "لون خلفية نافذة العرض السريع",
+      "label": "لون خلفية نافذة العرض السريع في الوضع الفاتح",
       "value": "#ffffff",
       "conditions": [
         {
@@ -6135,26 +6135,8 @@
           "operation": "=",
           "value": true
         }
-      ]
-    },
-    {
-      "id": "veloura_quick_view_modal_text_color_2026",
-      "type": "string",
-      "format": "color",
-      "label": "لون نص نافذة العرض السريع",
-      "value": "#111827",
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
+      ],
+      "description": "في الوضع الداكن تستخدم النافذة اللون الثانوي الداكن تلقائيًا. وعند تفعيل الزجاج تصبح نفس الألوان شفافة وبلورية."
     },
     {
       "type": "boolean",
@@ -6634,12 +6616,10 @@
       "type": "items",
       "format": "dropdown-list",
       "label": "أيقونة زر أضف للسلة",
-      "description": "اختر أيقونة زر أضف للسلة من الأشكال المحددة.",
+      "description": "اختر أيقونة زر أضف للسلة. يعمل بنفس أسلوب اختيار أيقونات الهيدر والعرض السريع.",
       "icon": "sicon-shopping-bag",
       "source": "Manual",
       "required": true,
-      "value": "sicon-shopping-bag",
-      "default": "sicon-shopping-bag",
       "selected": [
         {
           "label": "حقيبة تسوق",

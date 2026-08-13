@@ -3199,6 +3199,170 @@ document.addEventListener('DOMContentLoaded', () => {
         .veloura-qv-full__qty{width:144px!important;grid-template-columns:38px 68px 38px!important}
       }
 
+
+      /* ============================================================
+         V104 — final Quick View material + automatic Light/Dark text
+         ============================================================ */
+
+      html body .veloura-qv-full .veloura-qv-full__dialog {
+        background:
+          var(--veloura-quick-view-modal-bg, #ffffff) !important;
+        background-color:
+          var(--veloura-quick-view-modal-bg, #ffffff) !important;
+        background-image: none !important;
+        color: var(--color-text, #111827) !important;
+      }
+
+      html body .veloura-qv-full
+      :is(
+        .veloura-qv-full__media,
+        .veloura-qv-full__content
+      ) {
+        background: transparent !important;
+        background-color: transparent !important;
+        background-image: none !important;
+      }
+
+      html body .veloura-qv-full .veloura-qv-full__dialog
+      :is(
+        .veloura-qv-full__title,
+        .veloura-qv-full__desc,
+        .veloura-qv-full__label,
+        .veloura-qv-full__loading,
+        .veloura-qv-full__read-more
+      ) {
+        color: inherit !important;
+        -webkit-text-fill-color: currentColor !important;
+      }
+
+      html body.veloura-quick-view-overlay-blur
+      .veloura-qv-full
+      .veloura-qv-full__dialog {
+        background:
+          var(--veloura-quick-view-modal-bg, #ffffff) !important;
+        background-color:
+          var(--veloura-quick-view-modal-bg, #ffffff) !important;
+        border-top:
+          1px solid var(--veloura-v86-edge-top, rgba(100,116,139,.11)) !important;
+        border-bottom:
+          1px solid var(--veloura-v86-edge-bottom, rgba(100,116,139,.05)) !important;
+        border-inline: 0 !important;
+        -webkit-backdrop-filter:
+          blur(24px) saturate(200%) !important;
+        backdrop-filter:
+          blur(24px) saturate(200%) !important;
+      }
+
+      @supports (
+        background:
+          color-mix(in srgb, white 60%, transparent)
+      ) {
+        html body.veloura-quick-view-overlay-blur
+        .veloura-qv-full
+        .veloura-qv-full__dialog {
+          background:
+            color-mix(
+              in srgb,
+              var(--veloura-quick-view-modal-bg, #ffffff) 62%,
+              transparent
+            ) !important;
+          background-color:
+            color-mix(
+              in srgb,
+              var(--veloura-quick-view-modal-bg, #ffffff) 62%,
+              transparent
+            ) !important;
+        }
+      }
+
+      html.dark body
+      .veloura-qv-full
+      .veloura-qv-full__dialog,
+      html body.dark
+      .veloura-qv-full
+      .veloura-qv-full__dialog {
+        background:
+          var(--veloura-dark-secondary-bg, #010612) !important;
+        background-color:
+          var(--veloura-dark-secondary-bg, #010612) !important;
+        background-image: none !important;
+        color:
+          var(--veloura-dark-primary-text, #ffffff) !important;
+      }
+
+      html.dark body.veloura-quick-view-overlay-blur
+      .veloura-qv-full
+      .veloura-qv-full__dialog,
+      html body.dark.veloura-quick-view-overlay-blur
+      .veloura-qv-full
+      .veloura-qv-full__dialog {
+        background:
+          var(--veloura-dark-secondary-bg, #010612) !important;
+        background-color:
+          var(--veloura-dark-secondary-bg, #010612) !important;
+        color:
+          var(--veloura-dark-primary-text, #ffffff) !important;
+        border-top:
+          1px solid var(--veloura-v86-edge-top, rgba(255,255,255,.12)) !important;
+        border-bottom:
+          1px solid var(--veloura-v86-edge-bottom, rgba(255,255,255,.055)) !important;
+        border-inline: 0 !important;
+        -webkit-backdrop-filter:
+          blur(24px) saturate(200%) !important;
+        backdrop-filter:
+          blur(24px) saturate(200%) !important;
+      }
+
+      @supports (
+        background:
+          color-mix(in srgb, black 60%, transparent)
+      ) {
+        html.dark body.veloura-quick-view-overlay-blur
+        .veloura-qv-full
+        .veloura-qv-full__dialog,
+        html body.dark.veloura-quick-view-overlay-blur
+        .veloura-qv-full
+        .veloura-qv-full__dialog {
+          background:
+            color-mix(
+              in srgb,
+              var(--veloura-dark-secondary-bg, #010612) 62%,
+              transparent
+            ) !important;
+          background-color:
+            color-mix(
+              in srgb,
+              var(--veloura-dark-secondary-bg, #010612) 62%,
+              transparent
+            ) !important;
+        }
+      }
+
+      html body .veloura-qv-full .veloura-qv-full__close {
+        color: var(--color-text, #111827) !important;
+        background: rgba(255,255,255,.90) !important;
+      }
+
+      html.dark body .veloura-qv-full .veloura-qv-full__close,
+      html body.dark .veloura-qv-full .veloura-qv-full__close {
+        color:
+          var(--veloura-dark-primary-text, #ffffff) !important;
+        background:
+          color-mix(
+            in srgb,
+            var(--veloura-dark-secondary-bg, #010612) 84%,
+            white 8%
+          ) !important;
+      }
+
+      html body .veloura-qv-full .veloura-qv-full__overlay {
+        background: rgba(15,23,42,.32) !important;
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+        filter: none !important;
+      }
+
+
       /* V12: تكبير صورة الجوال وإخفاء سكرول الوصف */
       @media(max-width:767px){
         .veloura-qv-full__media{
