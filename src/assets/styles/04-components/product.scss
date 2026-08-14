@@ -2557,7 +2557,7 @@ body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-
     var(--veloura-product-button-margin-x, 0px)
   ) !important;
   margin-top: 10px !important;
-  margin-bottom: var(--veloura-product-button-margin-bottom, 0px) !important;
+  margin-bottom: 0 !important;
   padding: 0 !important;
 }
 
@@ -3068,32 +3068,55 @@ salla-products-slider[data-veloura-related-slider],
 
 
 /* ==========================================================================
-   Veloura Product Card V110
+   Veloura Product Card V111
    بطاقة المنتج الخارجية + زر العرض السريع
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   Add-to-cart icon
+   Add-to-cart — native Salla interaction + configurable native icon
    -------------------------------------------------------------------------- */
+
+body.veloura-product-card-enabled
+.s-product-card-entry
+.s-product-card-content-footer {
+  position: relative !important;
+  z-index: 40 !important;
+  isolation: isolate !important;
+  pointer-events: auto !important;
+}
+
+body.veloura-product-card-enabled
+.s-product-card-entry
+.s-product-card-content-footer
+> salla-add-product-button.veloura-card-add-button {
+  position: relative !important;
+  z-index: 41 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  touch-action: manipulation !important;
+}
+
 body.veloura-product-card-enabled
 .s-product-card-entry
 salla-add-product-button.veloura-card-add-button
-.veloura-card-cart-icon {
-  display: inline-block !important;
+i.text-base[class*="sicon-"] {
+  /*
+   * The icon is visual only. A tap on the glyph must land on Salla's
+   * native button/host instead of becoming a separate hit target.
+   */
+  pointer-events: none !important;
 }
 
 body.veloura-product-card-enabled.veloura-pc-hide-cart-icon
 .s-product-card-entry
 salla-add-product-button.veloura-card-add-button
-:is(
-  .veloura-card-cart-icon,
-  i.text-base[class*="sicon-"]
-) {
+i.text-base[class*="sicon-"] {
   display: none !important;
 }
 
 /* --------------------------------------------------------------------------
    Under-cart Quick View
+
    Geometry (width / left / vertical gap) is written by the existing runtime.
    CSS here controls only stable presentation.
    -------------------------------------------------------------------------- */
@@ -3123,6 +3146,9 @@ body.veloura-product-card-enabled
   box-sizing: border-box !important;
 
   transform: none !important;
+
+  z-index: 10 !important;
+  pointer-events: none !important;
 }
 
 body.veloura-product-card-enabled
@@ -3163,6 +3189,8 @@ body.veloura-product-card-enabled
     var(--veloura-quick-view-button-radius, 999px) !important;
 
   box-shadow: none !important;
+
+  pointer-events: auto !important;
 }
 
 body.veloura-product-card-enabled
@@ -3190,6 +3218,50 @@ html.dark body.veloura-product-card-enabled,
 html body.dark.veloura-product-card-enabled {
   --veloura-product-card-bg:
     var(--veloura-dark-product-card-bg, #111111) !important;
+}
+
+
+/*
+ * Existing Dark Mode setting:
+ * --veloura-dark-product-card-text
+ * now actually owns the normal card text contrast.
+ * Explicit semantic colors (sale/old price, promo badge, Add-to-cart button)
+ * remain independent.
+ */
+html.dark body.veloura-product-card-enabled
+.s-product-card-entry,
+html body.dark.veloura-product-card-enabled
+.s-product-card-entry,
+html.dark body.veloura-product-card-enabled
+.s-product-card-entry .s-product-card-content,
+html body.dark.veloura-product-card-enabled
+.s-product-card-entry .s-product-card-content {
+  color:
+    var(--veloura-dark-product-card-text, #ffffff) !important;
+}
+
+html.dark body.veloura-product-card-enabled
+.s-product-card-entry
+:is(
+  .s-product-card-content-title,
+  .s-product-card-content-title a,
+  .s-product-card-content-title span,
+  .s-product-card-content-subtitle,
+  .s-product-card-content-subtitle a,
+  .s-product-card-content-subtitle span
+),
+html body.dark.veloura-product-card-enabled
+.s-product-card-entry
+:is(
+  .s-product-card-content-title,
+  .s-product-card-content-title a,
+  .s-product-card-content-title span,
+  .s-product-card-content-subtitle,
+  .s-product-card-content-subtitle a,
+  .s-product-card-content-subtitle span
+) {
+  color:
+    var(--veloura-dark-product-card-text, #ffffff) !important;
 }
 
 html.dark body.veloura-product-card-enabled

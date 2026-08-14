@@ -662,10 +662,6 @@
       {% set vpc_button_margin_x = vpc_button_margin_x.value %}
     {% endif %}
 
-    {% set vpc_button_margin_bottom = theme.settings.get('veloura_product_card_button_margin_bottom_2026', '0') %}
-    {% if vpc_button_margin_bottom.value is defined %}
-      {% set vpc_button_margin_bottom = vpc_button_margin_bottom.value %}
-    {% endif %}
 
     {# القيمة الفعلية = 32 + قيمة السلايدر #}
     {% set vpc_button_height_raw = theme.settings.get('veloura_product_card_button_height_2026', '10') %}
@@ -846,6 +842,11 @@
 {% set vqv_modal_bg_color = theme.settings.get('veloura_quick_view_modal_bg_color_2026', '#ffffff') %}
 {% if vqv_modal_bg_color.value is defined %}
   {% set vqv_modal_bg_color = vqv_modal_bg_color.value %}
+{% endif %}
+
+{% set vqv_modal_text_color = theme.settings.get('veloura_quick_view_modal_text_color_2026', '#111827') %}
+{% if vqv_modal_text_color.value is defined %}
+  {% set vqv_modal_text_color = vqv_modal_text_color.value %}
 {% endif %}
 
 
@@ -1096,7 +1097,6 @@
 
           --veloura-product-button-radius: {{ vpc_radius_map[vpc_button_radius_key]|default('16px') }};
           --veloura-product-button-margin-x: {{ vpc_button_margin_x }}px;
-          --veloura-product-button-margin-bottom: {{ vpc_button_margin_bottom }}px;
           --veloura-qv-under-cart-gap: {{ vqv_under_cart_gap }}px;
           --veloura-qv-under-cart-margin-x: {{ vqv_under_cart_margin_x }}px;
           --veloura-qv-under-cart-margin-bottom: {{ vqv_under_cart_margin_bottom }}px;
@@ -1119,6 +1119,7 @@
             --veloura-quick-view-button-height: {{ vqv_button_height }}px;
 
             --veloura-quick-view-modal-bg: {{ vqv_modal_bg_color }};
+            --veloura-quick-view-modal-text-light: {{ vqv_modal_text_color }};
             --veloura-quick-view-modal-radius: {{ vpc_radius_map[vqv_modal_radius_key]|default('28px') }};
             --veloura-quick-view-image-fit: {{ vqv_image_fit }};
           {% endif %}
@@ -1421,7 +1422,7 @@
           width: calc(100% - (var(--veloura-product-button-margin-x, 10px) * 2)) !important;
           max-width: calc(100% - (var(--veloura-product-button-margin-x, 10px) * 2)) !important;
           margin-inline: auto !important;
-          margin-bottom: var(--veloura-product-button-margin-bottom, 10px) !important;
+          margin-bottom: 0 !important;
           box-sizing: border-box !important;
         }
 
@@ -1441,7 +1442,7 @@
           max-width: calc(100% - (var(--veloura-product-button-margin-x, 10px) * 2)) !important;
           min-width: 0 !important;
           margin-inline: auto !important;
-          margin-bottom: var(--veloura-product-button-margin-bottom, 10px) !important;
+          margin-bottom: 0 !important;
           box-sizing: border-box !important;
         }
 
@@ -3188,7 +3189,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
    يضيف كلاسات فقط، لا ينقل المفضلة ولا العرض السريع
 */
 (function () {
-  window.__velouraProductCardNativeActionsVersion = 'V110';
+  window.__velouraProductCardNativeActionsVersion = 'V111';
 
   function markCleanParents(el) {
     if (!el) return;
@@ -3231,10 +3232,16 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     host.classList.add('veloura-card-add-button');
 
     var footer = host.closest('.s-product-card-content-footer');
-    host.classList.toggle('veloura-card-add-button--standalone', !footer);
+    host.classList.toggle(
+      'veloura-card-add-button--standalone',
+      !footer
+    );
 
     var config = window.velouraProductCardControls || {};
-    var hideIcon = config.hideCartIcon === true || config.hideCartIcon === 'true';
+    var hideIcon =
+      config.hideCartIcon === true ||
+      config.hideCartIcon === 'true';
+
     var iconClass = String(
       (document.body && document.body.dataset.velouraCardCartIcon) ||
       config.cartIcon ||
@@ -3254,13 +3261,11 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     }
 
     function findNativeCartIcon() {
-      var icons = Array.from(
+      return Array.from(
         host.querySelectorAll(
           'i.text-base[class*="sicon-"]:not(.veloura-card-cart-icon)'
         )
-      );
-
-      return icons.find(function (icon) {
+      ).find(function (icon) {
         return !/spinner|loader|loading|check|cancel|close|times/i.test(
           String(icon.className || '')
         );
@@ -3268,57 +3273,72 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     }
 
     function syncIcon() {
-      var nativeIcon = findNativeCartIcon();
-      var customIcon = host.querySelector('i.veloura-card-cart-icon');
+      /*
+       * V111:
+       * Keep Salla's native add-product DOM untouched.
+       * Remove stale cloned icons from older builds, then modify only
+       * the glyph class on Salla's existing Light-DOM icon.
+       */
+      host
+        .querySelectorAll('i.veloura-card-cart-icon')
+        .forEach(function (staleIcon) {
+          staleIcon.remove();
+        });
 
-      if (!nativeIcon) {
-        if (customIcon) customIcon.remove();
-        return;
-      }
+      var nativeIcon = findNativeCartIcon();
+
+      if (!nativeIcon) return;
 
       if (hideIcon) {
-        nativeIcon.style.setProperty('display', 'none', 'important');
+        nativeIcon.style.setProperty(
+          'display',
+          'none',
+          'important'
+        );
         nativeIcon.setAttribute('aria-hidden', 'true');
-
-        if (customIcon) customIcon.remove();
-
         host.dataset.velouraCartIcon = 'hidden';
         return;
       }
 
-      nativeIcon.style.setProperty('display', 'none', 'important');
-      nativeIcon.setAttribute('aria-hidden', 'true');
+      nativeIcon.style.removeProperty('display');
+      nativeIcon.removeAttribute('aria-hidden');
 
-      if (!customIcon) {
-        customIcon = nativeIcon.cloneNode(false);
-        customIcon.classList.add('veloura-card-cart-icon');
-        customIcon.removeAttribute('style');
-        customIcon.setAttribute('aria-hidden', 'true');
-        nativeIcon.parentNode.insertBefore(customIcon, nativeIcon);
-      }
-
-      allowed.forEach(function (name) {
-        if (name !== iconClass) customIcon.classList.remove(name);
+      var current = allowed.find(function (name) {
+        return nativeIcon.classList.contains(name);
       });
 
-      if (!customIcon.classList.contains(iconClass)) {
-        customIcon.classList.add(iconClass);
+      if (current !== iconClass) {
+        allowed.forEach(function (name) {
+          nativeIcon.classList.remove(name);
+        });
+
+        nativeIcon.classList.add(iconClass);
       }
 
-      customIcon.style.removeProperty('display');
-      customIcon.dataset.velouraCartIcon = iconClass;
+      nativeIcon.dataset.velouraCartIcon = iconClass;
       host.dataset.velouraCartIcon = iconClass;
     }
 
     syncIcon();
 
-    if (!host.__velouraCartLightObserver && window.MutationObserver) {
-      host.__velouraCartLightObserver = new MutationObserver(syncIcon);
+    /*
+     * Salla can replace the icon node after component hydration/cart state
+     * updates. Observe only child replacement inside this native host.
+     */
+    if (
+      !host.__velouraCartLightObserver &&
+      window.MutationObserver
+    ) {
+      host.__velouraCartLightObserver =
+        new MutationObserver(syncIcon);
 
-      host.__velouraCartLightObserver.observe(host, {
-        childList: true,
-        subtree: true
-      });
+      host.__velouraCartLightObserver.observe(
+        host,
+        {
+          childList: true,
+          subtree: true
+        }
+      );
     }
 
     if (

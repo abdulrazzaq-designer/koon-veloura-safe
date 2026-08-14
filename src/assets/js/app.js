@@ -3210,7 +3210,7 @@ document.addEventListener('DOMContentLoaded', () => {
         background-color:
           var(--veloura-quick-view-modal-bg, #ffffff) !important;
         background-image: none !important;
-        color: var(--color-text, #111827) !important;
+        color: var(--veloura-quick-view-modal-text-light, var(--color-text, #111827)) !important;
       }
 
       html body .veloura-qv-full
@@ -3339,7 +3339,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       html body .veloura-qv-full .veloura-qv-full__close {
-        color: var(--color-text, #111827) !important;
+        color: var(--veloura-quick-view-modal-text-light, var(--color-text, #111827)) !important;
         background: rgba(255,255,255,.90) !important;
       }
 
@@ -3360,6 +3360,57 @@ document.addEventListener('DOMContentLoaded', () => {
         -webkit-backdrop-filter: none !important;
         backdrop-filter: none !important;
         filter: none !important;
+      }
+
+
+      html body .veloura-qv-full .veloura-qv-full__dialog
+      :is(
+        .veloura-qv-full__title,
+        .veloura-qv-full__desc,
+        .veloura-qv-full__label,
+        .veloura-qv-full__loading,
+        .veloura-qv-full__read-more,
+        .veloura-qv-full__circle,
+        .veloura-qv-full__close,
+        .veloura-qv-full__qty,
+        .veloura-qv-full__qty button,
+        .veloura-qv-full__qty input
+      ) {
+        color:
+          var(
+            --veloura-quick-view-modal-text-light,
+            var(--color-text, #111827)
+          ) !important;
+      }
+
+      html.dark body .veloura-qv-full .veloura-qv-full__dialog
+      :is(
+        .veloura-qv-full__title,
+        .veloura-qv-full__desc,
+        .veloura-qv-full__label,
+        .veloura-qv-full__loading,
+        .veloura-qv-full__read-more,
+        .veloura-qv-full__circle,
+        .veloura-qv-full__close,
+        .veloura-qv-full__qty,
+        .veloura-qv-full__qty button,
+        .veloura-qv-full__qty input
+      ),
+      html body.dark .veloura-qv-full .veloura-qv-full__dialog
+      :is(
+        .veloura-qv-full__title,
+        .veloura-qv-full__desc,
+        .veloura-qv-full__label,
+        .veloura-qv-full__loading,
+        .veloura-qv-full__read-more,
+        .veloura-qv-full__circle,
+        .veloura-qv-full__close,
+        .veloura-qv-full__qty,
+        .veloura-qv-full__qty button,
+        .veloura-qv-full__qty input
+      ) {
+        color:
+          var(--veloura-dark-primary-text, #ffffff) !important;
       }
 
 

@@ -1552,13 +1552,14 @@
           "operation": "=",
           "value": true
         }
-      ]
+      ],
+      "description": "يتحكم بسطح بطاقة المنتج في الوضع الداكن. اختر معه لون نص مناسب إذا كانت الخلفية فاتحة أو داكنة."
     },
     {
       "id": "veloura_dark_product_card_text_2026",
       "type": "string",
       "format": "color",
-      "label": "لون النص في بطاقة المنتج في الوضع الداكن",
+      "label": "لون نص بطاقة المنتج في الوضع الداكن",
       "value": "#ffffff",
       "conditions": [
         {
@@ -1566,7 +1567,8 @@
           "operation": "=",
           "value": true
         }
-      ]
+      ],
+      "description": "لون النص الأساسي داخل بطاقة المنتج في الوضع الداكن، ويعمل مع لون خلفية البطاقة حتى تحافظ على تباين واضح."
     },
     {
       "id": "veloura_dark_product_card_border_2026",
@@ -5750,8 +5752,8 @@
       "id": "veloura_pc_actions_gap_2026",
       "type": "number",
       "format": "slider",
-      "label": "المسافة بين زر المفضلة والعرض السريع",
-      "description": "يظهر تأثيرها عندما تكون الأزرار بجانب بعض",
+      "label": "المسافة بين أيقونة المفضلة والعرض السريع",
+      "description": "يظهر فقط عندما يكون العرض السريع كأيقونة بجانب المفضلة وتكون المفضلة ظاهرة.",
       "inputType": "range",
       "icon": "sicon-pin",
       "value": "10",
@@ -5764,6 +5766,21 @@
           "id": "veloura_product_card_panel_open_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_quick_view_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_quick_view_button_position_2026",
+          "operation": "=",
+          "value": "wishlist_icon"
+        },
+        {
+          "id": "veloura_pc_hide_wish_2026",
+          "operation": "=",
+          "value": false
         }
       ]
     },
@@ -5801,6 +5818,11 @@
           "id": "veloura_quick_view_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_quick_view_button_position_2026",
+          "operation": "=",
+          "value": "below_add_to_cart"
         }
       ]
     },
@@ -5982,6 +6004,11 @@
           "id": "veloura_quick_view_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_quick_view_button_position_2026",
+          "operation": "=",
+          "value": "below_add_to_cart"
         }
       ]
     },
@@ -6001,6 +6028,11 @@
           "id": "veloura_quick_view_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_quick_view_button_position_2026",
+          "operation": "=",
+          "value": "below_add_to_cart"
         }
       ]
     },
@@ -6082,6 +6114,11 @@
           "id": "veloura_quick_view_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_quick_view_button_position_2026",
+          "operation": "=",
+          "value": "below_add_to_cart"
         }
       ]
     },
@@ -6105,6 +6142,11 @@
           "id": "veloura_quick_view_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_quick_view_button_position_2026",
+          "operation": "=",
+          "value": "below_add_to_cart"
         }
       ]
     },
@@ -6155,11 +6197,6 @@
           "id": "veloura_quick_view_enabled_2026",
           "operation": "=",
           "value": true
-        },
-        {
-          "id": "veloura_quick_view_show_icon_2026",
-          "operation": "=",
-          "value": true
         }
       ]
     },
@@ -6201,6 +6238,28 @@
         }
       ],
       "description": "في الوضع الداكن تستخدم النافذة اللون الثانوي الداكن تلقائيًا. وعند تفعيل الزجاج تصبح نفس الألوان شفافة وبلورية."
+    },
+    {
+      "id": "veloura_quick_view_modal_text_color_2026",
+      "type": "string",
+      "format": "color",
+      "label": "لون نص نافذة العرض السريع في الوضع الفاتح",
+      "description": "يؤثر على الوضع الفاتح فقط. في الوضع الداكن تستخدم النافذة لون النص الأساسي المحدد ضمن إعدادات الوضع الداكن.",
+      "icon": "sicon-paint-bucket",
+      "value": "#111827",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_quick_view_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
     },
     {
       "type": "boolean",
@@ -6737,28 +6796,6 @@
       "format": "slider",
       "label": "المسافة يمين ويسار زر أضف للسلة",
       "description": "المسافة الفعلية من حافتي بطاقة المنتج إلى زر أضف للسلة. زر العرض السريع له سلايدر مستقل عندما يكون أسفل زر أضف للسلة.",
-      "inputType": "range",
-      "icon": "sicon-pin",
-      "value": "10",
-      "default": "10",
-      "required": false,
-      "step": "1",
-      "minimum": "0",
-      "maximum": "100",
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_product_card_button_margin_bottom_2026",
-      "type": "number",
-      "format": "slider",
-      "label": "المسافة أسفل مجموعة أزرار البطاقة",
-      "description": "يحرك إضافة السلة والعرض السريع ككتلة واحدة بالنسبة إلى الحافة السفلية فقط. المسافة بين السعر وإضافة السلة وبين الزرين ثابتة ومتساوية ولا تتأثر بهذا السلايدر. البداية 10px، و0 يعني التصاق آخر زر بأسفل البطاقة.",
       "inputType": "range",
       "icon": "sicon-pin",
       "value": "10",
