@@ -2661,37 +2661,6 @@ body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image im
 }
 
 /* ========================================================================
-   Veloura V79 — native product-card cart interaction guard
-   ======================================================================== */
-
-html body .s-product-card-entry .s-product-card-content-footer {
-  position: relative !important;
-  z-index: 20 !important;
-  pointer-events: auto !important;
-}
-
-html body .s-product-card-entry
-  .s-product-card-content-footer
-  > salla-add-product-button,
-html body .s-product-card-entry
-  .s-product-card-content-footer
-  > salla-add-product-button::part(button) {
-  position: relative !important;
-  z-index: 21 !important;
-  pointer-events: auto !important;
-  cursor: pointer !important;
-  touch-action: manipulation !important;
-}
-
-html body .s-product-card-entry
-  :is(.s-product-card-content-footer, .veloura-card-bottom)::before,
-html body .s-product-card-entry
-  :is(.s-product-card-content-footer, .veloura-card-bottom)::after {
-  pointer-events: none !important;
-}
-
-
-/* ========================================================================
    Veloura Product Data Final Fix — existing product.scss only
    1) stock pulse is visibly animated
    2) read-more separation ring follows the actual site background in Light/Dark
@@ -3068,50 +3037,26 @@ salla-products-slider[data-veloura-related-slider],
 
 
 /* ==========================================================================
-   Veloura Product Card V111
+   Veloura Product Card V112
    بطاقة المنتج الخارجية + زر العرض السريع
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   Add-to-cart — native Salla interaction + configurable native icon
+   Add-to-cart — Salla owns the native interaction; Veloura changes visuals only
    -------------------------------------------------------------------------- */
-
-body.veloura-product-card-enabled
-.s-product-card-entry
-.s-product-card-content-footer {
-  position: relative !important;
-  z-index: 40 !important;
-  isolation: isolate !important;
-  pointer-events: auto !important;
-}
-
-body.veloura-product-card-enabled
-.s-product-card-entry
-.s-product-card-content-footer
-> salla-add-product-button.veloura-card-add-button {
-  position: relative !important;
-  z-index: 41 !important;
-  pointer-events: auto !important;
-  cursor: pointer !important;
-  touch-action: manipulation !important;
-}
-
-body.veloura-product-card-enabled
-.s-product-card-entry
-salla-add-product-button.veloura-card-add-button
-i.text-base[class*="sicon-"] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none !important;
-}
 
 body.veloura-product-card-enabled.veloura-pc-hide-cart-icon
 .s-product-card-entry
-salla-add-product-button.veloura-card-add-button
+salla-add-product-button
 i.text-base[class*="sicon-"] {
   display: none !important;
+}
+
+body.veloura-product-card-enabled
+.s-product-card-entry
+salla-add-product-button
+i.text-base[class*="sicon-"] {
+  pointer-events: none !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -3147,7 +3092,6 @@ body.veloura-product-card-enabled
 
   transform: none !important;
 
-  z-index: 10 !important;
   pointer-events: none !important;
 }
 

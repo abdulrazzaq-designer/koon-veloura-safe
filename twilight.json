@@ -5749,42 +5749,6 @@
       ]
     },
     {
-      "id": "veloura_pc_actions_gap_2026",
-      "type": "number",
-      "format": "slider",
-      "label": "المسافة بين أيقونة المفضلة والعرض السريع",
-      "description": "يظهر فقط عندما يكون العرض السريع كأيقونة بجانب المفضلة وتكون المفضلة ظاهرة.",
-      "inputType": "range",
-      "icon": "sicon-pin",
-      "value": "10",
-      "required": false,
-      "step": "1",
-      "minimum": "0",
-      "maximum": "30",
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "wishlist_icon"
-        },
-        {
-          "id": "veloura_pc_hide_wish_2026",
-          "operation": "=",
-          "value": false
-        }
-      ]
-    },
-    {
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "label": "تفعيل زر العرض السريع في بطاقة المنتج",
@@ -5867,19 +5831,18 @@
       ]
     },
     {
-      "id": "veloura_quick_view_under_cart_gap_2026",
+      "id": "veloura_pc_actions_gap_2026",
       "type": "number",
       "format": "slider",
-      "label": "المسافة أسفل زر أضف للسلة",
-      "description": "تتحكم بالفراغ أسفل زر أضف للسلة. عندما يكون العرض السريع تحته فهذه هي المسافة بين الزرين.",
+      "label": "المسافة بين أيقونة المفضلة والعرض السريع",
+      "description": "يظهر فقط عندما يكون العرض السريع كأيقونة بجانب المفضلة والمفضلة ظاهرة.",
       "inputType": "range",
       "icon": "sicon-pin",
-      "value": "8",
-      "default": "8",
+      "value": "10",
       "required": false,
       "step": "1",
       "minimum": "0",
-      "maximum": "60",
+      "maximum": "30",
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
@@ -5894,7 +5857,34 @@
         {
           "id": "veloura_quick_view_button_position_2026",
           "operation": "=",
-          "value": "below_add_to_cart"
+          "value": "wishlist_icon"
+        },
+        {
+          "id": "veloura_pc_hide_wish_2026",
+          "operation": "=",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "veloura_quick_view_under_cart_gap_2026",
+      "type": "number",
+      "format": "slider",
+      "label": "المسافة أسفل زر أضف للسلة",
+      "description": "يبقى هذا الخيار ظاهرًا دائمًا ويتحكم بالمسافة أسفل زر أضف للسلة. إذا كان العرض السريع أسفل زر السلة تصبح هذه المسافة هي الفراغ بين الزرين.",
+      "inputType": "range",
+      "icon": "sicon-pin",
+      "value": "8",
+      "default": "8",
+      "required": false,
+      "step": "1",
+      "minimum": "0",
+      "maximum": "60",
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
         }
       ]
     },

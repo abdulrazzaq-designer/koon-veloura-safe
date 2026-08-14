@@ -3189,7 +3189,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
    يضيف كلاسات فقط، لا ينقل المفضلة ولا العرض السريع
 */
 (function () {
-  window.__velouraProductCardNativeActionsVersion = 'V111';
+  window.__velouraProductCardNativeActionsVersion = 'V112';
 
   function markCleanParents(el) {
     if (!el) return;
@@ -3321,26 +3321,6 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
     syncIcon();
 
-    /*
-     * Salla can replace the icon node after component hydration/cart state
-     * updates. Observe only child replacement inside this native host.
-     */
-    if (
-      !host.__velouraCartLightObserver &&
-      window.MutationObserver
-    ) {
-      host.__velouraCartLightObserver =
-        new MutationObserver(syncIcon);
-
-      host.__velouraCartLightObserver.observe(
-        host,
-        {
-          childList: true,
-          subtree: true
-        }
-      );
-    }
-
     if (
       typeof host.componentOnReady === 'function' &&
       !host.__velouraCartIconReadyBound
@@ -3351,6 +3331,43 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         .then(syncIcon)
         .catch(function () {});
     }
+  }
+
+  function registerVelouraAddProductHook() {
+    if (window.__velouraAddProductHookRegistered) {
+      return;
+    }
+
+    var api = window.Salla || window.salla;
+
+    if (
+      !api ||
+      !api.hooks ||
+      typeof api.hooks.registerHook !== 'function'
+    ) {
+      return;
+    }
+
+    window.__velouraAddProductHookRegistered = true;
+
+    api.hooks.registerHook(
+      'salla-add-product-button',
+      'componentDidLoad',
+      function (element) {
+        syncVelouraCardAddButton(element);
+      }
+    );
+  }
+
+  if (
+    window.salla &&
+    typeof window.salla.onReady === 'function'
+  ) {
+    window.salla.onReady(
+      registerVelouraAddProductHook
+    );
+  } else {
+    registerVelouraAddProductHook();
   }
 
   function normalizeQuickViewPosition(value) {
@@ -3401,6 +3418,40 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         ? '<i class="' + icon + '" aria-hidden="true"></i>'
         : '') +
       '<span>' + label + '</span>';
+  }
+
+  function syncAddToCartBottomSpacing(card) {
+    if (!card) return;
+
+    var footer =
+      card.querySelector('.s-product-card-content-footer');
+
+    if (!footer) return;
+
+    var cardStyle = window.getComputedStyle(card);
+    var raw = cardStyle.getPropertyValue(
+      '--veloura-qv-under-cart-gap'
+    ).trim();
+
+    var pixels = parseFloat(
+      String(raw || '').replace(',', '.')
+    );
+
+    if (!Number.isFinite(pixels)) {
+      pixels =
+        Number(
+          (window.velouraQuickView || {}).underCartGap
+        ) || 0;
+    }
+
+    footer.style.setProperty(
+      'margin-bottom',
+      pixels.toFixed(2) + 'px',
+      'important'
+    );
+
+    footer.dataset.velouraAddCartBottom =
+      pixels.toFixed(2);
   }
 
   function syncQuickViewGeometry(card, wrapper) {
@@ -3727,12 +3778,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       'data-veloura-qv-under-cart'
     );
 
-    var footer =
-      card.querySelector('.s-product-card-content-footer');
-
-    if (footer) {
-      footer.style.removeProperty('margin-bottom');
-    }
+    syncAddToCartBottomSpacing(card);
 
     if (image && button.parentNode !== image) {
       if (wrapper) {
@@ -3772,6 +3818,8 @@ function markCard(card) {
 
     var addButtons = card.querySelectorAll('salla-add-product-button');
     addButtons.forEach(syncVelouraCardAddButton);
+
+    syncAddToCartBottomSpacing(card);
 
     var imageBox =
       card.querySelector('.s-product-card-image') ||

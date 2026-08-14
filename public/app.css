@@ -3585,15 +3585,11 @@ html body .veloura-header-tabs-stack--blur .veloura-home-tabs > .s-advertisement
     font-size: 1rem;
     line-height: 1.5rem;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-advertisement-content-icon[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-advertisement-content-icon[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-advertisement-content-icon[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-advertisement-content-icon[class*=sicon-] {
+  pointer-events: none;
 }
 .s-advertisement-content-icon:where([dir="ltr"], [dir="ltr"] *){
     margin-right: 0.5rem;
@@ -3822,15 +3818,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
     color: #414042;
     color: var(--color-primary);
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-app-install-alert-title[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-app-install-alert-title[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-app-install-alert-title[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-app-install-alert-title[class*=sicon-] {
+  pointer-events: none;
 }
 .s-app-install-alert-sub-title{
     max-width: 95%;
@@ -3944,15 +3936,11 @@ input[type=radio].sr-only:checked ~ div.s-app-install-alert-cancel-button {
     font-size: 1rem;
     line-height: 1.5rem;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-badge-md[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-badge-md[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-badge-md[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-badge-md[class*=sicon-] {
+  pointer-events: none;
 }
 .s-badge-md svg{
     height: 1.25rem;
@@ -4192,15 +4180,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
     line-height: 1.5rem;
     font-weight: 700;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-bottom-alert-message-highlight[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-bottom-alert-message-highlight[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-bottom-alert-message-highlight[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-bottom-alert-message-highlight[class*=sicon-] {
+  pointer-events: none;
 }
 .s-bottom-alert-message-splitter{
     margin-left: 0.5rem;
@@ -4401,15 +4385,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
     font-size: 1rem;
     line-height: 1.5rem;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-bottom-alert-modal-price-wrapper[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-bottom-alert-modal-price-wrapper[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-bottom-alert-modal-price-wrapper[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-bottom-alert-modal-price-wrapper[class*=sicon-] {
+  pointer-events: none;
 }
 .s-bottom-alert-modal-price-wrapper-amount{
     font-size: 1.125rem;
@@ -5217,15 +5197,11 @@ input[type=radio].sr-only:checked ~ div.s-bought-together-checkbox {
     color: rgba(17, 24, 39, 1);
     color: rgba(17, 24, 39, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-bullet-delivery-address-line1[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-bullet-delivery-address-line1[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-bullet-delivery-address-line1[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-bullet-delivery-address-line1[class*=sicon-] {
+  pointer-events: none;
 }
 .s-bullet-delivery-address-line2{
     display: block;
@@ -6220,15 +6196,11 @@ input[type=radio].sr-only:checked ~ div.s-bullet-delivery-search-icon {
     color: rgba(17, 24, 39, 1);
     color: rgba(17, 24, 39, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-bullet-delivery-cart-view-title[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-bullet-delivery-cart-view-title[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-bullet-delivery-cart-view-title[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-bullet-delivery-cart-view-title[class*=sicon-] {
+  pointer-events: none;
 }
 .s-bullet-delivery-cart-view-subtitle{
     font-size: 0.875rem;
@@ -8096,15 +8068,11 @@ input[type=radio].sr-only:checked ~ div.s-cart-summary-count {
     line-height: 1.5rem;
     font-weight: 700;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-comments-item-user-info-name[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-comments-item-user-info-name[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-comments-item-user-info-name[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-comments-item-user-info-name[class*=sicon-] {
+  pointer-events: none;
 }
 .s-comments-item-user-info-name:where([dir="ltr"], [dir="ltr"] *){
     margin-right: 0.5rem;
@@ -8121,15 +8089,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
     line-height: 1.5rem;
     font-weight: 700;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-comments-item-user-info-name-with-margin[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-comments-item-user-info-name-with-margin[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-comments-item-user-info-name-with-margin[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-comments-item-user-info-name-with-margin[class*=sicon-] {
+  pointer-events: none;
 }
 .s-comments-item-user-info-name-with-margin:where([dir="ltr"], [dir="ltr"] *){
     margin-right: 2.5rem;
@@ -8974,15 +8938,11 @@ input[type=radio].sr-only:checked ~ div.s-conditional-offer-checkpoint-label {
     line-height: 1.5rem;
     font-weight: 400;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-count-down-sm .s-count-down-item[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-count-down-sm .s-count-down-item[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-count-down-sm .s-count-down-item[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-count-down-sm .s-count-down-item[class*=sicon-] {
+  pointer-events: none;
 }
 .s-count-down-sm .s-count-down-item::after{
     content: var(--tw-content);
@@ -8994,15 +8954,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
     line-height: 1.5rem;
     font-weight: 400;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-count-down-sm + .s-count-down-end-text[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-count-down-sm + .s-count-down-end-text[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-count-down-sm + .s-count-down-end-text[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-count-down-sm + .s-count-down-end-text[class*=sicon-] {
+  pointer-events: none;
 }
 .s-count-down-md .s-count-down-item{
     font-size: 1.125rem;
@@ -9173,15 +9129,11 @@ input[type=radio].sr-only:checked ~ div.s-count-down-end-text {
     font-weight: 700;
     line-height: 1;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-count-down-pre-order .s-count-down-item-value[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-count-down-pre-order .s-count-down-item-value[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-count-down-pre-order .s-count-down-item-value[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-count-down-pre-order .s-count-down-item-value[class*=sicon-] {
+  pointer-events: none;
 }
 .s-count-down-pre-order .s-count-down-item-label{
     margin-top: 0px;
@@ -9671,15 +9623,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
     color: #999;
     color: var(--color-text-secondary,#999);
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-delivery-promise-modal-search .sicon-search[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-delivery-promise-modal-search .sicon-search[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-delivery-promise-modal-search .sicon-search[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-delivery-promise-modal-search .sicon-search[class*=sicon-] {
+  pointer-events: none;
 }
 .s-delivery-promise-modal-search input{
     min-width: 0px;
@@ -10776,15 +10724,11 @@ input[type=radio].sr-only div.s-file-upload-profile-image .s-file-upload-has-err
 input[type=radio].sr-only:checked ~ div.s-file-upload-profile-image .s-file-upload-has-error .filepond--file-status {
   border-color: var(--color-main);
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-file-upload-profile-image .s-file-upload-has-error .filepond--file-status[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-file-upload-profile-image .s-file-upload-has-error .filepond--file-status[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-file-upload-profile-image .s-file-upload-has-error .filepond--file-status[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-file-upload-profile-image .s-file-upload-has-error .filepond--file-status[class*=sicon-] {
+  pointer-events: none;
 }
 .s-file-upload-multiple .filepond--root{
     max-height: 120px;
@@ -11079,15 +11023,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
 .s-filters-widget-title * {
   pointer-events: none;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-filters-widget-title[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-filters-widget-title[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-filters-widget-title[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-filters-widget-title[class*=sicon-] {
+  pointer-events: none;
 }
 .s-filters-widget-arrow{
     font-size: 1.25rem;
@@ -11861,15 +11801,11 @@ input[type=radio].sr-only div.s-gifting-remove-preview {
 input[type=radio].sr-only:checked ~ div.s-gifting-remove-preview {
   border-color: var(--color-main);
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-gifting-remove-preview[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-gifting-remove-preview[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-gifting-remove-preview[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-gifting-remove-preview[class*=sicon-] {
+  pointer-events: none;
 }
 .s-gifting-remove-preview:where([dir="rtl"], [dir="rtl"] *){
     left: auto;
@@ -12037,15 +11973,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
     font-size: 1rem;
     line-height: 1.5rem;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-list-tile-item-title[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-list-tile-item-title[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-list-tile-item-title[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-list-tile-item-title[class*=sicon-] {
+  pointer-events: none;
 }
 .s-list-tile-item-subtitle{
     font-size: 0.875rem;
@@ -12104,15 +12036,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
     color: rgba(17, 24, 39, 1);
     color: rgba(17, 24, 39, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-localization-modal-title[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-localization-modal-title[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-localization-modal-title[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-localization-modal-title[class*=sicon-] {
+  pointer-events: none;
 }
 .s-localization-modal-section{
     margin-bottom: 2rem;
@@ -12399,15 +12327,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
     line-height: 1.5rem;
     font-weight: 700;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-loyalty-prize-item-title[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-loyalty-prize-item-title[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-loyalty-prize-item-title[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-loyalty-prize-item-title[class*=sicon-] {
+  pointer-events: none;
 }
 .s-loyalty-prize-item-subtitle{
     padding-left: 0.5rem;
@@ -13052,15 +12976,11 @@ input[type=radio].sr-only:checked ~ div.s-loyalty-program-hero-overlay {
     font-weight: 300;
     line-height: 1.5rem;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-loyalty-program-hero-description[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-loyalty-program-hero-description[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-loyalty-program-hero-description[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-loyalty-program-hero-description[class*=sicon-] {
+  pointer-events: none;
 }
 @media (min-width: 768px){
     .s-loyalty-program-hero-description{
@@ -14040,30 +13960,22 @@ input[type=radio].sr-only:checked ~ div.s-loyalty-program-hero-footer {
     font-size: 1rem;
     line-height: 1.5rem;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-loyalty-program-point-details-branches[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-loyalty-program-point-details-branches[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-loyalty-program-point-details-branches[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-loyalty-program-point-details-branches[class*=sicon-] {
+  pointer-events: none;
 }
 .s-loyalty-program-point-details-branches h2{
     font-size: 1rem;
     line-height: 1.5rem;
     font-weight: 700;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-loyalty-program-point-details-branches h2[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-loyalty-program-point-details-branches h2[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-loyalty-program-point-details-branches h2[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-loyalty-program-point-details-branches h2[class*=sicon-] {
+  pointer-events: none;
 }
 .s-loyalty-program-point-details-branches p{
     font-size: 0.875rem;
@@ -14856,15 +14768,11 @@ input[type=radio].sr-only:checked ~ div.s-loyalty-program-aspect-container img {
     color: rgba(31, 41, 55, 1);
     color: rgba(31, 41, 55, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-loyalty-program-banner-container-banner-title[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-loyalty-program-banner-container-banner-title[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-loyalty-program-banner-container-banner-title[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-loyalty-program-banner-container-banner-title[class*=sicon-] {
+  pointer-events: none;
 }
 .s-loyalty-program-banner-container-banner-subtitle{
     font-size: 0.75rem;
@@ -15640,15 +15548,11 @@ input[type=radio].sr-only:checked ~ div.s-map-my-location-button {
 .veloura-product-page .s-metadata-box-header {
   border-color: transparent;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-metadata-box-header[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-metadata-box-header[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-metadata-box-header[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-metadata-box-header[class*=sicon-] {
+  pointer-events: none;
 }
 .s-metadata-row{
     margin-bottom: 0.75rem;
@@ -16556,15 +16460,11 @@ input[type=radio].sr-only:checked ~ div.s-multiple-bundle-product-checkbox {
     color: rgba(55, 65, 81, 1);
     color: rgba(55, 65, 81, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-multiple-bundle-product-cart-header-content-details-title[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-multiple-bundle-product-cart-header-content-details-title[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-multiple-bundle-product-cart-header-content-details-title[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-multiple-bundle-product-cart-header-content-details-title[class*=sicon-] {
+  pointer-events: none;
 }
 .s-multiple-bundle-product-cart-header-content-details-price{
     display: flex;
@@ -16606,15 +16506,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
     line-height: 1.5rem;
     font-weight: 500;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-multiple-bundle-product-cart-header-content-details-title-link[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-multiple-bundle-product-cart-header-content-details-title-link[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-multiple-bundle-product-cart-header-content-details-title-link[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-multiple-bundle-product-cart-header-content-details-title-link[class*=sicon-] {
+  pointer-events: none;
 }
 .s-multiple-bundle-product-options-modal-slider-thumb{
     height: 100%;
@@ -16768,15 +16664,11 @@ input[type=radio].sr-only:checked ~ div.s-next-order-coupon-icon-bg {
     font-weight: 700;
     line-height: 1.375;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-next-order-coupon-title[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-next-order-coupon-title[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-next-order-coupon-title[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-next-order-coupon-title[class*=sicon-] {
+  pointer-events: none;
 }
 .s-next-order-coupon-amount{
     color: #414042;
@@ -16887,15 +16779,11 @@ input[type=radio].sr-only:checked ~ div.s-next-order-coupon-badge-bg {
     line-height: 1;
     letter-spacing: 0.025em;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-next-order-coupon-code-text[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-next-order-coupon-code-text[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-next-order-coupon-code-text[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-next-order-coupon-code-text[class*=sicon-] {
+  pointer-events: none;
 }
 .s-next-order-coupon-copy-btn{
     height: auto !important;
@@ -17713,15 +17601,11 @@ input[type=radio].sr-only:checked ~ div.s-offer-bank-payment-discount-percent {
     color: rgba(220, 38, 38, 1);
     color: rgba(220, 38, 38, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-offer-bank-message h2[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-offer-bank-message h2[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-offer-bank-message h2[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-offer-bank-message h2[class*=sicon-] {
+  pointer-events: none;
 }
 .s-offer-bank-message p{
     max-width: 95%;
@@ -18935,15 +18819,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-offer-modal-product-name[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-offer-modal-product-name[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-offer-modal-product-name[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-offer-modal-product-name[class*=sicon-] {
+  pointer-events: none;
 }
 .s-offer-modal-product-name:hover{
     color: #414042;
@@ -20017,15 +19897,11 @@ input[type=radio].sr-only div.s-order-edit-products-search i {
 input[type=radio].sr-only:checked ~ div.s-order-edit-products-search i {
   border-color: var(--color-main);
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-order-edit-products-search i[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-order-edit-products-search i[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-order-edit-products-search i[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-order-edit-products-search i[class*=sicon-] {
+  pointer-events: none;
 }
 .s-order-edit-products-search i:where([dir="ltr"], [dir="ltr"] *){
     left: 1rem;
@@ -20641,15 +20517,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
     color: rgba(17, 24, 39, 1);
     color: rgba(17, 24, 39, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-order-edit-add-modal-name[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-order-edit-add-modal-name[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-order-edit-add-modal-name[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-order-edit-add-modal-name[class*=sicon-] {
+  pointer-events: none;
 }
 .s-order-edit-add-modal-price{
     font-size: 0.95rem;
@@ -20769,15 +20641,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
     color: rgba(17, 24, 39, 1);
     color: rgba(17, 24, 39, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-order-edit-item-name[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-order-edit-item-name[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-order-edit-item-name[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-order-edit-item-name[class*=sicon-] {
+  pointer-events: none;
 }
 .s-order-edit-item-link{
     color: inherit;
@@ -21006,15 +20874,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
     color: rgba(15, 118, 110, 1);
     color: rgba(15, 118, 110, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-order-edit-product-card-price[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-order-edit-product-card-price[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-order-edit-product-card-price[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-order-edit-product-card-price[class*=sicon-] {
+  pointer-events: none;
 }
 @media (max-width: 768px){
     .s-order-edit-product-card-price{
@@ -21111,15 +20975,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
     line-height: 1.5rem;
     line-height: 1;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-order-summary-code-item-wrapper p[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-order-summary-code-item-wrapper p[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-order-summary-code-item-wrapper p[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-order-summary-code-item-wrapper p[class*=sicon-] {
+  pointer-events: none;
 }
 .s-order-summary-digital-item-wrapper{
     display: flex;
@@ -21333,30 +21193,22 @@ input[type=radio].s-order-totals-card-heading:checked ~ div.absolute {
     line-height: 1.5rem;
     font-weight: 500;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-order-totals-card-total-label[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-order-totals-card-total-label[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-order-totals-card-total-label[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-order-totals-card-total-label[class*=sicon-] {
+  pointer-events: none;
 }
 .s-order-totals-card-total-value{
     font-size: 1rem;
     line-height: 1.5rem;
     font-weight: 500;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-order-totals-card-total-value[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-order-totals-card-total-value[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-order-totals-card-total-value[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-order-totals-card-total-value[class*=sicon-] {
+  pointer-events: none;
 }
 .s-order-totals-card-refund{
     margin-left: -1.5rem;
@@ -21576,15 +21428,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
     color: rgba(107, 114, 128, 1);
     color: rgba(107, 114, 128, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-orders-no-content p[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-orders-no-content p[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-orders-no-content p[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-orders-no-content p[class*=sicon-] {
+  pointer-events: none;
 }
 .s-orders-table{
     min-width: 100%;
@@ -21879,15 +21727,11 @@ input[type=radio].sr-only:checked ~ div.s-orders-table-tbody-tr a {
     color: rgba(17, 24, 39, 1);
     color: rgba(17, 24, 39, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-placeholder-title[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-placeholder-title[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-placeholder-title[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-placeholder-title[class*=sicon-] {
+  pointer-events: none;
 }
 .s-placeholder-description{
     font-size: 0.875rem;
@@ -23563,15 +23407,11 @@ article:has(salla-product-card-embed)::after{
     color: rgba(248, 113, 113, 1);
     color: rgba(248, 113, 113, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-product-options-donation-message p[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-product-options-donation-message p[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-product-options-donation-message p[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-product-options-donation-message p[class*=sicon-] {
+  pointer-events: none;
 }
 .s-product-options-donation-message span{
     font-size: 1rem;
@@ -23581,15 +23421,11 @@ body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entr
     color: rgba(0, 0, 0, 1);
     color: rgba(0, 0, 0, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-product-options-donation-message span[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-product-options-donation-message span[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-product-options-donation-message span[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-product-options-donation-message span[class*=sicon-] {
+  pointer-events: none;
 }
 .s-product-options-option-label b{
     display: block;
@@ -26001,15 +25837,11 @@ unicode{
     color: rgba(31, 41, 55, 1);
     color: rgba(31, 41, 55, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-rating-modal-contact p[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-rating-modal-contact p[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-rating-modal-contact p[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-rating-modal-contact p[class*=sicon-] {
+  pointer-events: none;
 }
 .s-rating-modal-contact-icons{
     display: flex;
@@ -27381,15 +27213,11 @@ input[type=radio].sr-only:checked ~ div.s-scopes-search-icon {
     color: rgba(55, 65, 81, 1);
     color: rgba(55, 65, 81, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-scopes-label[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-scopes-label[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-scopes-label[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-scopes-label[class*=sicon-] {
+  pointer-events: none;
 }
 .s-scopes-select{
     height: 2.5rem;
@@ -28268,15 +28096,11 @@ input[type=radio].sr-only:checked ~ div.s-searchable-dropdown-panel {
     color: #9ca3af;
     color: var(--color-text-secondary,#9ca3af);
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-searchable-dropdown-search-icon[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-searchable-dropdown-search-icon[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-searchable-dropdown-search-icon[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-searchable-dropdown-search-icon[class*=sicon-] {
+  pointer-events: none;
 }
 .s-searchable-dropdown-search-input{
     min-width: 0px;
@@ -30264,15 +30088,11 @@ input[type=radio].sr-only:checked ~ div.s-tiered-offer-progress-fill {
     color: rgba(17, 24, 39, 1);
     color: rgba(17, 24, 39, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-tiered-offer-discount-title[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-tiered-offer-discount-title[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-tiered-offer-discount-title[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-tiered-offer-discount-title[class*=sicon-] {
+  pointer-events: none;
 }
 .s-tiered-offer-benefit-description{
     margin: 0px;
@@ -30842,15 +30662,11 @@ salla-user-menu div[slot='trigger']{
     color: rgba(55, 65, 81, 1);
     color: rgba(55, 65, 81, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-user-menu-dropdown-header-content p[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-user-menu-dropdown-header-content p[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-user-menu-dropdown-header-content p[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-user-menu-dropdown-header-content p[class*=sicon-] {
+  pointer-events: none;
 }
 .s-user-menu-dropdown-header-close{
     position: absolute;
@@ -31159,15 +30975,11 @@ input[type=radio].sr-only:checked ~ div.s-user-menu-red-dot .s-user-menu-avatar-
     color: rgba(17, 24, 39, 1);
     color: rgba(17, 24, 39, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-user-settings-section-title[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-user-settings-section-title[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-user-settings-section-title[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-user-settings-section-title[class*=sicon-] {
+  pointer-events: none;
 }
 .s-user-settings-section-subtitle{
     font-size: 0.75rem;
@@ -31665,15 +31477,11 @@ input[type=radio].sr-only:checked ~ div.s-verify-back {
     color: rgba(107, 114, 128, 1);
     color: rgba(107, 114, 128, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-wallet-no-content p[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-wallet-no-content p[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-wallet-no-content p[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-wallet-no-content p[class*=sicon-] {
+  pointer-events: none;
 }
 .s-wallet-table{
     min-width: 100%;
@@ -32478,15 +32286,11 @@ salla-modal:not(.hydrated) {
     color: #414042;
     color: var(--color-primary);
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-app-install-banner-title[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-app-install-banner-title[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-app-install-banner-title[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-app-install-banner-title[class*=sicon-] {
+  pointer-events: none;
 }
 .s-app-install-banner-sub-title{
     max-width: 95%;
@@ -42418,15 +42222,11 @@ input[type=radio].sr-only:checked ~ div.s-block--slider-with-bg .slider-bg:befor
     line-height: 1.5rem;
     font-weight: 700;
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-block--categories__title[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-block--categories__title[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-block--categories__title[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-block--categories__title[class*=sicon-] {
+  pointer-events: none;
 }
 @media (min-width: 640px){
     .s-block--categories__title{
@@ -50211,34 +50011,6 @@ body.veloura-product-card-enabled .s-product-card-entry .s-product-card-image im
   min-width: 0 !important;
 }
 /* ========================================================================
-   Veloura V79 — native product-card cart interaction guard
-   ======================================================================== */
-html body .s-product-card-entry .s-product-card-content-footer {
-  position: relative !important;
-  z-index: 20 !important;
-  pointer-events: auto !important;
-}
-html body .s-product-card-entry .s-product-card-content-footer > salla-add-product-button,
-html body .s-product-card-entry .s-product-card-content-footer > salla-add-product-button::part(button) {
-  position: relative !important;
-  z-index: 21 !important;
-  pointer-events: auto !important;
-  cursor: pointer !important;
-  touch-action: manipulation !important;
-}
-html body .s-product-card-entry .s-product-card-content-footer::before {
-  pointer-events: none !important;
-}
-html body .s-product-card-entry .veloura-card-bottom::before {
-  pointer-events: none !important;
-}
-html body .s-product-card-entry .s-product-card-content-footer::after {
-  pointer-events: none !important;
-}
-html body .s-product-card-entry .veloura-card-bottom::after {
-  pointer-events: none !important;
-}
-/* ========================================================================
    Veloura Product Data Final Fix — existing product.scss only
    1) stock pulse is visibly animated
    2) read-more separation ring follows the actual site background in Light/Dark
@@ -50577,36 +50349,17 @@ body.dark .veloura-product-page #btn-show-more.veloura-product-read-more.is-expa
   min-width: 0 !important;
 }
 /* ==========================================================================
-   Veloura Product Card V111
+   Veloura Product Card V112
    بطاقة المنتج الخارجية + زر العرض السريع
    ========================================================================== */
 /* --------------------------------------------------------------------------
-   Add-to-cart — native Salla interaction + configurable native icon
+   Add-to-cart — Salla owns the native interaction; Veloura changes visuals only
    -------------------------------------------------------------------------- */
-body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer {
-  position: relative !important;
-  z-index: 40 !important;
-  isolation: isolate !important;
-  pointer-events: auto !important;
-}
-body.veloura-product-card-enabled .s-product-card-entry .s-product-card-content-footer > salla-add-product-button.veloura-card-add-button {
-  position: relative !important;
-  z-index: 41 !important;
-  pointer-events: auto !important;
-  cursor: pointer !important;
-  touch-action: manipulation !important;
-}
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.text-base[class*=sicon-] {
-  pointer-events: none !important;
-}
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.text-base[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.text-base[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.text-base[class*=sicon-] {
   display: none !important;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.text-base[class*=sicon-] {
+  pointer-events: none !important;
 }
 /* --------------------------------------------------------------------------
    Under-cart Quick View
@@ -50630,7 +50383,6 @@ body.veloura-product-card-enabled .s-product-card-entry .veloura-quick-view-unde
   padding: 0 !important;
   box-sizing: border-box !important;
   transform: none !important;
-  z-index: 10 !important;
   pointer-events: none !important;
 }
 body.veloura-product-card-enabled .s-product-card-entry .veloura-quick-view-under-cart-wrap .veloura-quick-view-btn.is-under-cart {
@@ -51183,15 +50935,11 @@ html body.dark.veloura-product-card-enabled.veloura-product-card-image-outside .
     color: rgba(107, 114, 128, 1);
     color: rgba(107, 114, 128, var(--tw-text-opacity, 1));
 }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.no-content-placeholder p[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.no-content-placeholder p[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.no-content-placeholder p[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.no-content-placeholder p[class*=sicon-] {
+  pointer-events: none;
 }
 .s-gifting-modal .s-checkbox {
   background-color: #fff !important;
@@ -52266,15 +52014,11 @@ input[type=radio].sr-only:checked ~ div.landing-page > header:before {
         font-size: 1rem;
         line-height: 1.5rem;
     }
-body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-add-product-toast__price[class*=sicon-] {
-  /*
-   * The icon is visual only. A tap on the glyph must land on Salla's
-   * native button/host instead of becoming a separate hit target.
-   */
-  pointer-events: none;
-}
-body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button.veloura-card-add-button i.s-add-product-toast__price[class*=sicon-] {
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon .s-product-card-entry salla-add-product-button i.s-add-product-toast__price[class*=sicon-] {
   display: none;
+}
+body.veloura-product-card-enabled .s-product-card-entry salla-add-product-button i.s-add-product-toast__price[class*=sicon-] {
+  pointer-events: none;
 }
 }
 .s-add-product-toast__price-sale{
