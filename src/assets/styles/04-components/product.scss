@@ -3065,3 +3065,193 @@ salla-products-slider[data-veloura-related-slider],
   max-width: 100% !important;
   min-width: 0 !important;
 }
+
+
+/* ==========================================================================
+   Veloura Product Card V107
+   بطاقة المنتج الخارجية + زر العرض السريع
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Add-to-cart icon
+   -------------------------------------------------------------------------- */
+body.veloura-product-card-enabled
+.s-product-card-entry
+salla-add-product-button.veloura-card-add-button
+.veloura-card-cart-icon {
+  display: inline-block !important;
+}
+
+body.veloura-product-card-enabled.veloura-pc-hide-cart-icon
+.s-product-card-entry
+salla-add-product-button.veloura-card-add-button
+:is(
+  .veloura-card-cart-icon,
+  i.text-base[class*="sicon-"]
+) {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Under-cart Quick View
+   Geometry (width / left / vertical gap) is written by the existing runtime.
+   CSS here controls only stable presentation.
+   -------------------------------------------------------------------------- */
+body.veloura-product-card-enabled
+.s-product-card-entry
+.s-product-card-content {
+  overflow: visible !important;
+}
+
+body.veloura-product-card-enabled.veloura-quick-view-position-below_add_to_cart
+.s-product-card-entry
+.s-product-card-content-footer,
+body.veloura-product-card-enabled.veloura-quick-view-position-below-add-to-cart
+.s-product-card-entry
+.s-product-card-content-footer {
+  margin-bottom: 0 !important;
+}
+
+body.veloura-product-card-enabled
+.s-product-card-entry
+.veloura-quick-view-under-cart-wrap {
+  display: block !important;
+  min-width: 0 !important;
+  margin-inline: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+body.veloura-product-card-enabled
+.s-product-card-entry
+.veloura-quick-view-under-cart-wrap
+.veloura-quick-view-btn.is-under-cart {
+  position: relative !important;
+  inset: auto !important;
+  left: auto !important;
+  right: auto !important;
+  transform: none !important;
+
+  display: flex !important;
+
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+
+  height: var(--veloura-quick-view-button-height, 42px) !important;
+  min-height: var(--veloura-quick-view-button-height, 42px) !important;
+
+  margin: 0 !important;
+  padding: 0 14px !important;
+
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+
+  box-sizing: border-box !important;
+
+  background: var(--veloura-quick-view-button-bg, #004d65) !important;
+  color: var(--veloura-quick-view-button-text, #ffffff) !important;
+
+  border:
+    1px solid var(--veloura-quick-view-button-bg, #004d65) !important;
+
+  border-radius:
+    var(--veloura-quick-view-button-radius, 999px) !important;
+
+  box-shadow: none !important;
+}
+
+body.veloura-product-card-enabled
+.s-product-card-entry
+.veloura-quick-view-btn * {
+  color: inherit !important;
+  fill: currentColor !important;
+}
+
+/* Wishlist hidden -> Quick View occupies the lower action slot. */
+body.veloura-product-card-enabled.veloura-pc-hide-wish.veloura-pc-actions-right_stack
+.s-product-card-entry
+.veloura-quick-view-btn.is-icon-only,
+body.veloura-product-card-enabled.veloura-pc-hide-wish.veloura-pc-actions-left_stack
+.s-product-card-entry
+.veloura-quick-view-btn.is-icon-only {
+  top: auto !important;
+  bottom: var(--veloura-pc-overlay-offset, 14px) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Dark card background
+   -------------------------------------------------------------------------- */
+html.dark body.veloura-product-card-enabled,
+html body.dark.veloura-product-card-enabled {
+  --veloura-product-card-bg:
+    var(--veloura-dark-product-card-bg, #111111) !important;
+}
+
+html.dark body.veloura-product-card-enabled
+.s-product-card-entry,
+html body.dark.veloura-product-card-enabled
+.s-product-card-entry,
+html.dark body.veloura-product-card-enabled
+.s-product-card-entry .s-product-card-content,
+html body.dark.veloura-product-card-enabled
+.s-product-card-entry .s-product-card-content,
+html.dark body.veloura-product-card-enabled
+.s-product-card-entry .s-product-card-image,
+html body.dark.veloura-product-card-enabled
+.s-product-card-entry .s-product-card-image,
+html.dark body.veloura-product-card-enabled
+.s-product-card-entry .s-product-card-image a,
+html body.dark.veloura-product-card-enabled
+.s-product-card-entry .s-product-card-image a,
+html.dark body.veloura-product-card-enabled
+.s-product-card-entry .s-product-card-image-cover,
+html body.dark.veloura-product-card-enabled
+.s-product-card-entry .s-product-card-image-cover {
+  background-color:
+    var(--veloura-dark-product-card-bg, #111111) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Image outside card — preserve original protrusion geometry
+   -------------------------------------------------------------------------- */
+html.dark body.veloura-product-card-enabled.veloura-product-card-image-outside
+.s-product-card-entry,
+html body.dark.veloura-product-card-enabled.veloura-product-card-image-outside
+.s-product-card-entry {
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+html.dark body.veloura-product-card-enabled.veloura-product-card-image-outside
+.s-product-card-entry::before,
+html body.dark.veloura-product-card-enabled.veloura-product-card-image-outside
+.s-product-card-entry::before {
+  top:
+    var(--veloura-product-image-outside-offset, 0px) !important;
+
+  background:
+    var(--veloura-dark-product-card-bg, #111111) !important;
+
+  border-radius:
+    var(--veloura-product-card-radius, 18px) !important;
+}
+
+html.dark body.veloura-product-card-enabled.veloura-product-card-image-outside
+.s-product-card-entry
+:is(
+  .s-product-card-image,
+  .s-product-card-image > a,
+  .s-product-card-image-cover
+),
+html body.dark.veloura-product-card-enabled.veloura-product-card-image-outside
+.s-product-card-entry
+:is(
+  .s-product-card-image,
+  .s-product-card-image > a,
+  .s-product-card-image-cover
+) {
+  background: transparent !important;
+  background-color: transparent !important;
+}

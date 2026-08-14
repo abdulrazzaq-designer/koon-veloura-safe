@@ -2163,175 +2163,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
 
 
-<style id="veloura-product-card-v106-style">
-  body.veloura-product-card-enabled
-  .s-product-card-entry
-  salla-add-product-button.veloura-card-add-button
-  .veloura-card-cart-icon {
-    display: inline-block !important;
-  }
 
-  body.veloura-product-card-enabled.veloura-pc-hide-cart-icon
-  .s-product-card-entry
-  salla-add-product-button.veloura-card-add-button
-  :is(
-    .veloura-card-cart-icon,
-    i.text-base[class*="sicon-"]
-  ) {
-    display: none !important;
-  }
-
-  body.veloura-product-card-enabled
-  .s-product-card-entry
-  .s-product-card-content {
-    overflow: visible !important;
-  }
-
-  body.veloura-product-card-enabled.veloura-quick-view-position-below_add_to_cart
-  .s-product-card-entry
-  .s-product-card-content-footer,
-  body.veloura-product-card-enabled.veloura-quick-view-position-below-add-to-cart
-  .s-product-card-entry
-  .s-product-card-content-footer {
-    margin-bottom: 0 !important;
-  }
-
-  body.veloura-product-card-enabled
-  .s-product-card-entry
-  .veloura-quick-view-under-cart-wrap {
-    position: relative !important;
-    display: block !important;
-    width: auto !important;
-    max-width: none !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    transform: none !important;
-    box-sizing: border-box !important;
-    flex: 0 0 auto !important;
-    align-self: stretch !important;
-  }
-
-  body.veloura-product-card-enabled
-  .s-product-card-entry
-  .veloura-quick-view-under-cart-wrap
-  .veloura-quick-view-btn.is-under-cart {
-    position: relative !important;
-    inset: auto !important;
-    transform: none !important;
-    display: flex !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    height: var(--veloura-quick-view-button-height, 42px) !important;
-    min-height: var(--veloura-quick-view-button-height, 42px) !important;
-    margin: 0 !important;
-    padding: 0 14px !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 7px !important;
-    box-sizing: border-box !important;
-    background: var(--veloura-quick-view-button-bg, #004d65) !important;
-    color: var(--veloura-quick-view-button-text, #fff) !important;
-    border:
-      1px solid var(--veloura-quick-view-button-bg, #004d65) !important;
-    border-radius:
-      var(--veloura-quick-view-button-radius, 999px) !important;
-    box-shadow: none !important;
-  }
-
-  body.veloura-product-card-enabled
-  .s-product-card-entry
-  .veloura-quick-view-btn * {
-    color: inherit !important;
-    fill: currentColor !important;
-  }
-
-  body.veloura-product-card-enabled.veloura-pc-hide-wish.veloura-pc-actions-right_stack
-  .s-product-card-entry .veloura-quick-view-btn.is-icon-only,
-  body.veloura-product-card-enabled.veloura-pc-hide-wish.veloura-pc-actions-left_stack
-  .s-product-card-entry .veloura-quick-view-btn.is-icon-only {
-    top: auto !important;
-    bottom: var(--veloura-pc-overlay-offset, 14px) !important;
-  }
-
-  html.dark body.veloura-product-card-enabled,
-  html body.dark.veloura-product-card-enabled {
-    --veloura-product-card-bg:
-      var(--veloura-dark-product-card-bg, #111111) !important;
-  }
-
-  html.dark body.veloura-product-card-enabled
-  .s-product-card-entry,
-  html body.dark.veloura-product-card-enabled
-  .s-product-card-entry,
-  html.dark body.veloura-product-card-enabled
-  .s-product-card-entry .s-product-card-content,
-  html body.dark.veloura-product-card-enabled
-  .s-product-card-entry .s-product-card-content,
-  html.dark body.veloura-product-card-enabled
-  .s-product-card-entry .s-product-card-image,
-  html body.dark.veloura-product-card-enabled
-  .s-product-card-entry .s-product-card-image,
-  html.dark body.veloura-product-card-enabled
-  .s-product-card-entry .s-product-card-image a,
-  html body.dark.veloura-product-card-enabled
-  .s-product-card-entry .s-product-card-image a,
-  html.dark body.veloura-product-card-enabled
-  .s-product-card-entry .s-product-card-image-cover,
-  html body.dark.veloura-product-card-enabled
-  .s-product-card-entry .s-product-card-image-cover {
-    background-color:
-      var(--veloura-dark-product-card-bg, #111111) !important;
-  }
-
-  /*
-   * Image-outside mode keeps its original protrusion geometry.
-   * The card remains transparent above the configured offset and the
-   * ::before surface starts at --veloura-product-image-outside-offset.
-   */
-  html.dark body.veloura-product-card-enabled.veloura-product-card-image-outside
-  .s-product-card-entry,
-  html body.dark.veloura-product-card-enabled.veloura-product-card-image-outside
-  .s-product-card-entry {
-    background: transparent !important;
-    border-radius: 0 !important;
-  }
-
-  html.dark body.veloura-product-card-enabled.veloura-product-card-image-outside
-  .s-product-card-entry::before,
-  html body.dark.veloura-product-card-enabled.veloura-product-card-image-outside
-  .s-product-card-entry::before {
-    top:
-      var(--veloura-product-image-outside-offset, 0px) !important;
-    background:
-      var(--veloura-dark-product-card-bg, #111111) !important;
-    border-radius:
-      var(--veloura-product-card-radius, 18px) !important;
-  }
-
-  /*
-   * Do not paint a dark rectangle behind the protruding image itself.
-   * Otherwise the protrusion visually disappears even though overflow is visible.
-   */
-  html.dark body.veloura-product-card-enabled.veloura-product-card-image-outside
-  .s-product-card-entry
-  :is(
-    .s-product-card-image,
-    .s-product-card-image > a,
-    .s-product-card-image-cover
-  ),
-  html body.dark.veloura-product-card-enabled.veloura-product-card-image-outside
-  .s-product-card-entry
-  :is(
-    .s-product-card-image,
-    .s-product-card-image > a,
-    .s-product-card-image-cover
-  ) {
-    background: transparent !important;
-    background-color: transparent !important;
-  }
-</style>
 
 </head>
 
@@ -3531,116 +3363,137 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       wrapper.closest('.s-product-card-content') ||
       card.querySelector('.s-product-card-content');
 
-    if (!content) return;
+    var addButton =
+      card.querySelector('salla-add-product-button.veloura-card-add-button') ||
+      card.querySelector('salla-add-product-button');
+
+    if (!content || !addButton) return;
 
     function number(value, fallback) {
-      var parsed = parseFloat(String(value || '').replace(',', '.'));
-      return Number.isFinite(parsed) ? parsed : fallback;
+      var parsed = parseFloat(
+        String(value || '').replace(',', '.')
+      );
+
+      return Number.isFinite(parsed)
+        ? parsed
+        : fallback;
     }
 
     function apply() {
       if (
         !card.isConnected ||
         !wrapper.isConnected ||
-        !content.isConnected
+        !content.isConnected ||
+        !addButton.isConnected
       ) {
         return;
       }
 
-      var contentStyle = window.getComputedStyle(content);
       var cardStyle = window.getComputedStyle(card);
+      var parent = wrapper.parentElement;
+
+      if (!parent) return;
+
+      var addRect = addButton.getBoundingClientRect();
+      var parentRect = parent.getBoundingClientRect();
+
+      if (!addRect.width || !parentRect.width) {
+        return;
+      }
 
       /*
-       * The under-cart button lives inside .s-product-card-content.
-       * To reach the same physical edges as Add-to-cart we compensate
-       * the content padding:
+       * V107:
+       * Do not guess padding.
        *
-       * final margin = button slider value - content padding
+       * The real Add-to-cart button is the source of truth.
+       * Quick View receives:
+       *   - exactly the same physical width
+       *   - exactly the same physical left edge
        *
-       * Example:
-       * padding = 10px, slider = 0px  -> margin = -10px
-       * padding = 10px, slider = 6px  -> margin =  -4px
+       * If Add-to-cart visually escapes the content padding by 10px,
+       * Quick View escapes it by the same 10px automatically.
        */
-      var paddingStart = number(
-        contentStyle.getPropertyValue('padding-inline-start'),
-        contentStyle.direction === 'rtl'
-          ? number(contentStyle.paddingRight, 0)
-          : number(contentStyle.paddingLeft, 0)
-      );
-
-      var paddingEnd = number(
-        contentStyle.getPropertyValue('padding-inline-end'),
-        contentStyle.direction === 'rtl'
-          ? number(contentStyle.paddingLeft, 0)
-          : number(contentStyle.paddingRight, 0)
-      );
-
-      var buttonMarginX = number(
-        cardStyle.getPropertyValue('--veloura-product-button-margin-x'),
-        0
-      );
+      var width = addRect.width;
+      var leftOffset = addRect.left - parentRect.left;
 
       var buttonMarginBottom = number(
-        cardStyle.getPropertyValue('--veloura-product-button-margin-bottom'),
+        cardStyle.getPropertyValue(
+          '--veloura-product-button-margin-bottom'
+        ),
         0
       );
 
       /*
-       * Prefer the live CSS variable because Salla's editor can update theme
-       * settings without rebuilding window.velouraQuickView immediately.
+       * Prefer the live CSS variable because Salla editor updates it
+       * immediately when the setting changes.
        */
-      var configGap = number(
-        cardStyle.getPropertyValue('--veloura-qv-under-cart-gap'),
+      var gap = number(
+        cardStyle.getPropertyValue(
+          '--veloura-qv-under-cart-gap'
+        ),
         number(
           (window.velouraQuickView || {}).underCartGap,
           8
         )
       );
 
-      /*
-       * Explicit width prevents flex shrink-to-fit after Salla re-hydrates
-       * the product card. content.clientWidth includes its horizontal padding,
-       * so subtracting the card-button gutter gives the same physical width
-       * as Add to cart.
-       */
-      var explicitWidth = Math.max(
-        0,
-        content.clientWidth - (buttonMarginX * 2)
+      wrapper.style.setProperty(
+        'position',
+        'relative',
+        'important'
+      );
+
+      wrapper.style.setProperty(
+        'left',
+        leftOffset.toFixed(2) + 'px',
+        'important'
+      );
+
+      wrapper.style.setProperty(
+        'right',
+        'auto',
+        'important'
       );
 
       wrapper.style.setProperty(
         'width',
-        explicitWidth.toFixed(2) + 'px',
+        width.toFixed(2) + 'px',
         'important'
       );
 
       wrapper.style.setProperty(
         'max-width',
-        explicitWidth.toFixed(2) + 'px',
+        width.toFixed(2) + 'px',
         'important'
       );
 
       wrapper.style.setProperty(
         'min-width',
-        explicitWidth.toFixed(2) + 'px',
+        width.toFixed(2) + 'px',
         'important'
       );
 
       wrapper.style.setProperty(
-        'margin-inline-start',
-        (buttonMarginX - paddingStart).toFixed(2) + 'px',
+        'flex',
+        '0 0 ' + width.toFixed(2) + 'px',
         'important'
       );
 
       wrapper.style.setProperty(
-        'margin-inline-end',
-        (buttonMarginX - paddingEnd).toFixed(2) + 'px',
+        'align-self',
+        'flex-start',
+        'important'
+      );
+
+      wrapper.style.setProperty(
+        'margin-inline',
+        '0',
         'important'
       );
 
       wrapper.style.setProperty(
         'margin-block-start',
-        configGap.toFixed(2) + 'px',
+        gap.toFixed(2) + 'px',
         'important'
       );
 
@@ -3656,32 +3509,21 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         'important'
       );
 
-      wrapper.dataset.velouraQvPaddingStart =
-        paddingStart.toFixed(2);
+      wrapper.dataset.velouraQvWidth =
+        width.toFixed(2);
 
-      wrapper.dataset.velouraQvPaddingEnd =
-        paddingEnd.toFixed(2);
-
-      wrapper.dataset.velouraQvMarginX =
-        buttonMarginX.toFixed(2);
+      wrapper.dataset.velouraQvLeft =
+        leftOffset.toFixed(2);
 
       wrapper.dataset.velouraQvGap =
-        configGap.toFixed(2);
-
-      wrapper.dataset.velouraQvWidth =
-        explicitWidth.toFixed(2);
+        gap.toFixed(2);
     }
 
-    /*
-     * First apply immediately, then once after the current frame.
-     * This handles editor/style recalculation without moving DOM nodes.
-     */
     apply();
     window.requestAnimationFrame(apply);
 
     /*
-     * Local observer only: if the content box changes size because the
-     * editor changes padding/layout, recompute the compensation.
+     * Observe only the three boxes involved in the geometry.
      */
     if (
       !wrapper.__velouraQuickViewGeometryObserver &&
@@ -3692,13 +3534,13 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
           window.requestAnimationFrame(apply);
         });
 
-      wrapper.__velouraQuickViewGeometryObserver.observe(content);
       wrapper.__velouraQuickViewGeometryObserver.observe(card);
+      wrapper.__velouraQuickViewGeometryObserver.observe(content);
+      wrapper.__velouraQuickViewGeometryObserver.observe(addButton);
     }
 
     /*
-     * Theme-editor updates can mutate style/class attributes without changing
-     * box size immediately. Observe only this card/content pair.
+     * Salla editor can update classes/styles without replacing nodes.
      */
     if (
       !wrapper.__velouraQuickViewAttributeObserver &&
@@ -3709,21 +3551,15 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
           window.requestAnimationFrame(apply);
         });
 
-      wrapper.__velouraQuickViewAttributeObserver.observe(
-        content,
-        {
-          attributes: true,
-          attributeFilter: ['class', 'style']
-        }
-      );
-
-      wrapper.__velouraQuickViewAttributeObserver.observe(
-        card,
-        {
-          attributes: true,
-          attributeFilter: ['class', 'style']
-        }
-      );
+      [card, content, addButton].forEach(function (node) {
+        wrapper.__velouraQuickViewAttributeObserver.observe(
+          node,
+          {
+            attributes: true,
+            attributeFilter: ['class', 'style']
+          }
+        );
+      });
     }
   }
 
