@@ -3188,6 +3188,8 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
    يضيف كلاسات فقط، لا ينقل المفضلة ولا العرض السريع
 */
 (function () {
+  window.__velouraProductCardNativeActionsVersion = 'V109';
+
   function markCleanParents(el) {
     if (!el) return;
 
@@ -3404,6 +3406,18 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     }
 
     function liveValue(dataName, cssName, configName, fallback) {
+      /*
+       * V109:
+       * CSS variable is the source of truth for live editor values.
+       * BODY data remains only a fallback/diagnostic snapshot.
+       */
+      var cardStyle = window.getComputedStyle(card);
+      var fromCss = cardStyle.getPropertyValue(cssName);
+
+      if (String(fromCss || '').trim() !== '') {
+        return number(fromCss, fallback);
+      }
+
       var fromBody =
         document.body &&
         document.body.dataset &&
@@ -3415,13 +3429,6 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         fromBody !== ''
       ) {
         return number(fromBody, fallback);
-      }
-
-      var cardStyle = window.getComputedStyle(card);
-      var fromCss = cardStyle.getPropertyValue(cssName);
-
-      if (String(fromCss || '').trim() !== '') {
-        return number(fromCss, fallback);
       }
 
       return number(
@@ -3890,6 +3897,8 @@ function markCard(card) {
     },
     { passive: true }
   );
+
+})();
 </script>
 
 
