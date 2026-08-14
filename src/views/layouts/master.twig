@@ -3188,7 +3188,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
    يضيف كلاسات فقط، لا ينقل المفضلة ولا العرض السريع
 */
 (function () {
-  window.__velouraProductCardNativeActionsVersion = 'V109';
+  window.__velouraProductCardNativeActionsVersion = 'V110';
 
   function markCleanParents(el) {
     if (!el) return;
@@ -3406,11 +3406,6 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     }
 
     function liveValue(dataName, cssName, configName, fallback) {
-      /*
-       * V109:
-       * CSS variable is the source of truth for live editor values.
-       * BODY data remains only a fallback/diagnostic snapshot.
-       */
       var cardStyle = window.getComputedStyle(card);
       var fromCss = cardStyle.getPropertyValue(cssName);
 
@@ -3446,27 +3441,8 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         return;
       }
 
-      var cardRect = card.getBoundingClientRect();
-      var parent = wrapper.parentElement;
+      var contentStyle = window.getComputedStyle(content);
 
-      if (!parent || !cardRect.width) return;
-
-      var parentRect = parent.getBoundingClientRect();
-
-      /*
-       * Three independent controls:
-       *
-       * 1) quickMarginX:
-       *    physical distance from CARD edges to Quick View.
-       *    0 = touches card left/right even though wrapper lives inside
-       *    padded .s-product-card-content.
-       *
-       * 2) addBottom:
-       *    margin below Add-to-cart footer = space between buttons.
-       *
-       * 3) quickBottom:
-       *    margin below Quick View.
-       */
       var quickMarginX = liveValue(
         'velouraQvUnderCartMarginX',
         '--veloura-qv-under-cart-margin-x',
@@ -3488,15 +3464,35 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         10
       );
 
-      var desiredLeft =
-        cardRect.left + quickMarginX;
+      /*
+       * V110:
+       * The wrapper stays in its normal DOM flow.
+       *
+       * To make Quick View reach the CARD edges while it still lives
+       * inside the padded .s-product-card-content:
+       *
+       *   final inline margin = requested card gap - content padding
+       *
+       * Example:
+       * padding 10px + requested 0px => margin -10px
+       * padding 10px + requested 6px => margin  -4px
+       *
+       * No left/right positioning.
+       * No pixel flex-basis.
+       * No explicit width.
+       */
+      var paddingStart = number(
+        contentStyle.getPropertyValue('padding-inline-start'),
+        contentStyle.direction === 'rtl'
+          ? number(contentStyle.paddingRight, 0)
+          : number(contentStyle.paddingLeft, 0)
+      );
 
-      var leftOffset =
-        desiredLeft - parentRect.left;
-
-      var width = Math.max(
-        0,
-        cardRect.width - (quickMarginX * 2)
+      var paddingEnd = number(
+        contentStyle.getPropertyValue('padding-inline-end'),
+        contentStyle.direction === 'rtl'
+          ? number(contentStyle.paddingLeft, 0)
+          : number(contentStyle.paddingRight, 0)
       );
 
       wrapper.style.setProperty(
@@ -3507,7 +3503,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
       wrapper.style.setProperty(
         'left',
-        leftOffset.toFixed(2) + 'px',
+        'auto',
         'important'
       );
 
@@ -3519,37 +3515,43 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
       wrapper.style.setProperty(
         'width',
-        width.toFixed(2) + 'px',
+        'auto',
         'important'
       );
 
       wrapper.style.setProperty(
         'max-width',
-        width.toFixed(2) + 'px',
+        'none',
         'important'
       );
 
       wrapper.style.setProperty(
         'min-width',
-        width.toFixed(2) + 'px',
+        '0',
         'important'
       );
 
       wrapper.style.setProperty(
         'flex',
-        '0 0 ' + width.toFixed(2) + 'px',
+        '0 0 auto',
         'important'
       );
 
       wrapper.style.setProperty(
         'align-self',
-        'flex-start',
+        'stretch',
         'important'
       );
 
       wrapper.style.setProperty(
-        'margin-inline',
-        '0',
+        'margin-inline-start',
+        (quickMarginX - paddingStart).toFixed(2) + 'px',
+        'important'
+      );
+
+      wrapper.style.setProperty(
+        'margin-inline-end',
+        (quickMarginX - paddingEnd).toFixed(2) + 'px',
         'important'
       );
 
@@ -3582,17 +3584,17 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       wrapper.dataset.velouraQvMarginX =
         quickMarginX.toFixed(2);
 
+      wrapper.dataset.velouraQvPaddingStart =
+        paddingStart.toFixed(2);
+
+      wrapper.dataset.velouraQvPaddingEnd =
+        paddingEnd.toFixed(2);
+
       wrapper.dataset.velouraQvAddBottom =
         addBottom.toFixed(2);
 
       wrapper.dataset.velouraQvBottom =
         quickBottom.toFixed(2);
-
-      wrapper.dataset.velouraQvWidth =
-        width.toFixed(2);
-
-      wrapper.dataset.velouraQvLeft =
-        leftOffset.toFixed(2);
     }
 
     apply();
