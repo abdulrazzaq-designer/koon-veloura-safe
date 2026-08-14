@@ -3068,7 +3068,7 @@ salla-products-slider[data-veloura-related-slider],
 
 
 /* ==========================================================================
-   Veloura Product Card V107
+   Veloura Product Card V108
    بطاقة المنتج الخارجية + زر العرض السريع
    ========================================================================== */
 
@@ -3101,15 +3101,6 @@ body.veloura-product-card-enabled
 .s-product-card-entry
 .s-product-card-content {
   overflow: visible !important;
-}
-
-body.veloura-product-card-enabled.veloura-quick-view-position-below_add_to_cart
-.s-product-card-entry
-.s-product-card-content-footer,
-body.veloura-product-card-enabled.veloura-quick-view-position-below-add-to-cart
-.s-product-card-entry
-.s-product-card-content-footer {
-  margin-bottom: 0 !important;
 }
 
 body.veloura-product-card-enabled

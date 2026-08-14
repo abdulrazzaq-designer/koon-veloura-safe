@@ -703,10 +703,16 @@
 %}
 
 {% set vpc_cart_icon_raw = theme.settings.get('veloura_product_card_cart_icon_2026', 'sicon-shopping-bag') %}
-{% if vpc_cart_icon_raw is iterable and vpc_cart_icon_raw[0].value is defined %}
+{% if vpc_cart_icon_raw is iterable and vpc_cart_icon_raw[0] is defined and vpc_cart_icon_raw[0].value is defined %}
   {% set vpc_cart_icon = vpc_cart_icon_raw[0].value %}
 {% elseif vpc_cart_icon_raw.value is defined %}
   {% set vpc_cart_icon = vpc_cart_icon_raw.value %}
+{% elseif vpc_cart_icon_raw.selected is defined and vpc_cart_icon_raw.selected is iterable and vpc_cart_icon_raw.selected[0] is defined and vpc_cart_icon_raw.selected[0].value is defined %}
+  {% set vpc_cart_icon = vpc_cart_icon_raw.selected[0].value %}
+{% elseif vpc_cart_icon_raw.selected is defined and vpc_cart_icon_raw.selected.value is defined %}
+  {% set vpc_cart_icon = vpc_cart_icon_raw.selected.value %}
+{% elseif vpc_cart_icon_raw.selected is defined %}
+  {% set vpc_cart_icon = vpc_cart_icon_raw.selected %}
 {% else %}
   {% set vpc_cart_icon = vpc_cart_icon_raw %}
 {% endif %}
@@ -747,6 +753,12 @@
 {% set vqv_button_position_raw = theme.settings.get('veloura_quick_view_button_position_2026', 'wishlist_icon') %}
 {% set vqv_under_cart_gap_raw = _self.veloura_dm_value(theme.settings.get('veloura_quick_view_under_cart_gap_2026', 8), 8)|trim %}
 {% set vqv_under_cart_gap = vqv_under_cart_gap_raw + 0 %}
+
+{% set vqv_under_cart_margin_x_raw = _self.veloura_dm_value(theme.settings.get('veloura_quick_view_under_cart_margin_x_2026', 0), 0)|trim %}
+{% set vqv_under_cart_margin_x = vqv_under_cart_margin_x_raw + 0 %}
+
+{% set vqv_under_cart_margin_bottom_raw = _self.veloura_dm_value(theme.settings.get('veloura_quick_view_under_cart_margin_bottom_2026', 10), 10)|trim %}
+{% set vqv_under_cart_margin_bottom = vqv_under_cart_margin_bottom_raw + 0 %}
 
 {% if vqv_button_position_raw is iterable and vqv_button_position_raw[0].value is defined %}
   {% set vqv_button_position = vqv_button_position_raw[0].value %}
@@ -1021,6 +1033,8 @@
         showProductLink: {{ vqv_show_product_link ? 'true' : 'false' }},
         animation: {{ vqv_animation|json_encode|raw }},
         underCartGap: {{ vqv_under_cart_gap|json_encode|raw }},
+        underCartMarginX: {{ vqv_under_cart_margin_x|json_encode|raw }},
+        underCartMarginBottom: {{ vqv_under_cart_margin_bottom|json_encode|raw }},
         glassEnabled: {{ vqv_overlay_blur ? 'true' : 'false' }},
         imageFit: {{ vqv_image_fit|json_encode|raw }}
       };
@@ -1083,7 +1097,9 @@
           --veloura-product-button-radius: {{ vpc_radius_map[vpc_button_radius_key]|default('16px') }};
           --veloura-product-button-margin-x: {{ vpc_button_margin_x }}px;
           --veloura-product-button-margin-bottom: {{ vpc_button_margin_bottom }}px;
-        --veloura-qv-under-cart-gap: {{ vqv_under_cart_gap }}px;
+          --veloura-qv-under-cart-gap: {{ vqv_under_cart_gap }}px;
+          --veloura-qv-under-cart-margin-x: {{ vqv_under_cart_margin_x }}px;
+          --veloura-qv-under-cart-margin-bottom: {{ vqv_under_cart_margin_bottom }}px;
           --veloura-product-button-height: {{ vpc_button_height }}px;
           --veloura-product-button-bg: {{ vpc_button_bg_color }};
           --veloura-product-button-text: {{ vpc_button_text_color }};
@@ -2210,7 +2226,12 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {{ (vbn_enabled and not vbn_is_product_page) ? ' veloura-bottom-nav-position-' ~ vbn_position : '' }}
   {{ (vbn_enabled and not vbn_is_product_page and vbn_glass) ? ' veloura-bottom-nav-glass' : '' }}
   {{ (vbn_enabled and not vbn_is_product_page and not vbn_show_labels) ? ' veloura-bottom-nav-no-labels' : '' }}
-">
+"
+  data-veloura-card-cart-icon="{{ vpc_cart_icon|e('html_attr') }}"
+  data-veloura-qv-under-cart-margin-x="{{ vqv_under_cart_margin_x }}"
+  data-veloura-qv-under-cart-gap="{{ vqv_under_cart_gap }}"
+  data-veloura-qv-under-cart-margin-bottom="{{ vqv_under_cart_margin_bottom }}"
+>
 
 {# ================================
    Veloura Loader Stable Minimal 2026
@@ -3212,7 +3233,11 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
     var config = window.velouraProductCardControls || {};
     var hideIcon = config.hideCartIcon === true || config.hideCartIcon === 'true';
-    var iconClass = String(config.cartIcon || 'sicon-shopping-bag').trim();
+    var iconClass = String(
+      (document.body && document.body.dataset.velouraCardCartIcon) ||
+      config.cartIcon ||
+      'sicon-shopping-bag'
+    ).trim();
 
     var allowed = [
       'sicon-shopping-bag',
@@ -3363,11 +3388,10 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       wrapper.closest('.s-product-card-content') ||
       card.querySelector('.s-product-card-content');
 
-    var addButton =
-      card.querySelector('salla-add-product-button.veloura-card-add-button') ||
-      card.querySelector('salla-add-product-button');
+    var footer =
+      card.querySelector('.s-product-card-content-footer');
 
-    if (!content || !addButton) return;
+    if (!content) return;
 
     function number(value, fallback) {
       var parsed = parseFloat(
@@ -3379,62 +3403,93 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         : fallback;
     }
 
+    function liveValue(dataName, cssName, configName, fallback) {
+      var fromBody =
+        document.body &&
+        document.body.dataset &&
+        document.body.dataset[dataName];
+
+      if (
+        fromBody !== undefined &&
+        fromBody !== null &&
+        fromBody !== ''
+      ) {
+        return number(fromBody, fallback);
+      }
+
+      var cardStyle = window.getComputedStyle(card);
+      var fromCss = cardStyle.getPropertyValue(cssName);
+
+      if (String(fromCss || '').trim() !== '') {
+        return number(fromCss, fallback);
+      }
+
+      return number(
+        (window.velouraQuickView || {})[configName],
+        fallback
+      );
+    }
+
     function apply() {
       if (
         !card.isConnected ||
         !wrapper.isConnected ||
-        !content.isConnected ||
-        !addButton.isConnected
+        !content.isConnected
       ) {
         return;
       }
 
-      var cardStyle = window.getComputedStyle(card);
+      var cardRect = card.getBoundingClientRect();
       var parent = wrapper.parentElement;
 
-      if (!parent) return;
+      if (!parent || !cardRect.width) return;
 
-      var addRect = addButton.getBoundingClientRect();
       var parentRect = parent.getBoundingClientRect();
 
-      if (!addRect.width || !parentRect.width) {
-        return;
-      }
-
       /*
-       * V107:
-       * Do not guess padding.
+       * Three independent controls:
        *
-       * The real Add-to-cart button is the source of truth.
-       * Quick View receives:
-       *   - exactly the same physical width
-       *   - exactly the same physical left edge
+       * 1) quickMarginX:
+       *    physical distance from CARD edges to Quick View.
+       *    0 = touches card left/right even though wrapper lives inside
+       *    padded .s-product-card-content.
        *
-       * If Add-to-cart visually escapes the content padding by 10px,
-       * Quick View escapes it by the same 10px automatically.
+       * 2) addBottom:
+       *    margin below Add-to-cart footer = space between buttons.
+       *
+       * 3) quickBottom:
+       *    margin below Quick View.
        */
-      var width = addRect.width;
-      var leftOffset = addRect.left - parentRect.left;
-
-      var buttonMarginBottom = number(
-        cardStyle.getPropertyValue(
-          '--veloura-product-button-margin-bottom'
-        ),
+      var quickMarginX = liveValue(
+        'velouraQvUnderCartMarginX',
+        '--veloura-qv-under-cart-margin-x',
+        'underCartMarginX',
         0
       );
 
-      /*
-       * Prefer the live CSS variable because Salla editor updates it
-       * immediately when the setting changes.
-       */
-      var gap = number(
-        cardStyle.getPropertyValue(
-          '--veloura-qv-under-cart-gap'
-        ),
-        number(
-          (window.velouraQuickView || {}).underCartGap,
-          8
-        )
+      var addBottom = liveValue(
+        'velouraQvUnderCartGap',
+        '--veloura-qv-under-cart-gap',
+        'underCartGap',
+        8
+      );
+
+      var quickBottom = liveValue(
+        'velouraQvUnderCartMarginBottom',
+        '--veloura-qv-under-cart-margin-bottom',
+        'underCartMarginBottom',
+        10
+      );
+
+      var desiredLeft =
+        cardRect.left + quickMarginX;
+
+      var leftOffset =
+        desiredLeft - parentRect.left;
+
+      var width = Math.max(
+        0,
+        cardRect.width - (quickMarginX * 2)
       );
 
       wrapper.style.setProperty(
@@ -3493,13 +3548,13 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
       wrapper.style.setProperty(
         'margin-block-start',
-        gap.toFixed(2) + 'px',
+        '0px',
         'important'
       );
 
       wrapper.style.setProperty(
         'margin-block-end',
-        buttonMarginBottom.toFixed(2) + 'px',
+        quickBottom.toFixed(2) + 'px',
         'important'
       );
 
@@ -3509,22 +3564,33 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
         'important'
       );
 
+      if (footer) {
+        footer.style.setProperty(
+          'margin-bottom',
+          addBottom.toFixed(2) + 'px',
+          'important'
+        );
+      }
+
+      wrapper.dataset.velouraQvMarginX =
+        quickMarginX.toFixed(2);
+
+      wrapper.dataset.velouraQvAddBottom =
+        addBottom.toFixed(2);
+
+      wrapper.dataset.velouraQvBottom =
+        quickBottom.toFixed(2);
+
       wrapper.dataset.velouraQvWidth =
         width.toFixed(2);
 
       wrapper.dataset.velouraQvLeft =
         leftOffset.toFixed(2);
-
-      wrapper.dataset.velouraQvGap =
-        gap.toFixed(2);
     }
 
     apply();
     window.requestAnimationFrame(apply);
 
-    /*
-     * Observe only the three boxes involved in the geometry.
-     */
     if (
       !wrapper.__velouraQuickViewGeometryObserver &&
       window.ResizeObserver
@@ -3536,12 +3602,12 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
       wrapper.__velouraQuickViewGeometryObserver.observe(card);
       wrapper.__velouraQuickViewGeometryObserver.observe(content);
-      wrapper.__velouraQuickViewGeometryObserver.observe(addButton);
+
+      if (footer) {
+        wrapper.__velouraQuickViewGeometryObserver.observe(footer);
+      }
     }
 
-    /*
-     * Salla editor can update classes/styles without replacing nodes.
-     */
     if (
       !wrapper.__velouraQuickViewAttributeObserver &&
       window.MutationObserver
@@ -3551,15 +3617,17 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
           window.requestAnimationFrame(apply);
         });
 
-      [card, content, addButton].forEach(function (node) {
-        wrapper.__velouraQuickViewAttributeObserver.observe(
-          node,
-          {
-            attributes: true,
-            attributeFilter: ['class', 'style']
-          }
-        );
-      });
+      [card, content, footer]
+        .filter(Boolean)
+        .forEach(function (node) {
+          wrapper.__velouraQuickViewAttributeObserver.observe(
+            node,
+            {
+              attributes: true,
+              attributeFilter: ['class', 'style']
+            }
+          );
+        });
     }
   }
 
@@ -3629,6 +3697,13 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     button.removeAttribute(
       'data-veloura-qv-under-cart'
     );
+
+    var footer =
+      card.querySelector('.s-product-card-content-footer');
+
+    if (footer) {
+      footer.style.removeProperty('margin-bottom');
+    }
 
     if (image && button.parentNode !== image) {
       if (wrapper) {

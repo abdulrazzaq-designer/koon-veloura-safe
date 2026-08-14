@@ -5848,8 +5848,8 @@
       "id": "veloura_quick_view_under_cart_gap_2026",
       "type": "number",
       "format": "slider",
-      "label": "المسافة بين زر العرض السريع وإضافة السلة",
-      "description": "تتحكم بالمسافة العمودية بين زر أضف للسلة وزر العرض السريع عندما يكون العرض السريع أسفل زر السلة.",
+      "label": "المسافة أسفل زر أضف للسلة",
+      "description": "تتحكم بالفراغ أسفل زر أضف للسلة. عندما يكون العرض السريع تحته فهذه هي المسافة بين الزرين.",
       "inputType": "range",
       "icon": "sicon-pin",
       "value": "8",
@@ -5857,7 +5857,71 @@
       "required": false,
       "step": "1",
       "minimum": "0",
-      "maximum": "40",
+      "maximum": "60",
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_quick_view_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_quick_view_button_position_2026",
+          "operation": "=",
+          "value": "below_add_to_cart"
+        }
+      ]
+    },
+    {
+      "id": "veloura_quick_view_under_cart_margin_x_2026",
+      "type": "number",
+      "format": "slider",
+      "label": "المسافة يمين ويسار زر العرض السريع",
+      "description": "المسافة الفعلية من حافتي بطاقة المنتج إلى زر العرض السريع. 0 يعني أن زر العرض السريع يلتصق بحافتي البطاقة حتى لو كان المحتوى الداخلي عليه Padding.",
+      "inputType": "range",
+      "icon": "sicon-pin",
+      "value": "0",
+      "default": "0",
+      "required": false,
+      "step": "1",
+      "minimum": "0",
+      "maximum": "100",
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_quick_view_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_quick_view_button_position_2026",
+          "operation": "=",
+          "value": "below_add_to_cart"
+        }
+      ]
+    },
+    {
+      "id": "veloura_quick_view_under_cart_margin_bottom_2026",
+      "type": "number",
+      "format": "slider",
+      "label": "المسافة أسفل زر العرض السريع",
+      "description": "تتحكم بالمسافة بين زر العرض السريع والحافة السفلية لبطاقة المنتج.",
+      "inputType": "range",
+      "icon": "sicon-pin",
+      "value": "10",
+      "default": "10",
+      "required": false,
+      "step": "1",
+      "minimum": "0",
+      "maximum": "100",
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
@@ -6671,8 +6735,8 @@
       "id": "veloura_product_card_button_margin_x_2026",
       "type": "number",
       "format": "slider",
-      "label": "المسافة يمين ويسار زري البطاقة",
-      "description": "المسافة النهائية من حافة بطاقة المنتج لكلا الزرين معاً. البداية 10px، و0 يعني التصاق الزرين بحافتي البطاقة فعلياً.",
+      "label": "المسافة يمين ويسار زر أضف للسلة",
+      "description": "المسافة الفعلية من حافتي بطاقة المنتج إلى زر أضف للسلة. زر العرض السريع له سلايدر مستقل عندما يكون أسفل زر أضف للسلة.",
       "inputType": "range",
       "icon": "sicon-pin",
       "value": "10",
