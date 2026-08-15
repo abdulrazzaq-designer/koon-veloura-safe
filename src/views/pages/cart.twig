@@ -49,60 +49,93 @@
 
 {% extends "layouts.master" %}
 {% block content %}
-    {# Veloura Cart Surfaces V2.2 settings #}
+    {# Veloura Cart Surfaces V3 — uses global site colors + global radius #}
     {% set vcart_enabled_raw = theme.settings.get('veloura_cart_surfaces_enabled_2026', false) %}
     {% if vcart_enabled_raw.value is defined %}
         {% set vcart_enabled_raw = vcart_enabled_raw.value %}
     {% elseif vcart_enabled_raw.selected is defined %}
         {% set vcart_enabled_raw = vcart_enabled_raw.selected %}
     {% endif %}
-    {% set vcart_surfaces_enabled = vcart_enabled_raw == true or vcart_enabled_raw == 'true' or vcart_enabled_raw == 1 or vcart_enabled_raw == '1' or vcart_enabled_raw == 'on' %}
+    {% set vcart_surfaces_enabled =
+        vcart_enabled_raw == true
+        or vcart_enabled_raw == 'true'
+        or vcart_enabled_raw == 1
+        or vcart_enabled_raw == '1'
+        or vcart_enabled_raw == 'on'
+    %}
 
-    {% set vcart_surface_bg = theme.settings.get('veloura_cart_surfaces_bg_color_2026', '#f3f4f6') %}
-    {% if vcart_surface_bg.value is defined %}
-        {% set vcart_surface_bg = vcart_surface_bg.value %}
+    {# Light: primary site background + secondary site background #}
+    {% set vcart_light_primary = theme.settings.get('veloura_site_bg_color_2026', '#ffffff') %}
+    {% if vcart_light_primary.value is defined %}
+        {% set vcart_light_primary = vcart_light_primary.value %}
     {% endif %}
 
-    {% set vcart_surface_radius_raw = theme.settings.get('veloura_cart_surfaces_radius_2026', 'medium') %}
-    {% if vcart_surface_radius_raw is iterable and vcart_surface_radius_raw[0].value is defined %}
-        {% set vcart_surface_radius_key = vcart_surface_radius_raw[0].value %}
-    {% elseif vcart_surface_radius_raw.value is defined %}
-        {% set vcart_surface_radius_key = vcart_surface_radius_raw.value %}
+    {% set vcart_light_secondary = theme.settings.get('veloura_site_second_bg_color_2026', '#f8fafc') %}
+    {% if vcart_light_secondary.value is defined %}
+        {% set vcart_light_secondary = vcart_light_secondary.value %}
+    {% endif %}
+
+    {# Dark: primary body background + secondary dark background #}
+    {% set vcart_dark_primary = theme.settings.get('veloura_dark_body_bg_2026', '#010202') %}
+    {% if vcart_dark_primary.value is defined %}
+        {% set vcart_dark_primary = vcart_dark_primary.value %}
+    {% endif %}
+
+    {% set vcart_dark_secondary = theme.settings.get('veloura_dark_secondary_bg_2026', '#010612') %}
+    {% if vcart_dark_secondary.value is defined %}
+        {% set vcart_dark_secondary = vcart_dark_secondary.value %}
+    {% endif %}
+
+    {# One global radius source for cart, product details and general controls #}
+    {% set vcart_global_radius_raw = theme.settings.get('veloura_global_radius_2026', 'large') %}
+    {% if vcart_global_radius_raw is iterable and vcart_global_radius_raw[0].value is defined %}
+        {% set vcart_global_radius_key = vcart_global_radius_raw[0].value %}
+    {% elseif vcart_global_radius_raw.value is defined %}
+        {% set vcart_global_radius_key = vcart_global_radius_raw.value %}
+    {% elseif vcart_global_radius_raw.selected is defined and vcart_global_radius_raw.selected is iterable and vcart_global_radius_raw.selected[0].value is defined %}
+        {% set vcart_global_radius_key = vcart_global_radius_raw.selected[0].value %}
     {% else %}
-        {% set vcart_surface_radius_key = vcart_surface_radius_raw %}
+        {% set vcart_global_radius_key = vcart_global_radius_raw %}
     {% endif %}
 
+    {% set vcart_global_radius_map = {
+        'sharp': '0px',
+        'soft': '10px',
+        'medium': '16px',
+        'large': '28px',
+        'xl': '36px'
+    } %}
+    {% set vcart_global_radius = vcart_global_radius_map[vcart_global_radius_key]|default('28px') %}
+
+    {# Border remains independently configurable #}
     {% set vcart_border_raw = theme.settings.get('veloura_cart_surfaces_border_enabled_2026', false) %}
     {% if vcart_border_raw.value is defined %}
         {% set vcart_border_raw = vcart_border_raw.value %}
     {% elseif vcart_border_raw.selected is defined %}
         {% set vcart_border_raw = vcart_border_raw.selected %}
     {% endif %}
-    {% set vcart_surface_border_enabled = vcart_border_raw == true or vcart_border_raw == 'true' or vcart_border_raw == 1 or vcart_border_raw == '1' or vcart_border_raw == 'on' %}
+    {% set vcart_surface_border_enabled =
+        vcart_border_raw == true
+        or vcart_border_raw == 'true'
+        or vcart_border_raw == 1
+        or vcart_border_raw == '1'
+        or vcart_border_raw == 'on'
+    %}
 
     {% set vcart_surface_border_color = theme.settings.get('veloura_cart_surfaces_border_color_2026', '#e5e7eb') %}
     {% if vcart_surface_border_color.value is defined %}
         {% set vcart_surface_border_color = vcart_surface_border_color.value %}
     {% endif %}
 
-    {% set vcart_shadow_raw = theme.settings.get('veloura_cart_surfaces_shadow_enabled_2026', false) %}
-    {% if vcart_shadow_raw.value is defined %}
-        {% set vcart_shadow_raw = vcart_shadow_raw.value %}
-    {% elseif vcart_shadow_raw.selected is defined %}
-        {% set vcart_shadow_raw = vcart_shadow_raw.selected %}
-    {% endif %}
-    {% set vcart_surface_shadow_enabled = vcart_shadow_raw == true or vcart_shadow_raw == 'true' or vcart_shadow_raw == 1 or vcart_shadow_raw == '1' or vcart_shadow_raw == 'on' %}
-
-    {% set vcart_surface_radius_map = {
-        'sharp': '0px',
-        'soft': '10px',
-        'medium': '16px',
-        'large': '24px',
-        'round': '32px'
-    } %}
-    {% set vcart_surface_radius = vcart_surface_radius_map[vcart_surface_radius_key]|default('16px') %}
-    <div class="container{% if vcart_surfaces_enabled %} veloura-cart-surfaces-enabled{% endif %}{% if vcart_surface_border_enabled %} veloura-cart-border-enabled{% endif %}{% if vcart_surface_shadow_enabled %} veloura-cart-shadow-enabled{% endif %}"
-         style="--veloura-cart-surface-bg: {{ vcart_surface_bg }}; --veloura-cart-surface-radius: {{ vcart_surface_radius }}; --veloura-cart-surface-border-color: {{ vcart_surface_border_color }};">
+    <div class="container veloura-cart-page{% if vcart_surfaces_enabled %} veloura-cart-surfaces-enabled{% endif %}{% if vcart_surface_border_enabled %} veloura-cart-border-enabled{% endif %}"
+         style="
+            --veloura-cart-light-primary-bg: {{ vcart_light_primary }};
+            --veloura-cart-light-secondary-bg: {{ vcart_light_secondary }};
+            --veloura-cart-dark-primary-bg: {{ vcart_dark_primary }};
+            --veloura-cart-dark-secondary-bg: {{ vcart_dark_secondary }};
+            --veloura-cart-radius: {{ vcart_global_radius }};
+            --veloura-cart-surface-border-color: {{ vcart_surface_border_color }};
+         ">
         {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
         <nav class="breadcrumbs w-full py-5">
             <salla-breadcrumb></salla-breadcrumb>
@@ -115,7 +148,7 @@
 
                 {% for item in cart.items %}
                     <form onchange="salla.form.onChange('cart.updateItem', event)" id="item-{{ item.id }}">
-                        <section class="cart-item bg-white p-5 xs:p-7 rounded-md mb-5 relative">
+                        <section class="cart-item veloura-cart-surface bg-white p-5 xs:p-7 rounded-md mb-5 relative">
                             <input type="hidden" name="id" value="{{ item.id }}">
                                 <!-- product -->
                                 <div class="md:flex rtl:space-x-reverse md:space-x-12 items-start justify-between mb-8 last:mb-0">
@@ -125,12 +158,12 @@
 												<img src="{{ item.product_image }}"
 													alt="{{ item.product_name }}"
                                                     loading="eager"
-													class="flex-none w-24 h-20 border border-gray-200 bg-gray-100 rounded-md object-center object-cover">
+													class="veloura-cart-product-image flex-none w-24 h-20 border border-gray-200 bg-gray-100 rounded-md object-center object-cover">
 											{% else %}
 												<img src="{{ item.product_image }}"
 													alt="{{ item.product_name }}"
                                                     loading="lazy"
-													class="flex-none w-24 h-20 border border-gray-200 bg-gray-100 rounded-md object-center object-cover">
+													class="veloura-cart-product-image flex-none w-24 h-20 border border-gray-200 bg-gray-100 rounded-md object-center object-cover">
 											{% endif %}
 
                                             <!-- free product ribbon -->
@@ -175,7 +208,7 @@
                                             <span class="w-10 text-center">{{ item.quantity }}</span>
                                         {% else %}
                                             <salla-quantity-input cart-item-id="{{ item.id }}"  max="{{ item.max_quantity }}"
-                                                class="transtion transition-color duration-300"
+                                                class="veloura-cart-quantity transtion transition-color duration-300"
 												aria-label="Quantity"
                                                 value="{{ item.quantity }}" name="quantity">
                                             </salla-quantity-input>
@@ -228,7 +261,7 @@
             <!-- sidebar -->
             {% if cart.items|length %}
                 <div class="sticky top-24 w-full lg:w-96 rtl:lg:mr-8 ltr:lg:ml-8">
-                    <div class="shadow-default bg-white p-5 xs:p-7 rounded-md mb-5 relative {{ cart.free_shipping_bar ? '' : 'hidden' }}" id="free-shipping">
+                    <div class="veloura-cart-surface shadow-default bg-white p-5 xs:p-7 rounded-md mb-5 relative {{ cart.free_shipping_bar ? '' : 'hidden' }}" id="free-shipping">
                         <div class="flex rtl:space-x-reverse space-x-3 items-center">
                             <i class="bg-primary text-white rounded-icon sicon-shipping-fast {{ theme.is_rtl ? 'flip-x':'' }}"></i>
                             {% set is_free=cart.free_shipping_bar.has_free_shipping %}
@@ -257,11 +290,11 @@
                         </salla-loyalty-panel>
                     {% endif %}
 
-                    <div id="cart-gifting" class="shadow-default bg-white xs:p-2 rounded-md mb-5 relative  {{gift.enabled ? '' : 'hidden' }}">
+                    <div id="cart-gifting" class="veloura-cart-surface shadow-default bg-white xs:p-2 rounded-md mb-5 relative  {{gift.enabled ? '' : 'hidden' }}">
                         <salla-gifting id="salla-gifting" class="mt-5" widget-title="{{ trans("pages.cart.gift_widget_title") }}"  widget-subtitle="{{ gift.text }}" class="mt-5" {{gift.type}}-products  vertical></salla-gifting>
                     </div>
 
-                    <div class="shadow-default bg-white p-5 xs:p-7 rounded-md mb-5 relative transition-height duration-1000">
+                    <div class="veloura-cart-surface veloura-cart-summary-surface shadow-default bg-white p-5 xs:p-7 rounded-md mb-5 relative transition-height duration-1000">
                         <h2 class="font-bold text-sm mb-5">{{ trans('pages.cart.summary') }}</h2>
 
                         <div class="flex justify-between text-sm mb-5">
@@ -308,7 +341,7 @@
 
                         <div class="cart-submit-wrap">
                             {% hook 'cart:submit.start' %}
-                            <salla-button id="cart-submit" loader-position="center" width="wide">
+                            <salla-button id="cart-submit" class="veloura-cart-submit" loader-position="center" width="wide">
                                 {{ trans('pages.cart.complete_order') }}
                             </salla-button>
                             {% hook 'cart:submit.end' %}

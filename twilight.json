@@ -4872,8 +4872,8 @@
       "type": "boolean",
       "format": "switch",
       "id": "veloura_cart_surfaces_enabled_2026",
-      "label": "تفعيل تخصيص خلفية وحواف عناصر السلة",
-      "description": "عند التفعيل يمكنك اختيار لون خلفية وحواف بطاقات المنتجات وملخص الطلب داخل صفحة السلة. عند التعطيل يبقى تصميم السلة الأساسي كما هو.",
+      "label": "تفعيل تنسيق عناصر السلة",
+      "description": "عند التفعيل تستخدم عناصر السلة ألوان الخلفيات العامة تلقائيًا: الخلفية الثانوية للكروت والعناصر، والخلفية الأساسية لصندوق الخيارات الداخلي. كما تستخدم حواف العناصر العامة، مع إبقاء التحكم بالإطار بشكل مستقل.",
       "icon": "sicon-paint-brush",
       "wide": true,
       "required": false,
@@ -4888,94 +4888,11 @@
       ]
     },
     {
-      "id": "veloura_cart_surfaces_bg_color_2026",
-      "type": "string",
-      "format": "color",
-      "label": "لون خلفية عناصر السلة",
-      "description": "يطبق اللون على بطاقة المنتج وصناديق الشحن والهدايا وملخص الطلب فقط.",
-      "icon": "sicon-palette",
-      "value": "#f3f4f6",
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_cart_surfaces_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_cart_banners_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_cart_surfaces_radius_2026",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "حواف عناصر السلة",
-      "description": "اختر درجة تدوير حواف بطاقات المنتجات وملخص الطلب.",
-      "icon": "sicon-border-radius",
-      "source": "Manual",
-      "required": true,
-      "selected": [
-        {
-          "label": "ناعمة",
-          "value": "medium",
-          "key": "veloura-cart-surfaces-radius-medium-2026"
-        },
-        {
-          "id": "veloura_cart_banners_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
-      "options": [
-        {
-          "label": "حادة",
-          "value": "sharp",
-          "key": "veloura-cart-surfaces-radius-sharp-2026"
-        },
-        {
-          "label": "خفيفة",
-          "value": "soft",
-          "key": "veloura-cart-surfaces-radius-soft-2026"
-        },
-        {
-          "label": "ناعمة",
-          "value": "medium",
-          "key": "veloura-cart-surfaces-radius-medium-2026"
-        },
-        {
-          "label": "ناعمة جدًا",
-          "value": "large",
-          "key": "veloura-cart-surfaces-radius-large-2026"
-        },
-        {
-          "label": "دائرية",
-          "value": "round",
-          "key": "veloura-cart-surfaces-radius-round-2026"
-        }
-      ],
-      "conditions": [
-        {
-          "id": "veloura_cart_surfaces_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_cart_banners_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "type": "boolean",
       "format": "switch",
       "id": "veloura_cart_surfaces_border_enabled_2026",
-      "label": "إظهار إطار خفيف حول العناصر",
-      "description": "يفيد عندما يكون لون العناصر قريبًا من لون خلفية المتجر.",
+      "label": "إظهار إطار خفيف حول عناصر السلة",
+      "description": "يضيف إطارًا خفيفًا حول كروت السلة والعناصر الداخلية التي تدعم تنسيق Veloura.",
       "icon": "sicon-border-all",
       "required": false,
       "value": false,
@@ -5009,29 +4926,6 @@
         },
         {
           "id": "veloura_cart_surfaces_border_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_cart_banners_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "boolean",
-      "format": "switch",
-      "id": "veloura_cart_surfaces_shadow_enabled_2026",
-      "label": "إظهار ظل خفيف حول العناصر",
-      "description": "يضيف ظلًا محايدًا وخفيفًا دون تغيير لون العناصر.",
-      "icon": "sicon-magic",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_cart_surfaces_enabled_2026",
           "operation": "=",
           "value": true
         },
@@ -5863,28 +5757,6 @@
           "id": "veloura_pc_hide_wish_2026",
           "operation": "=",
           "value": false
-        }
-      ]
-    },
-    {
-      "id": "veloura_quick_view_under_cart_gap_2026",
-      "type": "number",
-      "format": "slider",
-      "label": "المسافة أسفل زر أضف للسلة",
-      "description": "يبقى هذا الخيار ظاهرًا دائمًا ويتحكم بالمسافة أسفل زر أضف للسلة. إذا كان العرض السريع أسفل زر السلة تصبح هذه المسافة هي الفراغ بين الزرين.",
-      "inputType": "range",
-      "icon": "sicon-pin",
-      "value": "8",
-      "default": "8",
-      "required": false,
-      "step": "1",
-      "minimum": "0",
-      "maximum": "60",
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
         }
       ]
     },
@@ -6794,6 +6666,28 @@
       "step": "1",
       "minimum": "0",
       "maximum": "100",
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_quick_view_under_cart_gap_2026",
+      "type": "number",
+      "format": "slider",
+      "label": "المسافة أسفل زر أضف للسلة",
+      "description": "يبقى هذا الخيار ظاهرًا دائمًا ويتحكم بالمسافة أسفل زر أضف للسلة. إذا كان العرض السريع أسفل زر السلة تصبح هذه المسافة هي الفراغ بين الزرين.",
+      "inputType": "range",
+      "icon": "sicon-pin",
+      "value": "8",
+      "default": "8",
+      "required": false,
+      "step": "1",
+      "minimum": "0",
+      "maximum": "60",
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
