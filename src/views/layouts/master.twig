@@ -92,8 +92,29 @@
 
 {% set vdm_initial_dark = vdm_enabled and vdm_mode == 'dark' %}
 
-{# Veloura V114 — one global radius contract for every supported surface #}
-{% set vglobal_radius_key = _self.veloura_dm_value(theme.settings.get('veloura_global_radius_2026', 'large'), 'large')|trim %}
+{# Veloura V115 — robust global-radius parser #}
+{% set vglobal_radius_raw = theme.settings.get('veloura_global_radius_2026', 'large') %}
+
+{% if vglobal_radius_raw.selected is defined %}
+  {% set vglobal_radius_choice = vglobal_radius_raw.selected %}
+{% elseif vglobal_radius_raw.value is defined %}
+  {% set vglobal_radius_choice = vglobal_radius_raw.value %}
+{% else %}
+  {% set vglobal_radius_choice = vglobal_radius_raw %}
+{% endif %}
+
+{% if vglobal_radius_choice.value is defined %}
+  {% set vglobal_radius_key = vglobal_radius_choice.value %}
+{% elseif vglobal_radius_choice is iterable and vglobal_radius_choice[0] is defined and vglobal_radius_choice[0].value is defined %}
+  {% set vglobal_radius_key = vglobal_radius_choice[0].value %}
+{% elseif vglobal_radius_choice is iterable and vglobal_radius_choice[0] is defined %}
+  {% set vglobal_radius_key = vglobal_radius_choice[0] %}
+{% else %}
+  {% set vglobal_radius_key = vglobal_radius_choice %}
+{% endif %}
+
+{% set vglobal_radius_key = vglobal_radius_key|trim %}
+
 {% set vglobal_radius_map = {
   'sharp': '0px',
   'soft': '10px',
@@ -101,6 +122,7 @@
   'large': '28px',
   'xl': '36px'
 } %}
+
 {% set vglobal_radius = vglobal_radius_map[vglobal_radius_key]|default('28px') %}
 
 <!DOCTYPE html>

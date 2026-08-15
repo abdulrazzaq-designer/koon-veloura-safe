@@ -83,10 +83,47 @@
         {% set vcart_surface_border_color = vcart_surface_border_color.value %}
     {% endif %}
 
+    {# V115 — the cart reads the SAME general radius directly #}
+    {% set vcart_radius_raw = theme.settings.get('veloura_global_radius_2026', 'large') %}
+
+    {% if vcart_radius_raw.selected is defined %}
+        {% set vcart_radius_choice = vcart_radius_raw.selected %}
+    {% elseif vcart_radius_raw.value is defined %}
+        {% set vcart_radius_choice = vcart_radius_raw.value %}
+    {% else %}
+        {% set vcart_radius_choice = vcart_radius_raw %}
+    {% endif %}
+
+    {% if vcart_radius_choice.value is defined %}
+        {% set vcart_radius_key = vcart_radius_choice.value %}
+    {% elseif vcart_radius_choice is iterable and vcart_radius_choice[0] is defined and vcart_radius_choice[0].value is defined %}
+        {% set vcart_radius_key = vcart_radius_choice[0].value %}
+    {% elseif vcart_radius_choice is iterable and vcart_radius_choice[0] is defined %}
+        {% set vcart_radius_key = vcart_radius_choice[0] %}
+    {% else %}
+        {% set vcart_radius_key = vcart_radius_choice %}
+    {% endif %}
+
+    {% set vcart_radius_key = vcart_radius_key|trim %}
+
+    {% set vcart_radius_map = {
+        'sharp': '0px',
+        'soft': '10px',
+        'medium': '16px',
+        'large': '28px',
+        'xl': '36px'
+    } %}
+
+    {% set vcart_radius = vcart_radius_map[vcart_radius_key]|default('28px') %}
+
     <div
         class="container veloura-cart-page{% if vcart_surfaces_enabled %} veloura-cart-surfaces-enabled{% endif %}{% if vcart_surface_border_enabled %} veloura-cart-border-enabled{% endif %}"
-        data-veloura-cart-build="v114"
-        style="--veloura-cart-surface-border-color: {{ vcart_surface_border_color }};"
+        data-veloura-cart-build="v115"
+        data-veloura-cart-radius-key="{{ vcart_radius_key }}"
+        style="
+            --veloura-cart-surface-border-color: {{ vcart_surface_border_color }};
+            --veloura-cart-real-radius: {{ vcart_radius }};
+        "
     >
         {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
         <nav class="breadcrumbs w-full py-5">
