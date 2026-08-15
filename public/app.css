@@ -51881,6 +51881,44 @@ body.dark .veloura-category-card__title {
   }
 }
 /* ========================================================================
+   Veloura Category Filter V118
+   #product-filter:
+   - Light  = secondary Light background
+   - Dark   = secondary Dark background
+   - No border
+   - Radius = global general radius
+   ======================================================================== */
+.veloura-category-page #product-filter {
+  background: #f8fafc !important;
+  background: var(--veloura-site-second-bg, #f8fafc) !important;
+  background-color: #f8fafc !important;
+  background-color: var(--veloura-site-second-bg, #f8fafc) !important;
+  color: #7c8082 !important;
+  color: var(--color-text, #111827) !important;
+  border: 0 !important;
+  border-radius: 0px !important;
+  border-radius: var(--veloura-global-radius, 0px) !important;
+  box-shadow: none !important;
+}
+html.dark .veloura-category-page #product-filter,
+body.dark .veloura-category-page #product-filter {
+  background: #010612 !important;
+  background: var(--veloura-dark-secondary-bg, #010612) !important;
+  background-color: #010612 !important;
+  background-color: var(--veloura-dark-secondary-bg, #010612) !important;
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+  border: 0 !important;
+  border-radius: 0px !important;
+  border-radius: var(--veloura-global-radius, 0px) !important;
+  box-shadow: none !important;
+}
+/* Keep keyboard focus visible without turning it into a permanent border. */
+.veloura-category-page #product-filter:focus-visible {
+  outline: 2px solid currentColor !important;
+  outline-offset: 2px !important;
+}
+/* ========================================================================
    Veloura unified secondary-color glass
 
    Shared glass tokens only. Component-specific geometry belongs to each

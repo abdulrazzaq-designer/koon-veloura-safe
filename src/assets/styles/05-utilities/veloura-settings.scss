@@ -1154,3 +1154,59 @@ body.dark .veloura-category-card__title {
     margin-bottom: 16px;
   }
 }
+
+
+/* ========================================================================
+   Veloura Category Filter V118
+   #product-filter:
+   - Light  = secondary Light background
+   - Dark   = secondary Dark background
+   - No border
+   - Radius = global general radius
+   ======================================================================== */
+
+.veloura-category-page #product-filter {
+  background:
+    var(--veloura-site-second-bg, #f8fafc) !important;
+
+  background-color:
+    var(--veloura-site-second-bg, #f8fafc) !important;
+
+  color:
+    var(--color-text, #111827) !important;
+
+  border: 0 !important;
+
+  border-radius:
+    var(--veloura-global-radius, 0px) !important;
+
+  box-shadow: none !important;
+}
+
+html.dark .veloura-category-page #product-filter,
+body.dark .veloura-category-page #product-filter {
+  background:
+    var(--veloura-dark-secondary-bg, #010612) !important;
+
+  background-color:
+    var(--veloura-dark-secondary-bg, #010612) !important;
+
+  color:
+    var(--veloura-dark-primary-text, #ffffff) !important;
+
+  border: 0 !important;
+
+  border-radius:
+    var(--veloura-global-radius, 0px) !important;
+
+  box-shadow: none !important;
+}
+
+/* Keep keyboard focus visible without turning it into a permanent border. */
+.veloura-category-page #product-filter:focus-visible {
+  outline:
+    2px solid currentColor !important;
+
+  outline-offset:
+    2px !important;
+}
