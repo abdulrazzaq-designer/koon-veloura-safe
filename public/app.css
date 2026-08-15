@@ -2532,6 +2532,20 @@ body.dark .veloura-product-page .s-product-options-option .s-input:not(.does-not
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: none;
 }
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper select:not(.does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper input:not(.does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper textarea:not(.does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper .s-form-control,
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper .s-input,
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper .s-select,
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper .s-select-control,
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper .s-product-options-option-content,
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper .s-product-options-option-values {
+  background: var(--veloura-cart-secondary-bg);
+  background-color: var(--veloura-cart-secondary-bg);
+  border-radius: var(--veloura-cart-real-radius);
+  box-shadow: none;
+}
 html body.veloura-glass-effect .veloura-popup__box input:not(.does-not-exist),
 html body.veloura-glass-effect .veloura-popup__box select:not(.does-not-exist),
 html body.veloura-glass-effect .veloura-popup__box textarea:not(.does-not-exist),
@@ -25634,6 +25648,9 @@ input[type=radio].sr-only:checked ~ div.s-quick-order-expandable .s-form-group >
     padding: 8px 10px 10px;
   }
 }
+.veloura-cart-page.veloura-cart-surfaces-enabled button:not(.does-not-exist),.veloura-cart-page.veloura-cart-surfaces-enabled .s-rating-modal-thanks-btn,.veloura-cart-page.veloura-cart-surfaces-enabled .s-button-element,.veloura-cart-page.veloura-cart-surfaces-enabled .s-form-control,.veloura-cart-page.veloura-cart-surfaces-enabled select:not(.does-not-exist),.veloura-cart-page.veloura-cart-surfaces-enabled input:not(.does-not-exist),.veloura-cart-page.veloura-cart-surfaces-enabled textarea:not(.does-not-exist) {
+  border-radius: var(--veloura-cart-real-radius);
+}
 .s-rating-modal-thanks-time{
     margin-top: 0.75rem;
     display: block;
@@ -41978,6 +41995,12 @@ input[type=radio].sr-only:checked ~ div.s-block--slider-with-bg .slider-bg:befor
     padding: 8px 10px 10px;
   }
 }
+.veloura-cart-page.veloura-cart-surfaces-enabled :is(.s-block--slider-with-bg .s-slider-block__display-all) {
+  border-radius: var(--veloura-cart-real-radius);
+}
+.veloura-cart-page.veloura-cart-surfaces-enabled button:not(.does-not-exist):not(.does-not-exist),.veloura-cart-page.veloura-cart-surfaces-enabled .s-button-element:not(.does-not-exist),.veloura-cart-page.veloura-cart-surfaces-enabled .s-form-control:not(.does-not-exist),.veloura-cart-page.veloura-cart-surfaces-enabled select:not(.does-not-exist):not(.does-not-exist),.veloura-cart-page.veloura-cart-surfaces-enabled input:not(.does-not-exist):not(.does-not-exist),.veloura-cart-page.veloura-cart-surfaces-enabled textarea:not(.does-not-exist):not(.does-not-exist) {
+  border-radius: var(--veloura-cart-real-radius);
+}
 .s-block--slider-with-bg .s-slider-block__display-all{
     background-color: transparent !important;
     --tw-text-opacity: 1 !important;
@@ -54258,6 +54281,211 @@ body.dark .veloura-category-card__title {
 .veloura-category-card.has-custom-image .veloura-category-card__img,
 .veloura-category-card.has-custom-image .veloura-category-card__image img {
   display: block !important;
+}
+/* ========================================================================
+   Veloura Cart Surfaces V113
+   Global site colors + global radius; no independent cart bg/radius/shadow.
+   ======================================================================== */
+.veloura-cart-page.veloura-cart-surfaces-enabled {
+  --veloura-cart-primary-bg:
+    var(--veloura-cart-light-primary-bg, var(--veloura-site-bg-color, var(--veloura-site-bg, #ffffff)));
+  --veloura-cart-secondary-bg:
+    var(--veloura-cart-light-secondary-bg, var(--veloura-site-second-bg-color, var(--veloura-site-second-bg, #f8fafc)));
+  --veloura-cart-real-radius:
+    var(--veloura-cart-radius, 28px);
+  --salla-button-border-radius:
+    var(--veloura-cart-real-radius);
+  --salla-input-border-radius:
+    var(--veloura-cart-real-radius);
+}
+html.dark .veloura-cart-page.veloura-cart-surfaces-enabled,
+body.dark .veloura-cart-page.veloura-cart-surfaces-enabled {
+  --veloura-cart-primary-bg:
+    var(--veloura-cart-dark-primary-bg, var(--veloura-dark-body-bg, #010202));
+  --veloura-cart-secondary-bg:
+    var(--veloura-cart-dark-secondary-bg, var(--veloura-dark-secondary-bg, #010612));
+}
+/* Main cart surfaces use the SECONDARY background in both Light and Dark. */
+.veloura-cart-page.veloura-cart-surfaces-enabled .veloura-cart-surface:not(#does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled .cart-item:not(#does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled #free-shipping,
+.veloura-cart-page.veloura-cart-surfaces-enabled #cart-gifting,
+.veloura-cart-page.veloura-cart-surfaces-enabled .veloura-cart-summary-surface:not(#does-not-exist) {
+  background: var(--veloura-cart-secondary-bg) !important;
+  background-color: var(--veloura-cart-secondary-bg) !important;
+  border-radius: var(--veloura-cart-real-radius) !important;
+  box-shadow: none !important;
+}
+/* Product-option OUTER wrapper uses the PRIMARY page background. */
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper {
+  --tw-bg-opacity: 0 !important;
+  background: var(--veloura-cart-primary-bg) !important;
+  background-color: var(--veloura-cart-primary-bg) !important;
+  border-radius: var(--veloura-cart-real-radius) !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+}
+/*
+ * Option fields (e.g. XS - 36) use the SECONDARY background.
+ * The outer options card above remains PRIMARY.
+ */
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper select:not(.does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper input:not(.does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper textarea:not(.does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper .s-form-control,
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper .form-input,
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper .s-select,
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper .s-select-control,
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper .s-product-options-option-content,
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-product-options-wrapper .s-product-options-option-values {
+  background: var(--veloura-cart-secondary-bg) !important;
+  background-color: var(--veloura-cart-secondary-bg) !important;
+  border-radius: var(--veloura-cart-real-radius) !important;
+  box-shadow: none !important;
+}
+/* Product image follows the SAME global radius. */
+.veloura-cart-page.veloura-cart-surfaces-enabled .veloura-cart-product-image,
+.veloura-cart-page.veloura-cart-surfaces-enabled .cart-item a:has(> .veloura-cart-product-image) {
+  border-radius: var(--veloura-cart-real-radius) !important;
+}
+/* Quantity host + container + plus/minus/value all follow the global radius. */
+.veloura-cart-page.veloura-cart-surfaces-enabled salla-quantity-input:not(.does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled .veloura-cart-quantity,
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-quantity-input-container {
+  background: var(--veloura-cart-secondary-bg) !important;
+  background-color: var(--veloura-cart-secondary-bg) !important;
+  border-radius: var(--veloura-cart-real-radius) !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+}
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-quantity-input-button,
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-quantity-input-input {
+  background: var(--veloura-cart-secondary-bg) !important;
+  background-color: var(--veloura-cart-secondary-bg) !important;
+  border-radius: var(--veloura-cart-real-radius) !important;
+}
+/*
+ * General controls and buttons on the cart page follow the global radius.
+ * This covers Complete order, delete, coupon buttons and Light-DOM Salla buttons.
+ */
+.veloura-cart-page.veloura-cart-surfaces-enabled button:not(.does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled .btn,
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-button-element,
+.veloura-cart-page.veloura-cart-surfaces-enabled .s-form-control,
+.veloura-cart-page.veloura-cart-surfaces-enabled select:not(.does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled input:not(.does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled textarea:not(.does-not-exist) {
+  border-radius: var(--veloura-cart-real-radius) !important;
+}
+.veloura-cart-page.veloura-cart-surfaces-enabled salla-button::part(button),
+.veloura-cart-page.veloura-cart-surfaces-enabled #cart-submit::part(button) {
+  border-radius: var(--veloura-cart-real-radius) !important;
+}
+/* Checkout wrapper/button remain clean with no forced shadow. */
+.veloura-cart-page.veloura-cart-surfaces-enabled .cart-submit-wrap,
+.veloura-cart-page.veloura-cart-surfaces-enabled .veloura-cart-submit {
+  border-radius: var(--veloura-cart-real-radius) !important;
+  box-shadow: none !important;
+}
+/* Keep the optional border control. */
+.veloura-cart-page.veloura-cart-surfaces-enabled.veloura-cart-border-enabled .veloura-cart-surface:not(#does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled.veloura-cart-border-enabled .cart-item:not(#does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled.veloura-cart-border-enabled #free-shipping,
+.veloura-cart-page.veloura-cart-surfaces-enabled.veloura-cart-border-enabled #cart-gifting,
+.veloura-cart-page.veloura-cart-surfaces-enabled.veloura-cart-border-enabled .veloura-cart-summary-surface:not(#does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled.veloura-cart-border-enabled .s-product-options-wrapper:not(#does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled.veloura-cart-border-enabled salla-quantity-input:not(#does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled.veloura-cart-border-enabled .s-quantity-input-container:not(#does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled.veloura-cart-border-enabled .veloura-cart-product-image:not(#does-not-exist) {
+  border: 1px solid #e5e7eb !important;
+  border: 1px solid var(--veloura-cart-surface-border-color, #e5e7eb) !important;
+}
+/* If border is disabled, do not inherit Tailwind borders on our cart surfaces. */
+.veloura-cart-page.veloura-cart-surfaces-enabled:not(.veloura-cart-border-enabled) .veloura-cart-surface:not(#does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled:not(.veloura-cart-border-enabled) .cart-item:not(#does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled:not(.veloura-cart-border-enabled) #free-shipping,
+.veloura-cart-page.veloura-cart-surfaces-enabled:not(.veloura-cart-border-enabled) #cart-gifting,
+.veloura-cart-page.veloura-cart-surfaces-enabled:not(.veloura-cart-border-enabled) .veloura-cart-summary-surface:not(#does-not-exist),
+.veloura-cart-page.veloura-cart-surfaces-enabled:not(.veloura-cart-border-enabled) .s-product-options-wrapper:not(#does-not-exist) {
+  border-color: transparent !important;
+}
+/* Dark text continues to use the site's Dark text contract. */
+html.dark .veloura-cart-page.veloura-cart-surfaces-enabled,
+body.dark .veloura-cart-page.veloura-cart-surfaces-enabled {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+html.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.cart-item h1) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+html.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.cart-item h2) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+html.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.cart-item h3) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+html.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.veloura-cart-summary-surface h1) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+html.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.veloura-cart-summary-surface h2) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+html.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.veloura-cart-summary-surface h3) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+html.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.s-product-options-wrapper label) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+html.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.s-product-options-wrapper select) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+html.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.s-product-options-wrapper input) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+body.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.cart-item h1) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+body.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.cart-item h2) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+body.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.cart-item h3) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+body.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.veloura-cart-summary-surface h1) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+body.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.veloura-cart-summary-surface h2) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+body.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.veloura-cart-summary-surface h3) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+body.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.s-product-options-wrapper label) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+body.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.s-product-options-wrapper select) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
+}
+body.dark .veloura-cart-page.veloura-cart-surfaces-enabled :is(.s-product-options-wrapper input) {
+  color: #ffffff !important;
+  color: var(--veloura-dark-primary-text, #ffffff) !important;
 }
 /* ========================================================================
    Veloura unified secondary-color glass

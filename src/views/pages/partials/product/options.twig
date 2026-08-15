@@ -29,7 +29,17 @@
 | product.options[].details[].is_out              | bool                       | Does current option out of stock?                                                                           |
 #}
 {% if product.options|length %}
-    <salla-product-options options="{{ product.options }}" product-id="{{ product.id }}"></salla-product-options>
+    {% if veloura_cart_context|default(false) %}
+        <div class="veloura-cart-product-options-shell">
+            <salla-product-options
+                class="veloura-cart-product-options-host"
+                options="{{ product.options }}"
+                product-id="{{ product.id }}"
+            ></salla-product-options>
+        </div>
+    {% else %}
+        <salla-product-options options="{{ product.options }}" product-id="{{ product.id }}"></salla-product-options>
+    {% endif %}
 {% endif %}
 
 {% if product.has_bundle_products %}

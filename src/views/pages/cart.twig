@@ -49,12 +49,12 @@
 
 {% extends "layouts.master" %}
 {% block content %}
-    {# Veloura Cart Surfaces V3 — uses global site colors + global radius #}
+    {# Veloura Cart Surfaces V114 — global colors + global radius #}
     {% set vcart_enabled_raw = theme.settings.get('veloura_cart_surfaces_enabled_2026', false) %}
-    {% if vcart_enabled_raw.value is defined %}
-        {% set vcart_enabled_raw = vcart_enabled_raw.value %}
-    {% elseif vcart_enabled_raw.selected is defined %}
+    {% if vcart_enabled_raw.selected is defined %}
         {% set vcart_enabled_raw = vcart_enabled_raw.selected %}
+    {% elseif vcart_enabled_raw.value is defined %}
+        {% set vcart_enabled_raw = vcart_enabled_raw.value %}
     {% endif %}
     {% set vcart_surfaces_enabled =
         vcart_enabled_raw == true
@@ -64,55 +64,11 @@
         or vcart_enabled_raw == 'on'
     %}
 
-    {# Light: primary site background + secondary site background #}
-    {% set vcart_light_primary = theme.settings.get('veloura_site_bg_color_2026', '#ffffff') %}
-    {% if vcart_light_primary.value is defined %}
-        {% set vcart_light_primary = vcart_light_primary.value %}
-    {% endif %}
-
-    {% set vcart_light_secondary = theme.settings.get('veloura_site_second_bg_color_2026', '#f8fafc') %}
-    {% if vcart_light_secondary.value is defined %}
-        {% set vcart_light_secondary = vcart_light_secondary.value %}
-    {% endif %}
-
-    {# Dark: primary body background + secondary dark background #}
-    {% set vcart_dark_primary = theme.settings.get('veloura_dark_body_bg_2026', '#010202') %}
-    {% if vcart_dark_primary.value is defined %}
-        {% set vcart_dark_primary = vcart_dark_primary.value %}
-    {% endif %}
-
-    {% set vcart_dark_secondary = theme.settings.get('veloura_dark_secondary_bg_2026', '#010612') %}
-    {% if vcart_dark_secondary.value is defined %}
-        {% set vcart_dark_secondary = vcart_dark_secondary.value %}
-    {% endif %}
-
-    {# One global radius source for cart, product details and general controls #}
-    {% set vcart_global_radius_raw = theme.settings.get('veloura_global_radius_2026', 'large') %}
-    {% if vcart_global_radius_raw is iterable and vcart_global_radius_raw[0].value is defined %}
-        {% set vcart_global_radius_key = vcart_global_radius_raw[0].value %}
-    {% elseif vcart_global_radius_raw.value is defined %}
-        {% set vcart_global_radius_key = vcart_global_radius_raw.value %}
-    {% elseif vcart_global_radius_raw.selected is defined and vcart_global_radius_raw.selected is iterable and vcart_global_radius_raw.selected[0].value is defined %}
-        {% set vcart_global_radius_key = vcart_global_radius_raw.selected[0].value %}
-    {% else %}
-        {% set vcart_global_radius_key = vcart_global_radius_raw %}
-    {% endif %}
-
-    {% set vcart_global_radius_map = {
-        'sharp': '0px',
-        'soft': '10px',
-        'medium': '16px',
-        'large': '28px',
-        'xl': '36px'
-    } %}
-    {% set vcart_global_radius = vcart_global_radius_map[vcart_global_radius_key]|default('28px') %}
-
-    {# Border remains independently configurable #}
     {% set vcart_border_raw = theme.settings.get('veloura_cart_surfaces_border_enabled_2026', false) %}
-    {% if vcart_border_raw.value is defined %}
-        {% set vcart_border_raw = vcart_border_raw.value %}
-    {% elseif vcart_border_raw.selected is defined %}
+    {% if vcart_border_raw.selected is defined %}
         {% set vcart_border_raw = vcart_border_raw.selected %}
+    {% elseif vcart_border_raw.value is defined %}
+        {% set vcart_border_raw = vcart_border_raw.value %}
     {% endif %}
     {% set vcart_surface_border_enabled =
         vcart_border_raw == true
@@ -127,15 +83,11 @@
         {% set vcart_surface_border_color = vcart_surface_border_color.value %}
     {% endif %}
 
-    <div class="container veloura-cart-page{% if vcart_surfaces_enabled %} veloura-cart-surfaces-enabled{% endif %}{% if vcart_surface_border_enabled %} veloura-cart-border-enabled{% endif %}"
-         style="
-            --veloura-cart-light-primary-bg: {{ vcart_light_primary }};
-            --veloura-cart-light-secondary-bg: {{ vcart_light_secondary }};
-            --veloura-cart-dark-primary-bg: {{ vcart_dark_primary }};
-            --veloura-cart-dark-secondary-bg: {{ vcart_dark_secondary }};
-            --veloura-cart-radius: {{ vcart_global_radius }};
-            --veloura-cart-surface-border-color: {{ vcart_surface_border_color }};
-         ">
+    <div
+        class="container veloura-cart-page{% if vcart_surfaces_enabled %} veloura-cart-surfaces-enabled{% endif %}{% if vcart_surface_border_enabled %} veloura-cart-border-enabled{% endif %}"
+        data-veloura-cart-build="v114"
+        style="--veloura-cart-surface-border-color: {{ vcart_surface_border_color }};"
+    >
         {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
         <nav class="breadcrumbs w-full py-5">
             <salla-breadcrumb></salla-breadcrumb>
@@ -153,7 +105,7 @@
                                 <!-- product -->
                                 <div class="md:flex rtl:space-x-reverse md:space-x-12 items-start justify-between mb-8 last:mb-0">
                                     <div class="flex flex-1 rtl:space-x-reverse space-x-4">
-                                        <a href="{{ item.url }}" class="relative overflow-hidden shrink-0">
+                                        <a href="{{ item.url }}" class="veloura-cart-product-image-link relative overflow-hidden shrink-0">
                                             {% if loop.first %}
 												<img src="{{ item.product_image }}"
 													alt="{{ item.product_name }}"
@@ -221,7 +173,7 @@
                                     </div>
                                 </div>
 
-                                {% include 'pages.partials.product.options' with {product:item} %}
+                                {% include 'pages.partials.product.options' with {product:item, veloura_cart_context:true} %}
                             <span class="absolute top-1.5 rtl:left-1.5 ltr:right-1.5 rtl:xs:left-5 ltr:xs:right-5 xs:top-5">
                                 <salla-button type="button" shape="icon" size="small" color="danger" class="btn--delete" aria-label="Remove from the cart"
                                         onclick="salla.cart.deleteItem('{{ item.id }}').then(() => document.querySelector('#item-{{ item.id }}').remove())">
@@ -245,7 +197,7 @@
                       <form class="first:pt-5 relative" onchange="salla.form.onChange('cart.updateItem', event)" id="item-{{ product_option.id }}">
                         <input type="hidden" name="id" value="{{ product_option.id }}">
                         <input type="hidden" name="quantity" value="{{ product_option.quantity }}">
-                        {% include 'pages.partials.product.options' with { product: product_option } %}
+                        {% include 'pages.partials.product.options' with { product: product_option, veloura_cart_context:true } %}
                       </form>                   
                     {% endfor %}
                   </div>

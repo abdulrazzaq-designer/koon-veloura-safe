@@ -92,6 +92,17 @@
 
 {% set vdm_initial_dark = vdm_enabled and vdm_mode == 'dark' %}
 
+{# Veloura V114 — one global radius contract for every supported surface #}
+{% set vglobal_radius_key = _self.veloura_dm_value(theme.settings.get('veloura_global_radius_2026', 'large'), 'large')|trim %}
+{% set vglobal_radius_map = {
+  'sharp': '0px',
+  'soft': '10px',
+  'medium': '16px',
+  'large': '28px',
+  'xl': '36px'
+} %}
+{% set vglobal_radius = vglobal_radius_map[vglobal_radius_key]|default('28px') %}
+
 <!DOCTYPE html>
 <html lang="{{ language.code }}" dir="{{ theme.is_rtl ? 'rtl' : 'ltr' }}" class="{{ vdm_initial_dark ? 'dark' : '' }}" data-theme="{{ vdm_initial_dark ? 'dark' : 'light' }}" data-veloura-dark-enabled="{{ vdm_enabled ? 'true' : 'false' }}" data-veloura-dark-mode="{{ vdm_mode }}">
 <!-- بسم الله الرحمن الرحيم -->
@@ -1076,6 +1087,7 @@
 
         --veloura-site-bg: {{ veloura_site_bg }};
         --veloura-site-second-bg: {{ veloura_site_second_bg }};
+        --veloura-global-radius: {{ vglobal_radius }};
         --veloura-site-spacing: {{ veloura_site_spacing }}px;
         --veloura-site-container-width: {{ veloura_container_width }}px;
         --veloura-shell-gap: 12px;

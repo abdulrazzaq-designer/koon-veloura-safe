@@ -21,6 +21,109 @@ class Cart extends BasePage {
 
         this.initSubmitCart();
         validateProductOptions();
+        this.initVelouraCartVisualContract();
+    }
+
+    initVelouraCartVisualContract() {
+        const page = document.querySelector('.veloura-cart-page.veloura-cart-surfaces-enabled');
+        if (!page) return;
+
+        const STYLE_ID = 'veloura-cart-shadow-v114';
+        const shadowCss = {
+            'SALLA-PRODUCT-OPTIONS': `
+                :host { display:block!important; width:100%!important; color:var(--veloura-cart-text,#111827)!important; }
+                .s-product-options-wrapper {
+                    width:100%!important; margin:0!important;
+                    background:var(--veloura-cart-primary-bg,#fff)!important;
+                    background-color:var(--veloura-cart-primary-bg,#fff)!important;
+                    color:var(--veloura-cart-text,#111827)!important;
+                    border:0!important;
+                    border-radius:var(--veloura-global-radius,28px)!important;
+                    box-shadow:none!important;
+                }
+                .s-product-options-option-label,.s-form-label { color:var(--veloura-cart-text,#111827)!important; }
+                select,input:not([type="hidden"]),textarea,.s-form-control,.s-input {
+                    background:var(--veloura-cart-secondary-bg,#f8fafc)!important;
+                    background-color:var(--veloura-cart-secondary-bg,#f8fafc)!important;
+                    color:var(--veloura-cart-text,#111827)!important;
+                    border:var(--veloura-cart-border-width,0px) solid var(--veloura-cart-surface-border-color,#e5e7eb)!important;
+                    border-radius:var(--veloura-global-radius,28px)!important;
+                    box-shadow:none!important;
+                }
+            `,
+            'SALLA-QUANTITY-INPUT': `
+                :host { border-radius:var(--veloura-global-radius,28px)!important; }
+                .s-quantity-input-container {
+                    background:var(--veloura-cart-secondary-bg,#f8fafc)!important;
+                    background-color:var(--veloura-cart-secondary-bg,#f8fafc)!important;
+                    color:var(--veloura-cart-text,#111827)!important;
+                    border:var(--veloura-cart-border-width,0px) solid var(--veloura-cart-surface-border-color,#e5e7eb)!important;
+                    border-radius:var(--veloura-global-radius,28px)!important;
+                    overflow:hidden!important; box-shadow:none!important;
+                }
+                .s-quantity-input-button,.s-quantity-input-input {
+                    background:var(--veloura-cart-secondary-bg,#f8fafc)!important;
+                    background-color:var(--veloura-cart-secondary-bg,#f8fafc)!important;
+                    color:var(--veloura-cart-text,#111827)!important;
+                    border-radius:0!important;
+                }
+                .s-quantity-input-button { fill:var(--veloura-cart-text,#111827)!important; }
+            `,
+            'SALLA-BUTTON': `
+                button,.s-button-btn,.s-button-element { border-radius:var(--veloura-global-radius,28px)!important; }
+            `,
+            'SALLA-CART-COUPONS': `
+                button,input,select,textarea,.s-button-btn,.s-button-element,.s-form-control,.s-input {
+                    border-radius:var(--veloura-global-radius,28px)!important;
+                }
+            `,
+        };
+
+        const injectShadowStyle = async (element) => {
+            if (!element) return;
+            try {
+                if (typeof element.componentOnReady === 'function') await element.componentOnReady();
+            } catch (_) {}
+
+            const root = element.shadowRoot;
+            if (!root || root.getElementById(STYLE_ID)) return;
+
+            const css = shadowCss[element.tagName];
+            if (!css) return;
+
+            const style = document.createElement('style');
+            style.id = STYLE_ID;
+            style.textContent = css;
+            root.appendChild(style);
+        };
+
+        const sync = (scope = page) => {
+            const selector = ['salla-product-options','salla-quantity-input','salla-button','salla-cart-coupons'].join(',');
+            if (scope.matches?.(selector)) injectShadowStyle(scope);
+            scope.querySelectorAll?.(selector).forEach(injectShadowStyle);
+        };
+
+        sync();
+
+        if (!page.__velouraCartVisualObserver && window.MutationObserver) {
+            let scheduled = false;
+            const addedRoots = new Set();
+            page.__velouraCartVisualObserver = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    mutation.addedNodes.forEach((node) => {
+                        if (node instanceof Element) addedRoots.add(node);
+                    });
+                });
+                if (!addedRoots.size || scheduled) return;
+                scheduled = true;
+                requestAnimationFrame(() => {
+                    scheduled = false;
+                    addedRoots.forEach((node) => sync(node));
+                    addedRoots.clear();
+                });
+            });
+            page.__velouraCartVisualObserver.observe(page,{childList:true,subtree:true});
+        }
     }
 
     initSubmitCart() {
