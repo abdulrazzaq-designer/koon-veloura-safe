@@ -18,11 +18,186 @@
 #}
 {% extends "layouts.master" %}
 {% block content %}
-    <div class="container px-2.5 ms:px-5 mb-10">
+
+    {# ================================================================
+       Veloura Category Banners V117
+       The settings existed in twilight.json but had no renderer before.
+       ================================================================ #}
+
+    {% set vcat_banner_enabled_raw = theme.settings.get('veloura_cat_banner_panel_open_2026', false) %}
+    {% if vcat_banner_enabled_raw.selected is defined %}
+        {% set vcat_banner_enabled_raw = vcat_banner_enabled_raw.selected %}
+    {% elseif vcat_banner_enabled_raw.value is defined %}
+        {% set vcat_banner_enabled_raw = vcat_banner_enabled_raw.value %}
+    {% endif %}
+
+    {% set vcat_banner_enabled =
+        vcat_banner_enabled_raw == true
+        or vcat_banner_enabled_raw == 'true'
+        or vcat_banner_enabled_raw == 1
+        or vcat_banner_enabled_raw == '1'
+        or vcat_banner_enabled_raw == 'on'
+    %}
+
+    {% set vcat_banner_map = theme.settings.get('veloura_cat_banner_map_2026', []) %}
+    {% if vcat_banner_map.value is defined %}
+        {% set vcat_banner_map = vcat_banner_map.value %}
+    {% elseif vcat_banner_map.selected is defined %}
+        {% set vcat_banner_map = vcat_banner_map.selected %}
+    {% endif %}
+
+    {% set vcat_banner_radius_raw = theme.settings.get('veloura_cat_banner_radius_2026', 'medium') %}
+    {% if vcat_banner_radius_raw.selected is defined %}
+        {% set vcat_banner_radius_choice = vcat_banner_radius_raw.selected %}
+    {% elseif vcat_banner_radius_raw.value is defined %}
+        {% set vcat_banner_radius_choice = vcat_banner_radius_raw.value %}
+    {% else %}
+        {% set vcat_banner_radius_choice = vcat_banner_radius_raw %}
+    {% endif %}
+
+    {% if vcat_banner_radius_choice.value is defined %}
+        {% set vcat_banner_radius = vcat_banner_radius_choice.value %}
+    {% elseif vcat_banner_radius_choice is iterable and vcat_banner_radius_choice[0] is defined and vcat_banner_radius_choice[0].value is defined %}
+        {% set vcat_banner_radius = vcat_banner_radius_choice[0].value %}
+    {% elseif vcat_banner_radius_choice is iterable and vcat_banner_radius_choice[0] is defined %}
+        {% set vcat_banner_radius = vcat_banner_radius_choice[0] %}
+    {% else %}
+        {% set vcat_banner_radius = vcat_banner_radius_choice %}
+    {% endif %}
+
+    {% set vcat_banner_radius = vcat_banner_radius|trim %}
+
+    {# Current category identity. page.id is kept as a fallback. #}
+    {% set vcat_current_id = category.id is defined ? category.id : page.id %}
+    {% set vcat_current_name = category.name is defined ? category.name : page.title %}
+    {% set vcat_current_url = category.url is defined ? category.url : '' %}
+    {% set vcat_current_slug = category.slug is defined ? category.slug : '' %}
+
+    {% set vcat_matched_banners = [] %}
+
+    {% if category and vcat_banner_enabled and vcat_banner_map is iterable %}
+        {% for banner in vcat_banner_map %}
+            {% set banner_image = banner.veloura_cat_banner_image|default('') %}
+            {% if banner_image.value is defined %}
+                {% set banner_image = banner_image.value %}
+            {% endif %}
+
+            {% set banner_url = banner.veloura_cat_banner_url|default('') %}
+            {% if banner_url.value is defined %}
+                {% set banner_url = banner_url.value %}
+            {% endif %}
+
+            {% set banner_categories = banner.veloura_cat_banner_categories|default([]) %}
+            {% if banner_categories.value is defined %}
+                {% set banner_categories = banner_categories.value %}
+            {% elseif banner_categories.selected is defined %}
+                {% set banner_categories = banner_categories.selected %}
+            {% endif %}
+
+            {% set banner_matches_current = false %}
+
+            {% if banner_categories is iterable %}
+                {% for selected_category in banner_categories %}
+                    {% set selected_id = null %}
+                    {% set selected_name = '' %}
+                    {% set selected_url = '' %}
+                    {% set selected_slug = '' %}
+
+                    {% if selected_category.id is defined %}
+                        {% set selected_id = selected_category.id %}
+                    {% elseif selected_category.value is defined and selected_category.value.id is defined %}
+                        {% set selected_id = selected_category.value.id %}
+                    {% elseif selected_category.value is defined and selected_category.value is not iterable %}
+                        {% set selected_id = selected_category.value %}
+                    {% elseif selected_category.key is defined %}
+                        {% set selected_id = selected_category.key %}
+                    {% elseif selected_category is not iterable %}
+                        {% set selected_id = selected_category %}
+                    {% endif %}
+
+                    {% if selected_category.name is defined %}
+                        {% set selected_name = selected_category.name %}
+                    {% elseif selected_category.label is defined %}
+                        {% set selected_name = selected_category.label %}
+                    {% elseif selected_category.value is defined and selected_category.value.name is defined %}
+                        {% set selected_name = selected_category.value.name %}
+                    {% endif %}
+
+                    {% if selected_category.url is defined %}
+                        {% set selected_url = selected_category.url %}
+                    {% elseif selected_category.value is defined and selected_category.value.url is defined %}
+                        {% set selected_url = selected_category.value.url %}
+                    {% endif %}
+
+                    {% if selected_category.slug is defined %}
+                        {% set selected_slug = selected_category.slug %}
+                    {% elseif selected_category.value is defined and selected_category.value.slug is defined %}
+                        {% set selected_slug = selected_category.value.slug %}
+                    {% endif %}
+
+                    {% if
+                        (selected_id is not null and vcat_current_id is not null and selected_id == vcat_current_id)
+                        or (selected_name and vcat_current_name and selected_name|trim == vcat_current_name|striptags|trim)
+                        or (selected_url and vcat_current_url and selected_url == vcat_current_url)
+                        or (selected_slug and vcat_current_slug and selected_slug == vcat_current_slug)
+                    %}
+                        {% set banner_matches_current = true %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            {% if banner_image and banner_matches_current %}
+                {% set vcat_matched_banners = vcat_matched_banners|merge([{
+                    image: banner_image,
+                    url: banner_url
+                }]) %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <div
+        class="container px-2.5 ms:px-5 mb-10 veloura-category-page"
+        data-veloura-category-id="{{ vcat_current_id|default('') }}"
+    >
         {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
         <nav class="breadcrumbs w-full py-5">
             <salla-breadcrumb></salla-breadcrumb>
         </nav>
+
+        {% if vcat_matched_banners|length %}
+            <div
+                class="veloura-category-banners veloura-category-banners--{{ vcat_banner_radius }}"
+                data-veloura-category-banners
+                data-category-id="{{ vcat_current_id|default('') }}"
+            >
+                {% for banner in vcat_matched_banners %}
+                    {% if banner.url %}
+                        <a
+                            href="{{ banner.url }}"
+                            class="veloura-category-banner"
+                            aria-label="{{ vcat_current_name|striptags|trim }}"
+                        >
+                            <img
+                                src="{{ banner.image }}"
+                                alt="{{ vcat_current_name|striptags|trim }}"
+                                class="veloura-category-banner__image"
+                                {% if loop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                            >
+                        </a>
+                    {% else %}
+                        <div class="veloura-category-banner">
+                            <img
+                                src="{{ banner.image }}"
+                                alt="{{ vcat_current_name|striptags|trim }}"
+                                class="veloura-category-banner__image"
+                                {% if loop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                            >
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+
         <div class="flex items-start flex-col md:flex-row">
             {% if filters %}
                 <button class="btn--close-sm close-filters sicon-cancel hidden"></button>

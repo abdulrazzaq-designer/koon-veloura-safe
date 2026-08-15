@@ -51824,6 +51824,63 @@ body.dark .veloura-category-card__title {
   display: block !important;
 }
 /* ========================================================================
+   Veloura Category Banners V117
+   ======================================================================== */
+.veloura-category-banners {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-gap: 14px;
+  gap: 14px;
+  width: 100%;
+  margin: 0 0 20px;
+}
+.veloura-category-banner {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  background: transparent;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+.veloura-category-banner__image {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+}
+/* Radius setting from veloura_cat_banner_radius_2026 */
+.veloura-category-banners--sharp .veloura-category-banner,
+.veloura-category-banners--sharp .veloura-category-banner__image {
+  border-radius: 0 !important;
+}
+.veloura-category-banners--soft .veloura-category-banner,
+.veloura-category-banners--soft .veloura-category-banner__image {
+  border-radius: 10px !important;
+}
+.veloura-category-banners--medium .veloura-category-banner,
+.veloura-category-banners--medium .veloura-category-banner__image {
+  border-radius: 16px !important;
+}
+.veloura-category-banners--large .veloura-category-banner,
+.veloura-category-banners--large .veloura-category-banner__image {
+  border-radius: 24px !important;
+}
+.veloura-category-banners--round .veloura-category-banner,
+.veloura-category-banners--round .veloura-category-banner__image {
+  border-radius: 999px !important;
+}
+@media (max-width: 767px) {
+  .veloura-category-banners {
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+}
+/* ========================================================================
    Veloura unified secondary-color glass
 
    Shared glass tokens only. Component-specific geometry belongs to each
