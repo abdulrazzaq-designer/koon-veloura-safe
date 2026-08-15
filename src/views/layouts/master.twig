@@ -2952,10 +2952,10 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
 {# صور التصنيفات المرفوعة من قسم صور صفحات التصنيفات #}
 {% set vc_use_custom_images_raw = theme.settings.get('veloura_category_use_custom_images_2026', false) %}
-{% if vc_use_custom_images_raw.value is defined %}
-  {% set vc_use_custom_images_raw = vc_use_custom_images_raw.value %}
-{% elseif vc_use_custom_images_raw.selected is defined %}
+{% if vc_use_custom_images_raw.selected is defined %}
   {% set vc_use_custom_images_raw = vc_use_custom_images_raw.selected %}
+{% elseif vc_use_custom_images_raw.value is defined %}
+  {% set vc_use_custom_images_raw = vc_use_custom_images_raw.value %}
 {% endif %}
 
 {% set vc_use_custom_images =
@@ -2976,7 +2976,9 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 {% endif %}
 
 {% set vc_images_map = theme.settings.get('veloura_category_images_map_v7_2026', []) %}
-{% if vc_images_map.value is defined %}
+{% if vc_images_map.selected is defined %}
+  {% set vc_images_map = vc_images_map.selected %}
+{% elseif vc_images_map.value is defined %}
   {% set vc_images_map = vc_images_map.value %}
 {% endif %}
 

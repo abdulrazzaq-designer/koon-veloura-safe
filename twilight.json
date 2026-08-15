@@ -3950,7 +3950,8 @@
       "wide": true,
       "required": false,
       "value": false,
-      "selected": false
+      "selected": false,
+      "description": "هذا المفتاح يفتح ويغلق إعدادات صفحة التصنيف داخل محرر الثيم فقط. إغلاقه لا يعطل التأثيرات المحفوظة في المتجر."
     },
     {
       "type": "static",
@@ -4243,7 +4244,7 @@
       "type": "number",
       "format": "slider",
       "inputType": "range",
-      "label": "عدد الصور للصف الواحد في الجوال2",
+      "label": "عدد الصور للصف الواحد في الجوال",
       "description": null,
       "labelHTML": null,
       "icon": "sicon-list",
@@ -4523,57 +4524,8 @@
       "wide": true,
       "required": false,
       "value": false,
-      "selected": false
-    },
-    {
-      "id": "veloura_cat_banner_radius_2026",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "حواف بنر التصنيف",
-      "icon": "sicon-list",
-      "source": "Manual",
-      "required": false,
-      "selected": [
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-cat-banner-radius-medium-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "حاد",
-          "value": "sharp",
-          "key": "veloura-cat-banner-radius-sharp-2026"
-        },
-        {
-          "label": "ناعم قليلاً",
-          "value": "soft",
-          "key": "veloura-cat-banner-radius-soft-2026"
-        },
-        {
-          "label": "ناعم",
-          "value": "medium",
-          "key": "veloura-cat-banner-radius-medium-2026"
-        },
-        {
-          "label": "ناعم جداً",
-          "value": "large",
-          "key": "veloura-cat-banner-radius-large-2026"
-        },
-        {
-          "label": "دائري",
-          "value": "round",
-          "key": "veloura-cat-banner-radius-round-2026"
-        }
-      ],
-      "conditions": [
-        {
-          "id": "veloura_cat_banner_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
+      "selected": false,
+      "description": "هذا المفتاح يفتح ويغلق إعدادات بنرات التصنيفات داخل محرر الثيم فقط. إغلاقه لا يخفي البنرات من المتجر."
     },
     {
       "type": "collection",
@@ -4632,7 +4584,56 @@
         }
       ]
     },
-  
+    {
+      "id": "veloura_cat_banner_radius_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "حواف بنر التصنيف",
+      "icon": "sicon-list",
+      "source": "Manual",
+      "required": false,
+      "selected": [
+        {
+          "label": "ناعم",
+          "value": "medium",
+          "key": "veloura-cat-banner-radius-medium-2026"
+        }
+      ],
+      "options": [
+        {
+          "label": "حاد",
+          "value": "sharp",
+          "key": "veloura-cat-banner-radius-sharp-2026"
+        },
+        {
+          "label": "ناعم قليلاً",
+          "value": "soft",
+          "key": "veloura-cat-banner-radius-soft-2026"
+        },
+        {
+          "label": "ناعم",
+          "value": "medium",
+          "key": "veloura-cat-banner-radius-medium-2026"
+        },
+        {
+          "label": "ناعم جداً",
+          "value": "large",
+          "key": "veloura-cat-banner-radius-large-2026"
+        },
+        {
+          "label": "دائري",
+          "value": "round",
+          "key": "veloura-cat-banner-radius-round-2026"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "veloura_cat_banner_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
     {
       "type": "static",
       "format": "description",

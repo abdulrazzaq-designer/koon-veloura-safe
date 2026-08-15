@@ -1093,9 +1093,194 @@ body.dark .veloura-category-card__title {
 
 
 /* ========================================================================
-   Veloura Category Banners V117
+   Veloura Category Page V119
    ======================================================================== */
 
+.veloura-category-page {
+  --vcat-secondary-bg:
+    var(--veloura-site-second-bg, #f8fafc);
+
+  --vcat-primary-text:
+    var(--color-text, #111827);
+}
+
+html.dark .veloura-category-page,
+body.dark .veloura-category-page {
+  --vcat-secondary-bg:
+    var(--veloura-dark-secondary-bg, #010612);
+
+  --vcat-primary-text:
+    var(--veloura-dark-primary-text, #ffffff);
+}
+
+.veloura-category-page--no-breadcrumb {
+  padding-top: 14px;
+}
+
+/* Subcategories */
+.veloura-category-children {
+  width: 100%;
+  margin: 0 0 24px;
+}
+
+.veloura-category-children__grid {
+  display: grid;
+  grid-template-columns:
+    repeat(var(--vcat-mobile-cols, 4), minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .veloura-category-children__grid {
+    grid-template-columns:
+      repeat(var(--vcat-desktop-cols, 8), minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+
+.veloura-category-children__slider {
+  display: block;
+  width: 100%;
+}
+
+.veloura-category-children__slider .swiper-slide {
+  height: auto;
+}
+
+.veloura-category-child {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  gap: 10px;
+
+  color:
+    var(--vcat-primary-text) !important;
+
+  text-decoration: none !important;
+}
+
+.veloura-category-children--position-top
+.veloura-category-child {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.rtl
+.veloura-category-children--position-right
+.veloura-category-child {
+  flex-direction: row;
+  align-items: center;
+  text-align: right;
+}
+
+.ltr
+.veloura-category-children--position-right
+.veloura-category-child {
+  flex-direction: row-reverse;
+  align-items: center;
+  text-align: left;
+}
+
+.veloura-category-child__media {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: 100%;
+  overflow: hidden;
+
+  background:
+    var(--vcat-secondary-bg);
+
+  border-radius:
+    var(--vcat-image-radius, 16px);
+}
+
+.veloura-category-children--shape-square
+.veloura-category-child__media {
+  aspect-ratio: 1 / 1;
+}
+
+.veloura-category-children--shape-auto
+.veloura-category-child__media {
+  min-height: 70px;
+}
+
+.veloura-category-children--position-right
+.veloura-category-child__media {
+  width: clamp(58px, 18vw, 84px);
+}
+
+.veloura-category-children--position-right.veloura-category-children--shape-square
+.veloura-category-child__media {
+  aspect-ratio: 1 / 1;
+}
+
+.veloura-category-children--transparent
+.veloura-category-child__media {
+  background: transparent !important;
+}
+
+.veloura-category-child__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit:
+    var(--vcat-image-fit, cover);
+
+  object-position: center;
+
+  border-radius:
+    inherit;
+}
+
+.veloura-category-children--shape-auto
+.veloura-category-child__media img {
+  height: auto;
+  min-height: 70px;
+}
+
+.veloura-category-child__title {
+  display: block;
+  min-width: 0;
+
+  font-size:
+    var(--vcat-title-size, 16px);
+
+  font-weight: 700;
+  line-height: 1.45;
+
+  color:
+    inherit;
+}
+
+.veloura-category-children--position-top
+.veloura-category-child__title {
+  padding-inline: 4px;
+}
+
+.veloura-category-children--position-right
+.veloura-category-child__title {
+  flex: 1 1 auto;
+}
+
+.veloura-category-children--names-only
+.veloura-category-child {
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+
+  background:
+    var(--vcat-secondary-bg);
+
+  border-radius:
+    var(--veloura-global-radius, 14px);
+}
+
+/* Category banners */
 .veloura-category-banners {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -1122,49 +1307,32 @@ body.dark .veloura-category-card__title {
   object-position: center;
 }
 
-/* Radius setting from veloura_cat_banner_radius_2026 */
-.veloura-category-banners--sharp .veloura-category-banner,
-.veloura-category-banners--sharp .veloura-category-banner__image {
+.veloura-category-banners--sharp
+:is(.veloura-category-banner, .veloura-category-banner__image) {
   border-radius: 0 !important;
 }
 
-.veloura-category-banners--soft .veloura-category-banner,
-.veloura-category-banners--soft .veloura-category-banner__image {
+.veloura-category-banners--soft
+:is(.veloura-category-banner, .veloura-category-banner__image) {
   border-radius: 10px !important;
 }
 
-.veloura-category-banners--medium .veloura-category-banner,
-.veloura-category-banners--medium .veloura-category-banner__image {
+.veloura-category-banners--medium
+:is(.veloura-category-banner, .veloura-category-banner__image) {
   border-radius: 16px !important;
 }
 
-.veloura-category-banners--large .veloura-category-banner,
-.veloura-category-banners--large .veloura-category-banner__image {
+.veloura-category-banners--large
+:is(.veloura-category-banner, .veloura-category-banner__image) {
   border-radius: 24px !important;
 }
 
-.veloura-category-banners--round .veloura-category-banner,
-.veloura-category-banners--round .veloura-category-banner__image {
+.veloura-category-banners--round
+:is(.veloura-category-banner, .veloura-category-banner__image) {
   border-radius: 999px !important;
 }
 
-@media (max-width: 767px) {
-  .veloura-category-banners {
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-}
-
-
-/* ========================================================================
-   Veloura Category Filter V118
-   #product-filter:
-   - Light  = secondary Light background
-   - Dark   = secondary Dark background
-   - No border
-   - Radius = global general radius
-   ======================================================================== */
-
+/* Sorting dropdown */
 .veloura-category-page #product-filter {
   background:
     var(--veloura-site-second-bg, #f8fafc) !important;
@@ -1202,11 +1370,21 @@ body.dark .veloura-category-page #product-filter {
   box-shadow: none !important;
 }
 
-/* Keep keyboard focus visible without turning it into a permanent border. */
 .veloura-category-page #product-filter:focus-visible {
   outline:
     2px solid currentColor !important;
 
   outline-offset:
     2px !important;
+}
+
+@media (max-width: 767px) {
+  .veloura-category-banners {
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .veloura-category-children {
+    margin-bottom: 18px;
+  }
 }
