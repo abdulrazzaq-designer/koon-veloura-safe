@@ -4872,18 +4872,23 @@
       "type": "boolean",
       "format": "switch",
       "id": "veloura_cart_surfaces_enabled_2026",
-      "label": "تفعيل تنسيق عناصر السلة",
-      "description": "عند التفعيل تستخدم عناصر السلة ألوان الخلفيات العامة تلقائيًا: الخلفية الثانوية للكروت والعناصر، والخلفية الأساسية لصندوق الخيارات الداخلي. كما تستخدم حواف العناصر العامة، مع إبقاء التحكم بالإطار بشكل مستقل.",
+      "label": "تنسيق عناصر السلة — داخلي",
+      "description": "إعداد داخلي يبقي تنسيق ألوان وحواف السلة العامة فعالًا دائمًا.",
       "icon": "sicon-paint-brush",
       "wide": true,
       "required": false,
-      "value": false,
-      "selected": false,
+      "value": true,
+      "selected": true,
       "conditions": [
         {
-          "id": "veloura_cart_banners_enabled_2026",
+          "id": "veloura_cart_surfaces_border_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_cart_surfaces_border_enabled_2026",
+          "operation": "=",
+          "value": false
         }
       ]
     },
@@ -4891,18 +4896,13 @@
       "type": "boolean",
       "format": "switch",
       "id": "veloura_cart_surfaces_border_enabled_2026",
-      "label": "إظهار إطار خفيف حول عناصر السلة",
-      "description": "يضيف إطارًا خفيفًا حول كروت السلة والعناصر الداخلية التي تدعم تنسيق Veloura.",
+      "label": "إظهار إطار حول عناصر السلة",
+      "description": "يتحكم فقط بإظهار أو إخفاء الإطار الخارجي لعناصر السلة. ألوان السلة والحواف العامة تبقى مرتبطة بإعدادات Veloura الأساسية.",
       "icon": "sicon-border-all",
       "required": false,
       "value": false,
       "selected": false,
       "conditions": [
-        {
-          "id": "veloura_cart_surfaces_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
         {
           "id": "veloura_cart_banners_enabled_2026",
           "operation": "=",
@@ -4919,11 +4919,6 @@
       "value": "#e5e7eb",
       "required": false,
       "conditions": [
-        {
-          "id": "veloura_cart_surfaces_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
         {
           "id": "veloura_cart_surfaces_border_enabled_2026",
           "operation": "=",
