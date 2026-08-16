@@ -1158,9 +1158,6 @@ input:where([type='file']):focus{
 .min-h-full{
     min-height: 100%;
 }
-.min-h-screen{
-    min-height: 100vh;
-}
 .\!w-36{
     width: 9rem !important;
 }
@@ -1471,9 +1468,6 @@ input:where([type='file']):focus{
 }
 .self-start{
     align-self: flex-start;
-}
-.overflow-auto{
-    overflow: auto;
 }
 .overflow-hidden{
     overflow: hidden;
@@ -50505,14 +50499,26 @@ html.dark body.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bott
     overflow: hidden;
     overscroll-behavior: none;
   }
-  /* Search/categories: keep bar tappable so second tap can close. */
-  body.veloura-bottom-nav-search-open .veloura-bottom-nav,
-  body.veloura-bottom-nav-categories-open .veloura-bottom-nav,
-  body.menu-opened .veloura-bottom-nav {
+  /* Search keeps the bottom bar above its own overlay.
+     Categories are different: mmenu must own the whole interaction layer.
+     Keeping the bottom bar above mmenu creates two competing fixed layers and
+     can leave only the backdrop/scroll-lock visible (the "frozen page" state). */
+  body.veloura-bottom-nav-search-open .veloura-bottom-nav {
     z-index: 2147483640;
   }
-  body.menu-opened .mm-ocd.mm-ocd--open {
-    z-index: 2147483000 !important;
+  body.menu-opened .mm-ocd.mm-ocd--open,
+  body.veloura-bottom-nav-categories-open .mm-ocd.mm-ocd--open {
+    z-index: 2147483640 !important;
+  }
+  body.menu-opened .veloura-bottom-nav,
+  body.veloura-bottom-nav-categories-open .veloura-bottom-nav {
+    z-index: 70 !important;
+    pointer-events: none !important;
+  }
+  body.menu-opened .veloura-bottom-nav,
+  body.veloura-bottom-nav-categories-open .veloura-bottom-nav {
+    opacity: 0;
+    visibility: hidden;
   }
 }
 @media (max-width: 767px) and (prefers-reduced-motion: reduce) {

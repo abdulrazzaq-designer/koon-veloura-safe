@@ -435,25 +435,14 @@
     overscroll-behavior: none;
   }
 
-  /* Search keeps the bottom bar above its own overlay.
-     Categories are different: mmenu must own the whole interaction layer.
-     Keeping the bottom bar above mmenu creates two competing fixed layers and
-     can leave only the backdrop/scroll-lock visible (the "frozen page" state). */
+  /* Search keeps the bar available. Categories are isolated by the V128
+     late stability layer and temporarily suppress the bar entirely. */
   body.veloura-bottom-nav-search-open .veloura-bottom-nav {
     z-index: 2147483640;
   }
 
-  body.menu-opened .mm-ocd.mm-ocd--open,
-  body.veloura-bottom-nav-categories-open .mm-ocd.mm-ocd--open {
-    z-index: 2147483640 !important;
-  }
-
-  body.menu-opened .veloura-bottom-nav,
-  body.veloura-bottom-nav-categories-open .veloura-bottom-nav {
-    z-index: 70 !important;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none !important;
+  body.menu-opened .mm-ocd.veloura-side-menu-drawer.mm-ocd--open {
+    z-index: 2147483646 !important;
   }
 
   @media (prefers-reduced-motion: reduce) {

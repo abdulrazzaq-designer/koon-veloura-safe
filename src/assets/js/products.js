@@ -1571,9 +1571,22 @@ class Products extends BasePage {
             position: salla.config.get('theme.is_rtl') ? 'right' : 'left'
         });
 
+        const filterDrawerRoot = filters.closest('.mm-ocd');
+        filterDrawerRoot?.classList.add('veloura-filters-drawer');
+        filters.dataset.velouraDrawerRole = 'filters';
+        window.__velouraFiltersDrawer = drawer;
+        window.__velouraFiltersDrawerRoot = filterDrawerRoot;
+
         trigger.addEventListener('click', event => {
-            document.body.classList.add('filters-opened');
             event.preventDefault();
+
+            // A single mmenu-light drawer may own the global scroll lock.
+            // Close the side categories drawer before filters take ownership.
+            try {
+                window.__velouraCloseNativeMobileMenu?.();
+            } catch (_) {}
+
+            document.body.classList.add('filters-opened');
             drawer.open();
         });
 

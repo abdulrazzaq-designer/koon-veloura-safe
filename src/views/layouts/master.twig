@@ -3095,16 +3095,18 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       {% endif %}
 
       {% if vbn_show_categories %}
-        <a
-          href="#mobile-menu"
+        <button
+          type="button"
           class="veloura-bottom-nav__item"
           data-vbn-item
           data-vbn-key="categories"
+          aria-controls="mobile-menu"
+          aria-expanded="false"
           aria-label="{{ vbn_categories_label|e }}"
         >
           <i class="sicon-grid" aria-hidden="true"></i>
           {% if vbn_show_labels %}<span>{{ vbn_categories_label }}</span>{% endif %}
-        </a>
+        </button>
       {% endif %}
 
       {% if vbn_show_search %}

@@ -1032,15 +1032,11 @@ isElementLoaded(selector){
 
   initiateMobileMenu() {
     /**
-     * V94 — restore Theme Raed's responsive mmenu lifecycle.
+     * Veloura V128 — isolated native side-menu runtime.
      *
-     * Critical:
-     * mmenu-light must NOT be active at every viewport width.
-     * Salla Theme Raed uses "(max-width: 1024px)".
-     *
-     * Keeping it on "(min-width: 0px)" leaves the offcanvas lifecycle alive
-     * while the Salla editor switches Mobile <-> Laptop, which can leave a
-     * backdrop / scroll lock / stale open state behind.
+     * The side categories drawer must own one off-canvas instance and one
+     * state. It is deliberately isolated from the product filters drawer and
+     * from the mobile bottom navigation.
      */
     if (window.__velouraNativeMobileMenuInitPromise) {
       return window.__velouraNativeMobileMenuInitPromise;
@@ -1050,19 +1046,19 @@ isElementLoaded(selector){
       this.isElementLoaded('#mobile-menu').then((menu) => {
         if (!menu) {
           window.__velouraNativeMobileMenuInitPromise = null;
-          return;
+          return null;
         }
 
         if (menu.dataset.velouraMmenuReady === '1') {
-          return window.__velouraNativeMobileMenuDrawer;
+          return window.__velouraNativeMobileMenuDrawer || null;
         }
 
         menu.dataset.velouraMmenuReady = '1';
 
         const mobileMenu = new MobileMenu(
           menu,
-          "(max-width: 1024px)",
-          "( slidingSubmenus: false)"
+          '(max-width: 1024px)',
+          '( slidingSubmenus: false)'
         );
 
         salla.lang.onLoaded(() => {
@@ -1072,14 +1068,94 @@ isElementLoaded(selector){
         });
 
         const drawer = mobileMenu.offcanvas({
-          position: salla.config.get('theme.is_rtl') ? "right" : "left"
+          position: salla.config.get('theme.is_rtl') ? 'right' : 'left'
         });
 
-        window.__velouraNativeMobileMenuDrawer = drawer;
+        // offcanvas() moves #mobile-menu into its generated .mm-ocd wrapper.
+        const drawerRoot = menu.closest('.mm-ocd');
+        const drawerContent = drawerRoot?.querySelector('.mm-ocd__content') || null;
+        const drawerBackdrop = drawerRoot?.querySelector('.mm-ocd__backdrop') || null;
 
-        const isNativeMenuOpen = () =>
-          document.body.classList.contains('mm-ocd-opened') ||
-          Boolean(document.querySelector('.mm-ocd.mm-ocd--open'));
+        drawerRoot?.classList.add('veloura-side-menu-drawer');
+        menu.dataset.velouraDrawerRole = 'side-menu';
+
+        window.__velouraNativeMobileMenuDrawer = drawer;
+        window.__velouraNativeMobileMenuRoot = drawerRoot;
+
+        const isMobileRange = () => window.matchMedia('(max-width: 1024px)').matches;
+        const isNativeMenuOpen = () => Boolean(
+          drawerRoot?.classList.contains('mm-ocd--open') ||
+          document.body.classList.contains('menu-opened')
+        );
+
+        const suppressBottomNav = (suppressed) => {
+          const bottomNav = document.querySelector('[data-vbn]');
+          if (!bottomNav) return;
+
+          bottomNav.classList.toggle('is-side-menu-suppressed', suppressed);
+
+          if (suppressed) {
+            bottomNav.setAttribute('aria-hidden', 'true');
+          } else {
+            bottomNav.removeAttribute('aria-hidden');
+          }
+        };
+
+        const closeOtherOffcanvas = () => {
+          // Product filters use a second mmenu-light instance. Never leave both
+          // drawers open because mmenu-light uses one global body lock class.
+          try {
+            window.__velouraFiltersDrawer?.close?.();
+          } catch (_) {}
+
+          document.body.classList.remove('filters-opened');
+
+          document.querySelectorAll('.mm-ocd.mm-ocd--open').forEach(root => {
+            if (root !== drawerRoot) {
+              root.classList.remove('mm-ocd--open');
+            }
+          });
+        };
+
+        const clearBottomOverlayState = () => {
+          document.body.classList.remove(
+            'veloura-bottom-nav-search-open',
+            'veloura-bottom-nav-login-open'
+          );
+
+          document.querySelectorAll(
+            '[id^="veloura-bottom-search-panel"], [id^="veloura-bottom-search-backdrop"]'
+          ).forEach(node => {
+            node.hidden = true;
+            node.setAttribute('aria-hidden', 'true');
+          });
+        };
+
+        const forceOpenState = () => {
+          if (!drawerRoot) return;
+
+          drawerRoot.classList.add('mm-ocd--open');
+          document.body.classList.add('mm-ocd-opened');
+          menu.style.setProperty('display', 'block', 'important');
+
+          if (drawerContent) {
+            drawerContent.style.setProperty('visibility', 'visible', 'important');
+            drawerContent.style.setProperty('opacity', '1', 'important');
+            drawerContent.style.setProperty('pointer-events', 'auto', 'important');
+            drawerContent.style.setProperty('transform', 'translate3d(0, 0, 0)', 'important');
+          }
+        };
+
+        const releaseForcedState = () => {
+          menu.style.removeProperty('display');
+
+          if (drawerContent) {
+            drawerContent.style.removeProperty('visibility');
+            drawerContent.style.removeProperty('opacity');
+            drawerContent.style.removeProperty('pointer-events');
+            drawerContent.style.removeProperty('transform');
+          }
+        };
 
         const closeNativeMenu = () => {
           document.body.classList.remove(
@@ -1089,43 +1165,71 @@ isElementLoaded(selector){
 
           try {
             drawer.close();
-          } catch (_) {}
+          } catch (_) {
+            drawerRoot?.classList.remove('mm-ocd--open');
+          }
+
+          drawerRoot?.classList.remove('mm-ocd--open');
+          releaseForcedState();
+          suppressBottomNav(false);
+
+          // Do not keep a dead scroll lock when no mmenu drawer is open.
+          if (!document.querySelector('.mm-ocd.mm-ocd--open')) {
+            document.body.classList.remove('mm-ocd-opened');
+          }
+
+          document.dispatchEvent(new CustomEvent('veloura:mobile-menu:closed'));
+          return false;
         };
 
         const openNativeMenu = () => {
-          if (!window.matchMedia('(max-width: 1024px)').matches) {
+          if (!isMobileRange()) {
             closeNativeMenu();
-            return;
+            return false;
           }
+
+          closeOtherOffcanvas();
+          clearBottomOverlayState();
+          document.dispatchEvent(new CustomEvent('veloura:mobile-menu:opening'));
 
           document.body.classList.add(
             'menu-opened',
             'veloura-bottom-nav-categories-open'
           );
+          suppressBottomNav(true);
 
           try {
             drawer.open();
           } catch (_) {
-            document.body.classList.remove(
-              'menu-opened',
-              'veloura-bottom-nav-categories-open'
+            // The visual/state guard below can still recover the generated
+            // wrapper; if there is no wrapper, roll everything back.
+          }
+
+          forceOpenState();
+
+          requestAnimationFrame(() => {
+            const valid = Boolean(
+              drawerRoot &&
+              drawerRoot.classList.contains('mm-ocd--open') &&
+              document.body.classList.contains('mm-ocd-opened') &&
+              drawerContent
             );
-          }
-        };
 
-        const toggleNativeMenu = () => {
-          if (isNativeMenuOpen() || document.body.classList.contains('menu-opened')) {
-            closeNativeMenu();
-            return false;
-          }
+            if (!valid) {
+              closeNativeMenu();
+            }
+          });
 
-          openNativeMenu();
           return true;
         };
 
-        // One owner for every mobile-menu trigger (header + bottom navigation).
-        // The bottom-nav controller calls this API instead of letting two click
-        // handlers race each other for the same #mobile-menu anchor.
+        const toggleNativeMenu = () => {
+          if (isNativeMenuOpen()) {
+            return closeNativeMenu();
+          }
+          return openNativeMenu();
+        };
+
         window.__velouraOpenNativeMobileMenu = openNativeMenu;
         window.__velouraCloseNativeMobileMenu = closeNativeMenu;
         window.__velouraToggleNativeMobileMenu = toggleNativeMenu;
@@ -1133,31 +1237,32 @@ isElementLoaded(selector){
         if (!window.__velouraNativeMobileMenuEventsBound) {
           window.__velouraNativeMobileMenuEventsBound = true;
 
-          this.onClick("a[href='#mobile-menu']", event => {
+          // Header trigger only. The bottom navigation uses its own BUTTON and
+          // calls the same toggle API, so one physical tap can never hit two
+          // #mobile-menu anchor listeners.
+          this.onClick("a[href='#mobile-menu']:not([data-vbn-key='categories'])", event => {
             event.preventDefault();
             toggleNativeMenu();
           });
 
-          this.onClick(".close-mobile-menu", event => {
+          menu.querySelectorAll('.close-mobile-menu').forEach(button => {
+            button.addEventListener('click', event => {
+              event.preventDefault();
+              closeNativeMenu();
+            });
+          });
+
+          drawerBackdrop?.addEventListener('click', event => {
             event.preventDefault();
             closeNativeMenu();
           });
 
-          this.onClick(".mm-ocd__backdrop", () => {
-            closeNativeMenu();
-          });
-
           const desktopGuard = window.matchMedia('(max-width: 1024px)');
-
           const syncResponsiveMenu = mediaEvent => {
-            const isMobileRange =
-              typeof mediaEvent?.matches === 'boolean'
-                ? mediaEvent.matches
-                : desktopGuard.matches;
-
-            if (!isMobileRange) {
-              closeNativeMenu();
-            }
+            const mobile = typeof mediaEvent?.matches === 'boolean'
+              ? mediaEvent.matches
+              : desktopGuard.matches;
+            if (!mobile) closeNativeMenu();
           };
 
           if (typeof desktopGuard.addEventListener === 'function') {
@@ -1166,24 +1271,14 @@ isElementLoaded(selector){
             desktopGuard.addListener(syncResponsiveMenu);
           }
 
-          window.addEventListener('resize', () => {
-            if (window.innerWidth > 1024) {
-              closeNativeMenu();
-            }
-          }, { passive: true });
-
           window.addEventListener('orientationchange', () => {
             window.setTimeout(() => {
-              if (window.innerWidth > 1024) {
-                closeNativeMenu();
-              }
+              if (!isMobileRange()) closeNativeMenu();
             }, 50);
           }, { passive: true });
 
           window.addEventListener('pageshow', () => {
-            if (!desktopGuard.matches) {
-              closeNativeMenu();
-            }
+            if (!isMobileRange()) closeNativeMenu();
           });
         }
 
@@ -2162,6 +2257,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     list.dataset.velouraCustomLinksReady = '1';
+  }
+
+  // V128 stability guard: old builds referenced hideMatchingLinks without
+  // defining it. Keep the hook total/no-throw; the current Twilight source does
+  // not expose those legacy hide toggles, so no DOM removal is performed here.
+  function hideMatchingLinks(menu, settings) {
+    if (!menu || !settings) return;
   }
 
   function applySideCategoriesSettings() {
@@ -4874,30 +4976,30 @@ const initVelouraBottomNavOverlaysV13 = () => {
     }
 
     if (key === 'categories') {
-      // Bottom navigation owns this tap completely. Without this, the same
-      // anchor is also handled by initiateMobileMenu(), which splits menu state
-      // between two controllers and can leave mmenu's backdrop/scroll-lock open
-      // while the drawer is not visible.
       event.preventDefault();
-      event.stopImmediatePropagation();
+      event.stopPropagation();
 
       closeSearch({ restore: false });
       if (isLoginOpen()) closeNativeLogin({ restore: false });
 
       const runToggle = () => {
         const toggle = window.__velouraToggleNativeMobileMenu;
-        if (typeof toggle !== 'function') return;
+        if (typeof toggle !== 'function') {
+          restoreRouteActive();
+          return;
+        }
 
         const opened = toggle();
+        item.setAttribute('aria-expanded', opened ? 'true' : 'false');
+
         if (opened) setActive(item);
-        else window.setTimeout(restoreRouteActive, 120);
+        else window.setTimeout(restoreRouteActive, 80);
       };
 
       if (typeof window.__velouraToggleNativeMobileMenu === 'function') {
         runToggle();
       } else {
-        const init = window.app?.initiateMobileMenu?.();
-        Promise.resolve(init || window.__velouraNativeMobileMenuInitPromise)
+        Promise.resolve(window.app?.initiateMobileMenu?.() || window.__velouraNativeMobileMenuInitPromise)
           .then(runToggle)
           .catch(() => restoreRouteActive());
       }
@@ -4910,6 +5012,21 @@ const initVelouraBottomNavOverlaysV13 = () => {
   }, true);
 
   searchBackdrop.addEventListener('click', () => closeSearch({ restore: true }));
+
+
+  document.addEventListener('veloura:mobile-menu:opening', () => {
+    closeSearch({ restore: false });
+    if (isLoginOpen()) closeNativeLogin({ restore: false });
+    if (categoriesItem) {
+      categoriesItem.setAttribute('aria-expanded', 'true');
+      setActive(categoriesItem);
+    }
+  });
+
+  document.addEventListener('veloura:mobile-menu:closed', () => {
+    categoriesItem?.setAttribute('aria-expanded', 'false');
+    if (!isSearchOpen() && !isLoginOpen()) restoreRouteActive();
+  });
 
   // Native login close/backdrop/Escape should restore the bottom-nav state.
   document.addEventListener('click', event => {
