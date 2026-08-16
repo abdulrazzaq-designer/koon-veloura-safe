@@ -67,6 +67,7 @@ class Products extends BasePage {
 
         this.applyVelouraCategoryMappedImages(page, settings);
         this.initVelouraCategoryCompactRail(page);
+        this.syncVelouraCategoryHeaderMaterial(page);
         this.initVelouraCategorySearchCollapse(page);
         this.initVelouraCategorySticky(page, settings);
         this.initVelouraCategoryInlineSwitch(page, productsList, settings);
@@ -87,14 +88,25 @@ class Products extends BasePage {
             frame = 0;
 
             const isMobile = window.matchMedia('(max-width: 1023px)').matches;
-            const stickyIconMode = isMobile
-                ? header.classList.contains('veloura-mobile-search-bar_sticky_icon')
-                : header.classList.contains('veloura-desktop-search-bar_sticky_icon');
+
+            // Category pages intentionally reuse the existing "bar -> icon on
+            // scroll" search behaviour even when the merchant selected the
+            // always-visible bar. Icon-only modes are left untouched.
+            const categoryBarMode = isMobile
+                ? (
+                    header.classList.contains('veloura-mobile-search-bar') ||
+                    header.classList.contains('veloura-mobile-search-bar_sticky_icon')
+                )
+                : (
+                    header.classList.contains('veloura-desktop-search-bar') ||
+                    header.classList.contains('veloura-desktop-search-bar_sticky_icon')
+                );
+
             const scrolled = Math.max(
                 0,
                 window.scrollY || window.pageYOffset || 0
-            ) > 6;
-            const collapsed = stickyIconMode && scrolled;
+            ) > 4;
+            const collapsed = categoryBarMode && scrolled;
 
             document.body?.classList.toggle(
                 'veloura-vcat-search-collapsed',
@@ -106,6 +118,10 @@ class Products extends BasePage {
             );
             stack?.classList.toggle(
                 'veloura-vcat-search-collapsed',
+                collapsed
+            );
+            page.classList.toggle(
+                'veloura-category-search-collapsed',
                 collapsed
             );
         };
@@ -125,8 +141,100 @@ class Products extends BasePage {
         window.addEventListener('orientationchange', schedule, { passive: true });
         document.addEventListener('veloura:header:layout', schedule);
         document.addEventListener('veloura:header:state', schedule);
+        document.addEventListener('veloura:header:position', schedule);
 
         page.__velouraCategorySearchCollapse = schedule;
+    }
+
+    syncVelouraCategoryHeaderMaterial(page) {
+        const rail = page.querySelector('[data-veloura-category-children]');
+        const stack = document.querySelector('[data-veloura-header-tabs-stack]');
+        const surface = stack?.querySelector('.veloura-header-tabs-stack__surface');
+
+        if (!rail || !surface) {
+            return;
+        }
+
+        let frame = 0;
+
+        const copyMaterial = () => {
+            frame = 0;
+
+            const style = window.getComputedStyle(surface);
+            const backdrop =
+                style.backdropFilter ||
+                style.webkitBackdropFilter ||
+                'none';
+
+            // Copy the browser's FINAL header paint rather than rebuilding
+            // it from guessed opacity values. The category keeps one edge
+            // only; its old gradient + border + inset stack made the top and
+            // bottom lines look visually thicker than the header.
+            rail.style.setProperty(
+                '--vcat-header-surface',
+                style.backgroundColor || 'transparent'
+            );
+            rail.style.setProperty(
+                '--vcat-header-backdrop-filter',
+                backdrop
+            );
+            rail.style.setProperty(
+                '--vcat-header-border-top-width',
+                style.borderTopWidth || '0px'
+            );
+            rail.style.setProperty(
+                '--vcat-header-border-top-style',
+                style.borderTopStyle || 'solid'
+            );
+            rail.style.setProperty(
+                '--vcat-header-border-top-color',
+                style.borderTopColor || 'transparent'
+            );
+            rail.style.setProperty(
+                '--vcat-header-border-bottom-width',
+                style.borderBottomWidth || '0px'
+            );
+            rail.style.setProperty(
+                '--vcat-header-border-bottom-style',
+                style.borderBottomStyle || 'solid'
+            );
+            rail.style.setProperty(
+                '--vcat-header-border-bottom-color',
+                style.borderBottomColor || 'transparent'
+            );
+            rail.dataset.velouraHeaderMaterialSynced = 'true';
+        };
+
+        const schedule = () => {
+            if (frame) {
+                return;
+            }
+
+            frame = requestAnimationFrame(copyMaterial);
+        };
+
+        copyMaterial();
+        window.addEventListener('resize', schedule, { passive: true });
+        window.addEventListener('orientationchange', schedule, { passive: true });
+        document.addEventListener('veloura:header:layout', schedule);
+        document.addEventListener('veloura:header:state', schedule);
+        document.addEventListener('veloura:header:position', schedule);
+
+        const classObserver = new MutationObserver(schedule);
+        classObserver.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class', 'style'],
+        });
+
+        if (document.body) {
+            classObserver.observe(document.body, {
+                attributes: true,
+                attributeFilter: ['class', 'style'],
+            });
+        }
+
+        page.__velouraCategoryHeaderMaterialObserver = classObserver;
+        page.__velouraCategoryHeaderMaterialSync = schedule;
     }
 
     scrollVelouraCategoryTrackItem(item, behavior = 'auto') {
