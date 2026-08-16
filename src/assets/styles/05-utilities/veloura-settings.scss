@@ -1083,7 +1083,7 @@ body.dark .veloura-category-card__title {
 
 
 /* ========================================================================
-   Veloura Category Page V123
+   Veloura Category Page V125
    banner -> subcategories -> title/filter -> products
    ======================================================================== */
 
@@ -1476,7 +1476,7 @@ body.dark .veloura-category-page {
 }
 
 /* ------------------------------------------------------------------------
-   V123 — compact sticky navigation
+   V125 — compact sticky navigation
    The merchant's rich Grid/Slider layout stays untouched at the top of the
    page. Only while the rail is actually stuck do we switch to small
    horizontal chips with the category image/icon on the inline-start side.
@@ -1518,7 +1518,11 @@ body.dark .veloura-category-page {
   gap: 7px;
   min-height: 42px;
   max-width: min(70vw, 210px);
-  padding: 5px 10px;
+  /* Keep the media inset visually balanced: the inline-start edge (right in RTL)
+     now matches the chip's top/bottom breathing room. */
+  padding-block: 5px;
+  padding-inline-start: 6px;
+  padding-inline-end: 10px;
 
   background: var(--vcat-secondary-bg);
   color: var(--vcat-primary-text) !important;
@@ -1592,7 +1596,9 @@ body.dark .veloura-category-page {
   overflow: hidden;
   box-sizing: border-box;
   background-clip: padding-box;
-  border-radius: clamp(14px, var(--veloura-global-radius, 18px), 24px);
+  /* Sticky mode must respect the exact same global radius selected by the
+     merchant. Do not clamp it to a custom compact-only radius. */
+  border-radius: var(--veloura-global-radius, 0px) !important;
   box-shadow: 0 7px 22px rgba(15, 23, 42, .055);
 }
 
@@ -1630,7 +1636,9 @@ body.dark .veloura-category-page {
   gap: 7px;
   min-height: 40px;
   max-width: min(70vw, 220px);
-  padding: 5px 10px;
+  padding-block: 5px;
+  padding-inline-start: 6px;
+  padding-inline-end: 10px;
   border-radius: 999px;
   font-size: 12.5px;
 }
