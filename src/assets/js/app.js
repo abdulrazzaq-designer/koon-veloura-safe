@@ -6,6 +6,21 @@ import Anime from './partials/anime';
 import initTootTip from './partials/tooltip';
 import AppHelpers from "./app-helpers";
 
+// Veloura: avoid no-op writes to body.class. Chromium still delivers an
+// attribute mutation for some DOMTokenList.remove() calls even when the token
+// is already absent. Bottom-nav observers watch body.class, so repeated no-op
+// writes can form a feedback loop while the side menu is opening/closing.
+const removeBodyClassesIfPresent = (...tokens) => {
+  const body = document.body;
+  if (!body || !tokens.length) return false;
+
+  const present = tokens.filter(token => token && body.classList.contains(token));
+  if (!present.length) return false;
+
+  body.classList.remove(...present);
+  return true;
+};
+
 
 /* ========================================================================
    Veloura Bottom Navigation
@@ -1108,7 +1123,7 @@ isElementLoaded(selector){
             window.__velouraFiltersDrawer?.close?.();
           } catch (_) {}
 
-          document.body.classList.remove('filters-opened');
+          removeBodyClassesIfPresent('filters-opened');
 
           document.querySelectorAll('.mm-ocd.mm-ocd--open').forEach(root => {
             if (root !== drawerRoot) {
@@ -1118,7 +1133,7 @@ isElementLoaded(selector){
         };
 
         const clearBottomOverlayState = () => {
-          document.body.classList.remove(
+          removeBodyClassesIfPresent(
             'veloura-bottom-nav-search-open',
             'veloura-bottom-nav-login-open'
           );
@@ -1158,7 +1173,7 @@ isElementLoaded(selector){
         };
 
         const closeNativeMenu = () => {
-          document.body.classList.remove(
+          removeBodyClassesIfPresent(
             'menu-opened',
             'veloura-bottom-nav-categories-open'
           );
@@ -1175,7 +1190,7 @@ isElementLoaded(selector){
 
           // Do not keep a dead scroll lock when no mmenu drawer is open.
           if (!document.querySelector('.mm-ocd.mm-ocd--open')) {
-            document.body.classList.remove('mm-ocd-opened');
+            removeBodyClassesIfPresent('mm-ocd-opened');
           }
 
           document.dispatchEvent(new CustomEvent('veloura:mobile-menu:closed'));
@@ -1490,7 +1505,7 @@ isElementLoaded(selector){
       window.addEventListener('click', ({ target: element }) => {
         if (!element.closest('.dropdown__menu') && element !== btn || element.classList.contains('dropdown__close')) {
           btn.parentElement.classList.remove('is-opened');
-          document.body.classList.remove('dropdown--is-opened');
+          removeBodyClassesIfPresent('dropdown--is-opened');
         }
       });
     });
@@ -4360,7 +4375,7 @@ const initVelouraBottomNavOverlaysV13 = () => {
   const LOGIN_OPEN_CLASS = 'veloura-bottom-nav-login-open';
 
   // V13 never owns the Login modal. Clear any stale class left by V12/HMR.
-  document.body.classList.remove(LOGIN_OPEN_CLASS);
+  removeBodyClassesIfPresent(LOGIN_OPEN_CLASS);
   document.querySelectorAll('[data-v12-login-surface], [data-v12-login-clear], [data-v12-login-close]').forEach(el => {
     el.removeAttribute('data-v12-login-surface');
     el.removeAttribute('data-v12-login-clear');
@@ -4759,7 +4774,7 @@ const initVelouraBottomNavOverlaysV13 = () => {
     // is already absent. Avoid the no-op write entirely so the observer cannot
     // feed itself while the side menu is open.
     if (document.body.classList.contains('veloura-bottom-nav-search-open')) {
-      document.body.classList.remove('veloura-bottom-nav-search-open');
+      removeBodyClassesIfPresent('veloura-bottom-nav-search-open');
     }
 
     if (restore && !isLoginOpen()) restoreRouteActive();
@@ -4771,7 +4786,7 @@ const initVelouraBottomNavOverlaysV13 = () => {
 
     if (document.body.classList.contains('menu-opened')) {
       window.__velouraNativeMobileMenuDrawer?.close?.();
-      document.body.classList.remove('menu-opened', 'veloura-bottom-nav-categories-open');
+      removeBodyClassesIfPresent('menu-opened', 'veloura-bottom-nav-categories-open');
     }
 
     syncRadius();
@@ -4920,7 +4935,7 @@ const initVelouraBottomNavOverlaysV13 = () => {
       else closeButton?.click?.();
     } catch (_) {}
 
-    document.body.classList.remove(LOGIN_OPEN_CLASS);
+    removeBodyClassesIfPresent(LOGIN_OPEN_CLASS);
     accountItem?.setAttribute('aria-expanded', 'false');
     document.querySelectorAll('[data-v12-login-surface], [data-v12-login-clear], [data-v12-login-close]')
       .forEach(el => {
@@ -4936,7 +4951,7 @@ const initVelouraBottomNavOverlaysV13 = () => {
 
     if (document.body.classList.contains('menu-opened')) {
       window.__velouraNativeMobileMenuDrawer?.close?.();
-      document.body.classList.remove('menu-opened', 'veloura-bottom-nav-categories-open');
+      removeBodyClassesIfPresent('menu-opened', 'veloura-bottom-nav-categories-open');
     }
 
     syncRadius();
@@ -4977,7 +4992,7 @@ const initVelouraBottomNavOverlaysV13 = () => {
       closeSearch({ restore: false });
       if (document.body.classList.contains('menu-opened')) {
         window.__velouraNativeMobileMenuDrawer?.close?.();
-        document.body.classList.remove('menu-opened', 'veloura-bottom-nav-categories-open');
+        removeBodyClassesIfPresent('menu-opened', 'veloura-bottom-nav-categories-open');
       }
       setActive(accountItem);
       return;
@@ -5043,7 +5058,7 @@ const initVelouraBottomNavOverlaysV13 = () => {
     const isClose = target?.closest?.('[data-v12-login-close="true"], .s-modal-overlay, .s-salla-modal-overlay, .s-modal-backdrop, .modal-backdrop');
     if (!isClose) return;
     window.setTimeout(() => {
-      document.body.classList.remove(LOGIN_OPEN_CLASS);
+      removeBodyClassesIfPresent(LOGIN_OPEN_CLASS);
       accountItem?.setAttribute('aria-expanded', 'false');
       if (!isSearchOpen()) restoreRouteActive();
     }, 100);
@@ -5062,7 +5077,7 @@ const initVelouraBottomNavOverlaysV13 = () => {
     }
     if (isLoginOpen()) {
       window.setTimeout(() => {
-        document.body.classList.remove(LOGIN_OPEN_CLASS);
+        removeBodyClassesIfPresent(LOGIN_OPEN_CLASS);
         accountItem?.setAttribute('aria-expanded', 'false');
         restoreRouteActive();
       }, 80);
