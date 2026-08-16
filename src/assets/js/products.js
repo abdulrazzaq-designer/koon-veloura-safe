@@ -67,8 +67,93 @@ class Products extends BasePage {
 
         this.applyVelouraCategoryMappedImages(page, settings);
         this.initVelouraCategoryCompactRail(page);
+        this.initVelouraCategorySearchCollapse(page);
         this.initVelouraCategorySticky(page, settings);
         this.initVelouraCategoryInlineSwitch(page, productsList, settings);
+    }
+
+    initVelouraCategorySearchCollapse(page) {
+        const stack = document.querySelector('[data-veloura-header-tabs-stack]');
+        const header = stack?.querySelector('.store-header.veloura-top-enabled') ||
+            document.querySelector('.store-header.veloura-top-enabled');
+
+        if (!header) {
+            return;
+        }
+
+        let frame = 0;
+
+        const update = () => {
+            frame = 0;
+
+            const isMobile = window.matchMedia('(max-width: 1023px)').matches;
+            const stickyIconMode = isMobile
+                ? header.classList.contains('veloura-mobile-search-bar_sticky_icon')
+                : header.classList.contains('veloura-desktop-search-bar_sticky_icon');
+            const scrolled = Math.max(
+                0,
+                window.scrollY || window.pageYOffset || 0
+            ) > 6;
+            const collapsed = stickyIconMode && scrolled;
+
+            document.body?.classList.toggle(
+                'veloura-vcat-search-collapsed',
+                collapsed
+            );
+            header.classList.toggle(
+                'veloura-vcat-search-collapsed',
+                collapsed
+            );
+            stack?.classList.toggle(
+                'veloura-vcat-search-collapsed',
+                collapsed
+            );
+        };
+
+        const schedule = () => {
+            if (frame) {
+                return;
+            }
+
+            frame = requestAnimationFrame(update);
+        };
+
+        update();
+
+        window.addEventListener('scroll', schedule, { passive: true });
+        window.addEventListener('resize', schedule, { passive: true });
+        window.addEventListener('orientationchange', schedule, { passive: true });
+        document.addEventListener('veloura:header:layout', schedule);
+        document.addEventListener('veloura:header:state', schedule);
+
+        page.__velouraCategorySearchCollapse = schedule;
+    }
+
+    scrollVelouraCategoryTrackItem(item, behavior = 'auto') {
+        const track = item?.closest(
+            '.veloura-category-compact__track, .veloura-category-descendants__track'
+        );
+
+        if (!track || !item) {
+            return;
+        }
+
+        requestAnimationFrame(() => {
+            const trackRect = track.getBoundingClientRect();
+            const itemRect = item.getBoundingClientRect();
+            const delta =
+                ((itemRect.left + itemRect.right) / 2) -
+                ((trackRect.left + trackRect.right) / 2);
+
+            if (Math.abs(delta) < 2) {
+                return;
+            }
+
+            track.scrollBy({
+                left: delta,
+                behavior,
+            });
+        });
     }
 
     initVelouraCategoryCompactRail(page) {
@@ -214,13 +299,7 @@ class Products extends BasePage {
                 return;
             }
 
-            requestAnimationFrame(() => {
-                active.scrollIntoView({
-                    behavior: 'auto',
-                    block: 'nearest',
-                    inline: 'center',
-                });
-            });
+            this.scrollVelouraCategoryTrackItem(active, 'auto');
         };
 
         const isRendered = element => {
@@ -532,13 +611,7 @@ class Products extends BasePage {
                     candidate.setAttribute('aria-current', 'page');
 
                     if (rail.classList.contains('is-stuck')) {
-                        requestAnimationFrame(() => {
-                            candidate.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'nearest',
-                                inline: 'center',
-                            });
-                        });
+                        this.scrollVelouraCategoryTrackItem(candidate, 'smooth');
                     }
                 } else {
                     candidate.removeAttribute('aria-current');
@@ -561,13 +634,7 @@ class Products extends BasePage {
                     if (active) {
                         candidate.setAttribute('aria-current', 'page');
 
-                        requestAnimationFrame(() => {
-                            candidate.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'nearest',
-                                inline: 'center',
-                            });
-                        });
+                        this.scrollVelouraCategoryTrackItem(candidate, 'smooth');
                     } else {
                         candidate.removeAttribute('aria-current');
                     }

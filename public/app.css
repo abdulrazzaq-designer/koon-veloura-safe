@@ -51851,10 +51851,13 @@ body.dark .veloura-category-card__title {
   display: block !important;
 }
 /* ========================================================================
-   Veloura Category Page V122
+   Veloura Category Page V123
    banner -> subcategories -> title/filter -> products
    ======================================================================== */
 .veloura-category-page {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   --vcat-secondary-bg:
     var(--veloura-site-second-bg, #f8fafc);
   --vcat-primary-bg:
@@ -51886,9 +51889,16 @@ body.dark .veloura-category-page {
 .veloura-category-children {
   z-index: 1;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   margin: 0 0 24px;
-  padding: 8px 0 10px;
+  padding: 8px 8px 10px;
+  box-sizing: border-box;
+  overflow: hidden;
   background: var(--vcat-primary-bg);
+  background-clip: padding-box;
+  border-radius: 0px;
+  border-radius: var(--veloura-global-radius, 0px);
 }
 .veloura-category-children--sticky {
   position: sticky !important;
@@ -51919,6 +51929,10 @@ body.dark .veloura-category-page {
 }
 .veloura-category-children__grid {
   display: grid;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-template-columns: repeat(var(--vcat-mobile-cols, 4), minmax(0, 1fr));
   grid-gap: 12px;
@@ -51934,6 +51948,9 @@ body.dark .veloura-category-page {
 .veloura-category-children__slider {
   display: block;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 .veloura-category-children__slider .swiper-slide {
   height: auto;
@@ -51990,6 +52007,8 @@ body.dark .veloura-category-page {
   gap: 8px;
   width: 100%;
   max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   overflow-x: auto;
   overflow-y: hidden;
   padding: 1px 1px 3px;
@@ -52149,7 +52168,7 @@ body.dark .veloura-category-page {
   background: var(--color-primary, #004956);
 }
 /* ------------------------------------------------------------------------
-   V122 — compact sticky navigation
+   V123 — compact sticky navigation
    The merchant's rich Grid/Slider layout stays untouched at the top of the
    page. Only while the rail is actually stuck do we switch to small
    horizontal chips with the category image/icon on the inline-start side.
@@ -52157,7 +52176,9 @@ body.dark .veloura-category-page {
 .veloura-category-compact {
   display: none;
   width: 100%;
+  max-width: 100%;
   min-width: 0;
+  box-sizing: border-box;
 }
 .veloura-category-compact__track {
   display: flex;
@@ -52165,6 +52186,8 @@ body.dark .veloura-category-page {
   gap: 7px;
   width: 100%;
   max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   overflow-x: auto;
   overflow-y: hidden;
   padding: 1px 2px 3px;
@@ -52327,63 +52350,73 @@ body.dark .veloura-category-page {
   padding-top: 5px;
 }
 /* ------------------------------------------------------------------------
-   Global glass integration
-   The category surface opts into the exact global/header glass material only
-   when the existing general glass switch adds body.veloura-glass-effect.
-   Dark/light tints therefore stay owned by the theme's global variables.
+   Global glass integration — exact header material
+   Use the same surface/filter/edge/shadow variables and the same paint stack
+   as Veloura's header. No local fallback tint is introduced here, so Light
+   and Dark keep matching the global glass system exactly.
    ------------------------------------------------------------------------ */
-body.veloura-glass-effect .veloura-category-children {
+html body.veloura-glass-effect .veloura-category-children {
   background: linear-gradient(to bottom, rgba(100, 116, 139, .10) 0, rgba(100, 116, 139, .10) 1px, transparent 1px, transparent calc(100% - 1px), rgba(100, 116, 139, .045) calc(100% - 1px), rgba(100, 116, 139, .045) 100%), rgba(230, 232, 235, .69) !important;
-  background: linear-gradient(to bottom, var(--veloura-glass-edge-top, rgba(255, 255, 255, 0.28)) 0, var(--veloura-glass-edge-top, rgba(255, 255, 255, 0.28)) 1px, transparent 1px, transparent calc(100% - 1px), var(--veloura-glass-edge-bottom, rgba(15, 23, 42, 0.06)) calc(100% - 1px), var(--veloura-glass-edge-bottom, rgba(15, 23, 42, 0.06)) 100%), var(--veloura-glass-surface, var(--veloura-global-glass-bg, rgba(248, 250, 252, 0.72))) !important;
+  background: linear-gradient(to bottom, var(--veloura-glass-edge-top) 0, var(--veloura-glass-edge-top) 1px, transparent 1px, transparent calc(100% - 1px), var(--veloura-glass-edge-bottom) calc(100% - 1px), var(--veloura-glass-edge-bottom) 100%), var(--veloura-glass-surface) !important;
   background-color: rgba(230, 232, 235, .69) !important;
-  background-color: var(--veloura-glass-surface, var(--veloura-global-glass-bg, rgba(248, 250, 252, 0.72))) !important;
+  background-color: var(--veloura-glass-surface) !important;
+  background-image: linear-gradient(to bottom, rgba(100, 116, 139, .10) 0, rgba(100, 116, 139, .10) 1px, transparent 1px, transparent calc(100% - 1px), rgba(100, 116, 139, .045) calc(100% - 1px), rgba(100, 116, 139, .045) 100%) !important;
+  background-image: linear-gradient(to bottom, var(--veloura-glass-edge-top) 0, var(--veloura-glass-edge-top) 1px, transparent 1px, transparent calc(100% - 1px), var(--veloura-glass-edge-bottom) calc(100% - 1px), var(--veloura-glass-edge-bottom) 100%) !important;
+  border-top: 1px solid rgba(100, 116, 139, .10) !important;
+  border-top: 1px solid var(--veloura-glass-edge-top) !important;
+  border-bottom: 1px solid rgba(100, 116, 139, .045) !important;
+  border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
+  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: var(--veloura-glass-filter) !important;
+  box-shadow: inset 0 1px 0 rgba(100, 116, 139, .10), inset 0 -1px 0 rgba(100, 116, 139, .045), 0 8px 26px rgba(15, 23, 42, .055) !important;
+  box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top), inset 0 -1px 0 var(--veloura-glass-edge-bottom), 0 8px 26px var(--veloura-glass-shadow) !important;
 }
-body.veloura-glass-effect .veloura-category-children {
-  border-top: 1px solid rgba(100, 116, 139, .10);
-  border-top: 1px solid var(--veloura-glass-edge-top, rgba(255, 255, 255, 0.28));
-  border-bottom: 1px solid rgba(100, 116, 139, .045);
-  border-bottom: 1px solid var(--veloura-glass-edge-bottom, rgba(15, 23, 42, 0.06));
-  border-left: 0;
-  border-right: 0;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%);
-  -webkit-backdrop-filter: var(--veloura-glass-filter, var(--veloura-global-glass-filter, blur(17px) saturate(36%)));
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%);
-  backdrop-filter: var(--veloura-glass-filter, var(--veloura-global-glass-filter, blur(17px) saturate(36%)));
-  box-shadow: inset 0 1px 0 rgba(100, 116, 139, .10), inset 0 -1px 0 rgba(100, 116, 139, .045), 0 8px 26px rgba(15, 23, 42, .055);
-  box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top, rgba(255, 255, 255, 0.22)), inset 0 -1px 0 var(--veloura-glass-edge-bottom, rgba(15, 23, 42, 0.05)), 0 8px 26px var(--veloura-glass-shadow, rgba(15, 23, 42, 0.07));
+html body.veloura-glass-effect .veloura-category-children::before {
+  display: none !important;
 }
-body.veloura-glass-effect .veloura-category-children::before {
-  display: none;
+html body.veloura-glass-effect .veloura-category-compact__item,
+html body.veloura-glass-effect .veloura-category-descendant {
+  background: rgba(255, 255, 255, .48) !important;
+  background: var(--veloura-global-glass-control) !important;
 }
-body.veloura-glass-effect .veloura-category-compact__item,
-body.veloura-glass-effect .veloura-category-descendant {
-  background: rgba(255, 255, 255, .48);
-}
-@supports (color: color-mix(in lch, red, blue)) and (top: var(--f)){
-body.veloura-glass-effect .veloura-category-compact__item,
-body.veloura-glass-effect .veloura-category-descendant {
-  background: var(--veloura-global-glass-control, color-mix(in srgb, var(--veloura-glass-surface, rgba(248, 250, 252, 0.72)) 74%, transparent));
-}
-}
-body.veloura-glass-effect .veloura-category-compact__item.is-active,
-body.veloura-glass-effect .veloura-category-descendant.is-active {
-  background: #414042;
-  background: var(--color-primary, #004956);
+html body.veloura-glass-effect .veloura-category-compact__item.is-active,
+html body.veloura-glass-effect .veloura-category-descendant.is-active {
+  background: #414042 !important;
+  background: var(--color-primary, #004956) !important;
 }
 /* ------------------------------------------------------------------------
-   Detached search + existing bar_sticky_icon mode
-   Connected search already collapses to the header icon. V122 makes the
-   detached version obey the same merchant option instead of staying as a
-   second sticky row under the compact header.
+   bar_sticky_icon on category pages
+   The header controller only marks its compact class when compact-on-scroll
+   is enabled. Category pages therefore apply their own lightweight scrolled
+   state so detached and connected search bars reliably become the existing
+   header search icon without changing the merchant's chosen search mode.
    ------------------------------------------------------------------------ */
 @media (max-width: 1023px) {
-  .veloura-header-tabs-stack.veloura-stack-is-scrolled .veloura-detached-search-shell.veloura-detached-mobile-bar_sticky_icon {
+  html body.veloura-vcat-search-collapsed .veloura-detached-search-shell.veloura-detached-mobile-bar_sticky_icon,
+  html body .store-header.veloura-mobile-search-bar_sticky_icon.veloura-vcat-search-collapsed .veloura-mobile-search-bar {
     display: none !important;
+  }
+  html body .store-header.veloura-mobile-search-bar_sticky_icon.veloura-vcat-search-collapsed .veloura-search-toggle-left {
+    display: none !important;
+  }
+  html body .store-header.veloura-mobile-search-bar_sticky_icon.veloura-vcat-search-collapsed .veloura-search-toggle-right {
+    display: inline-flex !important;
   }
 }
 @media (min-width: 1024px) {
-  .veloura-header-tabs-stack.veloura-stack-is-scrolled .veloura-detached-search-shell.veloura-detached-desktop-bar_sticky_icon {
+  html body.veloura-vcat-search-collapsed .veloura-detached-search-shell.veloura-detached-desktop-bar_sticky_icon,
+  html body .store-header.veloura-desktop-search-bar_sticky_icon.veloura-vcat-search-collapsed .veloura-desktop-search-bar {
     display: none !important;
+  }
+  html body .store-header.veloura-desktop-search-bar_sticky_icon.veloura-vcat-search-collapsed .veloura-search-toggle-left {
+    display: none !important;
+  }
+  html body .store-header.veloura-desktop-search-bar_sticky_icon.veloura-vcat-search-collapsed .veloura-search-toggle-right {
+    display: inline-flex !important;
   }
 }
 /* Desktop filters stay below header + sticky subcategory rail. */
