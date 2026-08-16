@@ -4753,7 +4753,15 @@ const initVelouraBottomNavOverlaysV13 = () => {
     searchPanel.setAttribute('aria-hidden', 'true');
     searchBackdrop.setAttribute('aria-hidden', 'true');
     searchItem?.setAttribute('aria-expanded', 'false');
-    document.body.classList.remove('veloura-bottom-nav-search-open');
+
+    // IMPORTANT: body.class is observed below. Chromium can still enqueue an
+    // attribute mutation when DOMTokenList.remove() is called for a token that
+    // is already absent. Avoid the no-op write entirely so the observer cannot
+    // feed itself while the side menu is open.
+    if (document.body.classList.contains('veloura-bottom-nav-search-open')) {
+      document.body.classList.remove('veloura-bottom-nav-search-open');
+    }
+
     if (restore && !isLoginOpen()) restoreRouteActive();
   };
 
@@ -5070,18 +5078,31 @@ const initVelouraBottomNavOverlaysV13 = () => {
   }
 
   // Keep Categories active in sync with Raed's mmenu state.
+  // Only react when the *menu-opened state itself* changes. The body also gets
+  // classes for search/login/mmenu/filters; reacting to every class mutation
+  // can create a MutationObserver feedback loop.
   let menuWasOpen = document.body.classList.contains('menu-opened');
   if (typeof MutationObserver === 'function') {
     const bodyObserver = new MutationObserver(() => {
       const menuOpen = document.body.classList.contains('menu-opened');
+
+      // Ignore unrelated body.class mutations while the menu state is stable.
+      if (menuOpen === menuWasOpen) return;
+
+      const wasOpen = menuWasOpen;
+      // Update first, before any helper below is allowed to touch body.class.
+      // Any follow-up mutation will therefore see a stable state and exit.
+      menuWasOpen = menuOpen;
+
       if (menuOpen && categoriesItem) {
-        closeSearch({ restore: false });
+        if (isSearchOpen() || document.body.classList.contains('veloura-bottom-nav-search-open')) {
+          closeSearch({ restore: false });
+        }
         if (isLoginOpen()) closeNativeLogin({ restore: false });
         setActive(categoriesItem);
-      } else if (menuWasOpen && !menuOpen && !isSearchOpen() && !isLoginOpen()) {
+      } else if (wasOpen && !menuOpen && !isSearchOpen() && !isLoginOpen()) {
         restoreRouteActive();
       }
-      menuWasOpen = menuOpen;
     });
     bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
   }
