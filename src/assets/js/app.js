@@ -1077,6 +1077,10 @@ isElementLoaded(selector){
 
         window.__velouraNativeMobileMenuDrawer = drawer;
 
+        const isNativeMenuOpen = () =>
+          document.body.classList.contains('mm-ocd-opened') ||
+          Boolean(document.querySelector('.mm-ocd.mm-ocd--open'));
+
         const closeNativeMenu = () => {
           document.body.classList.remove(
             'menu-opened',
@@ -1089,7 +1093,15 @@ isElementLoaded(selector){
         };
 
         const openNativeMenu = () => {
-          document.body.classList.add('menu-opened');
+          if (!window.matchMedia('(max-width: 1024px)').matches) {
+            closeNativeMenu();
+            return;
+          }
+
+          document.body.classList.add(
+            'menu-opened',
+            'veloura-bottom-nav-categories-open'
+          );
 
           try {
             drawer.open();
@@ -1101,23 +1113,29 @@ isElementLoaded(selector){
           }
         };
 
+        const toggleNativeMenu = () => {
+          if (isNativeMenuOpen() || document.body.classList.contains('menu-opened')) {
+            closeNativeMenu();
+            return false;
+          }
+
+          openNativeMenu();
+          return true;
+        };
+
+        // One owner for every mobile-menu trigger (header + bottom navigation).
+        // The bottom-nav controller calls this API instead of letting two click
+        // handlers race each other for the same #mobile-menu anchor.
+        window.__velouraOpenNativeMobileMenu = openNativeMenu;
+        window.__velouraCloseNativeMobileMenu = closeNativeMenu;
+        window.__velouraToggleNativeMobileMenu = toggleNativeMenu;
+
         if (!window.__velouraNativeMobileMenuEventsBound) {
           window.__velouraNativeMobileMenuEventsBound = true;
 
           this.onClick("a[href='#mobile-menu']", event => {
             event.preventDefault();
-
-            if (!window.matchMedia('(max-width: 1024px)').matches) {
-              closeNativeMenu();
-              return;
-            }
-
-            if (document.body.classList.contains('menu-opened')) {
-              closeNativeMenu();
-              return;
-            }
-
-            openNativeMenu();
+            toggleNativeMenu();
           });
 
           this.onClick(".close-mobile-menu", event => {
@@ -4231,7 +4249,7 @@ const initVelouraBottomNavOverlaysV13 = () => {
   const categoriesItem = nav.querySelector(`${itemSelector}[data-vbn-key="categories"]`);
   const navSurface = nav.querySelector('.veloura-bottom-nav__surface');
 
-  if (!searchItem && !accountItem) return;
+  if (!searchItem && !accountItem && !categoriesItem) return;
   nav.dataset.vbnOverlaysV13 = 'true';
 
   const SEARCH_PANEL_ID = 'veloura-bottom-search-panel-v13';
@@ -4856,13 +4874,32 @@ const initVelouraBottomNavOverlaysV13 = () => {
     }
 
     if (key === 'categories') {
+      // Bottom navigation owns this tap completely. Without this, the same
+      // anchor is also handled by initiateMobileMenu(), which splits menu state
+      // between two controllers and can leave mmenu's backdrop/scroll-lock open
+      // while the drawer is not visible.
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
       closeSearch({ restore: false });
       if (isLoginOpen()) closeNativeLogin({ restore: false });
 
-      if (document.body.classList.contains('menu-opened')) {
-        window.setTimeout(restoreRouteActive, 120);
+      const runToggle = () => {
+        const toggle = window.__velouraToggleNativeMobileMenu;
+        if (typeof toggle !== 'function') return;
+
+        const opened = toggle();
+        if (opened) setActive(item);
+        else window.setTimeout(restoreRouteActive, 120);
+      };
+
+      if (typeof window.__velouraToggleNativeMobileMenu === 'function') {
+        runToggle();
       } else {
-        setActive(item);
+        const init = window.app?.initiateMobileMenu?.();
+        Promise.resolve(init || window.__velouraNativeMobileMenuInitPromise)
+          .then(runToggle)
+          .catch(() => restoreRouteActive());
       }
       return;
     }

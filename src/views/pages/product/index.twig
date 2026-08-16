@@ -580,9 +580,9 @@
                 {% if not vcat_hide_products_section %}
 
                 {% hook 'product:index.items.start' %}
-                <div class="flex min-h-screen">
+                <div class="flex">
                     <salla-products-list
-                        class="flex-1 min-w-0 overflow-auto"
+                        class="flex-1 min-w-0"
                         source="{{ page.slug }}"
                         source-value="{{ page.id }}"
                         {% if filters %}filters-results{% endif %}
