@@ -3474,6 +3474,50 @@
       ]
     },
     {
+      "id": "veloura_side_categories_compact_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "تصغير القائمة وجعلها عائمة",
+      "description": "عند التفعيل تصبح القائمة بعيدة عن أعلى وأسفل وحافة الشاشة، وتُطبق الحواف على الزوايا الأربع",
+      "icon": "sicon-layout-grid",
+      "value": false,
+      "selected": false,
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_side_categories_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_side_categories_compact_inset_2026",
+      "type": "number",
+      "format": "slider",
+      "label": "المسافة حول القائمة المصغرة",
+      "description": "المسافة الخارجية أعلى وأسفل ومن جهة فتح القائمة",
+      "inputType": "range",
+      "icon": "sicon-resize",
+      "value": "12",
+      "required": false,
+      "step": "1",
+      "minimum": "6",
+      "maximum": "28",
+      "conditions": [
+        {
+          "id": "veloura_side_categories_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_side_categories_compact_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "id": "veloura_side_categories_subtitle_style_2026",
       "type": "static",
       "format": "title",
@@ -3871,6 +3915,52 @@
       "label": "الروابط والأقسام الإضافية",
       "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(16,185,129,.40);border-right:4px solid #10b981;box-shadow:inset 0 0 0 1px rgba(16,185,129,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(16,185,129,.20),rgba(16,185,129,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>الروابط والأقسام الإضافية</span></div>",
       "icon": "sicon-link",
+      "conditions": [
+        {
+          "id": "veloura_side_categories_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_side_categories_badges_2026",
+      "type": "collection",
+      "format": "collection",
+      "label": "عبارات بجانب التصنيفات",
+      "description": "اختر تصنيفًا أو أكثر واكتب عبارة قصيرة تظهر بجانب الاسم وقبل سهم الفرعيات، مثل: جديد أو حصري",
+      "icon": "sicon-tag",
+      "required": false,
+      "minLength": 0,
+      "maxLength": 20,
+      "fields": [
+        {
+          "id": "veloura_badge_categories",
+          "type": "items",
+          "format": "dropdown-list",
+          "icon": "sicon-folder",
+          "label": "التصنيف",
+          "description": "اختر تصنيفًا أو أكثر لتظهر بجانبه العبارة",
+          "value": [],
+          "required": true,
+          "source": "categories",
+          "searchable": true,
+          "multiselect": true,
+          "multiple": true,
+          "autocomplete": true,
+          "multichoice": true
+        },
+        {
+          "id": "veloura_badge_text",
+          "type": "string",
+          "format": "text",
+          "label": "العبارة",
+          "placeholder": "مثال: جديد",
+          "value": "",
+          "required": true,
+          "maxLength": 24
+        }
+      ],
       "conditions": [
         {
           "id": "veloura_side_categories_enabled_2026",
@@ -4567,7 +4657,7 @@
       "type": "collection",
       "format": "collection",
       "icon": "sicon-image",
-      "label": "بنرات التصنيفات المرتبطة",
+      "label": "بنرات التصنيفات المرتبطة11111",
       "description": "ارفع بنر واختر تصنيف أو أكثر ليظهر البنر في صفحات هذه التصنيفات. الحقول اختيارية؛ العنصر الناقص لا يظهر فقط.",
       "id": "veloura_cat_banner_map_2026",
       "value": [],

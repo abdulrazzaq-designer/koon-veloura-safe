@@ -2803,6 +2803,27 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 {% set vsc_gap = theme.settings.get('veloura_side_categories_gap_2026', 0) %}
 {% if vsc_gap.value is defined %}{% set vsc_gap = vsc_gap.value %}{% endif %}
 
+
+{% set vsc_compact_raw = theme.settings.get('veloura_side_categories_compact_2026', false) %}
+{% if vsc_compact_raw.value is defined %}
+  {% set vsc_compact_raw = vsc_compact_raw.value %}
+{% elseif vsc_compact_raw.selected is defined %}
+  {% set vsc_compact_raw = vsc_compact_raw.selected %}
+{% endif %}
+{% set vsc_compact =
+  vsc_compact_raw == true
+  or vsc_compact_raw == 'true'
+  or vsc_compact_raw == 1
+  or vsc_compact_raw == '1'
+  or vsc_compact_raw == 'on'
+%}
+
+{% set vsc_compact_inset = theme.settings.get('veloura_side_categories_compact_inset_2026', 12) %}
+{% if vsc_compact_inset.value is defined %}{% set vsc_compact_inset = vsc_compact_inset.value %}{% endif %}
+{% set vsc_compact_inset = vsc_compact_inset + 0 %}
+{% if vsc_compact_inset < 6 %}{% set vsc_compact_inset = 6 %}{% endif %}
+{% if vsc_compact_inset > 28 %}{% set vsc_compact_inset = 28 %}{% endif %}
+
 {% set vsc_menu_radius = theme.settings.get('veloura_side_categories_menu_radius_2026', 'soft') %}
 {% if vsc_menu_radius.selected is defined and vsc_menu_radius.selected[0].value is defined %}
   {% set vsc_menu_radius = vsc_menu_radius.selected[0].value %}
@@ -2948,6 +2969,8 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 {% set vsc_hide_customer = theme.settings.get('veloura_side_categories_hide_customer_service_2026', false) %}
 {% if vsc_hide_customer.value is defined %}{% set vsc_hide_customer = vsc_hide_customer.value %}{% endif %}
 
+{% set vsc_category_badges = theme.settings.get('veloura_side_categories_badges_2026', []) %}
+
 {% set vsc_custom_links = theme.settings.get('veloura_side_categories_custom_links_2026', []) %}
 
 {# صور التصنيفات المرفوعة من قسم صور صفحات التصنيفات #}
@@ -3003,6 +3026,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     --veloura-side-cats-item-h: {{ vsc_item_h }}px;
     --veloura-side-cats-text: {{ vsc_text }};
     --veloura-side-cats-gap: {{ vsc_gap }}px;
+    --veloura-side-cats-compact-inset: {{ vsc_compact_inset }}px;
     --veloura-side-cats-menu-radius: {{ vsc_menu_radius_px }};
     --veloura-side-cats-title-font-size: {{ vsc_title_font_px }};
     --veloura-side-cats-img-radius: {{ vsc_img_radius_px }};
@@ -3015,6 +3039,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 <script>
   window.velouraSideCategoriesSettings = {
     glass: {{ vsc_glass ? 'true' : 'false' }},
+    compact: {{ vsc_compact ? 'true' : 'false' }},
     imageAutoWidth: {{ vsc_img_auto_w ? 'true' : 'false' }},
     categoryImagesLocation: {{ vc_images_location|json_encode|raw }},
     imageDisplayLocation: {{ vc_images_location|json_encode|raw }},
@@ -3025,6 +3050,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     blogImage: {{ vsc_blog_image|json_encode|raw }},
     hideImportantLinks: {{ vsc_hide_important ? 'true' : 'false' }},
     hideCustomerService: {{ vsc_hide_customer ? 'true' : 'false' }},
+    categoryBadges: {{ vsc_category_badges|json_encode|raw }},
     customLinks: {{ vsc_custom_links|json_encode|raw }}
   };
 </script>
@@ -3095,18 +3121,16 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
       {% endif %}
 
       {% if vbn_show_categories %}
-        <button
-          type="button"
+        <a
+          href="#mobile-menu"
           class="veloura-bottom-nav__item"
           data-vbn-item
           data-vbn-key="categories"
-          aria-controls="mobile-menu"
-          aria-expanded="false"
           aria-label="{{ vbn_categories_label|e }}"
         >
           <i class="sicon-grid" aria-hidden="true"></i>
           {% if vbn_show_labels %}<span>{{ vbn_categories_label }}</span>{% endif %}
-        </button>
+        </a>
       {% endif %}
 
       {% if vbn_show_search %}

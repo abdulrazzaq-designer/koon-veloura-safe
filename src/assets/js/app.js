@@ -2005,16 +2005,21 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function syncVisualModes(settings) {
-  document.documentElement.classList.toggle(
-    'veloura-side-cats-img-auto-width',
-    settings.imageAutoWidth === true || settings.imageAutoWidth === 'true'
-  );
+    document.documentElement.classList.toggle(
+      'veloura-side-cats-img-auto-width',
+      settings.imageAutoWidth === true || settings.imageAutoWidth === 'true'
+    );
 
-  document.documentElement.classList.toggle(
-    'veloura-side-cats-glass',
-    settings.glass === true || settings.glass === 'true'
-  );
-}
+    document.documentElement.classList.toggle(
+      'veloura-side-cats-glass',
+      settings.glass === true || settings.glass === 'true'
+    );
+
+    document.documentElement.classList.toggle(
+      'veloura-side-cats-compact',
+      settings.compact === true || settings.compact === 'true'
+    );
+  }
 
   function createImage(src, extraClass) {
     if (!src) return null;
@@ -2130,6 +2135,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     var categories =
       item.veloura_map_categories ||
+      item.veloura_badge_categories ||
       item.categories ||
       item.category ||
       item.selected ||
@@ -2233,6 +2239,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+
+  function applyCategoryBadges(menu, settings) {
+    if (!menu) return;
+
+    menu.querySelectorAll('.veloura-side-category-badge').forEach(function (badge) {
+      badge.remove();
+    });
+
+    var badges = normalizeCollection(settings.categoryBadges);
+    if (!badges.length) return;
+
+    var links = menu.querySelectorAll(
+      'li.veloura-mobile-menu-item > a, li.veloura-mobile-menu-item > span'
+    );
+
+    badges.forEach(function (item) {
+      if (!item) return;
+
+      var text = normalizeText(
+        item.veloura_badge_text ||
+        item.badge_text ||
+        item.text ||
+        item.label ||
+        item.title
+      );
+      var categoryTokens = getItemCategoryTokens(item);
+
+      if (!text || !categoryTokens.length) return;
+
+      links.forEach(function (link) {
+        if (link.querySelector('.veloura-side-category-badge')) return;
+        if (!isSameCategory(link, categoryTokens)) return;
+
+        var badge = document.createElement('span');
+        badge.className = 'veloura-side-category-badge';
+        badge.textContent = text;
+        badge.setAttribute('aria-hidden', 'true');
+        link.appendChild(badge);
+      });
+    });
+  }
+
   function appendCustomLinks(menu, settings) {
     var list = getMainList(menu);
     var links = normalizeCollection(settings.customLinks);
@@ -2294,6 +2342,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyMappedCategoryImages(menu, settings);
     appendCustomLinks(menu, settings);
     enhanceSpecialImages(menu, settings);
+    applyCategoryBadges(menu, settings);
     hideMatchingLinks(menu, settings);
   }
 
