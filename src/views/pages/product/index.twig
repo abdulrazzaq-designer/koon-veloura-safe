@@ -101,7 +101,7 @@
 
     {% set vcat_show_breadcrumb = _self.veloura_bool(theme.settings.get('veloura_category_show_breadcrumb_2026', true), true)|trim == 'true' %}
     {% set vcat_children_sticky = _self.veloura_bool(theme.settings.get('veloura_category_children_sticky_2026', true), true)|trim == 'true' %}
-    {% set vcat_inline_switch = _self.veloura_bool(theme.settings.get('veloura_category_inline_switch_2026', false), false)|trim == 'true' %}
+    {% set vcat_inline_switch = _self.veloura_bool(theme.settings.get('veloura_category_inline_switch_2026', true), true)|trim == 'true' %}
     {% set vcat_hide_products_children = _self.veloura_bool(theme.settings.get('veloura_category_hide_products_if_children_2026', false), false)|trim == 'true' %}
     {% set vcat_show_images = _self.veloura_bool(theme.settings.get('veloura_category_show_images_2026', true), true)|trim == 'true' %}
     {% set vcat_hide_count = _self.veloura_bool(theme.settings.get('veloura_category_hide_product_count_2026', false), false)|trim == 'true' %}
@@ -266,7 +266,7 @@
         data-veloura-category-title="{{ vcat_current_name|striptags|e('html_attr') }}"
         data-veloura-hide-product-count="{{ vcat_hide_count ? 'true' : 'false' }}"
         data-veloura-children-sticky="{{ vcat_children_sticky ? 'true' : 'false' }}"
-        data-veloura-inline-switch="{{ vcat_inline_switch ? 'true' : 'false' }}"
+        data-veloura-inline-switch="{{ vcat_is_category and vcat_has_children ? 'true' : 'false' }}"
         style="
             --vcat-mobile-cols: {{ vcat_mobile_cols }};
             --vcat-desktop-cols: {{ vcat_desktop_cols }};
@@ -324,7 +324,7 @@
                             {{ vcat_transparent ? 'veloura-category-children--transparent' : '' }}
                             {{ not vcat_render_images ? 'veloura-category-children--names-only' : '' }}
                             {{ vcat_children_sticky ? 'veloura-category-children--sticky' : '' }}
-                            {{ vcat_inline_switch ? 'veloura-category-children--inline-switch' : '' }}
+                            {{ vcat_is_category and vcat_has_children ? 'veloura-category-children--inline-switch' : '' }}
                         "
                         data-veloura-category-children
                         data-root-category-id="{{ vcat_current_id|default('') }}"
@@ -390,7 +390,7 @@
                                                 href="{{ child.url }}"
                                                 class="veloura-category-child"
                                                 data-veloura-category-child
-                                                {% if vcat_inline_switch %}data-veloura-category-switch{% endif %}
+                                                data-veloura-category-switch
                                                 data-category-id="{{ child.id|default('') }}"
                                                 data-category-name="{{ child.name|default('')|e('html_attr') }}"
                                                 data-category-url="{{ child.url|default('')|e('html_attr') }}"
@@ -451,7 +451,7 @@
                                         href="{{ child.url }}"
                                         class="veloura-category-child"
                                         data-veloura-category-child
-                                        {% if vcat_inline_switch %}data-veloura-category-switch{% endif %}
+                                        data-veloura-category-switch
                                         data-category-id="{{ child.id|default('') }}"
                                         data-category-name="{{ child.name|default('')|e('html_attr') }}"
                                         data-category-url="{{ child.url|default('')|e('html_attr') }}"
@@ -473,6 +473,50 @@
                                 {% endfor %}
                             </div>
                         {% endif %}
+
+                        {#
+                           Second-level categories are rendered into this host after a top
+                           category is selected. The <template> blocks are a zero-layout
+                           server-side fallback when Twilight already exposes nested
+                           sub_categories. JS falls back to Salla's header menu endpoint
+                           when those nested objects are not present in the page payload.
+                        #}
+                        <div
+                            class="veloura-category-descendants"
+                            data-veloura-category-descendants
+                            hidden
+                            aria-live="polite"
+                        >
+                            <div
+                                class="veloura-category-descendants__track"
+                                data-veloura-category-descendants-track
+                                role="list"
+                            ></div>
+                        </div>
+
+                        <div class="hidden" aria-hidden="true" data-veloura-category-branch-templates>
+                            {% for child in vcat_children %}
+                                <template
+                                    data-veloura-category-branch-template
+                                    data-parent-category-id="{{ child.id|default('') }}"
+                                >
+                                    {% set grand_children = child.sub_categories|default([]) %}
+                                    {% for grand_child in grand_children %}
+                                        <a
+                                            href="{{ grand_child.url|default('#') }}"
+                                            class="veloura-category-descendant"
+                                            data-veloura-category-descendant-switch
+                                            data-category-id="{{ grand_child.id|default('') }}"
+                                            data-category-name="{{ grand_child.name|default('')|e('html_attr') }}"
+                                            data-category-url="{{ grand_child.url|default('')|e('html_attr') }}"
+                                            role="listitem"
+                                        >
+                                            <span>{{ grand_child.name|default('') }}</span>
+                                        </a>
+                                    {% endfor %}
+                                </template>
+                            {% endfor %}
+                        </div>
                     </section>
                 {% endif %}
 
@@ -543,7 +587,8 @@
             hideProductCount: {{ vcat_is_category and vcat_hide_count ? 'true' : 'false' }},
             categoryTitle: {{ (vcat_is_category ? category.name : '')|json_encode|raw }},
             stickyChildren: {{ vcat_is_category and vcat_children_sticky ? 'true' : 'false' }},
-            inlineSwitch: {{ vcat_is_category and vcat_inline_switch ? 'true' : 'false' }},
+            inlineSwitch: {{ vcat_is_category and vcat_has_children ? 'true' : 'false' }},
+            showAllItem: {{ vcat_is_category and vcat_inline_switch ? 'true' : 'false' }},
             rootCategory: {
                 id: {{ vcat_current_id|default('')|json_encode|raw }},
                 name: {{ vcat_current_name|striptags|json_encode|raw }},

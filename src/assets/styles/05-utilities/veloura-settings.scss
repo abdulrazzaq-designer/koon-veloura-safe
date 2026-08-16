@@ -1083,7 +1083,7 @@ body.dark .veloura-category-card__title {
 
 
 /* ========================================================================
-   Veloura Category Page V120
+   Veloura Category Page V121
    banner -> subcategories -> title/filter -> products
    ======================================================================== */
 
@@ -1139,7 +1139,7 @@ body.dark .veloura-category-page {
   top:
     var(--vcat-sticky-top, 0px) !important;
 
-  z-index: 85;
+  z-index: 28;
 
   background:
     var(--vcat-primary-bg);
@@ -1237,6 +1237,89 @@ body.dark .veloura-category-page {
     var(--color-primary, #004956);
 
   font-size: clamp(20px, 4vw, 30px);
+}
+
+/* Second level shown after selecting a top subcategory. It remains inside
+   the same sticky rail, so both rows move as one header-aware surface. */
+.veloura-category-descendants[hidden] {
+  display: none !important;
+}
+
+.veloura-category-descendants {
+  width: 100%;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.veloura-category-descendants__track {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1px 1px 3px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.veloura-category-descendants__track::-webkit-scrollbar {
+  display: none;
+}
+
+.veloura-category-descendant {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  max-width: min(72vw, 260px);
+  padding: 8px 13px;
+  scroll-snap-align: start;
+
+  background: var(--vcat-secondary-bg);
+  color: var(--vcat-primary-text) !important;
+  border: 1px solid transparent;
+  border-radius: var(--veloura-global-radius, 14px);
+  text-decoration: none !important;
+  white-space: nowrap;
+
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.35;
+
+  transition:
+    background-color .18s ease,
+    color .18s ease,
+    border-color .18s ease,
+    transform .18s ease;
+}
+
+.veloura-category-descendant span {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.veloura-category-descendant:hover,
+.veloura-category-descendant:focus-visible {
+  border-color: color-mix(in srgb, var(--color-primary, #004956) 30%, transparent);
+}
+
+.veloura-category-descendant.is-active {
+  background: var(--color-primary, #004956);
+  color: var(--color-primary-reverse, #ffffff) !important;
+  border-color: var(--color-primary, #004956);
+  font-weight: 900;
+}
+
+.veloura-category-descendant:focus-visible {
+  outline: 2px solid var(--color-primary, #004956);
+  outline-offset: 2px;
 }
 
 .veloura-category-child__media--all i {

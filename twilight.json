@@ -4006,13 +4006,13 @@
     {
       "type": "boolean",
       "icon": "sicon-layout-grid",
-      "label": "التبديل بين التصنيفات داخل نفس الصفحة",
-      "description": "عند التفعيل يظهر خيار «الكل»، والضغط على أي تصنيف فرعي يبدل المنتجات والعنوان داخل نفس الصفحة مع إبقاء شريط التصنيفات ظاهرًا، ويتم تمييز التصنيف النشط.",
+      "label": "إظهار خيار «الكل» مع التبديل داخل الصفحة",
+      "description": "التبديل بين التصنيفات الفرعية يتم داخل نفس الصفحة بدون انتقال. فعّل هذا الخيار لإظهار «الكل» للرجوع إلى منتجات التصنيف الرئيسي.",
       "id": "veloura_category_inline_switch_2026",
       "format": "switch",
       "required": false,
-      "value": false,
-      "selected": false,
+      "value": true,
+      "selected": true,
       "conditions": [
         {
           "id": "veloura_category_enabled_2026",

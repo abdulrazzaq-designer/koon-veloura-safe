@@ -51208,16 +51208,6 @@ body:not(.dark) .veloura-dark-toggle__icon--sun {
   --veloura-category-gap: 12px;
   --veloura-category-image-bg: #f5f7f8;
 }
-/* Sticky */
-.veloura-category-children {
-  position: sticky;
-  top: 0;
-  z-index: 30;
-  background: #fff;
-  background: var(--color-main-bg, #fff);
-  padding: 10px 0 12px;
-  margin-bottom: 18px;
-}
 .veloura-category-sticky-wrap {
   width: 100%;
   overflow: hidden;
@@ -51824,28 +51814,71 @@ body.dark .veloura-category-card__title {
   display: block !important;
 }
 /* ========================================================================
-   Veloura Category Page V119
+   Veloura Category Page V120
+   banner -> subcategories -> title/filter -> products
    ======================================================================== */
 .veloura-category-page {
   --vcat-secondary-bg:
     var(--veloura-site-second-bg, #f8fafc);
+  --vcat-primary-bg:
+    var(--veloura-site-bg, #ffffff);
   --vcat-primary-text:
     var(--color-text, #111827);
+  --vcat-sticky-top: 0px;
+  --vcat-sticky-height: 0px;
 }
 html.dark .veloura-category-page,
 body.dark .veloura-category-page {
   --vcat-secondary-bg:
     var(--veloura-dark-secondary-bg, #010612);
+  --vcat-primary-bg:
+    var(--veloura-dark-body-bg, #010202);
   --vcat-primary-text:
     var(--veloura-dark-primary-text, #ffffff);
 }
 .veloura-category-page--no-breadcrumb {
   padding-top: 14px;
 }
-/* Subcategories */
+/* ------------------------------------------------------------
+   Subcategories
+   ------------------------------------------------------------ */
 .veloura-category-children {
+  position: relative !important;
+  top: auto !important;
+}
+.veloura-category-children {
+  z-index: 1;
   width: 100%;
   margin: 0 0 24px;
+  padding: 8px 0 10px;
+  background: var(--vcat-primary-bg);
+}
+.veloura-category-children--sticky {
+  position: sticky !important;
+  top: 0px !important;
+  top: var(--vcat-sticky-top, 0px) !important;
+}
+.veloura-category-children--sticky {
+  z-index: 85;
+  background: var(--vcat-primary-bg);
+  border-radius: 0px;
+  border-radius: var(--veloura-global-radius, 0px);
+  isolation: isolate;
+}
+.veloura-category-children--sticky::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  background: var(--vcat-primary-bg);
+  border-radius: inherit;
+}
+.veloura-category-children.is-loading {
+  opacity: 0.72;
+  pointer-events: none;
 }
 .veloura-category-children__grid {
   display: grid;
@@ -51879,6 +51912,32 @@ body.dark .veloura-category-page {
   min-width: 0;
   height: 100%;
   gap: 10px;
+  transition: opacity 0.18s ease, transform 0.18s ease, color 0.18s ease;
+}
+.veloura-category-child.is-active {
+  color: #414042 !important;
+  color: var(--color-primary, #004956) !important;
+}
+.veloura-category-child.is-active .veloura-category-child__media {
+  box-shadow: 0 0 0 2px #414042 inset;
+  box-shadow: 0 0 0 2px var(--color-primary, #004956) inset;
+}
+.veloura-category-child.is-active .veloura-category-child__title {
+  font-weight: 900;
+}
+.veloura-category-child__media--all {
+  display: grid !important;
+}
+.veloura-category-child__media--all {
+  align-items: center;
+  justify-items: center;
+  place-items: center;
+  color: #414042;
+  color: var(--color-primary, #004956);
+  font-size: max(20px, min(4vw, 30px));
+}
+.veloura-category-child__media--all i {
+  font-size: inherit;
 }
 .veloura-category-children--position-top .veloura-category-child {
   flex-direction: column;
@@ -51961,7 +52020,24 @@ body.dark .veloura-category-page {
   border-radius: 14px;
   border-radius: var(--veloura-global-radius, 14px);
 }
-/* Category banners */
+.veloura-category-children--names-only .veloura-category-child.is-active {
+  color: #ff6767 !important;
+  color: var(--color-primary-reverse, #ffffff) !important;
+}
+.veloura-category-children--names-only .veloura-category-child.is-active {
+  background: #414042;
+  background: var(--color-primary, #004956);
+}
+/* Desktop filters stay below header + sticky subcategory rail. */
+@media (min-width: 1024px) {
+  .veloura-category-page #filters-menu {
+    top: calc(0px + 0px + 14px) !important;
+    top: calc(var(--vcat-sticky-top, 0px) + var(--vcat-sticky-height, 0px) + 14px) !important;
+  }
+}
+/* ------------------------------------------------------------
+   Category banners
+   ------------------------------------------------------------ */
 .veloura-category-banners {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -52004,7 +52080,9 @@ body.dark .veloura-category-page {
 .veloura-category-banners--round .veloura-category-banner, .veloura-category-banners--round .veloura-category-banner__image {
   border-radius: 999px !important;
 }
-/* Sorting dropdown */
+/* ------------------------------------------------------------
+   Sorting dropdown
+   ------------------------------------------------------------ */
 .veloura-category-page #product-filter {
   background: #f8fafc !important;
   background: var(--veloura-site-second-bg, #f8fafc) !important;
@@ -57093,9 +57171,6 @@ html body.veloura-glass-effect salla-sheet::part(backdrop) {
     }
     .lg\:sticky{
         position: sticky;
-    }
-    .lg\:top-20{
-        top: 5rem;
     }
     .lg\:col-span-6{
         grid-column: span 6 / span 6;
