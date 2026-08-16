@@ -20,7 +20,7 @@
 {% block content %}
 
     {# ================================================================
-       Veloura Category Page V119
+       Veloura Category Page V122
        Panel switches are intentionally UI-only:
        they are NOT used to enable/disable storefront behavior.
        ================================================================ #}
@@ -502,6 +502,13 @@
                                 >
                                     {% set grand_children = child.sub_categories|default([]) %}
                                     {% for grand_child in grand_children %}
+                                        {% set grand_child_image = grand_child.image|default('') %}
+                                        {% if grand_child_image.url is defined %}
+                                            {% set grand_child_image = grand_child_image.url %}
+                                        {% elseif grand_child_image is iterable %}
+                                            {% set grand_child_image = '' %}
+                                        {% endif %}
+
                                         <a
                                             href="{{ grand_child.url|default('#') }}"
                                             class="veloura-category-descendant"
@@ -511,7 +518,16 @@
                                             data-category-url="{{ grand_child.url|default('')|e('html_attr') }}"
                                             role="listitem"
                                         >
-                                            <span>{{ grand_child.name|default('') }}</span>
+                                            {% if vcat_render_images and grand_child_image %}
+                                                <span class="veloura-category-descendant__media">
+                                                    <img
+                                                        src="{{ grand_child_image }}"
+                                                        alt=""
+                                                        loading="lazy"
+                                                    >
+                                                </span>
+                                            {% endif %}
+                                            <span class="veloura-category-descendant__title">{{ grand_child.name|default('') }}</span>
                                         </a>
                                     {% endfor %}
                                 </template>
@@ -587,6 +603,7 @@
             hideProductCount: {{ vcat_is_category and vcat_hide_count ? 'true' : 'false' }},
             categoryTitle: {{ (vcat_is_category ? category.name : '')|json_encode|raw }},
             stickyChildren: {{ vcat_is_category and vcat_children_sticky ? 'true' : 'false' }},
+            showImages: {{ vcat_render_images ? 'true' : 'false' }},
             inlineSwitch: {{ vcat_is_category and vcat_has_children ? 'true' : 'false' }},
             showAllItem: {{ vcat_is_category and vcat_inline_switch ? 'true' : 'false' }},
             rootCategory: {

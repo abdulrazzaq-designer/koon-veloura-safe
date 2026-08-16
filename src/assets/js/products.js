@@ -66,8 +66,100 @@ class Products extends BasePage {
         }
 
         this.applyVelouraCategoryMappedImages(page, settings);
+        this.initVelouraCategoryCompactRail(page);
         this.initVelouraCategorySticky(page, settings);
         this.initVelouraCategoryInlineSwitch(page, productsList, settings);
+    }
+
+    initVelouraCategoryCompactRail(page) {
+        const rail = page.querySelector('[data-veloura-category-children]');
+
+        if (!rail || rail.querySelector('[data-veloura-category-compact]')) {
+            return;
+        }
+
+        const sourceItems = Array.from(
+            rail.querySelectorAll('[data-veloura-category-switch]')
+        );
+
+        if (!sourceItems.length) {
+            return;
+        }
+
+        const compact = document.createElement('div');
+        const track = document.createElement('div');
+
+        compact.className = 'veloura-category-compact';
+        compact.dataset.velouraCategoryCompact = '';
+        compact.setAttribute('aria-label', 'التصنيفات الفرعية');
+
+        track.className = 'veloura-category-compact__track';
+        track.dataset.velouraCategoryCompactTrack = '';
+
+        sourceItems.forEach(source => {
+            const link = document.createElement('a');
+            const sourceMedia = source.querySelector(
+                '.veloura-category-child__media'
+            );
+            const sourceImage = sourceMedia?.querySelector('img');
+            const sourceIcon = sourceMedia?.querySelector('i');
+            const title = document.createElement('span');
+
+            link.href = source.getAttribute('href') || '#';
+            link.className = 'veloura-category-compact__item';
+            link.dataset.velouraCategoryCompactSwitch = '';
+            link.dataset.categoryId = source.dataset.categoryId || '';
+            link.dataset.categoryName = source.dataset.categoryName || '';
+            link.dataset.categoryUrl = source.dataset.categoryUrl || link.href;
+
+            if (source.dataset.categoryRoot === 'true') {
+                link.dataset.categoryRoot = 'true';
+            }
+
+            if (source.classList.contains('is-active')) {
+                link.classList.add('is-active');
+                link.setAttribute('aria-current', 'page');
+            }
+
+            if (sourceMedia && (sourceImage || sourceIcon)) {
+                const media = document.createElement('span');
+                media.className = 'veloura-category-compact__media';
+
+                if (sourceImage?.getAttribute('src')) {
+                    const image = document.createElement('img');
+                    image.src = sourceImage.getAttribute('src');
+                    image.alt = sourceImage.getAttribute('alt') || '';
+                    image.loading = 'lazy';
+                    media.appendChild(image);
+                } else if (sourceIcon) {
+                    const icon = document.createElement('i');
+                    icon.className = sourceIcon.className;
+                    icon.setAttribute('aria-hidden', 'true');
+                    media.appendChild(icon);
+                }
+
+                if (media.childElementCount) {
+                    link.appendChild(media);
+                }
+            }
+
+            title.className = 'veloura-category-compact__title';
+            title.textContent =
+                source.querySelector('.veloura-category-child__title')?.textContent?.trim() ||
+                source.dataset.categoryName ||
+                '';
+
+            link.appendChild(title);
+            track.appendChild(link);
+        });
+
+        compact.appendChild(track);
+
+        const normalContent = rail.querySelector(
+            '.veloura-category-children__slider, .veloura-category-children__grid'
+        );
+
+        rail.insertBefore(compact, normalContent || rail.firstChild);
     }
 
     initVelouraCategorySticky(page, settings) {
@@ -78,7 +170,11 @@ class Products extends BasePage {
         }
 
         if (!settings.stickyChildren) {
-            rail.classList.remove('veloura-category-children--sticky');
+            rail.classList.remove(
+                'veloura-category-children--sticky',
+                'is-stuck'
+            );
+            rail.style.removeProperty('--vcat-flow-compensation');
             page.style.removeProperty('--vcat-sticky-top');
             page.style.removeProperty('--vcat-sticky-height');
             return;
@@ -107,6 +203,25 @@ class Products extends BasePage {
         });
 
         let frame = 0;
+        let naturalRailHeight = 0;
+
+        const centerActiveCompactItem = () => {
+            const active = rail.querySelector(
+                '[data-veloura-category-compact-switch].is-active'
+            );
+
+            if (!active) {
+                return;
+            }
+
+            requestAnimationFrame(() => {
+                active.scrollIntoView({
+                    behavior: 'auto',
+                    block: 'nearest',
+                    inline: 'center',
+                });
+            });
+        };
 
         const isRendered = element => {
             if (!element || !element.isConnected) {
@@ -187,15 +302,51 @@ class Products extends BasePage {
 
             const headerBottom = getVisibleHeaderBottom();
             const gap = 8;
+            const stickyTop = Math.ceil(headerBottom + gap);
+            const railRectBefore = rail.getBoundingClientRect();
+            const wasStuck = rail.classList.contains('is-stuck');
+            const shouldBeStuck =
+                Math.max(0, window.scrollY || window.pageYOffset || 0) > 0 &&
+                railRectBefore.top <= stickyTop + 1;
 
             page.style.setProperty(
                 '--vcat-sticky-top',
-                `${Math.ceil(headerBottom + gap)}px`
+                `${stickyTop}px`
             );
+
+            if (shouldBeStuck && !wasStuck) {
+                naturalRailHeight = Math.ceil(railRectBefore.height);
+            }
+
+            rail.classList.toggle('is-stuck', shouldBeStuck);
+
+            if (shouldBeStuck) {
+                const compactHeight = Math.ceil(
+                    rail.getBoundingClientRect().height
+                );
+                const compensation = Math.max(
+                    0,
+                    naturalRailHeight - compactHeight
+                );
+
+                rail.style.setProperty(
+                    '--vcat-flow-compensation',
+                    `${compensation}px`
+                );
+
+                if (!wasStuck) {
+                    centerActiveCompactItem();
+                }
+            } else {
+                naturalRailHeight = 0;
+                rail.style.removeProperty('--vcat-flow-compensation');
+            }
 
             page.style.setProperty(
                 '--vcat-sticky-height',
-                `${Math.ceil(rail.getBoundingClientRect().height)}px`
+                shouldBeStuck
+                    ? `${Math.ceil(rail.getBoundingClientRect().height)}px`
+                    : '0px'
             );
         };
 
@@ -279,6 +430,9 @@ class Products extends BasePage {
         const items = Array.from(
             rail.querySelectorAll('[data-veloura-category-switch]')
         );
+        const compactItems = Array.from(
+            rail.querySelectorAll('[data-veloura-category-compact-switch]')
+        );
 
         if (!items.length) {
             return;
@@ -354,6 +508,7 @@ class Products extends BasePage {
 
         const setTopActive = item => {
             activeTopItem = item || null;
+            const activeId = asString(item?.dataset.categoryId);
 
             items.forEach(candidate => {
                 const active = candidate === item;
@@ -362,6 +517,29 @@ class Products extends BasePage {
 
                 if (active) {
                     candidate.setAttribute('aria-current', 'page');
+                } else {
+                    candidate.removeAttribute('aria-current');
+                }
+            });
+
+            compactItems.forEach(candidate => {
+                const active = activeId &&
+                    asString(candidate.dataset.categoryId) === activeId;
+
+                candidate.classList.toggle('is-active', active);
+
+                if (active) {
+                    candidate.setAttribute('aria-current', 'page');
+
+                    if (rail.classList.contains('is-stuck')) {
+                        requestAnimationFrame(() => {
+                            candidate.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'nearest',
+                                inline: 'center',
+                            });
+                        });
+                    }
                 } else {
                     candidate.removeAttribute('aria-current');
                 }
@@ -382,6 +560,14 @@ class Products extends BasePage {
 
                     if (active) {
                         candidate.setAttribute('aria-current', 'page');
+
+                        requestAnimationFrame(() => {
+                            candidate.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'nearest',
+                                inline: 'center',
+                            });
+                        });
                     } else {
                         candidate.removeAttribute('aria-current');
                     }
@@ -543,17 +729,35 @@ class Products extends BasePage {
             });
         };
 
-        const buildDescendantLink = menu => {
-            const id = categoryIdFromMenu(menu);
-            const url = asString(menu?.url);
-            const name = asString(menu?.title ?? menu?.name);
+        const resolveImageUrl = value => {
+            if (!value) {
+                return '';
+            }
 
+            if (typeof value === 'string') {
+                return asString(value);
+            }
+
+            if (typeof value === 'object') {
+                return asString(
+                    value.url ??
+                    value.src ??
+                    value.original ??
+                    value.medium ??
+                    value.thumbnail
+                );
+            }
+
+            return '';
+        };
+
+        const createDescendantLink = ({ id, url, name, image = '' }) => {
             if (!id || !name) {
                 return null;
             }
 
             const link = document.createElement('a');
-            const label = document.createElement('span');
+            const imageUrl = settings.showImages ? resolveImageUrl(image) : '';
 
             link.href = url || '#';
             link.className = 'veloura-category-descendant';
@@ -563,10 +767,33 @@ class Products extends BasePage {
             link.dataset.categoryUrl = url;
             link.setAttribute('role', 'listitem');
 
+            if (imageUrl) {
+                const media = document.createElement('span');
+                const imageElement = document.createElement('img');
+
+                media.className = 'veloura-category-descendant__media';
+                imageElement.src = imageUrl;
+                imageElement.alt = '';
+                imageElement.loading = 'lazy';
+                media.appendChild(imageElement);
+                link.appendChild(media);
+            }
+
+            const label = document.createElement('span');
+            label.className = 'veloura-category-descendant__title';
             label.textContent = name;
             link.appendChild(label);
 
             return link;
+        };
+
+        const buildDescendantLink = menu => {
+            const id = categoryIdFromMenu(menu);
+            const url = asString(menu?.url);
+            const name = asString(menu?.title ?? menu?.name);
+            const image = menu?.image ?? menu?.thumbnail ?? menu?.avatar ?? '';
+
+            return createDescendantLink({ id, url, name, image });
         };
 
         const templateDescendants = parentId => {
@@ -652,6 +879,11 @@ class Products extends BasePage {
                                 asString(card.textContent),
                             url: asString(card.dataset.categoryUrl) ||
                                 asString(card.getAttribute('href')),
+                            image: asString(
+                                card.querySelector(
+                                    '[data-veloura-category-child-image]'
+                                )?.getAttribute('src')
+                            ),
                         }));
                     } catch (_) {
                         return [];
@@ -661,23 +893,9 @@ class Products extends BasePage {
 
             const children = await pageBranchCache.get(key);
 
-            return children.map(child => {
-                const link = document.createElement('a');
-                const label = document.createElement('span');
-
-                link.href = child.url || '#';
-                link.className = 'veloura-category-descendant';
-                link.dataset.velouraCategoryDescendantSwitch = '';
-                link.dataset.categoryId = child.id;
-                link.dataset.categoryName = child.name;
-                link.dataset.categoryUrl = child.url;
-                link.setAttribute('role', 'listitem');
-
-                label.textContent = child.name;
-                link.appendChild(label);
-
-                return link;
-            });
+            return children
+                .map(child => createDescendantLink(child))
+                .filter(Boolean);
         };
 
         const renderDescendants = async parentItem => {
@@ -846,6 +1064,22 @@ class Products extends BasePage {
         };
 
         rail.addEventListener('click', event => {
+            const compactLink = event.target.closest(
+                '[data-veloura-category-compact-switch]'
+            );
+
+            if (compactLink && rail.contains(compactLink)) {
+                const sourceItem = itemById(compactLink.dataset.categoryId);
+
+                if (!sourceItem) {
+                    return;
+                }
+
+                event.preventDefault();
+                switchTop(sourceItem, { push: true });
+                return;
+            }
+
             const link = event.target.closest('[data-veloura-category-switch]');
 
             if (!link || !rail.contains(link)) {

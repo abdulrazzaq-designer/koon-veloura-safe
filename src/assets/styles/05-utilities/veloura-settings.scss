@@ -1083,7 +1083,7 @@ body.dark .veloura-category-card__title {
 
 
 /* ========================================================================
-   Veloura Category Page V121
+   Veloura Category Page V122
    banner -> subcategories -> title/filter -> products
    ======================================================================== */
 
@@ -1453,6 +1453,289 @@ body.dark .veloura-category-page {
 
   color:
     var(--color-primary-reverse, #ffffff) !important;
+}
+
+/* ------------------------------------------------------------------------
+   V122 — compact sticky navigation
+   The merchant's rich Grid/Slider layout stays untouched at the top of the
+   page. Only while the rail is actually stuck do we switch to small
+   horizontal chips with the category image/icon on the inline-start side.
+   ------------------------------------------------------------------------ */
+.veloura-category-compact {
+  display: none;
+  width: 100%;
+  min-width: 0;
+}
+
+.veloura-category-compact__track {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1px 2px 3px;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 8px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.veloura-category-compact__track::-webkit-scrollbar {
+  display: none;
+}
+
+.veloura-category-compact__item {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 7px;
+  min-height: 42px;
+  max-width: min(70vw, 210px);
+  padding: 5px 10px;
+
+  background: var(--vcat-secondary-bg);
+  color: var(--vcat-primary-text) !important;
+  border: 1px solid color-mix(in srgb, currentColor 8%, transparent);
+  border-radius: 999px;
+  text-decoration: none !important;
+  white-space: nowrap;
+  scroll-snap-align: center;
+
+  transition:
+    background-color .16s ease,
+    color .16s ease,
+    border-color .16s ease,
+    transform .16s ease;
+}
+
+.veloura-category-compact__item:active {
+  transform: scale(.98);
+}
+
+.veloura-category-compact__media {
+  display: grid;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  overflow: hidden;
+
+  background: color-mix(in srgb, var(--vcat-secondary-bg) 82%, transparent);
+  border-radius: 999px;
+}
+
+.veloura-category-compact__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: var(--vcat-image-fit, cover);
+  object-position: center;
+}
+
+.veloura-category-compact__media i {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.veloura-category-compact__title {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.veloura-category-compact__item.is-active {
+  background: var(--color-primary, #004956);
+  color: var(--color-primary-reverse, #ffffff) !important;
+  border-color: var(--color-primary, #004956);
+}
+
+.veloura-category-compact__item.is-active
+.veloura-category-compact__media {
+  box-shadow: 0 0 0 1px color-mix(in srgb, currentColor 38%, transparent) inset;
+}
+
+.veloura-category-children--sticky.is-stuck {
+  margin-bottom:
+    calc(24px + var(--vcat-flow-compensation, 0px));
+  padding: 6px 7px;
+  overflow: hidden;
+  box-sizing: border-box;
+  background-clip: padding-box;
+  border-radius: clamp(14px, var(--veloura-global-radius, 18px), 24px);
+  box-shadow: 0 7px 22px rgba(15, 23, 42, .055);
+}
+
+.veloura-category-children--sticky.is-stuck
+> .veloura-category-children__slider,
+.veloura-category-children--sticky.is-stuck
+> .veloura-category-children__grid {
+  display: none !important;
+}
+
+.veloura-category-children--sticky.is-stuck
+> .veloura-category-compact {
+  display: block;
+}
+
+.veloura-category-children--sticky.is-stuck::before {
+  border-radius: inherit;
+}
+
+/* The second level is also a compact rail. Its optional image becomes a
+   small avatar instead of re-introducing large category cards. */
+.veloura-category-descendants {
+  margin-top: 7px;
+  padding-top: 7px;
+}
+
+.veloura-category-descendants__track {
+  gap: 7px;
+  padding: 1px 2px 3px;
+  scroll-padding-inline: 8px;
+}
+
+.veloura-category-descendant {
+  justify-content: flex-start;
+  gap: 7px;
+  min-height: 40px;
+  max-width: min(70vw, 220px);
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12.5px;
+}
+
+.veloura-category-descendant__media {
+  display: grid !important;
+  flex: 0 0 28px;
+  width: 28px;
+  min-width: 28px !important;
+  height: 28px;
+  place-items: center;
+  overflow: hidden !important;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--vcat-secondary-bg) 82%, transparent);
+}
+
+.veloura-category-descendant__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: var(--vcat-image-fit, cover);
+  object-position: center;
+}
+
+.veloura-category-descendant__title {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.veloura-category-children--sticky.is-stuck
+.veloura-category-descendants {
+  margin-top: 5px;
+  padding-top: 5px;
+}
+
+/* ------------------------------------------------------------------------
+   Global glass integration
+   The category surface opts into the exact global/header glass material only
+   when the existing general glass switch adds body.veloura-glass-effect.
+   Dark/light tints therefore stay owned by the theme's global variables.
+   ------------------------------------------------------------------------ */
+body.veloura-glass-effect .veloura-category-children {
+  background:
+    linear-gradient(
+      to bottom,
+      var(--veloura-glass-edge-top, rgba(255, 255, 255, .28)) 0,
+      var(--veloura-glass-edge-top, rgba(255, 255, 255, .28)) 1px,
+      transparent 1px,
+      transparent calc(100% - 1px),
+      var(--veloura-glass-edge-bottom, rgba(15, 23, 42, .06)) calc(100% - 1px),
+      var(--veloura-glass-edge-bottom, rgba(15, 23, 42, .06)) 100%
+    ),
+    var(
+      --veloura-glass-surface,
+      var(--veloura-global-glass-bg, rgba(248, 250, 252, .72))
+    ) !important;
+
+  background-color:
+    var(
+      --veloura-glass-surface,
+      var(--veloura-global-glass-bg, rgba(248, 250, 252, .72))
+    ) !important;
+
+  border-top: 1px solid
+    var(--veloura-glass-edge-top, rgba(255, 255, 255, .28));
+  border-bottom: 1px solid
+    var(--veloura-glass-edge-bottom, rgba(15, 23, 42, .06));
+  border-inline: 0;
+
+  -webkit-backdrop-filter:
+    var(
+      --veloura-glass-filter,
+      var(--veloura-global-glass-filter, blur(17px) saturate(36%))
+    );
+
+  backdrop-filter:
+    var(
+      --veloura-glass-filter,
+      var(--veloura-global-glass-filter, blur(17px) saturate(36%))
+    );
+
+  box-shadow:
+    inset 0 1px 0 var(--veloura-glass-edge-top, rgba(255, 255, 255, .22)),
+    inset 0 -1px 0 var(--veloura-glass-edge-bottom, rgba(15, 23, 42, .05)),
+    0 8px 26px var(--veloura-glass-shadow, rgba(15, 23, 42, .07));
+}
+
+body.veloura-glass-effect .veloura-category-children::before {
+  display: none;
+}
+
+body.veloura-glass-effect .veloura-category-compact__item,
+body.veloura-glass-effect .veloura-category-descendant {
+  background:
+    var(
+      --veloura-global-glass-control,
+      color-mix(
+        in srgb,
+        var(--veloura-glass-surface, rgba(248, 250, 252, .72)) 74%,
+        transparent
+      )
+    );
+}
+
+body.veloura-glass-effect .veloura-category-compact__item.is-active,
+body.veloura-glass-effect .veloura-category-descendant.is-active {
+  background: var(--color-primary, #004956);
+}
+
+/* ------------------------------------------------------------------------
+   Detached search + existing bar_sticky_icon mode
+   Connected search already collapses to the header icon. V122 makes the
+   detached version obey the same merchant option instead of staying as a
+   second sticky row under the compact header.
+   ------------------------------------------------------------------------ */
+@media (max-width: 1023px) {
+  .veloura-header-tabs-stack.veloura-stack-is-scrolled
+  .veloura-detached-search-shell.veloura-detached-mobile-bar_sticky_icon {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .veloura-header-tabs-stack.veloura-stack-is-scrolled
+  .veloura-detached-search-shell.veloura-detached-desktop-bar_sticky_icon {
+    display: none !important;
+  }
 }
 
 /* Desktop filters stay below header + sticky subcategory rail. */
