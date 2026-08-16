@@ -51851,7 +51851,7 @@ body.dark .veloura-category-card__title {
   display: block !important;
 }
 /* ========================================================================
-   Veloura Category Page V125
+   Veloura Category Page V126
    banner -> subcategories -> title/filter -> products
    ======================================================================== */
 .veloura-category-page {
@@ -52168,7 +52168,7 @@ body.dark .veloura-category-page {
   background: var(--color-primary, #004956);
 }
 /* ------------------------------------------------------------------------
-   V125 — compact sticky navigation
+   V126 — compact sticky navigation
    The merchant's rich Grid/Slider layout stays untouched at the top of the
    page. Only while the rail is actually stuck do we switch to small
    horizontal chips with the category image/icon on the inline-start side.
@@ -52210,17 +52210,18 @@ body.dark .veloura-category-page {
   align-items: center;
   justify-content: flex-start;
   gap: 7px;
+  height: 42px;
   min-height: 42px;
   max-width: min(70vw, 210px);
-  /* Keep the media inset visually balanced: the inline-start edge (right in RTL)
-     now matches the chip's top/bottom breathing room. */
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 6px;
-  padding-right: 10px;
+  box-sizing: border-box;
+  /* V126: exact optical inset. With a 30px media + 1px border, 5px on every
+     side gives 42px total height, so the media has the same space on its
+     inline-start edge (right in RTL) as it has above and below. */
+  padding: 5px;
   background: var(--vcat-secondary-bg);
   border: 1px solid color-mix(in srgb, currentColor 8%, transparent);
-  border-radius: 999px;
+  border-radius: 14px;
+  border-radius: var(--veloura-global-radius, 14px);
   white-space: nowrap;
   scroll-snap-align: center;
   transition: background-color 0.16s ease, color 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
@@ -52238,7 +52239,10 @@ body.dark .veloura-category-page {
   place-items: center;
   overflow: hidden;
   background: color-mix(in srgb, var(--vcat-secondary-bg) 82%, transparent);
-  border-radius: 999px;
+  /* Compact mode is an interface control, so all of its visible edges follow
+     the General > global element radius, not the old forced circular shape. */
+  border-radius: 14px;
+  border-radius: var(--veloura-global-radius, 14px);
 }
 .veloura-category-compact__media img {
   display: block;
@@ -52316,13 +52320,13 @@ body.dark .veloura-category-page {
 .veloura-category-descendant {
   justify-content: flex-start;
   gap: 7px;
+  height: 40px;
   min-height: 40px;
   max-width: min(70vw, 220px);
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 6px;
-  padding-right: 10px;
-  border-radius: 999px;
+  box-sizing: border-box;
+  padding: 5px;
+  border-radius: 14px;
+  border-radius: var(--veloura-global-radius, 14px);
   font-size: 12.5px;
 }
 .veloura-category-descendant__media {
@@ -52337,7 +52341,8 @@ body.dark .veloura-category-page {
   align-items: center;
   justify-items: center;
   place-items: center;
-  border-radius: 999px;
+  border-radius: 14px;
+  border-radius: var(--veloura-global-radius, 14px);
   background: color-mix(in srgb, var(--vcat-secondary-bg) 82%, transparent);
 }
 .veloura-category-descendant__media img {
