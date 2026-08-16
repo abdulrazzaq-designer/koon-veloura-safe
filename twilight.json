@@ -3986,6 +3986,42 @@
       ]
     },
     {
+      "type": "boolean",
+      "icon": "sicon-pin",
+      "label": "تثبيت التصنيفات الفرعية أثناء التمرير",
+      "description": "عند التفعيل يبقى شريط التصنيفات الفرعية ثابتًا أثناء النزول، ويتم وضعه تلقائيًا أسفل الهيدر والبحث دون أن يغطيه الهيدر.",
+      "id": "veloura_category_children_sticky_2026",
+      "format": "switch",
+      "required": false,
+      "value": true,
+      "selected": true,
+      "conditions": [
+        {
+          "id": "veloura_category_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "icon": "sicon-layout-grid",
+      "label": "التبديل بين التصنيفات داخل نفس الصفحة",
+      "description": "عند التفعيل يظهر خيار «الكل»، والضغط على أي تصنيف فرعي يبدل المنتجات والعنوان داخل نفس الصفحة مع إبقاء شريط التصنيفات ظاهرًا، ويتم تمييز التصنيف النشط.",
+      "id": "veloura_category_inline_switch_2026",
+      "format": "switch",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_category_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "id": "veloura_category_images_location_2026",
       "type": "items",
       "format": "dropdown-list",

@@ -343,16 +343,6 @@ body:not(.dark) .veloura-dark-toggle__icon--sun {
   --veloura-category-image-bg: #f5f7f8;
 }
 
-/* Sticky */
-.veloura-category-children {
-  position: sticky;
-  top: 0;
-  z-index: 30;
-  background: var(--color-main-bg, #fff);
-  padding: 10px 0 12px;
-  margin-bottom: 18px;
-}
-
 .veloura-category-sticky-wrap {
   width: 100%;
   overflow: hidden;
@@ -1093,21 +1083,31 @@ body.dark .veloura-category-card__title {
 
 
 /* ========================================================================
-   Veloura Category Page V119
+   Veloura Category Page V120
+   banner -> subcategories -> title/filter -> products
    ======================================================================== */
 
 .veloura-category-page {
   --vcat-secondary-bg:
     var(--veloura-site-second-bg, #f8fafc);
 
+  --vcat-primary-bg:
+    var(--veloura-site-bg, #ffffff);
+
   --vcat-primary-text:
     var(--color-text, #111827);
+
+  --vcat-sticky-top: 0px;
+  --vcat-sticky-height: 0px;
 }
 
 html.dark .veloura-category-page,
 body.dark .veloura-category-page {
   --vcat-secondary-bg:
     var(--veloura-dark-secondary-bg, #010612);
+
+  --vcat-primary-bg:
+    var(--veloura-dark-body-bg, #010202);
 
   --vcat-primary-text:
     var(--veloura-dark-primary-text, #ffffff);
@@ -1117,16 +1117,63 @@ body.dark .veloura-category-page {
   padding-top: 14px;
 }
 
-/* Subcategories */
+/* ------------------------------------------------------------
+   Subcategories
+   ------------------------------------------------------------ */
 .veloura-category-children {
+  position: relative !important;
+  top: auto !important;
+  z-index: 1;
+
   width: 100%;
   margin: 0 0 24px;
+  padding: 8px 0 10px;
+
+  background:
+    var(--vcat-primary-bg);
+}
+
+.veloura-category-children--sticky {
+  position: sticky !important;
+
+  top:
+    var(--vcat-sticky-top, 0px) !important;
+
+  z-index: 85;
+
+  background:
+    var(--vcat-primary-bg);
+
+  border-radius:
+    var(--veloura-global-radius, 0px);
+
+  isolation: isolate;
+}
+
+.veloura-category-children--sticky::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  background:
+    var(--vcat-primary-bg);
+
+  border-radius:
+    inherit;
+}
+
+.veloura-category-children.is-loading {
+  opacity: .72;
+  pointer-events: none;
 }
 
 .veloura-category-children__grid {
   display: grid;
+
   grid-template-columns:
     repeat(var(--vcat-mobile-cols, 4), minmax(0, 1fr));
+
   gap: 12px;
 }
 
@@ -1134,6 +1181,7 @@ body.dark .veloura-category-page {
   .veloura-category-children__grid {
     grid-template-columns:
       repeat(var(--vcat-desktop-cols, 8), minmax(0, 1fr));
+
     gap: 16px;
   }
 }
@@ -1158,6 +1206,41 @@ body.dark .veloura-category-page {
     var(--vcat-primary-text) !important;
 
   text-decoration: none !important;
+
+  transition:
+    opacity .18s ease,
+    transform .18s ease,
+    color .18s ease;
+}
+
+.veloura-category-child.is-active {
+  color:
+    var(--color-primary, #004956) !important;
+}
+
+.veloura-category-child.is-active
+.veloura-category-child__media {
+  box-shadow:
+    0 0 0 2px var(--color-primary, #004956) inset;
+}
+
+.veloura-category-child.is-active
+.veloura-category-child__title {
+  font-weight: 900;
+}
+
+.veloura-category-child__media--all {
+  display: grid !important;
+  place-items: center;
+
+  color:
+    var(--color-primary, #004956);
+
+  font-size: clamp(20px, 4vw, 30px);
+}
+
+.veloura-category-child__media--all i {
+  font-size: inherit;
 }
 
 .veloura-category-children--position-top
@@ -1280,7 +1363,31 @@ body.dark .veloura-category-page {
     var(--veloura-global-radius, 14px);
 }
 
-/* Category banners */
+.veloura-category-children--names-only
+.veloura-category-child.is-active {
+  background:
+    var(--color-primary, #004956);
+
+  color:
+    var(--color-primary-reverse, #ffffff) !important;
+}
+
+/* Desktop filters stay below header + sticky subcategory rail. */
+@media (min-width: 1024px) {
+  .veloura-category-page
+  #filters-menu {
+    top:
+      calc(
+        var(--vcat-sticky-top, 0px)
+        + var(--vcat-sticky-height, 0px)
+        + 14px
+      ) !important;
+  }
+}
+
+/* ------------------------------------------------------------
+   Category banners
+   ------------------------------------------------------------ */
 .veloura-category-banners {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -1332,7 +1439,9 @@ body.dark .veloura-category-page {
   border-radius: 999px !important;
 }
 
-/* Sorting dropdown */
+/* ------------------------------------------------------------
+   Sorting dropdown
+   ------------------------------------------------------------ */
 .veloura-category-page #product-filter {
   background:
     var(--veloura-site-second-bg, #f8fafc) !important;

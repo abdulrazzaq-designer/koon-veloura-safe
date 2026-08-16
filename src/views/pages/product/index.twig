@@ -100,6 +100,8 @@
     {% set vcat_has_children = vcat_children|length > 0 %}
 
     {% set vcat_show_breadcrumb = _self.veloura_bool(theme.settings.get('veloura_category_show_breadcrumb_2026', true), true)|trim == 'true' %}
+    {% set vcat_children_sticky = _self.veloura_bool(theme.settings.get('veloura_category_children_sticky_2026', true), true)|trim == 'true' %}
+    {% set vcat_inline_switch = _self.veloura_bool(theme.settings.get('veloura_category_inline_switch_2026', false), false)|trim == 'true' %}
     {% set vcat_hide_products_children = _self.veloura_bool(theme.settings.get('veloura_category_hide_products_if_children_2026', false), false)|trim == 'true' %}
     {% set vcat_show_images = _self.veloura_bool(theme.settings.get('veloura_category_show_images_2026', true), true)|trim == 'true' %}
     {% set vcat_hide_count = _self.veloura_bool(theme.settings.get('veloura_category_hide_product_count_2026', false), false)|trim == 'true' %}
@@ -263,6 +265,8 @@
         data-veloura-category-id="{{ vcat_current_id|default('') }}"
         data-veloura-category-title="{{ vcat_current_name|striptags|e('html_attr') }}"
         data-veloura-hide-product-count="{{ vcat_hide_count ? 'true' : 'false' }}"
+        data-veloura-children-sticky="{{ vcat_children_sticky ? 'true' : 'false' }}"
+        data-veloura-inline-switch="{{ vcat_inline_switch ? 'true' : 'false' }}"
         style="
             --vcat-mobile-cols: {{ vcat_mobile_cols }};
             --vcat-desktop-cols: {{ vcat_desktop_cols }};
@@ -311,10 +315,171 @@
             </div>
         {% endif %}
 
+                {% if vcat_is_category and vcat_has_children %}
+                    <section
+                        class="
+                            veloura-category-children
+                            veloura-category-children--position-{{ vcat_image_position }}
+                            veloura-category-children--shape-{{ vcat_image_shape }}
+                            {{ vcat_transparent ? 'veloura-category-children--transparent' : '' }}
+                            {{ not vcat_render_images ? 'veloura-category-children--names-only' : '' }}
+                            {{ vcat_children_sticky ? 'veloura-category-children--sticky' : '' }}
+                            {{ vcat_inline_switch ? 'veloura-category-children--inline-switch' : '' }}
+                        "
+                        data-veloura-category-children
+                        data-root-category-id="{{ vcat_current_id|default('') }}"
+                        data-root-category-name="{{ vcat_current_name|striptags|e('html_attr') }}"
+                        data-root-category-url="{{ vcat_current_url|default('')|e('html_attr') }}"
+                    >
+                        {% if vcat_slider %}
+                            <salla-slider
+                                type="carousel"
+                                controls-outer
+                                static-when-single
+                                class="veloura-category-children__slider"
+                                slider-config='{
+                                    "slidesPerView": {{ vcat_mobile_cols }},
+                                    "spaceBetween": 12,
+                                    "observer": true,
+                                    "observeParents": true,
+                                    "breakpoints": {
+                                        "768": {
+                                            "slidesPerView": {{ vcat_desktop_cols }},
+                                            "spaceBetween": 16
+                                        }
+                                    }
+                                }'
+                            >
+                                <div slot="items">
+                                    {% if vcat_inline_switch %}
+                                        <div class="swiper-slide">
+                                            <a
+                                                href="{{ vcat_current_url }}"
+                                                class="veloura-category-child veloura-category-child--all is-active"
+                                                data-veloura-category-child
+                                                data-veloura-category-switch
+                                                data-category-id="{{ vcat_current_id|default('') }}"
+                                                data-category-name="{{ vcat_current_name|striptags|e('html_attr') }}"
+                                                data-category-url="{{ vcat_current_url|default('')|e('html_attr') }}"
+                                                data-category-root="true"
+                                                aria-current="page"
+                                            >
+                                                {% if vcat_render_images %}
+                                                    <span class="veloura-category-child__media veloura-category-child__media--all">
+                                                        <i class="sicon-layout-grid" aria-hidden="true"></i>
+                                                    </span>
+                                                {% endif %}
+                                                <span class="veloura-category-child__title">الكل</span>
+                                            </a>
+                                        </div>
+                                    {% endif %}
+
+                                    {% for child in vcat_children %}
+                                        {% set child_image = child.image|default('') %}
+                                        {% if child_image.url is defined %}
+                                            {% set child_image = child_image.url %}
+                                        {% elseif child_image is iterable %}
+                                            {% set child_image = '' %}
+                                        {% endif %}
+                                        {% if not child_image %}
+                                            {% set child_image = 'images/placeholder.png' | asset %}
+                                        {% endif %}
+
+                                        <div class="swiper-slide">
+                                            <a
+                                                href="{{ child.url }}"
+                                                class="veloura-category-child"
+                                                data-veloura-category-child
+                                                {% if vcat_inline_switch %}data-veloura-category-switch{% endif %}
+                                                data-category-id="{{ child.id|default('') }}"
+                                                data-category-name="{{ child.name|default('')|e('html_attr') }}"
+                                                data-category-url="{{ child.url|default('')|e('html_attr') }}"
+                                                data-category-slug="{{ child.slug|default('')|e('html_attr') }}"
+                                            >
+                                                {% if vcat_render_images %}
+                                                    <span class="veloura-category-child__media">
+                                                        <img
+                                                            src="{{ child_image }}"
+                                                            data-veloura-category-child-image
+                                                            alt="{{ child.name|default('') }}"
+                                                            loading="lazy"
+                                                        >
+                                                    </span>
+                                                {% endif %}
+
+                                                <span class="veloura-category-child__title">{{ child.name }}</span>
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </salla-slider>
+                        {% else %}
+                            <div class="veloura-category-children__grid">
+                                {% if vcat_inline_switch %}
+                                    <a
+                                        href="{{ vcat_current_url }}"
+                                        class="veloura-category-child veloura-category-child--all is-active"
+                                        data-veloura-category-child
+                                        data-veloura-category-switch
+                                        data-category-id="{{ vcat_current_id|default('') }}"
+                                        data-category-name="{{ vcat_current_name|striptags|e('html_attr') }}"
+                                        data-category-url="{{ vcat_current_url|default('')|e('html_attr') }}"
+                                        data-category-root="true"
+                                        aria-current="page"
+                                    >
+                                        {% if vcat_render_images %}
+                                            <span class="veloura-category-child__media veloura-category-child__media--all">
+                                                <i class="sicon-layout-grid" aria-hidden="true"></i>
+                                            </span>
+                                        {% endif %}
+                                        <span class="veloura-category-child__title">الكل</span>
+                                    </a>
+                                {% endif %}
+
+                                {% for child in vcat_children %}
+                                    {% set child_image = child.image|default('') %}
+                                    {% if child_image.url is defined %}
+                                        {% set child_image = child_image.url %}
+                                    {% elseif child_image is iterable %}
+                                        {% set child_image = '' %}
+                                    {% endif %}
+                                    {% if not child_image %}
+                                        {% set child_image = 'images/placeholder.png' | asset %}
+                                    {% endif %}
+
+                                    <a
+                                        href="{{ child.url }}"
+                                        class="veloura-category-child"
+                                        data-veloura-category-child
+                                        {% if vcat_inline_switch %}data-veloura-category-switch{% endif %}
+                                        data-category-id="{{ child.id|default('') }}"
+                                        data-category-name="{{ child.name|default('')|e('html_attr') }}"
+                                        data-category-url="{{ child.url|default('')|e('html_attr') }}"
+                                        data-category-slug="{{ child.slug|default('')|e('html_attr') }}"
+                                    >
+                                        {% if vcat_render_images %}
+                                            <span class="veloura-category-child__media">
+                                                <img
+                                                    src="{{ child_image }}"
+                                                    data-veloura-category-child-image
+                                                    alt="{{ child.name|default('') }}"
+                                                    loading="lazy"
+                                                >
+                                            </span>
+                                        {% endif %}
+
+                                        <span class="veloura-category-child__title">{{ child.name }}</span>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </section>
+                {% endif %}
+
         <div class="flex items-start flex-col md:flex-row">
             {% if filters and not vcat_hide_products_section %}
                 <button class="btn--close-sm close-filters sicon-cancel hidden"></button>
-                <salla-filters class="md:w-72 lg:sticky lg:top-20 flex-none" id="filters-menu"></salla-filters>
+                <salla-filters class="md:w-72 lg:sticky flex-none" id="filters-menu"></salla-filters>
             {% endif %}
 
             <div class="main-content flex-1 w-full {{ filters and not vcat_hide_products_section ? 'ltr:lg:ml-8 rtl:lg:mr-8' : '' }}">
@@ -351,115 +516,6 @@
                 </div>
 
 
-                {% if vcat_is_category and vcat_has_children %}
-                    <section
-                        class="
-                            veloura-category-children
-                            veloura-category-children--position-{{ vcat_image_position }}
-                            veloura-category-children--shape-{{ vcat_image_shape }}
-                            {{ vcat_transparent ? 'veloura-category-children--transparent' : '' }}
-                            {{ not vcat_render_images ? 'veloura-category-children--names-only' : '' }}
-                        "
-                        data-veloura-category-children
-                    >
-                        {% if vcat_slider %}
-                            <salla-slider
-                                type="carousel"
-                                controls-outer
-                                static-when-single
-                                class="veloura-category-children__slider"
-                                slider-config='{
-                                    "slidesPerView": {{ vcat_mobile_cols }},
-                                    "spaceBetween": 12,
-                                    "observer": true,
-                                    "observeParents": true,
-                                    "breakpoints": {
-                                        "768": {
-                                            "slidesPerView": {{ vcat_desktop_cols }},
-                                            "spaceBetween": 16
-                                        }
-                                    }
-                                }'
-                            >
-                                <div slot="items">
-                                    {% for child in vcat_children %}
-                                        {% set child_image = child.image|default('') %}
-                                        {% if child_image.url is defined %}
-                                            {% set child_image = child_image.url %}
-                                        {% elseif child_image is iterable %}
-                                            {% set child_image = '' %}
-                                        {% endif %}
-                                        {% if not child_image %}
-                                            {% set child_image = 'images/placeholder.png' | asset %}
-                                        {% endif %}
-
-                                        <div class="swiper-slide">
-                                            <a
-                                                href="{{ child.url }}"
-                                                class="veloura-category-child"
-                                                data-veloura-category-child
-                                                data-category-id="{{ child.id|default('') }}"
-                                                data-category-name="{{ child.name|default('')|e('html_attr') }}"
-                                                data-category-url="{{ child.url|default('')|e('html_attr') }}"
-                                                data-category-slug="{{ child.slug|default('')|e('html_attr') }}"
-                                            >
-                                                {% if vcat_render_images %}
-                                                    <span class="veloura-category-child__media">
-                                                        <img
-                                                            src="{{ child_image }}"
-                                                            data-veloura-category-child-image
-                                                            alt="{{ child.name|default('') }}"
-                                                            loading="lazy"
-                                                        >
-                                                    </span>
-                                                {% endif %}
-
-                                                <span class="veloura-category-child__title">{{ child.name }}</span>
-                                            </a>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </salla-slider>
-                        {% else %}
-                            <div class="veloura-category-children__grid">
-                                {% for child in vcat_children %}
-                                    {% set child_image = child.image|default('') %}
-                                    {% if child_image.url is defined %}
-                                        {% set child_image = child_image.url %}
-                                    {% elseif child_image is iterable %}
-                                        {% set child_image = '' %}
-                                    {% endif %}
-                                    {% if not child_image %}
-                                        {% set child_image = 'images/placeholder.png' | asset %}
-                                    {% endif %}
-
-                                    <a
-                                        href="{{ child.url }}"
-                                        class="veloura-category-child"
-                                        data-veloura-category-child
-                                        data-category-id="{{ child.id|default('') }}"
-                                        data-category-name="{{ child.name|default('')|e('html_attr') }}"
-                                        data-category-url="{{ child.url|default('')|e('html_attr') }}"
-                                        data-category-slug="{{ child.slug|default('')|e('html_attr') }}"
-                                    >
-                                        {% if vcat_render_images %}
-                                            <span class="veloura-category-child__media">
-                                                <img
-                                                    src="{{ child_image }}"
-                                                    data-veloura-category-child-image
-                                                    alt="{{ child.name|default('') }}"
-                                                    loading="lazy"
-                                                >
-                                            </span>
-                                        {% endif %}
-
-                                        <span class="veloura-category-child__title">{{ child.name }}</span>
-                                    </a>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </section>
-                {% endif %}
 
                 {% if not vcat_hide_products_section %}
 
@@ -485,7 +541,14 @@
             useCustomImages: {{ vcat_use_custom_images ? 'true' : 'false' }},
             imagesMap: {{ vcat_images_map|json_encode|raw }},
             hideProductCount: {{ vcat_is_category and vcat_hide_count ? 'true' : 'false' }},
-            categoryTitle: {{ (vcat_is_category ? category.name : '')|json_encode|raw }}
+            categoryTitle: {{ (vcat_is_category ? category.name : '')|json_encode|raw }},
+            stickyChildren: {{ vcat_is_category and vcat_children_sticky ? 'true' : 'false' }},
+            inlineSwitch: {{ vcat_is_category and vcat_inline_switch ? 'true' : 'false' }},
+            rootCategory: {
+                id: {{ vcat_current_id|default('')|json_encode|raw }},
+                name: {{ vcat_current_name|striptags|json_encode|raw }},
+                url: {{ vcat_current_url|default('')|json_encode|raw }}
+            }
         };
     </script>
 
