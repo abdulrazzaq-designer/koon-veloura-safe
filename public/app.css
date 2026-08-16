@@ -33574,7 +33574,9 @@ html[dir=ltr] .mm-ocd #mobile-menu.mm-spn li:has(> ul):before {
   transform: translateY(-50%) rotate(45deg) !important;
   transform-origin: center !important;
 }
-/* الوضع المصغر: القائمة تصبح بطاقة عائمة بدل الالتصاق بحافة الشاشة. */
+/* الوضع المصغر V133:
+   نحافظ على هندسة mmenu الأصلية بالكامل (خصوصًا width / max-width)،
+   ونغيّر فقط موضع البطاقة. هذا يمنع بقاء الدرج خارج الشاشة عند الفتح. */
 html.veloura-side-cats-compact .mm-ocd .mm-ocd__content {
   top: 12px !important;
   top: var(--veloura-side-cats-compact-inset, 12px) !important;
@@ -33585,27 +33587,19 @@ html.veloura-side-cats-compact .mm-ocd .mm-ocd__content {
   border-radius: var(--veloura-side-cats-menu-radius, 18px) !important;
   overflow: hidden !important;
 }
+/* RTL / drawer من اليمين: فقط أبعد البطاقة عن الحافة، ولا نلمس عرض mmenu. */
 html.veloura-side-cats-compact .mm-ocd.mm-ocd--right .mm-ocd__content {
   right: 12px !important;
   right: var(--veloura-side-cats-compact-inset, 12px) !important;
   left: auto !important;
-  width: calc((100% - 51px) - 12px) !important;
-  width: calc(calc(100% - 51px) - 12px) !important;
-  width: calc(var(--mm-ocd-width, calc(100% - 51px)) - var(--veloura-side-cats-compact-inset, 12px)) !important;
-  max-width: calc(440px - 12px) !important;
-  max-width: calc(var(--mm-ocd-max-width, 440px) - var(--veloura-side-cats-compact-inset, 12px)) !important;
 }
+/* LTR / drawer من اليسار. */
 html.veloura-side-cats-compact .mm-ocd.mm-ocd--left .mm-ocd__content {
   left: 12px !important;
   left: var(--veloura-side-cats-compact-inset, 12px) !important;
   right: auto !important;
-  width: calc((100% - 51px) - 12px) !important;
-  width: calc(calc(100% - 51px) - 12px) !important;
-  width: calc(var(--mm-ocd-width, calc(100% - 51px)) - var(--veloura-side-cats-compact-inset, 12px)) !important;
-  max-width: calc(440px - 12px) !important;
-  max-width: calc(var(--mm-ocd-max-width, 440px) - var(--veloura-side-cats-compact-inset, 12px)) !important;
 }
-/* لا نترك شريطًا ظاهرًا عند إغلاق البطاقة بعد إضافة الـ inset. */
+/* عند الإغلاق نضيف الـ inset إلى مسافة الخروج حتى لا يبقى أي شريط ظاهر. */
 html.veloura-side-cats-compact .mm-ocd.mm-ocd--right:not(.mm-ocd--open) .mm-ocd__content {
   transform: translate3d(calc(100% + 12px), 0, 0) !important;
   transform: translate3d(calc(100% + var(--veloura-side-cats-compact-inset, 12px)), 0, 0) !important;
@@ -33614,6 +33608,7 @@ html.veloura-side-cats-compact .mm-ocd.mm-ocd--left:not(.mm-ocd--open) .mm-ocd__
   transform: translate3d(calc(-100% - 12px), 0, 0) !important;
   transform: translate3d(calc(-100% - var(--veloura-side-cats-compact-inset, 12px)), 0, 0) !important;
 }
+/* حالة الفتح تبقى نفس mmenu الأصلية. */
 html.veloura-side-cats-compact .mm-ocd.mm-ocd--open .mm-ocd__content {
   transform: translate3d(0, 0, 0) !important;
 }
