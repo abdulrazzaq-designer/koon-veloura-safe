@@ -3951,7 +3951,7 @@
       "required": false,
       "value": false,
       "selected": false,
-      "description": "هذا المفتاح يفتح ويغلق إعدادات صفحة التصنيف داخل محرر الثيم فقط. إغلاقه لا يعطل التأثيرات المحفوظة في المتجر."
+      "description": ""
     },
     {
       "type": "static",
@@ -4561,7 +4561,7 @@
       "required": false,
       "value": false,
       "selected": false,
-      "description": "هذا المفتاح يفتح ويغلق إعدادات بنرات التصنيفات داخل محرر الثيم فقط. إغلاقه لا يخفي البنرات من المتجر."
+      "description": ""
     },
     {
       "type": "collection",
