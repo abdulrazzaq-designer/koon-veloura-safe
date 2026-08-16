@@ -52217,7 +52217,7 @@ body.dark .veloura-category-page {
   /* V126: exact optical inset. With a 30px media + 1px border, 5px on every
      side gives 42px total height, so the media has the same space on its
      inline-start edge (right in RTL) as it has above and below. */
-  padding: 5px 5px 10px 5px;
+  padding: 5px 5px 5px 10px;
   background: var(--vcat-secondary-bg);
   border: 1px solid color-mix(in srgb, currentColor 8%, transparent);
   border-radius: 14px;
