@@ -146,13 +146,18 @@ const initVelouraFooter = (() => {
     const contactWrap = footer.querySelector('.veloura-footer-contact-wrap');
     if (!contactWrap) return;
 
-    const sources = Array.from(contactWrap.querySelectorAll(
-      '[data-veloura-footer-contacts] a[href], ' +
-      '[data-veloura-footer-social] a[href], ' +
-      '[data-veloura-footer-social] button'
-    ));
+    const mergeSocial = footer.classList.contains('veloura-footer-merge-social');
+    const selector = mergeSocial
+      ? '[data-veloura-footer-contacts] a[href], [data-veloura-footer-social] a[href], [data-veloura-footer-social] button'
+      : '[data-veloura-footer-contacts] a[href], [data-veloura-footer-contacts] button';
 
-    if (!sources.length) return;
+    const sources = Array.from(contactWrap.querySelectorAll(selector));
+
+    if (!sources.length) {
+      contactWrap.classList.remove('veloura-footer-contact-ready');
+      contactWrap.querySelector(':scope > .veloura-footer-contact-cards')?.remove();
+      return;
+    }
 
     const seen = new Set();
     const cards = [];
@@ -259,7 +264,7 @@ const initVelouraFooter = (() => {
         setImportant(wrapper, 'flex-direction', 'row');
         setImportant(wrapper, 'flex-wrap', window.innerWidth <= 560 ? 'wrap' : 'nowrap');
         setImportant(wrapper, 'align-items', 'center');
-        setImportant(wrapper, 'justify-content', centered ? 'center' : 'center');
+        setImportant(wrapper, 'justify-content', centered ? 'center' : 'flex-start');
         setImportant(wrapper, 'gap', '10px');
         setImportant(wrapper, 'margin', '0');
         setImportant(wrapper, 'padding', '0');
