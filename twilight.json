@@ -3436,7 +3436,7 @@
       "type": "number",
       "format": "slider",
       "label": "المسافة بين التصنيفات في القائمة الجانبية",
-      "description": "تحكم بالمسافة بين عناصر التصنيفات داخل القائمة",
+      "description": "توزّع القيمة بالتساوي كمسافة داخلية أعلى وأسفل كل تصنيف، بدون ارتفاع ثابت للعنصر",
       "inputType": "range",
       "icon": "sicon-resize",
       "value": "14",
@@ -3444,27 +3444,6 @@
       "step": "1",
       "minimum": "1",
       "maximum": "25",
-      "conditions": [
-        {
-          "id": "veloura_side_categories_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_side_cat_item_h_2026",
-      "type": "number",
-      "format": "slider",
-      "label": "ارتفاع عنصر التصنيف في القائمة الجانبية",
-      "description": "تحكم بارتفاع كل تصنيف داخل القائمة الجانبية",
-      "inputType": "range",
-      "icon": "sicon-resize",
-      "value": "56",
-      "required": false,
-      "step": "1",
-      "minimum": "1",
-      "maximum": "120",
       "conditions": [
         {
           "id": "veloura_side_categories_enabled_2026",
@@ -16417,7 +16396,7 @@
           "id": "veloura_steps_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل1111",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل",
           "icon": "sicon-eye-off",
           "value": false,
           "selected": false,

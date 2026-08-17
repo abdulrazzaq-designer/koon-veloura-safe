@@ -819,15 +819,15 @@
     }
 
 
-    /* V145 — centering comes from the spacing setting itself.
-       The configured gap is split 50/50 above and below each row in header.scss,
-       so no manual translate is needed here. */
+    /* V146 — لا يوجد ارتفاع ثابت لعناصر القائمة.
+       قيمة المسافة تتوزع داخليًا بالتساوي: نصفها أعلى ونصفها أسفل،
+       لذلك يبقى النص/الصورة في المنتصف مهما تغيّر حجم الصورة. */
     html.veloura-side-cats-glass body.veloura-glass-effect
       .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span),
     html body.veloura-side-cats-glass.veloura-glass-effect
       .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span) {
-      padding-block-start: 0 !important;
-      padding-block-end: 0 !important;
+      padding-block-start: calc(var(--veloura-side-cats-gap, 0px) / 2) !important;
+      padding-block-end: calc(var(--veloura-side-cats-gap, 0px) / 2) !important;
       transform: none !important;
     }
 
