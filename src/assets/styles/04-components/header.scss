@@ -2278,3 +2278,16 @@ html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:not(:has(> ul)) > :is(a, span):ha
 html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span):has(> .veloura-side-category-badge) {
   padding-right: 150px !important;
 }
+
+/* ================================
+   Veloura Side Categories Row Base Height — V147
+   ارتفاع أساسي صغير 34px، وإعداد المسافة هو الذي يزيد الارتفاع.
+   مثال: gap = 10px => ارتفاع الصف النصي الأدنى 44px، مع 5px أعلى و5px أسفل.
+   صفوف الصور تكبر طبيعيًا إذا كان ارتفاع الصورة أكبر.
+================================ */
+.mm-ocd #mobile-menu.mm-spn li > a,
+.mm-ocd #mobile-menu.mm-spn li > span {
+  min-height: calc(34px + var(--veloura-side-cats-gap, 0px)) !important;
+  height: auto !important;
+  box-sizing: border-box !important;
+}
