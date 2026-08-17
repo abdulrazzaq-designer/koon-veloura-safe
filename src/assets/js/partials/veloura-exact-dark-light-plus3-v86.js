@@ -668,6 +668,54 @@
       --veloura-v87-filter: blur(24px) saturate(200%) !important;
     }
 
+    /* V141 — Side menu uses the exact same V88/V87 dark glass material as the header.
+       This rule is intentionally inside the late V88 runtime stylesheet so older
+       side-menu solid dark overrides cannot win after the static SCSS bundle. */
+    html.dark.veloura-side-cats-glass body.veloura-glass-effect .mm-ocd.mm-ocd--open .mm-ocd__content,
+    html.dark.veloura-side-cats-glass body.dark.veloura-glass-effect .mm-ocd.mm-ocd--open .mm-ocd__content,
+    html body.dark.veloura-side-cats-glass.veloura-glass-effect .mm-ocd.mm-ocd--open .mm-ocd__content {
+      background: var(--veloura-v88-glass) !important;
+      background-color: var(--veloura-v88-glass) !important;
+      background-image: none !important;
+      border-top: 1px solid rgba(255, 255, 255, .120) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, .055) !important;
+      border-inline: 0 !important;
+      -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
+      backdrop-filter: blur(24px) saturate(200%) !important;
+      filter: none !important;
+      box-shadow:
+        0 10px 28px rgba(0, 0, 0, .24),
+        inset 0 1px 0 rgba(255,255,255,.025) !important;
+      color: var(--veloura-dark-side-menu-text, var(--veloura-dark-primary-text, #ffffff)) !important;
+      -webkit-text-fill-color: currentColor !important;
+    }
+
+    /* Dark side-menu text follows its dedicated dark text option.
+       Keep the category badge independent: its primary-store color rules stay intact. */
+    html.dark.veloura-side-cats-glass body.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li,
+    html.dark.veloura-side-cats-glass body.dark.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li,
+    html body.dark.veloura-side-cats-glass.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li,
+    html.dark.veloura-side-cats-glass body.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > a,
+    html.dark.veloura-side-cats-glass body.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > span,
+    html.dark.veloura-side-cats-glass body.dark.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > a,
+    html.dark.veloura-side-cats-glass body.dark.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > span,
+    html body.dark.veloura-side-cats-glass.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > a,
+    html body.dark.veloura-side-cats-glass.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > span,
+    html.dark.veloura-side-cats-glass body.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn .mm-spn--navbar,
+    html.dark.veloura-side-cats-glass body.dark.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn .mm-spn--navbar,
+    html body.dark.veloura-side-cats-glass.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn .mm-spn--navbar {
+      color: var(--veloura-dark-side-menu-text, var(--veloura-dark-primary-text, #ffffff)) !important;
+      -webkit-text-fill-color: currentColor !important;
+    }
+
+    html.dark.veloura-side-cats-glass body.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span) svg,
+    html.dark.veloura-side-cats-glass body.dark.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span) svg,
+    html body.dark.veloura-side-cats-glass.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span) svg {
+      color: inherit !important;
+      fill: currentColor !important;
+      stroke: currentColor !important;
+    }
+
     /* Header: one paint owner. */
     html.dark body.veloura-glass-effect #veloura-header-tabs-stack .veloura-header-tabs-stack__surface,
     html body.dark.veloura-glass-effect #veloura-header-tabs-stack .veloura-header-tabs-stack__surface {
