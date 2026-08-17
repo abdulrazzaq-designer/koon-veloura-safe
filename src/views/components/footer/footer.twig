@@ -69,7 +69,7 @@
 {% set footer_contact_display = _self.veloura_footer_select_value(theme.settings.get('veloura_footer_contact_display_2026', 'icon_text'), 'icon_text')|trim %}
 {% set footer_title_size_key = _self.veloura_footer_select_value(theme.settings.get('veloura_footer_title_size_2026', 'large'), 'large')|trim %}
 {% set footer_text_size_key = _self.veloura_footer_select_value(theme.settings.get('veloura_footer_text_size_2026', 'medium'), 'medium')|trim %}
-{% set footer_logo_size_raw = _self.veloura_footer_select_value(theme.settings.get('veloura_footer_logo_size_2026', '200'), '200')|trim %}
+{% set footer_logo_scale_raw = _self.veloura_footer_select_value(theme.settings.get('veloura_footer_logo_scale_2026', '120'), '120')|trim %}
 
 {% if footer_contact_display not in ['icons_only', 'icon_text'] %}
   {% set footer_contact_display = 'icon_text' %}
@@ -77,11 +77,10 @@
 
 {% set title_size_map = {'small':'16px','medium':'20px','large':'24px','xlarge':'30px'} %}
 {% set text_size_map = {'small':'13px','medium':'15px','large':'17px'} %}
-{% set legacy_logo_size_map = {'small':'150','medium':'200','large':'260'} %}
-
 {% set footer_title_size = title_size_map[footer_title_size_key]|default('24px') %}
 {% set footer_text_size = text_size_map[footer_text_size_key]|default('15px') %}
-{% set footer_logo_size_value = legacy_logo_size_map[footer_logo_size_raw]|default(footer_logo_size_raw ?: '200') %}
+{% set footer_logo_scale = footer_logo_scale_raw|default('120')|number_format(0, '.', '') %}
+{% set footer_logo_size_value = 80 + footer_logo_scale %}
 {% set footer_logo_size = footer_logo_size_value ~ 'px' %}
 
 {% set footer_center_all_raw = theme.settings.get('veloura_footer_center_all_2026', false) %}

@@ -57595,6 +57595,335 @@ html body.veloura-glass-effect salla-sheet::part(backdrop) {
     --veloura-v86-glass-surface: var(--veloura-v86-glass-solid);
   }
 }
+/* ========================================================================== 
+   Veloura Footer Final Contract — V149
+   - dark/light footer background images
+   - one background-fit control (cover/contain)
+   - logo-size slider
+   - working contact/social merge + inline/column + icons-only
+   - complete right alignment when centering is disabled
+   - normal footer: top corners only
+   - compact footer: main + bottom inside one rounded store container
+   ========================================================================== */
+#veloura-footer {
+  --vf-final-radius: var(--veloura-footer-real-radius, 0px);
+}
+#veloura-footer .veloura-footer-shell {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+/* Background image contract ------------------------------------------------ */
+#veloura-footer .veloura-footer-main,
+#veloura-footer .store-footer__inner {
+  background-color: var(--veloura-footer-bg) !important;
+  background-image: none !important;
+  background-image: var(--veloura-footer-bg-image, none) !important;
+  background-size: cover !important;
+  background-size: var(--veloura-footer-bg-size, cover) !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+}
+#veloura-footer.veloura-footer-has-bg-image .store-footer__inner::before {
+  display: block !important;
+}
+html.dark #veloura-footer .veloura-footer-main,
+html.dark #veloura-footer .store-footer__inner,
+body.dark #veloura-footer .veloura-footer-main,
+body.dark #veloura-footer .store-footer__inner {
+  background-color: #010612 !important;
+  background-color: var(--veloura-footer-bg) !important;
+  background-image: none !important;
+  background-image: var(--veloura-footer-dark-bg-image, var(--veloura-footer-bg-image, none)) !important;
+  background-size: cover !important;
+  background-size: var(--veloura-footer-bg-size, cover) !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+}
+html.dark #veloura-footer .veloura-footer-main,
+html.dark #veloura-footer .store-footer__inner,
+body.dark #veloura-footer .veloura-footer-main,
+body.dark #veloura-footer .store-footer__inner {
+  --veloura-footer-bg: var(--veloura-dark-footer-bg, var(--veloura-dark-secondary-bg, #010612));
+  --veloura-footer-title: var(--veloura-dark-primary-text, #ffffff);
+  --veloura-footer-text: var(--veloura-dark-secondary-text, #d7e0e8);
+}
+html.dark #veloura-footer.veloura-footer-has-bg-image .store-footer__inner::before,
+body.dark #veloura-footer.veloura-footer-has-bg-image .store-footer__inner::before {
+  display: block !important;
+  background: rgba(0, 0, 0, 0.34) !important;
+}
+/* Logo slider ------------------------------------------------------------- */
+#veloura-footer .veloura-footer-logo__media {
+  width: auto !important;
+  height: auto !important;
+  max-width: min(100%, 200px) !important;
+  max-width: min(100%, var(--veloura-footer-logo-size, 200px)) !important;
+  max-height: 200px !important;
+  max-height: var(--veloura-footer-logo-size, 200px) !important;
+  -o-object-fit: contain !important;
+     object-fit: contain !important;
+}
+/* Link/value color is reserved for contact-card values only. */
+#veloura-footer a,
+#veloura-footer salla-menu a,
+#veloura-footer .veloura-footer-links a {
+  color: var(--veloura-footer-text) !important;
+}
+#veloura-footer .veloura-footer-contact-card__text {
+  color: var(--veloura-footer-link) !important;
+}
+/* Contact/social source visibility --------------------------------------- */
+#veloura-footer .veloura-footer-contact-wrap.veloura-footer-contact-ready > .veloura-footer-contact-native {
+  display: none !important;
+}
+#veloura-footer.veloura-footer-merge-social .veloura-footer-contact-wrap.veloura-footer-contact-ready > .veloura-footer-social {
+  display: none !important;
+}
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-contact-wrap.veloura-footer-contact-ready > .veloura-footer-social {
+  display: flex !important;
+  width: 100% !important;
+  margin-top: 14px !important;
+}
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social,
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social salla-social,
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social salla-social > div,
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social salla-social ul {
+  display: flex !important;
+  flex-flow: row wrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social a:not(.does-not-exist), #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social button:not(.does-not-exist), #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social .s-social-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  min-height: 42px !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  border: 1px solid var(--veloura-footer-contact-border) !important;
+  border-radius: 999px !important;
+  background: var(--veloura-footer-icon-bg) !important;
+  color: var(--veloura-footer-icon-color) !important;
+  font-size: 0 !important;
+  overflow: hidden !important;
+}
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social i, #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social svg {
+  color: var(--veloura-footer-icon-color) !important;
+  fill: currentColor !important;
+  width: 18px !important;
+  height: 18px !important;
+  font-size: 18px !important;
+}
+/* Inline / column switch really controls the generated contact cards. */
+#veloura-footer.veloura-footer-contact-inline .veloura-footer-contact-cards {
+  display: flex !important;
+  flex-flow: row wrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  gap: 12px !important;
+  gap: var(--veloura-footer-contact-gap, 12px) !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+#veloura-footer.veloura-footer-contact-column .veloura-footer-contact-cards {
+  display: flex !important;
+  flex-flow: column nowrap !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  gap: 12px !important;
+  gap: var(--veloura-footer-contact-gap, 12px) !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+#veloura-footer.veloura-footer-contact-column .veloura-footer-contact-card {
+  width: -moz-fit-content !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+}
+/* Contact display selector. Icons-only is a solid button using all 3 colors. */
+#veloura-footer.veloura-footer-contact-display-icon_text .veloura-footer-contact-card,
+#veloura-footer.veloura-footer-contact-display-icon-text .veloura-footer-contact-card {
+  display: inline-flex !important;
+  width: auto !important;
+  min-width: 108px !important;
+  max-width: 100% !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  gap: 8px !important;
+  border: 1.5px solid var(--veloura-footer-contact-border) !important;
+  background: transparent !important;
+  color: var(--veloura-footer-icon-color) !important;
+}
+#veloura-footer.veloura-footer-contact-display-icons_only .veloura-footer-contact-card,
+#veloura-footer.veloura-footer-contact-display-icons-only .veloura-footer-contact-card {
+  display: inline-flex !important;
+  width: 46px !important;
+  min-width: 46px !important;
+  max-width: 46px !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  border: 1px solid var(--veloura-footer-contact-border) !important;
+  border-radius: 999px !important;
+  background: var(--veloura-footer-icon-bg) !important;
+  color: var(--veloura-footer-icon-color) !important;
+}
+#veloura-footer.veloura-footer-contact-display-icons_only .veloura-footer-contact-card__text,
+#veloura-footer.veloura-footer-contact-display-icons-only .veloura-footer-contact-card__text {
+  display: none !important;
+}
+#veloura-footer .veloura-footer-contact-card__icon,
+#veloura-footer .veloura-footer-contact-card__icon i,
+#veloura-footer .veloura-footer-contact-card__icon svg {
+  color: var(--veloura-footer-icon-color) !important;
+  fill: currentColor !important;
+}
+/* Complete alignment contract -------------------------------------------- */
+#veloura-footer.veloura-footer-align-default,
+#veloura-footer.veloura-footer-align-default .veloura-footer-block,
+#veloura-footer.veloura-footer-align-default .veloura-footer-title,
+#veloura-footer.veloura-footer-align-default .veloura-footer-description,
+#veloura-footer.veloura-footer-align-default .veloura-footer-links,
+#veloura-footer.veloura-footer-align-default .veloura-footer-contact,
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps,
+#veloura-footer.veloura-footer-align-default .veloura-footer-bottom__inner {
+  text-align: right !important;
+}
+#veloura-footer.veloura-footer-align-default .veloura-footer-store,
+#veloura-footer.veloura-footer-align-default .veloura-footer-identity,
+#veloura-footer.veloura-footer-align-default .veloura-footer-contact-wrap,
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps {
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+}
+#veloura-footer.veloura-footer-align-default .veloura-footer-logo,
+#veloura-footer.veloura-footer-align-default .veloura-footer-description,
+#veloura-footer.veloura-footer-align-default .veloura-footer-trust {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+#veloura-footer.veloura-footer-align-default .veloura-footer-logo {
+  justify-content: flex-start !important;
+}
+#veloura-footer.veloura-footer-align-default .veloura-footer-description {
+  text-align: right !important;
+}
+#veloura-footer.veloura-footer-align-default .veloura-footer-trust,
+#veloura-footer.veloura-footer-align-default .veloura-footer-tax,
+#veloura-footer.veloura-footer-align-default .veloura-footer-contact-cards,
+#veloura-footer.veloura-footer-align-default .veloura-footer-social,
+#veloura-footer.veloura-footer-align-default .veloura-footer-social salla-social,
+#veloura-footer.veloura-footer-align-default .veloura-footer-social salla-social > div,
+#veloura-footer.veloura-footer-align-default .veloura-footer-social salla-social ul {
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons,
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons div:not(.does-not-exist),
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons ul:not(.does-not-exist),
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons ol:not(.does-not-exist),
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons nav:not(.does-not-exist),
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons section:not(.does-not-exist),
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons [class*=apps],
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons [class*=wrapper],
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons [class*=icons] {
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+#veloura-footer.veloura-footer-align-default .veloura-footer-bottom__inner {
+  justify-content: flex-start !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+}
+/* Centered mode remains truly centered, including bottom and contact rows. */
+#veloura-footer.veloura-footer-center-all .veloura-footer-contact-cards,
+#veloura-footer.veloura-footer-center-all .veloura-footer-social,
+#veloura-footer.veloura-footer-center-all .veloura-footer-social salla-social,
+#veloura-footer.veloura-footer-center-all .veloura-footer-social salla-social > div,
+#veloura-footer.veloura-footer-center-all .veloura-footer-social salla-social ul,
+#veloura-footer.veloura-footer-center-all .veloura-footer-apps salla-apps-icons,
+#veloura-footer.veloura-footer-center-all .veloura-footer-apps salla-apps-icons div:not(.does-not-exist),
+#veloura-footer.veloura-footer-center-all .veloura-footer-apps salla-apps-icons ul:not(.does-not-exist),
+#veloura-footer.veloura-footer-center-all .veloura-footer-apps salla-apps-icons ol:not(.does-not-exist),
+#veloura-footer.veloura-footer-center-all .veloura-footer-apps salla-apps-icons nav:not(.does-not-exist),
+#veloura-footer.veloura-footer-center-all .veloura-footer-apps salla-apps-icons section:not(.does-not-exist),
+#veloura-footer.veloura-footer-center-all .veloura-footer-apps salla-apps-icons [class*=apps],
+#veloura-footer.veloura-footer-center-all .veloura-footer-apps salla-apps-icons [class*=wrapper],
+#veloura-footer.veloura-footer-center-all .veloura-footer-apps salla-apps-icons [class*=icons],
+#veloura-footer.veloura-footer-center-all .veloura-footer-bottom__inner {
+  justify-content: center !important;
+  align-items: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+}
+/* Radius contract --------------------------------------------------------- */
+#veloura-footer.veloura-footer-full .veloura-footer-main,
+#veloura-footer.veloura-footer-full .store-footer__inner {
+  border-radius: var(--vf-final-radius) var(--vf-final-radius) 0 0 !important;
+}
+#veloura-footer.veloura-footer-full .veloura-footer-bottom {
+  border-radius: 0 !important;
+}
+/* Compact mode: both footer layers are one rounded object inside store container. */
+#veloura-footer.veloura-footer-compact .veloura-footer-shell {
+  width: calc(100% - 16px - 16px) !important;
+  width: calc(100% - var(--veloura-site-spacing, 16px) - var(--veloura-site-spacing, 16px)) !important;
+  max-width: 1280px !important;
+  max-width: var(--veloura-site-container-width, var(--veloura-global-container, 1280px)) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  border-radius: var(--vf-final-radius) !important;
+  overflow: hidden !important;
+}
+#veloura-footer.veloura-footer-compact .veloura-footer-main,
+#veloura-footer.veloura-footer-compact .store-footer__inner {
+  border-radius: var(--vf-final-radius) var(--vf-final-radius) 0 0 !important;
+}
+#veloura-footer.veloura-footer-compact .veloura-footer-bottom {
+  border-radius: 0 0 var(--vf-final-radius) var(--vf-final-radius) !important;
+  overflow: hidden !important;
+}
+/* Dark bottom remains part of the same dark footer surface. */
+html.dark #veloura-footer .veloura-footer-bottom,
+body.dark #veloura-footer .veloura-footer-bottom {
+  background: #010612 !important;
+  background: var(--veloura-dark-footer-bg, var(--veloura-dark-secondary-bg, #010612)) !important;
+  background-color: #010612 !important;
+  background-color: var(--veloura-dark-footer-bg, var(--veloura-dark-secondary-bg, #010612)) !important;
+  color: #d7e0e8 !important;
+  color: var(--veloura-dark-secondary-text, #d7e0e8) !important;
+}
+@media (max-width: 767px) {
+  #veloura-footer.veloura-footer-align-default .veloura-footer-bottom__inner {
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    text-align: right !important;
+  }
+  #veloura-footer.veloura-footer-compact .veloura-footer-shell {
+    width: calc(100% - max(10px, 16px) - max(10px, 16px)) !important;
+    width: calc(100% - max(10px, var(--veloura-site-spacing, 16px)) - max(10px, var(--veloura-site-spacing, 16px))) !important;
+  }
+}
 .before\:text-orange-300::before{
     content: var(--tw-content);
     --tw-text-opacity: 1;
