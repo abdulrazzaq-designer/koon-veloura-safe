@@ -1222,19 +1222,6 @@ isElementLoaded(selector){
 
           forceOpenState();
 
-          requestAnimationFrame(() => {
-            const valid = Boolean(
-              drawerRoot &&
-              drawerRoot.classList.contains('mm-ocd--open') &&
-              document.body.classList.contains('mm-ocd-opened') &&
-              drawerContent
-            );
-
-            if (!valid) {
-              closeNativeMenu();
-            }
-          });
-
           return true;
         };
 
