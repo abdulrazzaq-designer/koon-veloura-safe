@@ -33432,22 +33432,29 @@ html.veloura-side-cats-glass .mm-ocd .mm-ocd__content,
 body.veloura-side-cats-glass .mm-ocd .mm-ocd__content {
   color: #ffffff !important;
   color: var(--veloura-dark-side-menu-text, var(--veloura-side-cats-text, #ffffff)) !important;
-  background: linear-gradient(to bottom, rgba(100, 116, 139, .10) 0, rgba(100, 116, 139, .10) 1px, transparent 1px, transparent calc(100% - 1px), rgba(100, 116, 139, .045) calc(100% - 1px), rgba(100, 116, 139, .045) 100%), rgba(230, 232, 235, .69) !important;
-  background: linear-gradient(to bottom, var(--veloura-glass-edge-top) 0, var(--veloura-glass-edge-top) 1px, transparent 1px, transparent calc(100% - 1px), var(--veloura-glass-edge-bottom) calc(100% - 1px), var(--veloura-glass-edge-bottom) 100%), var(--veloura-glass-surface) !important;
+  background: rgba(230, 232, 235, .69) !important;
+  background: var(--veloura-v86-glass-surface, var(--veloura-glass-surface)) !important;
   background-color: rgba(230, 232, 235, .69) !important;
-  background-color: var(--veloura-glass-surface) !important;
+  background-color: var(--veloura-v86-glass-surface, var(--veloura-glass-surface)) !important;
+  background-image: none !important;
   border-top: 1px solid rgba(100, 116, 139, .10) !important;
-  border-top: 1px solid var(--veloura-glass-edge-top) !important;
+  border-top: 1px solid var(--veloura-v86-edge-top, var(--veloura-glass-edge-top)) !important;
   border-bottom: 1px solid rgba(100, 116, 139, .045) !important;
-  border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
+  border-bottom: 1px solid var(--veloura-v86-edge-bottom, var(--veloura-glass-edge-bottom)) !important;
   border-left: 0 !important;
   border-right: 0 !important;
   -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
+  -webkit-backdrop-filter: var(--veloura-v86-filter, var(--veloura-glass-filter)) !important;
   backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
-  backdrop-filter: var(--veloura-glass-filter) !important;
-  box-shadow: inset 0 1px 0 rgba(100, 116, 139, .10), inset 0 -1px 0 rgba(100, 116, 139, .045), 0 12px 34px rgba(15, 23, 42, .055) !important;
-  box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top), inset 0 -1px 0 var(--veloura-glass-edge-bottom), 0 12px 34px var(--veloura-glass-shadow) !important;
+  backdrop-filter: var(--veloura-v86-filter, var(--veloura-glass-filter)) !important;
+  filter: none !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
+  box-shadow: 0 8px 24px var(--veloura-v86-shadow, var(--veloura-glass-shadow)) !important;
+}
+html.veloura-side-cats-glass .mm-ocd .mm-ocd__content,
+body.veloura-side-cats-glass .mm-ocd .mm-ocd__content {
+  /* V136: نفس مادة الهيدر حرفيًا. متغيرات V86 هي المصدر النهائي
+     للـ Light / Dark، مع fallback إلى عقد الزجاج العامة. */
 }
 html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn,
 html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn ul,
@@ -33507,36 +33514,58 @@ body.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn span:not(does-not-exist
   min-height: 24px !important;
   padding: 0 8px !important;
   margin: 0 !important;
-  margin-left: 8px !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
   overflow: hidden !important;
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
-  border: 1px solid rgba(65, 64, 66, 0.18) !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(84, 92, 105, 0.172) !important;
+  border-bottom: 1px solid rgba(81, 88, 100, 0.093) !important;
   border-radius: 999px !important;
-  background: rgba(0, 73, 86, 0.08) !important;
-  background: color-mix(in srgb, #414042 10%, transparent) !important;
+  background: rgba(65, 64, 66, 0.08) !important;
   color: #414042 !important;
   color: var(--color-primary, #004956) !important;
-  -webkit-text-fill-color: currentColor !important;
+  -webkit-text-fill-color: #414042 !important;
+  -webkit-text-fill-color: var(--color-primary, #004956) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(108%) !important;
+  backdrop-filter: blur(6px) saturate(108%) !important;
   font-size: 11px !important;
   font-weight: 800 !important;
   line-height: 1 !important;
   letter-spacing: 0 !important;
-  box-shadow: none !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), inset 0 -1px 0 rgba(0, 0, 0, 0.03) !important;
+}
+.mm-ocd #mobile-menu.mm-spn .veloura-side-category-badge {
+  /* V136: العبارة تذهب لأقصى الطرف المقابل لاسم التصنيف.
+     في RTL تصبح أقصى اليسار، ومع وجود فرعيات تبقى داخل مساحة السهم مباشرة. */
 }
 @supports (color: color-mix(in lch, red, blue)) and (top: var(--f)){
 .mm-ocd #mobile-menu.mm-spn .veloura-side-category-badge {
-  border: 1px solid color-mix(in srgb, var(--color-primary, #004956) 18%, transparent) !important;
-  background: color-mix(in srgb, var(--color-primary, #004956) 10%, transparent) !important;
+  border-top: 1px solid color-mix(in srgb, var(--color-primary, #004956) 8%, var(--veloura-v86-edge-top, rgba(100, 116, 139, 0.1))) !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-primary, #004956) 5%, var(--veloura-v86-edge-bottom, rgba(100, 116, 139, 0.045))) !important;
+  background: color-mix(in srgb, var(--color-primary, #004956) 8%, transparent) !important;
 }
 }
+/* حتى داخل القائمة البلورية تبقى العبارة بلون المتجر الأساسي،
+   ولا ترث لون نص القائمة في الدارك. */
 html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn .veloura-side-category-badge,
 body.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn .veloura-side-category-badge {
-  background: rgba(255, 255, 255, 0.1) !important;
-  background: color-mix(in srgb, currentColor 9%, transparent) !important;
-  color: inherit !important;
-  border-color: color-mix(in srgb, currentColor 18%, transparent) !important;
-  -webkit-text-fill-color: currentColor !important;
+  background: rgba(65, 64, 66, 0.09) !important;
+  color: #414042 !important;
+  color: var(--color-primary, #004956) !important;
+  -webkit-text-fill-color: #414042 !important;
+  -webkit-text-fill-color: var(--color-primary, #004956) !important;
+  border-top-color: rgba(84, 92, 105, 0.172) !important;
+  border-bottom-color: rgba(81, 88, 100, 0.093) !important;
+}
+@supports (color: color-mix(in lch, red, blue)) and (top: var(--f)){
+html.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn .veloura-side-category-badge,
+body.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn .veloura-side-category-badge {
+  background: color-mix(in srgb, var(--color-primary, #004956) 9%, transparent) !important;
+  border-top-color: color-mix(in srgb, var(--color-primary, #004956) 8%, var(--veloura-v86-edge-top, rgba(255, 255, 255, 0.055))) !important;
+  border-bottom-color: color-mix(in srgb, var(--color-primary, #004956) 5%, var(--veloura-v86-edge-bottom, rgba(255, 255, 255, 0.022))) !important;
+}
 }
 /* سهم فرعيات أنظف: في RTL مكانه يسار الصف ويتجه لليسار. */
 [dir=rtl] .mm-ocd #mobile-menu.mm-spn li:has(> ul):before,
@@ -33578,8 +33607,8 @@ html[dir=ltr] .mm-ocd #mobile-menu.mm-spn li:has(> ul):before {
    نحافظ على هندسة mmenu الأصلية بالكامل (خصوصًا width / max-width)،
    ونغيّر فقط موضع البطاقة. هذا يمنع بقاء الدرج خارج الشاشة عند الفتح. */
 html.veloura-side-cats-compact .mm-ocd .mm-ocd__content {
-  top: 12px !important;
-  bottom: 12px !important;
+  top: 15px !important;
+  bottom: 15px !important;
   box-sizing: border-box !important;
   border-radius: 18px !important;
   border-radius: var(--veloura-side-cats-menu-radius, 18px) !important;
@@ -33587,31 +33616,34 @@ html.veloura-side-cats-compact .mm-ocd .mm-ocd__content {
 }
 /* RTL / drawer من اليمين: فقط أبعد البطاقة عن الحافة، ولا نلمس عرض mmenu. */
 html.veloura-side-cats-compact .mm-ocd.mm-ocd--right .mm-ocd__content {
-  right: 12px !important;
+  right: 15px !important;
   left: auto !important;
 }
 /* LTR / drawer من اليسار. */
 html.veloura-side-cats-compact .mm-ocd.mm-ocd--left .mm-ocd__content {
-  left: 12px !important;
+  left: 15px !important;
   right: auto !important;
 }
 /* عند الإغلاق نضيف الـ inset إلى مسافة الخروج حتى لا يبقى أي شريط ظاهر. */
 html.veloura-side-cats-compact .mm-ocd.mm-ocd--right:not(.mm-ocd--open) .mm-ocd__content {
-  transform: translate3d(calc(100% + 12px), 0, 0) !important;
+  transform: translate3d(calc(100% + 15px), 0, 0) !important;
 }
 html.veloura-side-cats-compact .mm-ocd.mm-ocd--left:not(.mm-ocd--open) .mm-ocd__content {
-  transform: translate3d(calc(-100% - 12px), 0, 0) !important;
+  transform: translate3d(calc(-100% - 15px), 0, 0) !important;
 }
 /* حالة الفتح تبقى نفس mmenu الأصلية. */
 html.veloura-side-cats-compact .mm-ocd.mm-ocd--open .mm-ocd__content {
   transform: translate3d(0, 0, 0) !important;
 }
-/* في الزجاج، الوضع العائم يحتاج حدًا محيطًا بكل البطاقة لا أعلى/أسفل فقط. */
+/* V136: حتى في الوضع العائم نحافظ على نفس عقدة زجاج الهيدر بالضبط:
+   حافة علوية وسفلية فقط، مع بقاء الـ radius على الزوايا الأربع. */
 html.veloura-side-cats-compact.veloura-side-cats-glass .mm-ocd .mm-ocd__content {
-  border: 1px solid rgba(100, 116, 139, .10) !important;
-  border: 1px solid var(--veloura-glass-edge-top) !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-top-color: rgba(100, 116, 139, .10) !important;
+  border-top-color: var(--veloura-v86-edge-top, var(--veloura-glass-edge-top)) !important;
   border-bottom-color: rgba(100, 116, 139, .045) !important;
-  border-bottom-color: var(--veloura-glass-edge-bottom) !important;
+  border-bottom-color: var(--veloura-v86-edge-bottom, var(--veloura-glass-edge-bottom)) !important;
 }
 /* ================================
    Veloura Safe mmenu Panel Offset Fix
