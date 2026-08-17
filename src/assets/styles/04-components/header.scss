@@ -1406,7 +1406,7 @@ html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul):before {
   padding: 0 !important;
   margin: 0 !important;
   border: 1px solid rgba(255, 48, 48, .38) !important;
-  border-radius: clamp(14px, calc(var(--veloura-side-cats-menu-radius, 18px) - 4px), 24px) !important;
+  border-radius: var(--veloura-side-cats-menu-radius, 18px) !important;
   background: #ff4b4b !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
@@ -1692,7 +1692,7 @@ body.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn :is(
     var(--color-primary, #004956) 5%,
     var(--veloura-v86-edge-bottom, rgba(100, 116, 139, .045))
   ) !important;
-  border-radius: 999px !important;
+  border-radius: var(--veloura-side-cats-menu-radius, 18px) !important;
   background: color-mix(
     in srgb,
     var(--color-primary, #004956) 8%,
