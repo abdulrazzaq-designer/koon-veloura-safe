@@ -742,6 +742,74 @@
       border-bottom: 1px solid rgba(0, 0, 0, .16) !important;
     }
 
+    /* V143 — visual alignment + stronger navigation chrome.
+       - Arabic row content is optically centered between separators.
+       - Separators are the same subtle dark tone in light and dark.
+       - Navbar title/back arrow are always 100% opaque and follow the proper text option. */
+    html.veloura-side-cats-glass body.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span),
+    html body.veloura-side-cats-glass.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span) {
+      padding-block-start: 0 !important;
+      padding-block-end: 4px !important;
+    }
+
+    /* Keep badges and branch arrows optically aligned with the shifted row text. */
+    html.veloura-side-cats-glass body.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn .veloura-side-category-badge,
+    html body.veloura-side-cats-glass.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn .veloura-side-category-badge,
+    html.veloura-side-cats-glass body.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li:has(> ul)::before,
+    html body.veloura-side-cats-glass.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li:has(> ul)::before {
+      margin-top: -2px !important;
+    }
+
+    /* Light separators: dark/translucent, matching the dark-mode separator tone. */
+    html.veloura-side-cats-glass:not(.dark) body.veloura-glass-effect:not(.dark)
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul > li:not(:last-child) {
+      border-bottom-color: rgba(0, 0, 0, .16) !important;
+    }
+
+    /* Main/submenu navbar title: full opacity, no legacy rgba fade. */
+    html.veloura-side-cats-glass:not(.dark) body.veloura-glass-effect:not(.dark)
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn.mm-spn--navbar::after {
+      opacity: 1 !important;
+      color: var(--veloura-side-cats-text, #111827) !important;
+      -webkit-text-fill-color: var(--veloura-side-cats-text, #111827) !important;
+    }
+
+    html.dark.veloura-side-cats-glass body.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn.mm-spn--navbar::after,
+    html.dark.veloura-side-cats-glass body.dark.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn.mm-spn--navbar::after,
+    html body.dark.veloura-side-cats-glass.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn.mm-spn--navbar::after {
+      opacity: 1 !important;
+      color: var(--veloura-dark-side-menu-text, var(--veloura-dark-primary-text, #ffffff)) !important;
+      -webkit-text-fill-color: var(--veloura-dark-side-menu-text, var(--veloura-dark-primary-text, #ffffff)) !important;
+    }
+
+    /* Real mmenu back arrow (::before): full opacity in both modes. */
+    html.veloura-side-cats-glass:not(.dark) body.veloura-glass-effect:not(.dark)
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn.mm-spn--navbar:not(.mm-spn--main)::before {
+      opacity: 1 !important;
+      color: var(--veloura-side-cats-text, #111827) !important;
+      border-color: currentColor !important;
+    }
+
+    html.dark.veloura-side-cats-glass body.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn.mm-spn--navbar:not(.mm-spn--main)::before,
+    html.dark.veloura-side-cats-glass body.dark.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn.mm-spn--navbar:not(.mm-spn--main)::before,
+    html body.dark.veloura-side-cats-glass.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn.mm-spn--navbar:not(.mm-spn--main)::before {
+      opacity: 1 !important;
+      color: var(--veloura-dark-side-menu-text, var(--veloura-dark-primary-text, #ffffff)) !important;
+      border-color: currentColor !important;
+    }
+
     html.dark.veloura-side-cats-glass body.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span) svg,
     html.dark.veloura-side-cats-glass body.dark.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span) svg,
     html body.dark.veloura-side-cats-glass.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span) svg {
