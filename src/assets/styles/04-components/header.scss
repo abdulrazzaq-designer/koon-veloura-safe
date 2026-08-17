@@ -1406,11 +1406,11 @@ html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul):before {
   padding: 0 !important;
   margin: 0 !important;
   border: 1px solid rgba(255, 48, 48, .38) !important;
-  border-radius: 15px !important;
-  background: rgba(255, 48, 48, .075) !important;
-  color: #ff3030 !important;
-  -webkit-text-fill-color: #ff3030 !important;
-  box-shadow: 0 10px 24px rgba(255, 48, 48, .18), inset 0 1px 0 rgba(255, 255, 255, .9) !important;
+  border-radius: clamp(14px, calc(var(--veloura-side-cats-menu-radius, 18px) - 4px), 24px) !important;
+  background: #ff4b4b !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 10px 24px rgba(255, 75, 75, .22), inset 0 1px 0 rgba(255, 255, 255, .22) !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1425,8 +1425,8 @@ html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul):before {
 .mm-ocd #mobile-menu.mm-spn .close-mobile-menu:before,
 .mm-ocd #mobile-menu.mm-spn .btn--close:before,
 .mm-ocd #mobile-menu.mm-spn .btn--close-sm:before {
-  color: #ff3030 !important;
-  -webkit-text-fill-color: #ff3030 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   font-size: 22px !important;
   line-height: 1 !important;
 }
@@ -1807,6 +1807,25 @@ html.veloura-side-cats-compact .mm-ocd.mm-ocd--left:not(.mm-ocd--open) .mm-ocd__
 /* حالة الفتح تبقى نفس mmenu الأصلية. */
 html.veloura-side-cats-compact .mm-ocd.mm-ocd--open .mm-ocd__content {
   transform: translate3d(0, 0, 0) !important;
+}
+
+/* تطبيق الحواف على جسم القائمة الداخلي والعناصر الأساسية كذلك */
+html.veloura-side-cats-compact .mm-ocd #mobile-menu.mm-spn,
+html.veloura-side-cats-compact .mm-ocd #mobile-menu.mm-spn > ul,
+html.veloura-side-cats-compact .mm-ocd #mobile-menu.mm-spn .main-menu {
+  border-radius: inherit !important;
+}
+
+html.veloura-side-cats-compact .mm-ocd #mobile-menu.mm-spn > ul:first-child,
+html.veloura-side-cats-compact .mm-ocd #mobile-menu.mm-spn .main-menu:first-child {
+  border-top-left-radius: inherit !important;
+  border-top-right-radius: inherit !important;
+}
+
+html.veloura-side-cats-compact .mm-ocd #mobile-menu.mm-spn > ul:last-child,
+html.veloura-side-cats-compact .mm-ocd #mobile-menu.mm-spn .main-menu:last-child {
+  border-bottom-left-radius: inherit !important;
+  border-bottom-right-radius: inherit !important;
 }
 
 /* V136: حتى في الوضع العائم نحافظ على نفس عقدة زجاج الهيدر بالضبط:
@@ -2190,4 +2209,67 @@ html[dir="ltr"] .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul.mm-spn--parent {
       row-gap: 2px !important;
     }
   }
+}
+
+/* ================================
+   Veloura Side Category Badge Position — V137
+   تثبيت العبارة عند طرف السهم بدل الاعتماد على flex auto-margin.
+   RTL: العبارة تكون مباشرة يمين السهم.
+   LTR: انعكاس كامل تلقائيًا.
+================================ */
+.mm-ocd #mobile-menu.mm-spn .veloura-side-category-badge {
+  position: absolute !important;
+  top: 50% !important;
+  z-index: 4 !important;
+  margin: 0 !important;
+  transform: translateY(-50%) !important;
+  pointer-events: none !important;
+}
+
+/* RTL — بدون سهم: أقصى اليسار. */
+[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li > :is(a, span) > .veloura-side-category-badge,
+html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li > :is(a, span) > .veloura-side-category-badge {
+  left: 18px !important;
+  right: auto !important;
+}
+
+/* RTL — مع فرعيات: السهم عند اليسار والعبارة مباشرة إلى يمينه. */
+[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span) > .veloura-side-category-badge,
+html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span) > .veloura-side-category-badge {
+  left: 48px !important;
+  right: auto !important;
+}
+
+/* نحجز مكان العبارة حتى لا يتداخل اسم تصنيف طويل معها. */
+[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:not(:has(> ul)) > :is(a, span):has(> .veloura-side-category-badge),
+html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:not(:has(> ul)) > :is(a, span):has(> .veloura-side-category-badge) {
+  padding-left: 122px !important;
+}
+
+[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span):has(> .veloura-side-category-badge),
+html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span):has(> .veloura-side-category-badge) {
+  padding-left: 150px !important;
+}
+
+/* LTR — انعكاس نفس المنطق. */
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li > :is(a, span) > .veloura-side-category-badge,
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li > :is(a, span) > .veloura-side-category-badge {
+  right: 18px !important;
+  left: auto !important;
+}
+
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span) > .veloura-side-category-badge,
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span) > .veloura-side-category-badge {
+  right: 48px !important;
+  left: auto !important;
+}
+
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:not(:has(> ul)) > :is(a, span):has(> .veloura-side-category-badge),
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:not(:has(> ul)) > :is(a, span):has(> .veloura-side-category-badge) {
+  padding-right: 122px !important;
+}
+
+[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span):has(> .veloura-side-category-badge),
+html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > :is(a, span):has(> .veloura-side-category-badge) {
+  padding-right: 150px !important;
 }
