@@ -1549,7 +1549,7 @@ html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn li > span > img,
 html[dir="rtl"] .mm-ocd #mobile-menu.mm-spn img.veloura-side-menu-img {
   order: -1 !important;
   margin-inline-start: 0 !important;
-  margin-inline-end: 10px !important;
+  margin-inline-end: 0 !important;
 }
 
 /* LTR: الصورة يسار العنوان */
@@ -1561,7 +1561,7 @@ html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li > span > img,
 html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn img.veloura-side-menu-img {
   order: -1 !important;
   margin-inline-start: 0 !important;
-  margin-inline-end: 10px !important;
+  margin-inline-end: 0 !important;
 }
 
 /* صفوف الصور أيضًا بدون ارتفاع مستقل؛ ارتفاع الصورة من إعدادات الصورة،

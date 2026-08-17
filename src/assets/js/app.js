@@ -1070,9 +1070,13 @@ isElementLoaded(selector){
 
         menu.dataset.velouraMmenuReady = '1';
 
+        // Keep mmenu-light initialized at every viewport width. Visibility is
+        // controlled by the header setting: on mobile it is always available,
+        // while on laptop/desktop it is available only when the merchant chose
+        // "hamburger / menu like mobile" instead of desktop category links.
         const mobileMenu = new MobileMenu(
           menu,
-          '(max-width: 1024px)',
+          '(min-width: 0px)',
           '( slidingSubmenus: false)'
         );
 
@@ -1097,7 +1101,13 @@ isElementLoaded(selector){
         window.__velouraNativeMobileMenuDrawer = drawer;
         window.__velouraNativeMobileMenuRoot = drawerRoot;
 
-        const isMobileRange = () => window.matchMedia('(max-width: 1024px)').matches;
+        const isMobileRange = () => window.matchMedia('(max-width: 1023.98px)').matches;
+        const isDesktopHamburgerMode = () => Boolean(
+          document.querySelector('.store-header.veloura-desktop-menu-hamburger')
+        );
+        const isMenuAllowedAtCurrentWidth = () => (
+          isMobileRange() || isDesktopHamburgerMode()
+        );
         const isNativeMenuOpen = () => Boolean(
           drawerRoot?.classList.contains('mm-ocd--open') ||
           document.body.classList.contains('menu-opened')
@@ -1198,7 +1208,7 @@ isElementLoaded(selector){
         };
 
         const openNativeMenu = () => {
-          if (!isMobileRange()) {
+          if (!isMenuAllowedAtCurrentWidth()) {
             closeNativeMenu();
             return false;
           }
@@ -1259,28 +1269,25 @@ isElementLoaded(selector){
             closeNativeMenu();
           });
 
-          const desktopGuard = window.matchMedia('(max-width: 1024px)');
-          const syncResponsiveMenu = mediaEvent => {
-            const mobile = typeof mediaEvent?.matches === 'boolean'
-              ? mediaEvent.matches
-              : desktopGuard.matches;
-            if (!mobile) closeNativeMenu();
+          const mobileGuard = window.matchMedia('(max-width: 1023.98px)');
+          const syncResponsiveMenu = () => {
+            if (!isMenuAllowedAtCurrentWidth()) closeNativeMenu();
           };
 
-          if (typeof desktopGuard.addEventListener === 'function') {
-            desktopGuard.addEventListener('change', syncResponsiveMenu);
-          } else if (typeof desktopGuard.addListener === 'function') {
-            desktopGuard.addListener(syncResponsiveMenu);
+          if (typeof mobileGuard.addEventListener === 'function') {
+            mobileGuard.addEventListener('change', syncResponsiveMenu);
+          } else if (typeof mobileGuard.addListener === 'function') {
+            mobileGuard.addListener(syncResponsiveMenu);
           }
 
           window.addEventListener('orientationchange', () => {
             window.setTimeout(() => {
-              if (!isMobileRange()) closeNativeMenu();
+              if (!isMenuAllowedAtCurrentWidth()) closeNativeMenu();
             }, 50);
           }, { passive: true });
 
           window.addEventListener('pageshow', () => {
-            if (!isMobileRange()) closeNativeMenu();
+            if (!isMenuAllowedAtCurrentWidth()) closeNativeMenu();
           });
         }
 
