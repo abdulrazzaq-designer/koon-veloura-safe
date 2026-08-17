@@ -818,6 +818,76 @@
       stroke: currentColor !important;
     }
 
+
+    /* V144 — exact row centering + softer separators + badge/image stability.
+       - Move the complete row content 2px upward instead of asymmetric padding.
+       - Use a slightly lighter dark separator in both modes.
+       - A badge must never change the configured category-image dimensions. */
+    html.veloura-side-cats-glass body.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span),
+    html body.veloura-side-cats-glass.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span) {
+      padding-block-start: 0 !important;
+      padding-block-end: 0 !important;
+      transform: translateY(-2px) !important;
+    }
+
+    /* The branch arrow is a li pseudo-element, so align it with the shifted row. */
+    html.veloura-side-cats-glass body.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li:has(> ul)::before,
+    html body.veloura-side-cats-glass.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li:has(> ul)::before {
+      margin-top: -2px !important;
+    }
+
+    /* The badge already lives inside the translated row; cancel the older extra offset. */
+    html.veloura-side-cats-glass body.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn .veloura-side-category-badge,
+    html body.veloura-side-cats-glass.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn .veloura-side-category-badge {
+      margin-top: 0 !important;
+    }
+
+    /* Softer separator: still dark enough to divide rows, but less prominent. */
+    html.veloura-side-cats-glass body.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul > li:not(:last-child),
+    html body.veloura-side-cats-glass.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul > li:not(:last-child) {
+      border-bottom-color: rgba(0, 0, 0, .10) !important;
+    }
+
+    /* V137 reserves left/right room for an absolutely-positioned badge. On image rows
+       that reservation was shrinking percentage-based auto-width images. The badge is
+       already absolutely positioned, so image rows do not need that large padding. */
+    [dir="rtl"] html.veloura-side-cats-img-auto-width.veloura-side-cats-glass body.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span):has(> img):has(> .veloura-side-category-badge),
+    html[dir="rtl"].veloura-side-cats-img-auto-width.veloura-side-cats-glass body.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span):has(> img):has(> .veloura-side-category-badge) {
+      padding-left: 18px !important;
+    }
+
+    [dir="ltr"] html.veloura-side-cats-img-auto-width.veloura-side-cats-glass body.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span):has(> img):has(> .veloura-side-category-badge),
+    html[dir="ltr"].veloura-side-cats-img-auto-width.veloura-side-cats-glass body.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span):has(> img):has(> .veloura-side-category-badge) {
+      padding-right: 18px !important;
+    }
+
+    /* Preserve the configured image height and intrinsic aspect ratio regardless of badge. */
+    html.veloura-side-cats-img-auto-width .mm-ocd.mm-ocd--open #mobile-menu.mm-spn
+      li > :is(a, span):has(> .veloura-side-category-badge) > img,
+    html.veloura-side-cats-img-auto-width .mm-ocd.mm-ocd--open #mobile-menu.mm-spn
+      li > :is(a, span):has(> .veloura-side-category-badge) > img.veloura-side-menu-img {
+      width: auto !important;
+      min-width: 0 !important;
+      max-width: min(45vw, 180px) !important;
+      height: var(--veloura-side-cats-img-h, 60px) !important;
+      min-height: var(--veloura-side-cats-img-h, 60px) !important;
+      max-height: var(--veloura-side-cats-img-h, 60px) !important;
+      flex: 0 0 auto !important;
+      flex-shrink: 0 !important;
+    }
+
     /* Header: one paint owner. */
     html.dark body.veloura-glass-effect #veloura-header-tabs-stack .veloura-header-tabs-stack__surface,
     html body.dark.veloura-glass-effect #veloura-header-tabs-stack .veloura-header-tabs-stack__surface {
