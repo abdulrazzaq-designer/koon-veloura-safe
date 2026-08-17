@@ -819,28 +819,26 @@
     }
 
 
-    /* V144 — exact row centering + softer separators + badge/image stability.
-       - Move the complete row content 2px upward instead of asymmetric padding.
-       - Use a slightly lighter dark separator in both modes.
-       - A badge must never change the configured category-image dimensions. */
+    /* V145 — centering comes from the spacing setting itself.
+       The configured gap is split 50/50 above and below each row in header.scss,
+       so no manual translate is needed here. */
     html.veloura-side-cats-glass body.veloura-glass-effect
       .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span),
     html body.veloura-side-cats-glass.veloura-glass-effect
       .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span) {
       padding-block-start: 0 !important;
       padding-block-end: 0 !important;
-      transform: translateY(-2px) !important;
+      transform: none !important;
     }
 
-    /* The branch arrow is a li pseudo-element, so align it with the shifted row. */
     html.veloura-side-cats-glass body.veloura-glass-effect
       .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li:has(> ul)::before,
     html body.veloura-side-cats-glass.veloura-glass-effect
       .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li:has(> ul)::before {
-      margin-top: -2px !important;
+      margin-top: 0 !important;
     }
 
-    /* The badge already lives inside the translated row; cancel the older extra offset. */
+    /* Badge remains vertically centered inside its own row. */
     html.veloura-side-cats-glass body.veloura-glass-effect
       .mm-ocd.mm-ocd--open #mobile-menu.mm-spn .veloura-side-category-badge,
     html body.veloura-side-cats-glass.veloura-glass-effect
@@ -848,10 +846,18 @@
       margin-top: 0 !important;
     }
 
-    /* Softer separator: still dark enough to divide rows, but less prominent. */
-    html.veloura-side-cats-glass body.veloura-glass-effect
+    /* V145 separators: light mode is intentionally much softer;
+       dark mode keeps a subtle dark divider. */
+    html.veloura-side-cats-glass:not(.dark) body.veloura-glass-effect:not(.dark)
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul > li:not(:last-child) {
+      border-bottom-color: rgba(15, 23, 42, .055) !important;
+    }
+
+    html.dark.veloura-side-cats-glass body.veloura-glass-effect
       .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul > li:not(:last-child),
-    html body.veloura-side-cats-glass.veloura-glass-effect
+    html.dark.veloura-side-cats-glass body.dark.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul > li:not(:last-child),
+    html body.dark.veloura-side-cats-glass.veloura-glass-effect
       .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul > li:not(:last-child) {
       border-bottom-color: rgba(0, 0, 0, .10) !important;
     }
@@ -873,11 +879,16 @@
       padding-right: 18px !important;
     }
 
-    /* Preserve the configured image height and intrinsic aspect ratio regardless of badge. */
+    /* V145 image sizing: the Badge must never affect image geometry.
+       Fixed-width mode already uses exact width/height variables in header.scss.
+       Auto-width mode now uses one identical rule for EVERY category image, with
+       a viewport-based max width so row padding/Badge presence cannot shrink it. */
     html.veloura-side-cats-img-auto-width .mm-ocd.mm-ocd--open #mobile-menu.mm-spn
-      li > :is(a, span):has(> .veloura-side-category-badge) > img,
+      li > :is(a, span) > img,
     html.veloura-side-cats-img-auto-width .mm-ocd.mm-ocd--open #mobile-menu.mm-spn
-      li > :is(a, span):has(> .veloura-side-category-badge) > img.veloura-side-menu-img {
+      img.veloura-side-menu-img,
+    html.veloura-side-cats-img-auto-width .mm-ocd.mm-ocd--open #mobile-menu.mm-spn
+      .veloura-side-menu-img {
       width: auto !important;
       min-width: 0 !important;
       max-width: min(45vw, 180px) !important;
@@ -887,6 +898,7 @@
       flex: 0 0 auto !important;
       flex-shrink: 0 !important;
     }
+
 
     /* Header: one paint owner. */
     html.dark body.veloura-glass-effect #veloura-header-tabs-stack .veloura-header-tabs-stack__surface,

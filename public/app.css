@@ -33342,11 +33342,14 @@ html[dir=ltr] .mm-ocd #mobile-menu.mm-spn .btn--close-sm {
   font-size: 14px !important;
   font-size: var(--veloura-side-cats-title-font-size, 14px) !important;
 }
-/* المسافة بين العناصر */
-.mm-ocd #mobile-menu.mm-spn .main-menu > li:not(:last-child),
-.mm-ocd #mobile-menu.mm-spn ul.mm-spn--open > li:not(:last-child) {
-  margin-bottom: 0px !important;
-  margin-bottom: var(--veloura-side-cats-gap, 0px) !important;
+/* المسافة بين العناصر — نقسم القيمة بالتساوي أعلى/أسفل.
+   مثال: 10px => 5px أعلى + 5px أسفل، فتظل العناصر متوسطة بصريًا. */
+.mm-ocd #mobile-menu.mm-spn .main-menu > li,
+.mm-ocd #mobile-menu.mm-spn ul.mm-spn--open > li {
+  margin-top: calc(0px / 2) !important;
+  margin-bottom: calc(0px / 2) !important;
+  margin-top: calc(var(--veloura-side-cats-gap, 0px) / 2) !important;
+  margin-bottom: calc(var(--veloura-side-cats-gap, 0px) / 2) !important;
 }
 /* صور التصنيفات: صور سلة الأصلية + الصور المرفوعة */
 .mm-ocd #mobile-menu.mm-spn li > a > img,
@@ -33383,13 +33386,20 @@ html.veloura-side-cats-img-auto-width .mm-ocd #mobile-menu.mm-spn img.veloura-si
 html.veloura-side-cats-img-auto-width .mm-ocd #mobile-menu.mm-spn .veloura-side-menu-img {
   width: auto !important;
   min-width: 0 !important;
-  max-width: min(45%, 180px) !important;
+  max-width: min(45vw, 180px) !important;
   height: 60px !important;
   height: var(--veloura-side-cats-img-h, 60px) !important;
   min-height: 60px !important;
   min-height: var(--veloura-side-cats-img-h, 60px) !important;
   max-height: 60px !important;
   max-height: var(--veloura-side-cats-img-h, 60px) !important;
+}
+html.veloura-side-cats-img-auto-width .mm-ocd #mobile-menu.mm-spn li > a > img,
+html.veloura-side-cats-img-auto-width .mm-ocd #mobile-menu.mm-spn li > span > img,
+html.veloura-side-cats-img-auto-width .mm-ocd #mobile-menu.mm-spn img.veloura-side-menu-img,
+html.veloura-side-cats-img-auto-width .mm-ocd #mobile-menu.mm-spn .veloura-side-menu-img {
+  /* viewport-based cap بدل النسبة من عرض الصف؛ حتى وجود Badge أو padding
+     لا يغيّر حجم نفس الصورة من تصنيف لآخر. */
 }
 /* RTL: الصورة يمين العنوان */
 [dir=rtl] .mm-ocd #mobile-menu.mm-spn li > a > img,
