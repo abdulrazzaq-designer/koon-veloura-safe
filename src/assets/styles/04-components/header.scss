@@ -1727,8 +1727,8 @@ html[dir="ltr"] .mm-ocd #mobile-menu.mm-spn li:has(> ul):before {
    نحافظ على هندسة mmenu الأصلية بالكامل (خصوصًا width / max-width)،
    ونغيّر فقط موضع البطاقة. هذا يمنع بقاء الدرج خارج الشاشة عند الفتح. */
 html.veloura-side-cats-compact .mm-ocd .mm-ocd__content {
-  top: var(--veloura-side-cats-compact-inset, 12px) !important;
-  bottom: var(--veloura-side-cats-compact-inset, 12px) !important;
+  top: 12px !important;
+  bottom: 12px !important;
   box-sizing: border-box !important;
   border-radius: var(--veloura-side-cats-menu-radius, 18px) !important;
   overflow: hidden !important;
@@ -1736,23 +1736,23 @@ html.veloura-side-cats-compact .mm-ocd .mm-ocd__content {
 
 /* RTL / drawer من اليمين: فقط أبعد البطاقة عن الحافة، ولا نلمس عرض mmenu. */
 html.veloura-side-cats-compact .mm-ocd.mm-ocd--right .mm-ocd__content {
-  right: var(--veloura-side-cats-compact-inset, 12px) !important;
+  right: 12px !important;
   left: auto !important;
 }
 
 /* LTR / drawer من اليسار. */
 html.veloura-side-cats-compact .mm-ocd.mm-ocd--left .mm-ocd__content {
-  left: var(--veloura-side-cats-compact-inset, 12px) !important;
+  left: 12px !important;
   right: auto !important;
 }
 
 /* عند الإغلاق نضيف الـ inset إلى مسافة الخروج حتى لا يبقى أي شريط ظاهر. */
 html.veloura-side-cats-compact .mm-ocd.mm-ocd--right:not(.mm-ocd--open) .mm-ocd__content {
-  transform: translate3d(calc(100% + var(--veloura-side-cats-compact-inset, 12px)), 0, 0) !important;
+  transform: translate3d(calc(100% + 12px), 0, 0) !important;
 }
 
 html.veloura-side-cats-compact .mm-ocd.mm-ocd--left:not(.mm-ocd--open) .mm-ocd__content {
-  transform: translate3d(calc(-100% - var(--veloura-side-cats-compact-inset, 12px)), 0, 0) !important;
+  transform: translate3d(calc(-100% - 12px), 0, 0) !important;
 }
 
 /* حالة الفتح تبقى نفس mmenu الأصلية. */

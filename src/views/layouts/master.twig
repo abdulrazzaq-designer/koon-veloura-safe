@@ -2818,12 +2818,6 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   or vsc_compact_raw == 'on'
 %}
 
-{% set vsc_compact_inset = theme.settings.get('veloura_side_categories_compact_inset_2026', 12) %}
-{% if vsc_compact_inset.value is defined %}{% set vsc_compact_inset = vsc_compact_inset.value %}{% endif %}
-{% set vsc_compact_inset = vsc_compact_inset + 0 %}
-{% if vsc_compact_inset < 6 %}{% set vsc_compact_inset = 6 %}{% endif %}
-{% if vsc_compact_inset > 28 %}{% set vsc_compact_inset = 28 %}{% endif %}
-
 {% set vsc_menu_radius = theme.settings.get('veloura_side_categories_menu_radius_2026', 'soft') %}
 {% if vsc_menu_radius.selected is defined and vsc_menu_radius.selected[0].value is defined %}
   {% set vsc_menu_radius = vsc_menu_radius.selected[0].value %}
@@ -3026,7 +3020,6 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     --veloura-side-cats-item-h: {{ vsc_item_h }}px;
     --veloura-side-cats-text: {{ vsc_text }};
     --veloura-side-cats-gap: {{ vsc_gap }}px;
-    --veloura-side-cats-compact-inset: {{ vsc_compact_inset }}px;
     --veloura-side-cats-menu-radius: {{ vsc_menu_radius_px }};
     --veloura-side-cats-title-font-size: {{ vsc_title_font_px }};
     --veloura-side-cats-img-radius: {{ vsc_img_radius_px }};

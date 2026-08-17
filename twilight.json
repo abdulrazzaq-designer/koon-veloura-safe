@@ -3492,32 +3492,6 @@
       ]
     },
     {
-      "id": "veloura_side_categories_compact_inset_2026",
-      "type": "number",
-      "format": "slider",
-      "label": "المسافة حول القائمة المصغرة",
-      "description": "المسافة الخارجية أعلى وأسفل ومن جهة فتح القائمة",
-      "inputType": "range",
-      "icon": "sicon-resize",
-      "value": "12",
-      "required": false,
-      "step": "1",
-      "minimum": "6",
-      "maximum": "28",
-      "conditions": [
-        {
-          "id": "veloura_side_categories_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_side_categories_compact_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "id": "veloura_side_categories_subtitle_style_2026",
       "type": "static",
       "format": "title",
