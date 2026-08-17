@@ -257,14 +257,54 @@ html body.dark .veloura-search-surface :is(input, textarea)::placeholder {
 }
 
 /* ------------------------------------------------------------------------
-   Side menu: its dedicated dark settings win over the general glass source.
+   Side menu — dark material contract.
+   Glass ON: use the exact dark-secondary source and the same Telegram-like
+   material as the header. The dedicated side-menu dark background is used
+   only when glass is OFF.
    ------------------------------------------------------------------------ */
-html.dark body .mm-ocd.mm-ocd--open .mm-ocd__content,
-html body.dark .mm-ocd.mm-ocd--open .mm-ocd__content {
-  --veloura-v86-glass-surface: var(--veloura-dark-side-menu-bg, var(--veloura-dark-secondary-bg, #010612));
-  background: var(--veloura-v86-glass-surface) !important;
-  background-color: var(--veloura-v86-glass-surface) !important;
+html.dark.veloura-side-cats-glass body .mm-ocd.mm-ocd--open .mm-ocd__content,
+html.dark body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content,
+html body.dark.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
+  --veloura-side-dark-glass-source: var(--veloura-dark-secondary-bg, #010612);
+  --veloura-side-dark-glass-tint: color-mix(
+    in srgb,
+    var(--veloura-side-dark-glass-source) 94%,
+    white 6%
+  );
+  --veloura-side-dark-glass-surface: color-mix(
+    in srgb,
+    var(--veloura-side-dark-glass-tint) 60%,
+    transparent
+  );
+
+  background: var(--veloura-side-dark-glass-surface) !important;
+  background-color: var(--veloura-side-dark-glass-surface) !important;
   background-image: none !important;
+  border-top: 1px solid rgba(255, 255, 255, .040) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, .085) !important;
+  border-inline: 0 !important;
+  -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
+  backdrop-filter: blur(24px) saturate(200%) !important;
+  filter: none !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .27),
+    inset 0 1px 0 rgba(255, 255, 255, .018) !important;
+  color: var(--veloura-dark-side-menu-text, #ffffff) !important;
+}
+
+html.dark:not(.veloura-side-cats-glass) body .mm-ocd.mm-ocd--open .mm-ocd__content,
+html.dark body:not(.veloura-side-cats-glass) .mm-ocd.mm-ocd--open .mm-ocd__content,
+html body.dark:not(.veloura-side-cats-glass) .mm-ocd.mm-ocd--open .mm-ocd__content {
+  background: var(
+    --veloura-dark-side-menu-bg,
+    var(--veloura-dark-secondary-bg, #010612)
+  ) !important;
+  background-color: var(
+    --veloura-dark-side-menu-bg,
+    var(--veloura-dark-secondary-bg, #010612)
+  ) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
   color: var(--veloura-dark-side-menu-text, #ffffff) !important;
 }
 
