@@ -668,9 +668,17 @@
       --veloura-v87-filter: blur(24px) saturate(200%) !important;
     }
 
-    /* V141 — Side menu uses the exact same V88/V87 dark glass material as the header.
-       This rule is intentionally inside the late V88 runtime stylesheet so older
-       side-menu solid dark overrides cannot win after the static SCSS bundle. */
+    /* V142 — Side menu glass refinement.
+       - 24px blur for the side menu in both light and dark.
+       - Dark keeps the exact V88/V87 header material.
+       - Category rows receive very subtle mode-aware separators.
+       - The navbar title pseudo-element follows the configured side-menu text color. */
+    /* Light side-menu glass: keep the existing light material, but raise blur to 24px. */
+    html.veloura-side-cats-glass:not(.dark) body.veloura-glass-effect:not(.dark) .mm-ocd.mm-ocd--open .mm-ocd__content {
+      -webkit-backdrop-filter: blur(24px) saturate(124%) brightness(101%) !important;
+      backdrop-filter: blur(24px) saturate(124%) brightness(101%) !important;
+    }
+
     html.dark.veloura-side-cats-glass body.veloura-glass-effect .mm-ocd.mm-ocd--open .mm-ocd__content,
     html.dark.veloura-side-cats-glass body.dark.veloura-glass-effect .mm-ocd.mm-ocd--open .mm-ocd__content,
     html body.dark.veloura-side-cats-glass.veloura-glass-effect .mm-ocd.mm-ocd--open .mm-ocd__content {
@@ -706,6 +714,32 @@
     html body.dark.veloura-side-cats-glass.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn .mm-spn--navbar {
       color: var(--veloura-dark-side-menu-text, var(--veloura-dark-primary-text, #ffffff)) !important;
       -webkit-text-fill-color: currentColor !important;
+    }
+
+    /* The visible navbar title is ::after and has an older hard-coded dark color.
+       Override the pseudo-element explicitly so "القائمة الرئيسية" follows the
+       merchant's dark side-menu text option too. */
+    html.dark.veloura-side-cats-glass body.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn.mm-spn--navbar::after,
+    html.dark.veloura-side-cats-glass body.dark.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn.mm-spn--navbar::after,
+    html body.dark.veloura-side-cats-glass.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn.mm-spn--navbar::after {
+      color: var(--veloura-dark-side-menu-text, var(--veloura-dark-primary-text, #ffffff)) !important;
+      -webkit-text-fill-color: currentColor !important;
+    }
+
+    /* Subtle row separators.
+       Light mode uses a soft light edge; dark mode uses a transparent dark edge. */
+    html.veloura-side-cats-glass:not(.dark) body.veloura-glass-effect:not(.dark)
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul > li:not(:last-child) {
+      border-bottom: 1px solid rgba(255, 255, 255, .34) !important;
+    }
+
+    html.dark.veloura-side-cats-glass body.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul > li:not(:last-child),
+    html.dark.veloura-side-cats-glass body.dark.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul > li:not(:last-child),
+    html body.dark.veloura-side-cats-glass.veloura-glass-effect
+      .mm-ocd.mm-ocd--open #mobile-menu.mm-spn ul > li:not(:last-child) {
+      border-bottom: 1px solid rgba(0, 0, 0, .16) !important;
     }
 
     html.dark.veloura-side-cats-glass body.veloura-glass-effect .mm-ocd.mm-ocd--open #mobile-menu.mm-spn li > :is(a, span) svg,
