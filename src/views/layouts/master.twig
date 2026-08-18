@@ -2557,7 +2557,6 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     {% hook 'body:start' %}
 {# VELOURA HEADER + HOME TABS V15 START #}
 {% set vht_enabled = false %}
-{% set vht_sticky = true %}
 {% set vht_hide_on_scroll = false %}
 {% set vht_items = [] %}
 {% set vht_header_floating = vh_floating %}
@@ -2655,10 +2654,6 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {% if vht_enabled_raw.value is defined %}{% set vht_enabled_raw = vht_enabled_raw.value %}{% endif %}
   {% set vht_enabled = vht_enabled_raw == true or vht_enabled_raw == 'true' or vht_enabled_raw == 1 or vht_enabled_raw == '1' or vht_enabled_raw == 'on' %}
 
-  {% set vht_sticky_raw = theme.settings.get('veloura_home_tabs_sticky_v4_2026', true) %}
-  {% if vht_sticky_raw.value is defined %}{% set vht_sticky_raw = vht_sticky_raw.value %}{% endif %}
-  {% set vht_sticky = vht_sticky_raw == true or vht_sticky_raw == 'true' or vht_sticky_raw == 1 or vht_sticky_raw == '1' or vht_sticky_raw == 'on' %}
-
   {% set vht_hide_setting = theme.settings.get('veloura_home_tabs_hide_on_scroll_v7_2026', false) %}
   {% set vht_hide_raw = vht_hide_setting %}
   {% if vht_hide_setting.value is defined %}
@@ -2679,9 +2674,9 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 {% endif %}
 
 {% set vht_has_tabs = is_page('index') and vht_enabled and vht_items|length %}
-{% set vht_tabs_connected = vht_has_tabs and vht_sticky %}
-{% set vht_tabs_detached = vht_has_tabs and not vht_sticky %}
-{% set vht_stack_sticky = vh_sticky or vht_tabs_connected %}
+{# V21: home tabs are always one structural unit with the header. #}
+{% set vht_tabs_connected = vht_has_tabs %}
+{% set vht_stack_sticky = vh_sticky %}
 
 {% if vht_has_tabs %}
   {% set vht_active_color = theme.settings.get('veloura_home_tabs_active_bg_2026', '#003848') %}
@@ -2690,11 +2685,11 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   {% set vht_tabs_markup %}
     <nav
       id="veloura-home-tabs"
-      class="veloura-home-tabs veloura-home-tabs--radius-{{ vht_top_border }}{{ vht_tabs_connected ? ' veloura-home-tabs--sticky' : ' veloura-home-tabs--detached' }}{{ (vht_tabs_detached and vh_blur) ? ' veloura-home-tabs--header-blur' : '' }}{{ (vht_tabs_detached and vh_floating) ? ' veloura-home-tabs--header-floating' : '' }}"
+      class="veloura-home-tabs veloura-home-tabs--radius-{{ vht_top_border }}{{ vh_sticky ? ' veloura-home-tabs--sticky' : '' }}"
       aria-label="تبويبات الصفحة الرئيسية"
       data-veloura-home-tabs
       data-veloura-tabs-hide-scroll="{{ vht_hide_on_scroll ? 'true' : 'false' }}"
-      data-veloura-tabs-connected="{{ vht_tabs_connected ? 'true' : 'false' }}"
+      data-veloura-tabs-connected="true"
       style="--veloura-tabs-bar-bg:{{ vht_bar_bg }};--veloura-tabs-text-color:{{ vht_text_color }};--veloura-tabs-active-color:{{ vht_active_color }};"
     >
       <div class="container">
@@ -2751,7 +2746,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
 
 <div
   id="veloura-header-tabs-stack"
-  class="veloura-header-tabs-stack{{ vht_stack_sticky ? ' veloura-header-tabs-stack--sticky' : '' }}{{ vh_floating ? ' veloura-header-tabs-stack--floating' : '' }}{{ vh_blur ? ' veloura-header-tabs-stack--blur' : '' }}{{ vh_compact ? ' veloura-header-tabs-stack--compact-enabled' : ' veloura-header-tabs-stack--compact-disabled' }}{{ vht_full_width ? ' veloura-header-tabs-stack--full-width-desktop' : ' veloura-header-tabs-stack--container-desktop' }}{{ vht_search_detached ? ' veloura-header-tabs-stack--search-detached' : '' }} veloura-header-tabs-stack--radius-{{ vht_top_border }}{{ vht_tabs_connected ? ' veloura-header-tabs-stack--has-tabs' : '' }}{{ vht_tabs_detached ? ' veloura-header-tabs-stack--has-detached-tabs' : '' }}"
+  class="veloura-header-tabs-stack{{ vht_stack_sticky ? ' veloura-header-tabs-stack--sticky' : '' }}{{ vh_floating ? ' veloura-header-tabs-stack--floating' : '' }}{{ vh_blur ? ' veloura-header-tabs-stack--blur' : '' }}{{ vh_compact ? ' veloura-header-tabs-stack--compact-enabled' : ' veloura-header-tabs-stack--compact-disabled' }}{{ vht_full_width ? ' veloura-header-tabs-stack--full-width-desktop' : ' veloura-header-tabs-stack--container-desktop' }}{{ vht_search_detached ? ' veloura-header-tabs-stack--search-detached' : '' }} veloura-header-tabs-stack--radius-{{ vht_top_border }}{{ vht_has_tabs ? ' veloura-header-tabs-stack--has-tabs' : '' }}"
   data-veloura-header-tabs-stack
   data-veloura-sticky="{{ vht_stack_sticky ? 'true' : 'false' }}"
   data-veloura-hide-header="{{ vh_hide ? 'true' : 'false' }}"
@@ -2765,7 +2760,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
     <div class="veloura-header-tabs-stack__surface">
       {% component 'header.header' %}
 
-      {% if vht_tabs_connected %}
+      {% if vht_has_tabs %}
         {{ vht_tabs_markup|raw }}
       {% endif %}
     </div>
@@ -2786,15 +2781,7 @@ body.veloura-product-card-enabled.veloura-product-image-ratio-auto .s-product-ca
   </div>
 </div>
 
-{% if vht_tabs_detached %}
-  <div
-    class="veloura-home-tabs-detached-shell{{ vh_floating ? ' veloura-home-tabs-detached-shell--floating' : '' }}{{ vht_full_width ? ' veloura-home-tabs-detached-shell--full-width-desktop' : ' veloura-home-tabs-detached-shell--container-desktop' }} veloura-home-tabs-detached-shell--radius-{{ vht_top_border }}"
-    data-veloura-tabs-detached-shell
-  >
-    {{ vht_tabs_markup|raw }}
-  </div>
-{% endif %}
-{# VELOURA HEADER + HOME TABS V19 END #}
+{# VELOURA HEADER + HOME TABS V21 END #}
     <main id="main-content" role="main">
       {% block content %}{% endblock %}
     </main>
