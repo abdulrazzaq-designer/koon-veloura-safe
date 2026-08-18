@@ -57596,11 +57596,12 @@ html body.veloura-glass-effect salla-sheet::part(backdrop) {
   }
 }
 /* ========================================================================== 
-   Veloura Footer Final Contract — V149
+   Veloura Footer Final Contract — V151
    - dark/light footer background images
    - one background-fit control (cover/contain)
    - logo-size slider
-   - working contact/social merge + inline/column + icons-only
+   - native Salla social icons + optional contact/social merge
+   - inline/column + icons-only contact controls
    - complete right alignment when centering is disabled
    - normal footer: top corners only
    - compact footer: main + bottom inside one rounded store container
@@ -57678,19 +57679,29 @@ body.dark #veloura-footer.veloura-footer-has-bg-image .store-footer__inner::befo
 #veloura-footer .veloura-footer-contact-wrap.veloura-footer-contact-ready > .veloura-footer-contact-native {
   display: none !important;
 }
+/* Merge mode still uses the generated contact-card surface. */
 #veloura-footer.veloura-footer-merge-social .veloura-footer-contact-wrap.veloura-footer-contact-ready > .veloura-footer-social {
   display: none !important;
 }
-#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-contact-wrap.veloura-footer-contact-ready > .veloura-footer-social {
-  display: flex !important;
+/* Unmerged mode keeps Salla's native social component. Desktop/tablet lives
+   under store description; mobile follows Theme Raed and lives under contact. */
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social-contact {
   width: 100% !important;
-  margin-top: 14px !important;
+  margin: 14px 0 0 !important;
+}
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social--desktop {
+  display: flex !important;
+}
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social--mobile {
+  display: none !important;
 }
 #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social,
 #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social salla-social,
 #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social salla-social > div,
-#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social salla-social ul {
-  display: flex !important;
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social salla-social ul,
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social salla-social ol,
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social salla-social nav,
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social salla-social section {
   flex-flow: row wrap !important;
   align-items: center !important;
   justify-content: flex-start !important;
@@ -57698,29 +57709,96 @@ body.dark #veloura-footer.veloura-footer-has-bg-image .store-footer__inner::befo
   margin: 0 !important;
   padding: 0 !important;
 }
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social salla-social,
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social salla-social > div,
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social salla-social ul,
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social salla-social ol,
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social salla-social nav,
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social salla-social section {
+  display: flex !important;
+}
+/* Do not zero the font-size: some Salla social icons are icon-font pseudo
+   elements on the clickable node itself. */
 #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social a:not(.does-not-exist), #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social button:not(.does-not-exist), #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social .s-social-link {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  flex: 0 0 42px !important;
   width: 42px !important;
   height: 42px !important;
   min-width: 42px !important;
   min-height: 42px !important;
+  max-width: 42px !important;
   padding: 0 !important;
   gap: 0 !important;
   border: 1px solid var(--veloura-footer-contact-border) !important;
   border-radius: 999px !important;
   background: var(--veloura-footer-icon-bg) !important;
   color: var(--veloura-footer-icon-color) !important;
-  font-size: 0 !important;
+  -webkit-text-fill-color: var(--veloura-footer-icon-color) !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+  -webkit-text-decoration: none !important;
+  text-decoration: none !important;
   overflow: hidden !important;
 }
-#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social i, #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social svg {
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social a:not(.does-not-exist)::before {
   color: var(--veloura-footer-icon-color) !important;
-  fill: currentColor !important;
+  -webkit-text-fill-color: var(--veloura-footer-icon-color) !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+}
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social button:not(.does-not-exist)::before {
+  color: var(--veloura-footer-icon-color) !important;
+  -webkit-text-fill-color: var(--veloura-footer-icon-color) !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+}
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social .s-social-link::before {
+  color: var(--veloura-footer-icon-color) !important;
+  -webkit-text-fill-color: var(--veloura-footer-icon-color) !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+}
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social a:not(.does-not-exist)::after {
+  color: var(--veloura-footer-icon-color) !important;
+  -webkit-text-fill-color: var(--veloura-footer-icon-color) !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+}
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social button:not(.does-not-exist)::after {
+  color: var(--veloura-footer-icon-color) !important;
+  -webkit-text-fill-color: var(--veloura-footer-icon-color) !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+}
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social .s-social-link::after {
+  color: var(--veloura-footer-icon-color) !important;
+  -webkit-text-fill-color: var(--veloura-footer-icon-color) !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+}
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social i:not(.does-not-exist), #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social svg:not(.does-not-exist), #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social [class*=sicon-] {
+  color: var(--veloura-footer-icon-color) !important;
+  -webkit-text-fill-color: var(--veloura-footer-icon-color) !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+}
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social svg {
+  display: block !important;
   width: 18px !important;
   height: 18px !important;
-  font-size: 18px !important;
+  fill: currentColor !important;
+}
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social svg {
+  stroke: currentColor;
+}
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social svg path, #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social svg circle, #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social svg rect, #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social svg polygon, #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social svg line, #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social svg polyline {
+  color: inherit !important;
+}
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social svg path, #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social svg circle, #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social svg rect, #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social svg polygon, #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social svg line, #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social svg polyline {
+  fill: currentColor;
+  stroke: currentColor;
 }
 /* Inline / column switch really controls the generated contact cards. */
 #veloura-footer.veloura-footer-contact-inline .veloura-footer-contact-cards {
@@ -57925,9 +58003,9 @@ body.dark #veloura-footer .veloura-footer-bottom {
   }
 }
 /* ========================================================================== 
-   Veloura Footer V150 — alignment + unified contact/social controls
+   Veloura Footer V151 — native social + deterministic RTL alignment
    ========================================================================== */
-/* Three-color contract: one background, one icon/text color, one border. */
+/* Three-color contract: background, foreground icon/text, and border. */
 #veloura-footer .veloura-footer-contact-card {
   border-color: var(--veloura-footer-contact-border) !important;
   background: var(--veloura-footer-icon-bg) !important;
@@ -57941,42 +58019,19 @@ body.dark #veloura-footer .veloura-footer-bottom {
   -webkit-text-fill-color: var(--veloura-footer-icon-color) !important;
   fill: currentColor !important;
 }
-/* Unmerged social is rebuilt with the exact same cards and display selector. */
-#veloura-footer .veloura-footer-social-contact {
-  width: 100% !important;
-  margin-top: 14px !important;
-}
-#veloura-footer .veloura-footer-social-contact.veloura-footer-social-ready > salla-social {
-  display: none !important;
-}
-#veloura-footer .veloura-footer-social-cards {
-  display: flex !important;
-  flex-flow: row wrap !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 12px !important;
-  gap: var(--veloura-footer-contact-gap, 12px) !important;
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  direction: rtl !important;
-}
-#veloura-footer.veloura-footer-center-all .veloura-footer-social-cards {
-  justify-content: center !important;
-}
 #veloura-footer.veloura-footer-contact-display-icon_text .veloura-footer-contact-card,
 #veloura-footer.veloura-footer-contact-display-icon-text .veloura-footer-contact-card {
   background: var(--veloura-footer-icon-bg) !important;
   border-color: var(--veloura-footer-contact-border) !important;
   color: var(--veloura-footer-icon-color) !important;
 }
-/* When centering is disabled, every footer block starts from the RTL/right edge. */
+/* Default mode: one RTL/right axis on desktop, tablet and mobile. */
+#veloura-footer.veloura-footer-align-default,
 #veloura-footer.veloura-footer-align-default .veloura-footer-hero,
 #veloura-footer.veloura-footer-align-default .veloura-footer-store,
 #veloura-footer.veloura-footer-align-default .veloura-footer-identity,
 #veloura-footer.veloura-footer-align-default .veloura-footer-trust,
 #veloura-footer.veloura-footer-align-default .veloura-footer-social-contact,
-#veloura-footer.veloura-footer-align-default .veloura-footer-social-cards,
 #veloura-footer.veloura-footer-align-default .veloura-footer-links,
 #veloura-footer.veloura-footer-align-default .veloura-footer-contact,
 #veloura-footer.veloura-footer-align-default .veloura-footer-contact-wrap,
@@ -57988,30 +58043,51 @@ body.dark #veloura-footer .veloura-footer-bottom {
   align-items: flex-start !important;
 }
 #veloura-footer.veloura-footer-align-default .veloura-footer-hero > .veloura-footer-store,
-#veloura-footer.veloura-footer-align-default .veloura-footer-identity {
+#veloura-footer.veloura-footer-align-default .veloura-footer-identity,
+#veloura-footer.veloura-footer-align-default .veloura-footer-logo,
+#veloura-footer.veloura-footer-align-default .veloura-footer-description,
+#veloura-footer.veloura-footer-align-default .veloura-footer-trust,
+#veloura-footer.veloura-footer-align-default .veloura-footer-social-contact {
   margin-right: 0 !important;
   margin-left: auto !important;
 }
 #veloura-footer.veloura-footer-align-default .veloura-footer-logo {
   align-self: flex-start !important;
-  margin-right: 0 !important;
-  margin-left: auto !important;
   justify-content: flex-start !important;
 }
 #veloura-footer.veloura-footer-align-default .veloura-footer-store-title,
 #veloura-footer.veloura-footer-align-default .veloura-footer-description {
   width: 100% !important;
   max-width: 100% !important;
+  text-align: right !important;
+}
+#veloura-footer.veloura-footer-align-default .veloura-footer-social,
+#veloura-footer.veloura-footer-align-default .veloura-footer-social salla-social,
+#veloura-footer.veloura-footer-align-default .veloura-footer-social salla-social > div,
+#veloura-footer.veloura-footer-align-default .veloura-footer-social salla-social ul,
+#veloura-footer.veloura-footer-align-default .veloura-footer-social salla-social ol,
+#veloura-footer.veloura-footer-align-default .veloura-footer-social salla-social nav,
+#veloura-footer.veloura-footer-align-default .veloura-footer-social salla-social section,
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons,
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons div:not(.does-not-exist),
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons ul:not(.does-not-exist),
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons ol:not(.does-not-exist),
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons nav:not(.does-not-exist),
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons section:not(.does-not-exist),
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons [class*=apps],
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons [class*=wrapper],
+#veloura-footer.veloura-footer-align-default .veloura-footer-apps salla-apps-icons [class*=icons] {
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
   margin-right: 0 !important;
   margin-left: auto !important;
-  text-align: right !important;
 }
 #veloura-footer.veloura-footer-align-default .veloura-footer-section-title {
   direction: rtl !important;
   justify-content: flex-start !important;
   text-align: right !important;
 }
-/* With right alignment, keep only one subtle title line after the title. */
+/* Right-aligned title: line continues after the title only. */
 #veloura-footer.veloura-footer-align-default.veloura-footer-title-lines-enabled .veloura-footer-section-title .veloura-footer-title-line--right {
   display: none !important;
 }
@@ -58020,10 +58096,29 @@ body.dark #veloura-footer .veloura-footer-bottom {
   flex: 0 1 72px !important;
   max-width: 72px !important;
 }
-/* Featured laptop/desktop rules in the legacy footer force the hero to center;
-   explicitly undo them when the global centering option is OFF. */
+/* Center-all remains a global behavior at every breakpoint. */
+#veloura-footer.veloura-footer-center-all .veloura-footer-store,
+#veloura-footer.veloura-footer-center-all .veloura-footer-identity,
+#veloura-footer.veloura-footer-center-all .veloura-footer-trust,
+#veloura-footer.veloura-footer-center-all .veloura-footer-contact-wrap,
+#veloura-footer.veloura-footer-center-all .veloura-footer-social,
+#veloura-footer.veloura-footer-center-all .veloura-footer-social salla-social,
+#veloura-footer.veloura-footer-center-all .veloura-footer-social salla-social > div,
+#veloura-footer.veloura-footer-center-all .veloura-footer-social salla-social ul,
+#veloura-footer.veloura-footer-center-all .veloura-footer-social salla-social ol,
+#veloura-footer.veloura-footer-center-all .veloura-footer-social salla-social nav,
+#veloura-footer.veloura-footer-center-all .veloura-footer-social salla-social section,
+#veloura-footer.veloura-footer-center-all .veloura-footer-contact-cards,
+#veloura-footer.veloura-footer-center-all .veloura-footer-apps {
+  justify-content: center !important;
+  align-items: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+}
 @media (min-width: 992px) {
-  #veloura-footer.veloura-footer-align-default.veloura-footer-layout-featured .veloura-footer-hero {
+  /* Legacy featured rules center the hero/logo with high specificity. */
+  #veloura-footer.veloura-footer-align-default[data-veloura-footer-layout=featured] .veloura-footer-hero {
     display: flex !important;
     width: 100% !important;
     max-width: none !important;
@@ -58031,27 +58126,45 @@ body.dark #veloura-footer .veloura-footer-bottom {
     justify-content: flex-start !important;
     direction: rtl !important;
   }
-  #veloura-footer.veloura-footer-align-default.veloura-footer-layout-featured .veloura-footer-hero > .veloura-footer-store {
+  #veloura-footer.veloura-footer-align-default[data-veloura-footer-layout=featured] .veloura-footer-hero > .veloura-footer-store {
     width: min(680px, 100%) !important;
     max-width: 680px !important;
     margin-right: 0 !important;
     margin-left: auto !important;
     text-align: right !important;
   }
-  #veloura-footer.veloura-footer-align-default.veloura-footer-layout-featured .veloura-footer-hero .veloura-footer-identity,
-  #veloura-footer.veloura-footer-align-default.veloura-footer-layout-featured .veloura-footer-hero .veloura-footer-trust {
+  #veloura-footer.veloura-footer-align-default[data-veloura-footer-layout=featured] .veloura-footer-hero .veloura-footer-identity,
+  #veloura-footer.veloura-footer-align-default[data-veloura-footer-layout=featured] .veloura-footer-hero .veloura-footer-trust {
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-start !important;
     justify-content: flex-start !important;
     width: 100% !important;
+    margin-right: 0 !important;
+    margin-left: auto !important;
     text-align: right !important;
+  }
+  #veloura-footer.veloura-footer-align-default[data-veloura-footer-layout=featured] .veloura-footer-hero .veloura-footer-logo {
+    align-self: flex-start !important;
+    justify-content: flex-start !important;
+    margin: 0 0 18px auto !important;
+    transform: none !important;
+  }
+  #veloura-footer.veloura-footer-align-default[data-veloura-footer-layout=featured] .veloura-footer-hero .veloura-footer-store-title {
+    margin: 0 !important;
+    text-align: right !important;
+  }
+  #veloura-footer.veloura-footer-align-default[data-veloura-footer-layout=featured] .veloura-footer-hero .veloura-footer-description {
+    margin: 10px 0 0 auto !important;
+    text-align: right !important;
+  }
+  #veloura-footer.veloura-footer-align-default[data-veloura-footer-layout=featured] .veloura-footer-hero .veloura-footer-social-contact {
+    margin: 14px 0 0 auto !important;
   }
   #veloura-footer.veloura-footer-align-default .veloura-footer-sections-grid > .veloura-footer-block {
     text-align: right !important;
   }
 }
-/* Legacy <=991 rules center identity. The user's alignment switch must win there too. */
 @media (max-width: 991px) {
   #veloura-footer.veloura-footer-align-default .veloura-footer-store,
   #veloura-footer.veloura-footer-align-default .veloura-footer-identity,
@@ -58067,7 +58180,47 @@ body.dark #veloura-footer .veloura-footer-bottom {
     margin-left: auto !important;
   }
 }
-/* Compact footer keeps the requested air below the full two-part shell. */
+/* Theme Raed pattern: social under identity on desktop/tablet, under contact on mobile. */
+@media (max-width: 767px) {
+  #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social--desktop {
+    display: none !important;
+  }
+  #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social--mobile {
+    display: flex !important;
+  }
+  #veloura-footer .veloura-footer-contact-cards {
+    order: 1 !important;
+  }
+  #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social--mobile {
+    order: 2 !important;
+    margin-top: 14px !important;
+  }
+  #veloura-footer.veloura-footer-align-default .veloura-footer-social--mobile,
+  #veloura-footer.veloura-footer-align-default .veloura-footer-social--mobile salla-social,
+  #veloura-footer.veloura-footer-align-default .veloura-footer-social--mobile salla-social > div,
+  #veloura-footer.veloura-footer-align-default .veloura-footer-social--mobile salla-social ul,
+  #veloura-footer.veloura-footer-align-default .veloura-footer-social--mobile salla-social ol,
+  #veloura-footer.veloura-footer-align-default .veloura-footer-social--mobile salla-social nav,
+  #veloura-footer.veloura-footer-align-default .veloura-footer-social--mobile salla-social section {
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    margin-right: 0 !important;
+    margin-left: auto !important;
+  }
+  #veloura-footer.veloura-footer-center-all .veloura-footer-social--mobile,
+  #veloura-footer.veloura-footer-center-all .veloura-footer-social--mobile salla-social,
+  #veloura-footer.veloura-footer-center-all .veloura-footer-social--mobile salla-social > div,
+  #veloura-footer.veloura-footer-center-all .veloura-footer-social--mobile salla-social ul,
+  #veloura-footer.veloura-footer-center-all .veloura-footer-social--mobile salla-social ol,
+  #veloura-footer.veloura-footer-center-all .veloura-footer-social--mobile salla-social nav,
+  #veloura-footer.veloura-footer-center-all .veloura-footer-social--mobile salla-social section {
+    justify-content: center !important;
+    align-items: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+/* Compact footer keeps air below the full two-part shell. */
 #veloura-footer.veloura-footer-compact .veloura-footer-shell {
   margin-bottom: 15px !important;
 }
