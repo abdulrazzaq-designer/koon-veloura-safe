@@ -837,3 +837,40 @@ h3.veloura-footer-section-title[data-veloura-title-row="true"]
     text-align: right !important;
   }
 }
+
+/* ========================================================================== 
+   VELOURA FOOTER V154 — native Salla icon carrier + header-width compact shell
+   ========================================================================== */
+
+/* Salla native social glyphs are often real span.sicon-* nodes. Older footer
+   rules must never hide that carrier while trying to remove the platform text. */
+#veloura-footer:not(.veloura-footer-merge-social)
+.veloura-footer-social--identity :is([class*="sicon-"], [class*="icon-"]) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: none !important;
+  max-height: none !important;
+  overflow: visible !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  color: var(--veloura-footer-icon-color) !important;
+  -webkit-text-fill-color: var(--veloura-footer-icon-color) !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+}
+
+/* Compact footer on desktop follows the same wide visual gutter used by the
+   full-width Veloura header (clamp(16px, 2.35vw, 38px)) instead of collapsing
+   back to the ordinary content container. Full footer mode is unchanged. */
+@media (min-width: 1024px) {
+  #veloura-footer.veloura-footer-compact .veloura-footer-shell {
+    width: calc(100% - clamp(16px, 2.35vw, 38px) - clamp(16px, 2.35vw, 38px)) !important;
+    max-width: none !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+  }
+}
+

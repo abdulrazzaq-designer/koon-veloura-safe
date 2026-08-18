@@ -679,7 +679,9 @@
   gap: 0 !important;
 }
 
-.store-footer.veloura-footer-enabled:not(.veloura-footer-merge-social) .veloura-footer-social :where(.veloura-footer-contact-card__text, .veloura-footer-contact-card__texts, .veloura-footer-contact-card__label, .veloura-footer-contact-card__value, span:not(.veloura-footer-contact-card__icon), small, b, strong, p) {
+/* Hide only Veloura-generated social/contact labels here. Do NOT hide generic
+   spans: Salla's native social icons are commonly rendered as <span class="sicon-*">. */
+.store-footer.veloura-footer-enabled:not(.veloura-footer-merge-social) .veloura-footer-social :where(.veloura-footer-contact-card__text, .veloura-footer-contact-card__texts, .veloura-footer-contact-card__label, .veloura-footer-contact-card__value) {
   display: none !important;
 }
 
