@@ -614,3 +614,226 @@ body.dark #veloura-footer .veloura-footer-bottom {
 #veloura-footer.veloura-footer-compact .veloura-footer-shell {
   margin-bottom: 15px !important;
 }
+
+/* ========================================================================== 
+   VELOURA FOOTER V153 — identity social order, true gutters, dynamic lines
+   This block is intentionally last and narrowly scoped to #veloura-footer.
+   ========================================================================== */
+
+/* 1) Identity is always an ordered column. Native social belongs directly
+      after the description when merge-social is OFF. */
+#veloura-footer .veloura-footer-identity {
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+}
+
+#veloura-footer .veloura-footer-identity > .veloura-footer-logo {
+  order: 1 !important;
+}
+
+#veloura-footer .veloura-footer-identity > .veloura-footer-store-title {
+  order: 2 !important;
+}
+
+#veloura-footer .veloura-footer-identity > .veloura-footer-description {
+  order: 3 !important;
+}
+
+#veloura-footer:not(.veloura-footer-merge-social)
+.veloura-footer-identity > .veloura-footer-social--identity {
+  order: 4 !important;
+  display: flex !important;
+  position: static !important;
+  inset: auto !important;
+  float: none !important;
+  clear: both !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 12px 0 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+}
+
+#veloura-footer .veloura-footer-identity > .veloura-footer-trust {
+  order: 5 !important;
+}
+
+#veloura-footer.veloura-footer-merge-social
+.veloura-footer-identity > .veloura-footer-social--identity {
+  display: none !important;
+}
+
+/* Default RTL alignment: social starts from the right edge of the description. */
+#veloura-footer.veloura-footer-align-default
+.veloura-footer-social--identity,
+#veloura-footer.veloura-footer-align-default
+.veloura-footer-social--identity > salla-social,
+#veloura-footer.veloura-footer-align-default
+.veloura-footer-social--identity > salla-social > div,
+#veloura-footer.veloura-footer-align-default
+.veloura-footer-social--identity > salla-social :is(ul, ol, nav, section, div[class*="social"], div[class*="wrapper"]) {
+  direction: rtl !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  margin-right: 0 !important;
+  margin-left: auto !important;
+  padding: 0 !important;
+}
+
+#veloura-footer.veloura-footer-center-all
+.veloura-footer-social--identity,
+#veloura-footer.veloura-footer-center-all
+.veloura-footer-social--identity > salla-social,
+#veloura-footer.veloura-footer-center-all
+.veloura-footer-social--identity > salla-social > div,
+#veloura-footer.veloura-footer-center-all
+.veloura-footer-social--identity > salla-social :is(ul, ol, nav, section, div[class*="social"], div[class*="wrapper"]) {
+  justify-content: center !important;
+  align-items: center !important;
+  margin-inline: auto !important;
+}
+
+/* 2) Native Salla social: icon-only circles. Hide platform text without
+      hiding icon-font pseudo elements. */
+#veloura-footer:not(.veloura-footer-merge-social)
+.veloura-footer-social--identity :is(a, button, .s-social-link) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 42px !important;
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  min-height: 42px !important;
+  max-width: 42px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  border: 1px solid var(--veloura-footer-contact-border) !important;
+  border-radius: 999px !important;
+  background: var(--veloura-footer-icon-bg) !important;
+  color: var(--veloura-footer-icon-color) !important;
+  -webkit-text-fill-color: var(--veloura-footer-icon-color) !important;
+  font-size: 0 !important;
+  line-height: 1 !important;
+  text-indent: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Text labels from the native component stay hidden. */
+#veloura-footer:not(.veloura-footer-merge-social)
+.veloura-footer-social--identity :is(a, button, .s-social-link)
+> :is(span, small, b, strong, p):not([class*="icon"]):not([class*="sicon-"]) {
+  font-size: 0 !important;
+  line-height: 0 !important;
+}
+
+/* Restore every common icon carrier explicitly after font-size:0 above. */
+#veloura-footer:not(.veloura-footer-merge-social)
+.veloura-footer-social--identity :is(a, button, .s-social-link)::before,
+#veloura-footer:not(.veloura-footer-merge-social)
+.veloura-footer-social--identity :is(a, button, .s-social-link)::after,
+#veloura-footer:not(.veloura-footer-merge-social)
+.veloura-footer-social--identity :is(i, svg, [class*="sicon-"], [class*="icon-"]) ,
+#veloura-footer:not(.veloura-footer-merge-social)
+.veloura-footer-social--identity :is(i, [class*="sicon-"], [class*="icon-"])::before,
+#veloura-footer:not(.veloura-footer-merge-social)
+.veloura-footer-social--identity :is(i, [class*="sicon-"], [class*="icon-"])::after {
+  color: var(--veloura-footer-icon-color) !important;
+  -webkit-text-fill-color: var(--veloura-footer-icon-color) !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+#veloura-footer:not(.veloura-footer-merge-social)
+.veloura-footer-social--identity svg {
+  display: block !important;
+  width: 18px !important;
+  height: 18px !important;
+  color: var(--veloura-footer-icon-color) !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+#veloura-footer:not(.veloura-footer-merge-social)
+.veloura-footer-social--identity svg * {
+  color: inherit !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+/* 3) Remove the extra 20px gutter from the upper/hero identity only.
+      The main footer container remains responsible for page-safe spacing. */
+#veloura-footer .veloura-footer-hero,
+#veloura-footer .veloura-footer-hero > .veloura-footer-store,
+#veloura-footer .veloura-footer-hero > .veloura-footer-store > .veloura-footer-identity {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  padding-inline: 0 !important;
+}
+
+/* 4) Default RTL section heading: title takes only its content width and the
+      single line consumes ALL remaining width. Longer title = shorter line. */
+#veloura-footer.veloura-footer-align-default.veloura-footer-title-lines-enabled
+h3.veloura-footer-section-title[data-veloura-title-row="true"] {
+  display: grid !important;
+  grid-template-columns: max-content minmax(0, 1fr) !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  column-gap: 10px !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+#veloura-footer.veloura-footer-align-default.veloura-footer-title-lines-enabled
+h3.veloura-footer-section-title[data-veloura-title-row="true"]
+> .veloura-footer-title-line--right {
+  display: none !important;
+}
+
+#veloura-footer.veloura-footer-align-default.veloura-footer-title-lines-enabled
+h3.veloura-footer-section-title[data-veloura-title-row="true"]
+> .veloura-footer-title-text {
+  grid-column: 1 !important;
+  width: max-content !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  white-space: nowrap !important;
+}
+
+#veloura-footer.veloura-footer-align-default.veloura-footer-title-lines-enabled
+h3.veloura-footer-section-title[data-veloura-title-row="true"]
+> .veloura-footer-title-line--left {
+  display: block !important;
+  grid-column: 2 !important;
+  justify-self: stretch !important;
+  align-self: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  animation: none !important;
+  transform: none !important;
+  transform-origin: center !important;
+}
+
+@media (max-width: 991px) {
+  #veloura-footer.veloura-footer-align-default .veloura-footer-hero > .veloura-footer-store,
+  #veloura-footer.veloura-footer-align-default .veloura-footer-hero .veloura-footer-identity {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    padding-inline: 0 !important;
+    align-items: flex-start !important;
+    text-align: right !important;
+  }
+}

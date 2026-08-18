@@ -57596,11 +57596,11 @@ html body.veloura-glass-effect salla-sheet::part(backdrop) {
   }
 }
 /* ========================================================================== 
-   Veloura Footer Final Contract — V151
+   Veloura Footer Final Contract — V152
    - dark/light footer background images
    - one background-fit control (cover/contain)
    - logo-size slider
-   - native Salla social icons + optional contact/social merge
+   - one native social surface under store description + optional contact merge
    - inline/column + icons-only contact controls
    - complete right alignment when centering is disabled
    - normal footer: top corners only
@@ -57683,16 +57683,23 @@ body.dark #veloura-footer.veloura-footer-has-bg-image .store-footer__inner::befo
 #veloura-footer.veloura-footer-merge-social .veloura-footer-contact-wrap.veloura-footer-contact-ready > .veloura-footer-social {
   display: none !important;
 }
-/* Unmerged mode keeps Salla's native social component. Desktop/tablet lives
-   under store description; mobile follows Theme Raed and lives under contact. */
+/* Unmerged mode has exactly one Salla social surface, directly under the
+   store description on every breakpoint. Merge mode removes it from identity
+   and renders social only with the contact area. */
 #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social-contact {
   width: 100% !important;
   margin: 14px 0 0 !important;
 }
-#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social--desktop {
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social--identity {
   display: flex !important;
+  order: 4 !important;
 }
-#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social--mobile {
+/* Hard guard against old/cached duplicate mobile markup. */
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-contact-wrap > .veloura-footer-social--mobile {
+  display: none !important;
+}
+/* In merge mode social must exist only in the contact surface. */
+#veloura-footer.veloura-footer-merge-social .veloura-footer-identity > .veloura-footer-social {
   display: none !important;
 }
 #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social,
@@ -57736,11 +57743,14 @@ body.dark #veloura-footer.veloura-footer-has-bg-image .store-footer__inner::befo
   background: var(--veloura-footer-icon-bg) !important;
   color: var(--veloura-footer-icon-color) !important;
   -webkit-text-fill-color: var(--veloura-footer-icon-color) !important;
-  font-size: 18px !important;
+  font-size: 0 !important;
   line-height: 1 !important;
   -webkit-text-decoration: none !important;
   text-decoration: none !important;
   overflow: hidden !important;
+}
+#veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social a:not(.does-not-exist), #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social button:not(.does-not-exist), #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social .s-social-link {
+  /* Hide Salla's raw platform label while keeping icon/pseudo-icon visible. */
 }
 #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social a:not(.does-not-exist)::before {
   color: var(--veloura-footer-icon-color) !important;
@@ -58091,10 +58101,32 @@ body.dark #veloura-footer .veloura-footer-bottom {
 #veloura-footer.veloura-footer-align-default.veloura-footer-title-lines-enabled .veloura-footer-section-title .veloura-footer-title-line--right {
   display: none !important;
 }
+#veloura-footer.veloura-footer-align-default.veloura-footer-title-lines-enabled .veloura-footer-section-title {
+  display: flex !important;
+  flex-flow: row nowrap !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  gap: 10px !important;
+}
+#veloura-footer.veloura-footer-align-default.veloura-footer-title-lines-enabled .veloura-footer-section-title .veloura-footer-title-text {
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+}
 #veloura-footer.veloura-footer-align-default.veloura-footer-title-lines-enabled .veloura-footer-section-title .veloura-footer-title-line--left {
   display: block !important;
-  flex: 0 1 72px !important;
-  max-width: 72px !important;
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+}
+/* Identity hero must not add a second horizontal gutter inside the main
+   footer container. The container already owns the page-side spacing. */
+#veloura-footer .veloura-footer-hero > .veloura-footer-store,
+#veloura-footer .veloura-footer-hero > .veloura-footer-store > .veloura-footer-identity {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  padding-inline: 0 !important;
 }
 /* Center-all remains a global behavior at every breakpoint. */
 #veloura-footer.veloura-footer-center-all .veloura-footer-store,
@@ -58180,40 +58212,33 @@ body.dark #veloura-footer .veloura-footer-bottom {
     margin-left: auto !important;
   }
 }
-/* Theme Raed pattern: social under identity on desktop/tablet, under contact on mobile. */
+/* Mobile keeps the same social contract: identity social stays directly
+   below the description unless merge-social is enabled. */
 @media (max-width: 767px) {
-  #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social--desktop {
-    display: none !important;
-  }
-  #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social--mobile {
+  #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social--identity {
     display: flex !important;
+    order: 4 !important;
+    margin-top: 12px !important;
   }
-  #veloura-footer .veloura-footer-contact-cards {
-    order: 1 !important;
-  }
-  #veloura-footer:not(.veloura-footer-merge-social) .veloura-footer-social--mobile {
-    order: 2 !important;
-    margin-top: 14px !important;
-  }
-  #veloura-footer.veloura-footer-align-default .veloura-footer-social--mobile,
-  #veloura-footer.veloura-footer-align-default .veloura-footer-social--mobile salla-social,
-  #veloura-footer.veloura-footer-align-default .veloura-footer-social--mobile salla-social > div,
-  #veloura-footer.veloura-footer-align-default .veloura-footer-social--mobile salla-social ul,
-  #veloura-footer.veloura-footer-align-default .veloura-footer-social--mobile salla-social ol,
-  #veloura-footer.veloura-footer-align-default .veloura-footer-social--mobile salla-social nav,
-  #veloura-footer.veloura-footer-align-default .veloura-footer-social--mobile salla-social section {
+  #veloura-footer.veloura-footer-align-default .veloura-footer-social--identity,
+  #veloura-footer.veloura-footer-align-default .veloura-footer-social--identity salla-social,
+  #veloura-footer.veloura-footer-align-default .veloura-footer-social--identity salla-social > div,
+  #veloura-footer.veloura-footer-align-default .veloura-footer-social--identity salla-social ul,
+  #veloura-footer.veloura-footer-align-default .veloura-footer-social--identity salla-social ol,
+  #veloura-footer.veloura-footer-align-default .veloura-footer-social--identity salla-social nav,
+  #veloura-footer.veloura-footer-align-default .veloura-footer-social--identity salla-social section {
     justify-content: flex-start !important;
-    align-items: flex-start !important;
+    align-items: center !important;
     margin-right: 0 !important;
     margin-left: auto !important;
   }
-  #veloura-footer.veloura-footer-center-all .veloura-footer-social--mobile,
-  #veloura-footer.veloura-footer-center-all .veloura-footer-social--mobile salla-social,
-  #veloura-footer.veloura-footer-center-all .veloura-footer-social--mobile salla-social > div,
-  #veloura-footer.veloura-footer-center-all .veloura-footer-social--mobile salla-social ul,
-  #veloura-footer.veloura-footer-center-all .veloura-footer-social--mobile salla-social ol,
-  #veloura-footer.veloura-footer-center-all .veloura-footer-social--mobile salla-social nav,
-  #veloura-footer.veloura-footer-center-all .veloura-footer-social--mobile salla-social section {
+  #veloura-footer.veloura-footer-center-all .veloura-footer-social--identity,
+  #veloura-footer.veloura-footer-center-all .veloura-footer-social--identity salla-social,
+  #veloura-footer.veloura-footer-center-all .veloura-footer-social--identity salla-social > div,
+  #veloura-footer.veloura-footer-center-all .veloura-footer-social--identity salla-social ul,
+  #veloura-footer.veloura-footer-center-all .veloura-footer-social--identity salla-social ol,
+  #veloura-footer.veloura-footer-center-all .veloura-footer-social--identity salla-social nav,
+  #veloura-footer.veloura-footer-center-all .veloura-footer-social--identity salla-social section {
     justify-content: center !important;
     align-items: center !important;
     margin-left: auto !important;
