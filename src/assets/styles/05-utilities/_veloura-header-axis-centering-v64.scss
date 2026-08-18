@@ -324,3 +324,129 @@
     padding: 0 0 1px !important;
   }
 }
+
+/* ==========================================================================
+   Connected rectangular search — container + spacing correction.
+   The OUTER header is untouched; only .veloura-header-container follows the
+   storefront container. This intentionally lives in the existing V64 file.
+   ========================================================================== */
+@media (min-width: 1024px) {
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-header-container {
+    width: 100% !important;
+    max-width: var(
+      --veloura-home-container-width,
+      var(--veloura-global-container, 1280px)
+    ) !important;
+    margin-inline: auto !important;
+    padding-inline: var(
+      --veloura-home-container-padding,
+      var(--veloura-global-spacing, 32px)
+    ) !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-header-grid {
+    width: 100% !important;
+    max-width: none !important;
+    margin-inline: 0 !important;
+    padding-inline: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Search and the right-side tools use the same width measured by the
+     existing JS, but each remains inside the inner storefront container. */
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar
+    .veloura-header-grid > .veloura-desktop-search-bar,
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled)
+    .veloura-header-grid > .veloura-desktop-search-bar,
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar
+    .veloura-header-grid > .veloura-v63-unified-icons,
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled)
+    .veloura-header-grid > .veloura-v63-unified-icons {
+    width: var(--veloura-v63-side-width, 220px) !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* V64 used to bring the legacy search buttons back. When the rectangular
+     field is visible, there must be no second search icon in the tools group. */
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar
+    .veloura-v63-unified-icons .veloura-search-toggle,
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled)
+    .veloura-v63-unified-icons .veloura-search-toggle {
+    display: none !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+  }
+
+  /* One predictable rhythm for every independent header control. */
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons,
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons > .veloura-header-side {
+    gap: 10px !important;
+    column-gap: 10px !important;
+    row-gap: 0 !important;
+    flex-wrap: nowrap !important;
+  }
+
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons > .veloura-header-side {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons > .veloura-header-side > * {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+  }
+
+  /* Reserve a proper hit-box for normal icons so large glyphs/counters cannot
+     visually collapse into the neighboring control. */
+  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-v63-unified-icons .veloura-header-icon {
+    flex: 0 0 var(--veloura-v55-icon-hit, 38px) !important;
+    width: var(--veloura-v55-icon-hit, 38px) !important;
+    min-width: var(--veloura-v55-icon-hit, 38px) !important;
+    height: var(--veloura-v55-icon-hit, 38px) !important;
+    margin: 0 !important;
+  }
+
+  /* Cart total is one compound control: its own internal icon/value spacing
+     is separate from the 10px gap between it and neighboring controls. */
+  html body .store-header.veloura-top-enabled
+    salla-cart-summary.veloura-cart-total-visible {
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    width: max-content !important;
+    min-width: max-content !important;
+    max-width: none !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    white-space: nowrap !important;
+  }
+
+  html body .store-header.veloura-top-enabled
+    salla-cart-summary.veloura-cart-total-visible
+    :is(.s-cart-summary-wrapper, .s-cart-summary-content),
+  html body .store-header.veloura-top-enabled
+    salla-cart-summary.veloura-cart-total-visible::part(wrapper),
+  html body .store-header.veloura-top-enabled
+    salla-cart-summary.veloura-cart-total-visible::part(button) {
+    display: inline-flex !important;
+    align-items: center !important;
+    width: max-content !important;
+    min-width: max-content !important;
+    max-width: none !important;
+    gap: 6px !important;
+    white-space: nowrap !important;
+  }
+}

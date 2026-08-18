@@ -558,3 +558,37 @@ html body .veloura-header-tabs-stack.veloura-hide-header-now.veloura-header-tabs
   .veloura-home-tabs::before {
   display: none !important;
 }
+
+/* ==========================================================================
+   Connected header shell — outer frame stays independent from site container.
+   The inner header content owns the storefront container alignment.
+   ========================================================================== */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack
+    > .veloura-header-tabs-stack__container.container {
+    width: 100% !important;
+    max-width: 2280px !important;
+    margin-inline: auto !important;
+    padding-inline: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Header/menu layer must stay above the tabs so desktop dropdowns open
+     over the tabs instead of being painted underneath them. */
+  html body .veloura-header-tabs-stack__surface > .store-header,
+  html body .veloura-header-tabs-stack__surface > .store-header.veloura-top-enabled {
+    position: relative !important;
+    z-index: 3 !important;
+  }
+
+  html body .veloura-header-tabs-stack__surface > .veloura-home-tabs {
+    position: relative !important;
+    z-index: 1 !important;
+  }
+
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    :is(.veloura-submenu-surface, .sub-menu) {
+    z-index: 4200 !important;
+  }
+}
