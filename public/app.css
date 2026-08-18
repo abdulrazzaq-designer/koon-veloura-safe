@@ -58855,6 +58855,8 @@ body.dark #veloura-footer .veloura-footer-bottom {
   #veloura-footer.veloura-footer-compact .veloura-footer-shell {
     width: 100% !important;
     max-width: 1280px !important;
+    padding-left: 10px !important;
+    سpadding-right: 10px !important;
     margin-right: auto !important;
     margin-left: auto !important;
   }
