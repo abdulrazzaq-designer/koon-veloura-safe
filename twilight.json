@@ -2663,18 +2663,18 @@
       ]
     },
     {
-      "id": "veloura_footer_logo_scale_2026",
+      "id": "veloura_footer_logo_adjust_2026",
       "type": "number",
       "format": "slider",
-      "label": "حجم شعار القسم السفلي",
-      "description": "القيمة الفعلية = 80 + قيمة السلايدر. القيمة الافتراضية 200px.",
+      "label": "تكبير شعار القسم السفلي",
+      "description": "زيادة دقيقة فوق الحجم الأساسي 80px. من 0 إلى 60px بخطوة 2px.",
       "inputType": "range",
       "icon": "sicon-resize",
-      "value": "120",
+      "value": "20",
       "required": false,
-      "step": "10",
+      "step": "2",
       "minimum": "0",
-      "maximum": "240",
+      "maximum": "60",
       "conditions": [
         {
           "id": "veloura_footer_enabled_2026",
@@ -2885,27 +2885,11 @@
       ]
     },
     {
-      "id": "veloura_footer_link_color_2026",
-      "type": "string",
-      "format": "color",
-      "inputType": "color",
-      "label": "لون نصوص وسائل الاتصال",
-      "value": "#334155",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
-      "description": "يطبّق فقط على النص المكتوب بجانب أيقونات وسائل الاتصال والسوشيال عند عرضها مع النص."
-    },
-    {
       "id": "veloura_footer_icon_bg_color_2026",
       "type": "string",
       "format": "color",
       "inputType": "color",
-      "label": "لون خلفية الأيقونات",
+      "label": "لون خلفية أزرار التواصل والسوشيال",
       "value": "#ffffff",
       "conditions": [
         {
@@ -2913,14 +2897,15 @@
           "operation": "=",
           "value": true
         }
-      ]
+      ],
+      "description": "يطبّق على وسائل الاتصال والسوشيال سواء كانت مدمجة أو منفصلة."
     },
     {
       "id": "veloura_footer_icon_color_2026",
       "type": "string",
       "format": "color",
       "inputType": "color",
-      "label": "لون أيقونات التواصل والسوشيال",
+      "label": "لون الأيقونات والنصوص",
       "value": "#26265c",
       "conditions": [
         {
@@ -2928,14 +2913,15 @@
           "operation": "=",
           "value": true
         }
-      ]
+      ],
+      "description": "لون الأيقونة والنص معاً في وسائل الاتصال والسوشيال، في وضعي الأيقونات فقط أو الأيقونة مع النص."
     },
     {
       "id": "veloura_footer_contact_border_color_2026",
       "type": "string",
       "format": "color",
       "inputType": "color",
-      "label": "لون إطار أزرار التواصل",
+      "label": "لون إطار أزرار التواصل والسوشيال",
       "value": "#26265c",
       "conditions": [
         {
@@ -2943,7 +2929,8 @@
           "operation": "=",
           "value": true
         }
-      ]
+      ],
+      "description": "يطبّق على وسائل الاتصال والسوشيال سواء كانت مدمجة أو منفصلة."
     },
     {
       "type": "static",
@@ -3201,7 +3188,7 @@
       "id": "veloura_footer_contact_display_2026",
       "type": "items",
       "format": "dropdown-list",
-      "label": "شكل وسائل الاتصال والسوشيال عند الدمج",
+      "label": "شكل وسائل الاتصال والسوشيال",
       "icon": "sicon-list",
       "source": "Manual",
       "required": false,
@@ -3232,7 +3219,8 @@
           "operation": "=",
           "value": true
         }
-      ]
+      ],
+      "description": "يتحكم بالشكل في الحالتين: عند دمج السوشيال مع وسائل الاتصال أو عند إبقائها منفصلة أسفل وصف المتجر."
     },
     {
       "type": "boolean",
@@ -3256,7 +3244,7 @@
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "label": "دمج السوشيال مع وسائل الاتصال",
-      "description": "عند التفعيل تظهر السوشيال مع الهاتف والإيميل وبنفس الشكل المختار. عند الإغلاق تبقى السوشيال تحت معلومات المتجر كأيقونات فقط.",
+      "description": "عند التفعيل تظهر السوشيال مع الهاتف والإيميل. عند الإغلاق تظهر السوشيال أسفل وصف المتجر، وتبقى بنفس الشكل والألوان المختارة.",
       "id": "veloura_footer_merge_social_with_contacts_2026",
       "format": "switch",
       "required": false,
@@ -16412,7 +16400,7 @@
           "id": "veloura_steps_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل1111",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل",
           "icon": "sicon-eye-off",
           "value": false,
           "selected": false,
