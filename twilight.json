@@ -2046,8 +2046,8 @@
     {
       "type": "boolean",
       "icon": "sicon-toggle-off",
-      "label": "إخفاء سعر/مجموع السلة من القسم العلوي (الهيدر)",
-      "description": "إخفاء السعر من أيقونة السلة وإظهار الأيقونة فقط في الجوال",
+      "label": "إخفاء سعر/مجموع السلة من الهيدر",
+      "description": "عند إلغاء التفعيل يظهر مجموع السلة يسار أيقونة السلة ويأخذ مساحته الطبيعية داخل مجموعة أدوات الهيدر.",
       "id": "veloura_top_hide_cart_total_mobile_2026",
       "format": "switch",
       "required": false,
@@ -2436,9 +2436,28 @@
     {
       "type": "boolean",
       "format": "switch",
+      "id": "veloura_home_tabs_sticky_v4_2026",
+      "label": "تثبيت التبويبات مع الهيدر عند التمرير",
+      "description": "تبقى التبويبات متصلة مباشرة أسفل الهيدر دون فراغ.",
+      "icon": "sicon-pin",
+      "value": true,
+      "selected": true,
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_home_tabs_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "default": true
+    },
+    {
+      "type": "boolean",
+      "format": "switch",
       "id": "veloura_home_tabs_hide_on_scroll_v7_2026",
       "label": "إخفاء التبويبات بعد النزول وإظهارها عند العودة لأعلى الصفحة",
-      "description": "التبويبات تبقى متصلة بالهيدر دائماً. عند تفعيل هذا الخيار تختفي التبويبات أثناء النزول، وتظهر مجدداً عند الرجوع إلى منطقة رأس الصفحة.",
+      "description": "عند تفعيله تختفي التبويبات أثناء النزول، ولا تعود بمجرد الصعود قليلاً؛ تظهر فقط عند الرجوع إلى منطقة رأس الصفحة.",
       "icon": "sicon-eye-off",
       "value": false,
       "selected": false,
@@ -16381,7 +16400,7 @@
           "id": "veloura_steps_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل1111",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل",
           "icon": "sicon-eye-off",
           "value": false,
           "selected": false,

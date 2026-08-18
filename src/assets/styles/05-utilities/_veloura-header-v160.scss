@@ -1,0 +1,163 @@
+/* ========================================================================
+   Veloura V160 — connected desktop search + submenu blur + cart total.
+
+   Goals:
+   1) Connected desktop search and the right-side controls share the same
+      measured width and sit inside the fixed Salla/Raed 1280px content frame.
+   2) Rectangular search mode never leaks the two legacy search-toggle icons.
+   3) Glass submenu restores a real backdrop blur (V62 used to force `none`).
+   4) When the cart total is enabled it owns real inline width to the LEFT of
+      the cart icon instead of overlapping / being ignored by layout math.
+   ======================================================================== */
+
+@media (min-width: 1024px) {
+  /* Keep the header background free to be full-width/floating, while the
+     actual controls follow the same fixed 1280px frame as Salla content. */
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar
+    .veloura-header-grid,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled)
+    .veloura-header-grid {
+    width: 100% !important;
+    max-width: 1280px !important;
+    margin-inline: auto !important;
+    padding-inline: 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* V64 was forcing every .veloura-header-icon back to inline-flex after the
+     base search-mode rules had hidden the two search buttons. Hide them again
+     at the final cascade layer whenever the rectangular field is visible. */
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar
+    .veloura-v63-unified-icons .veloura-search-toggle,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled)
+    .veloura-v63-unified-icons .veloura-search-toggle {
+    display: none !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+  }
+
+  /* Search width = measured visible controls width. No old 240/340 clamp. */
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar
+    .veloura-header-grid > .veloura-desktop-search-bar,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled)
+    .veloura-header-grid > .veloura-desktop-search-bar,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar
+    .veloura-header-grid > .veloura-v63-unified-icons,
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled)
+    .veloura-header-grid > .veloura-v63-unified-icons {
+    width: var(--veloura-v63-side-width, 300px) !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* In an RTL flex row, flex-start is the physical RIGHT. V64's flex-end was
+     leaving an empty strip at the right edge, making the icons miss the
+     container boundary while the search touched the left edge. */
+  html body .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search
+    .veloura-header-grid > .veloura-v63-unified-icons {
+    justify-content: flex-start !important;
+  }
+
+  /* Cart total: reserve intrinsic width and keep the icon on the right with
+     the amount immediately to its left. */
+  html body .store-header.veloura-top-enabled
+    salla-cart-summary.veloura-cart-total-visible {
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    width: max-content !important;
+    min-width: max-content !important;
+    max-width: none !important;
+    direction: rtl !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+  }
+
+  html body .store-header.veloura-top-enabled
+    salla-cart-summary.veloura-cart-total-visible
+    :is(.s-cart-summary-wrapper, .s-cart-summary-content),
+  html body .store-header.veloura-top-enabled
+    salla-cart-summary.veloura-cart-total-visible::part(wrapper),
+  html body .store-header.veloura-top-enabled
+    salla-cart-summary.veloura-cart-total-visible::part(button) {
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    width: max-content !important;
+    min-width: max-content !important;
+    max-width: none !important;
+    direction: rtl !important;
+    white-space: nowrap !important;
+  }
+
+  html body .store-header.veloura-top-enabled
+    salla-cart-summary.veloura-cart-total-visible
+    .s-cart-summary-total {
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    width: auto !important;
+    min-width: max-content !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+  }
+
+  html body .store-header.veloura-top-enabled
+    salla-cart-summary.veloura-cart-total-visible
+    .veloura-cart-custom-icon {
+    flex: 0 0 auto !important;
+    order: -1 !important;
+  }
+
+  /* Real submenu blur. V62 loads after V60 and explicitly sets
+     backdrop-filter:none!important; this final layer restores the intended
+     material only when the header glass mode is active. */
+  html body .veloura-header-tabs-stack--blur
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    :is(.veloura-submenu-surface, .sub-menu),
+  html body.veloura-glass-effect .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    :is(.veloura-submenu-surface, .sub-menu) {
+    background: rgba(244, 244, 246, .68) !important;
+    background-color: rgba(244, 244, 246, .68) !important;
+    background-image: none !important;
+    border: 1px solid var(--veloura-v60-glass-border, rgba(255,255,255,.52)) !important;
+    -webkit-backdrop-filter: var(--veloura-v60-dropdown-filter, blur(30px) saturate(96%) contrast(100%)) !important;
+    backdrop-filter: var(--veloura-v60-dropdown-filter, blur(30px) saturate(96%) contrast(100%)) !important;
+    box-shadow: 0 18px 42px rgba(15, 23, 42, .15) !important;
+  }
+
+  html.dark body .veloura-header-tabs-stack--blur
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    :is(.veloura-submenu-surface, .sub-menu),
+  html body.dark .veloura-header-tabs-stack--blur
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    :is(.veloura-submenu-surface, .sub-menu),
+  html.dark body.veloura-glass-effect .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    :is(.veloura-submenu-surface, .sub-menu),
+  html body.dark.veloura-glass-effect .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    :is(.veloura-submenu-surface, .sub-menu) {
+    background: rgba(39, 40, 44, .68) !important;
+    background-color: rgba(39, 40, 44, .68) !important;
+    border-color: var(--veloura-v60-glass-border-dark, rgba(255,255,255,.15)) !important;
+  }
+}
