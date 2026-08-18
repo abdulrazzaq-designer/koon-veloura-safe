@@ -38,8 +38,9 @@ const removeBodyClassesIfPresent = (...tokens) => {
 const initVelouraFooter = (() => {
   /*
    * Veloura footer controller
-   * - Builds one clean contact-card list from Salla contacts and social links.
-   * - Removes duplicate platforms.
+   * - Builds clean contact cards from Salla contacts.
+   * - Keeps native <salla-social> output untouched unless merge-social is enabled.
+   * - Removes duplicate platforms when contacts/social are merged.
    * - Detects application badges and updates footer layout classes.
    * - Keeps App Store and Google Play badges side by side.
    */
@@ -192,50 +193,6 @@ const initVelouraFooter = (() => {
   }
 
 
-  function renderDetachedSocialCards(footer) {
-    if (!footer || footer.classList.contains('veloura-footer-merge-social')) return;
-
-    footer.querySelectorAll('.veloura-footer-social-contact[data-veloura-footer-social]').forEach(socialRoot => {
-      const sources = Array.from(
-        socialRoot.querySelectorAll('salla-social a[href], salla-social button')
-      );
-
-      let cardsRoot = socialRoot.querySelector(':scope > .veloura-footer-social-cards');
-
-      if (!sources.length) {
-        cardsRoot?.remove();
-        socialRoot.classList.remove('veloura-footer-social-ready');
-        return;
-      }
-
-      const seen = new Set();
-      const cards = [];
-
-      sources.forEach(source => {
-        const kind = detectKind(source, 'social');
-        const href = (source.getAttribute('href') || '').trim().toLowerCase();
-        const key = `${kind}:${href || cleanText(source)}`;
-        if (!key || seen.has(key)) return;
-
-        seen.add(key);
-        const card = createContactCard(source, kind);
-        card.classList.add('veloura-footer-social-card');
-        cards.push(card);
-      });
-
-      if (!cards.length) return;
-
-      if (!cardsRoot) {
-        cardsRoot = document.createElement('div');
-        cardsRoot.className = 'veloura-footer-social-cards';
-        cardsRoot.dataset.velouraFooterSocialCards = '1';
-        socialRoot.appendChild(cardsRoot);
-      }
-
-      cardsRoot.replaceChildren(...cards);
-      socialRoot.classList.add('veloura-footer-social-ready');
-    });
-  }
 
   function restoreImages(root) {
     if (!root || typeof root.querySelectorAll !== 'function') return;
@@ -366,7 +323,7 @@ const initVelouraFooter = (() => {
 
   function observeContactSources(footer) {
     footer.querySelectorAll(
-      '[data-veloura-footer-contacts], [data-veloura-footer-social]'
+      '[data-veloura-footer-contacts], .veloura-footer-social-merged[data-veloura-footer-social]'
     ).forEach(sourceRoot => {
       if (sourceRoot.dataset.velouraFooterObserver === '1') return;
 
@@ -375,7 +332,6 @@ const initVelouraFooter = (() => {
 
       const observer = new MutationObserver(records => {
         const hasSourceMutation = records.some(record =>
-          !record.target?.closest?.('[data-veloura-footer-social-cards]') &&
           !record.target?.closest?.('[data-veloura-footer-contact-cards]')
         );
 
@@ -385,7 +341,6 @@ const initVelouraFooter = (() => {
         window.requestAnimationFrame(() => {
           scheduled = false;
           renderContactCards(footer);
-          renderDetachedSocialCards(footer);
         });
       });
 
@@ -426,7 +381,6 @@ const initVelouraFooter = (() => {
 
     restoreImages(footer);
     renderContactCards(footer);
-    renderDetachedSocialCards(footer);
     arrangeApplications(footer);
     observeContactSources(footer);
     observeApplications(footer);

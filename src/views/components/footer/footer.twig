@@ -149,7 +149,7 @@
 
 <footer
   id="veloura-footer"
-  data-veloura-footer-build="split-files-v1"
+  data-veloura-footer-build="split-files-v151"
   data-veloura-footer-center-all="{{ footer_center_all ? 'true' : 'false' }}"
   data-veloura-footer-layout="{{ footer_featured_layout ? 'featured' : 'normal' }}"
   data-veloura-footer-title-lines="{{ footer_title_lines ? 'true' : 'false' }}"
@@ -229,7 +229,7 @@
               {% endif %}
 
               {% if not footer_merge_social %}
-                <div class="veloura-footer-social veloura-footer-social-contact" data-veloura-footer-social>
+                <div class="veloura-footer-social veloura-footer-social-contact veloura-footer-social--desktop" data-veloura-footer-social>
                   <salla-social></salla-social>
                 </div>
               {% endif %}
@@ -327,7 +327,7 @@
               {% endif %}
 
               {% if not footer_merge_social %}
-                <div class="veloura-footer-social veloura-footer-social-contact" data-veloura-footer-social>
+                <div class="veloura-footer-social veloura-footer-social-contact veloura-footer-social--desktop" data-veloura-footer-social>
                   <salla-social></salla-social>
                 </div>
               {% endif %}
@@ -412,6 +412,12 @@
 
             {% if footer_merge_social %}
               <div class="veloura-footer-social veloura-footer-social-merged" data-veloura-footer-social>
+                <salla-social></salla-social>
+              </div>
+            {% endif %}
+
+            {% if not footer_merge_social %}
+              <div class="veloura-footer-social veloura-footer-social-contact veloura-footer-social--mobile" data-veloura-footer-social>
                 <salla-social></salla-social>
               </div>
             {% endif %}
