@@ -37455,7 +37455,9 @@ html[dir=ltr] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > span:has(> .veloura-sid
   --veloura-footer-contact-radius: 999px;
   --veloura-footer-contact-gap: 12px;
   --vf-logo-width: var(--veloura-footer-logo-size, 180px);
-  --vf-logo-height: max(72px, min(calc(var(--vf-logo-width) * .46), 120px));
+  /* V155: the slider is the only logo-size authority. Keep this variable
+     uncapped for layout calculations; the media itself keeps its aspect ratio. */
+  --vf-logo-height: var(--vf-logo-width);
   --vf-desktop-gap: max(32px, min(4vw, 72px));
   --vf-contact-height: 42px;
   --vf-contact-padding: 18px;
@@ -37614,16 +37616,16 @@ html[dir=ltr] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > span:has(> .veloura-sid
   justify-content: center;
   width: min(var(--vf-logo-width), 100%);
   max-width: 100%;
-  height: var(--vf-logo-height);
+  height: auto;
   margin-bottom: 16px;
   overflow: visible;
 }
 .store-footer.veloura-footer-enabled .veloura-footer-logo__media {
   display: block;
-  width: auto;
+  width: 100%;
   height: auto;
   max-width: 100%;
-  max-height: 100%;
+  max-height: none;
   -o-object-fit: contain;
      object-fit: contain;
 }
@@ -38050,7 +38052,9 @@ html[dir=ltr] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > span:has(> .veloura-sid
     text-align: center !important;
   }
   .store-footer.veloura-footer-enabled .veloura-footer-logo {
-    width: min(var(--vf-logo-width), 76vw) !important;
+    width: min(var(--vf-logo-width), 100%) !important;
+    max-width: 100% !important;
+    height: auto !important;
   }
   .store-footer.veloura-footer-enabled .veloura-footer-logo {
     margin-left: auto;
@@ -38323,19 +38327,19 @@ html[dir=ltr] .mm-ocd #mobile-menu.mm-spn li:has(> ul) > span:has(> .veloura-sid
     align-items: center !important;
     justify-content: center !important;
     align-self: center !important;
-    width: min(var(--vf-logo-width), 260px) !important;
-    max-width: 260px !important;
-    height: var(--vf-logo-height) !important;
+    width: min(var(--vf-logo-width), 100%) !important;
+    max-width: 100% !important;
+    height: auto !important;
     padding: 0 !important;
     margin: 0 auto 18px !important;
     transform: none !important;
   }
   #veloura-footer[data-veloura-footer-layout=featured].veloura-footer-no-apps .veloura-footer-logo__media {
     display: block !important;
-    width: auto !important;
+    width: 100% !important;
     height: auto !important;
     max-width: 100% !important;
-    max-height: 100% !important;
+    max-height: none !important;
     margin: auto !important;
     -o-object-fit: contain !important;
        object-fit: contain !important;
@@ -58844,15 +58848,64 @@ body.dark #veloura-footer .veloura-footer-bottom {
   font-size: 18px !important;
   line-height: 1 !important;
 }
-/* Compact footer on desktop follows the same wide visual gutter used by the
-   full-width Veloura header (clamp(16px, 2.35vw, 38px)) instead of collapsing
-   back to the ordinary content container. Full footer mode is unchanged. */
+/* V155 replaces the viewport-gutter experiment. On laptop/desktop the footer
+   owns its own 1280px frame, just like the fixed header container, and no
+   global content-container width variable is allowed to shrink it. */
 @media (min-width: 1024px) {
   #veloura-footer.veloura-footer-compact .veloura-footer-shell {
-    width: calc(100% - max(16px, min(2.35vw, 38px)) - max(16px, min(2.35vw, 38px))) !important;
-    max-width: none !important;
+    width: 100% !important;
+    max-width: 1280px !important;
     margin-right: auto !important;
     margin-left: auto !important;
+  }
+}
+/* ========================================================================== 
+   VELOURA FOOTER V155 — slider-only logo geometry + fixed 1280 desktop frame
+   ========================================================================== */
+/* Logo size contract: --veloura-footer-logo-size comes from the Salla slider.
+   No 72px minimum, 120px ceiling, 260px ceiling, or viewport percentage is
+   allowed to silently change the chosen value. The 100% guard only prevents
+   physical overflow when the chosen value is wider than its actual column. */
+#veloura-footer {
+  --vf-logo-width: var(--veloura-footer-logo-size, 100px);
+  --vf-logo-height: var(--vf-logo-width);
+}
+#veloura-footer .veloura-footer-logo,
+#veloura-footer[data-veloura-footer-layout=featured].veloura-footer-no-apps .veloura-footer-logo {
+  width: min(var(--vf-logo-width), 100%) !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+}
+#veloura-footer .veloura-footer-logo__media,
+#veloura-footer[data-veloura-footer-layout=featured].veloura-footer-no-apps .veloura-footer-logo__media {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: none !important;
+  -o-object-fit: contain !important;
+     object-fit: contain !important;
+}
+/* Desktop/laptop footer frame is deliberately independent from the general
+   store container setting. The global container remains free to size normal
+   page sections, while header/footer keep their own geometry. */
+@media (min-width: 1024px) {
+  #veloura-footer .veloura-footer-container {
+    width: 100% !important;
+    max-width: 1280px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    box-sizing: border-box !important;
+  }
+  #veloura-footer.veloura-footer-compact .veloura-footer-shell {
+    width: 100% !important;
+    max-width: 1280px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
   }
 }
 .before\:text-orange-300::before{

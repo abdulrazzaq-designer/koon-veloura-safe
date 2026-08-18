@@ -235,7 +235,7 @@
 
   /* Floating pill */
   body.veloura-bottom-nav-position-pill .veloura-bottom-nav {
-    bottom: calc(var(--vbn-bottom, 18px) + var(--vbn-safe-bottom));
+    bottom: calc(var(--vbn-bottom, 15px) + var(--vbn-safe-bottom));
 
     padding-inline: var(
       --veloura-home-container-padding,

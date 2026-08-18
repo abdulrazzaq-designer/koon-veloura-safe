@@ -862,15 +862,67 @@ h3.veloura-footer-section-title[data-veloura-title-row="true"]
   line-height: 1 !important;
 }
 
-/* Compact footer on desktop follows the same wide visual gutter used by the
-   full-width Veloura header (clamp(16px, 2.35vw, 38px)) instead of collapsing
-   back to the ordinary content container. Full footer mode is unchanged. */
+/* V155 replaces the viewport-gutter experiment. On laptop/desktop the footer
+   owns its own 1280px frame, just like the fixed header container, and no
+   global content-container width variable is allowed to shrink it. */
 @media (min-width: 1024px) {
   #veloura-footer.veloura-footer-compact .veloura-footer-shell {
-    width: calc(100% - clamp(16px, 2.35vw, 38px) - clamp(16px, 2.35vw, 38px)) !important;
-    max-width: none !important;
+    width: 100% !important;
+    max-width: 1280px !important;
     margin-right: auto !important;
     margin-left: auto !important;
   }
 }
 
+
+
+/* ========================================================================== 
+   VELOURA FOOTER V155 — slider-only logo geometry + fixed 1280 desktop frame
+   ========================================================================== */
+
+/* Logo size contract: --veloura-footer-logo-size comes from the Salla slider.
+   No 72px minimum, 120px ceiling, 260px ceiling, or viewport percentage is
+   allowed to silently change the chosen value. The 100% guard only prevents
+   physical overflow when the chosen value is wider than its actual column. */
+#veloura-footer {
+  --vf-logo-width: var(--veloura-footer-logo-size, 100px);
+  --vf-logo-height: var(--vf-logo-width);
+}
+
+#veloura-footer .veloura-footer-logo,
+#veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-no-apps .veloura-footer-logo {
+  width: min(var(--vf-logo-width), 100%) !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+#veloura-footer .veloura-footer-logo__media,
+#veloura-footer[data-veloura-footer-layout="featured"].veloura-footer-no-apps .veloura-footer-logo__media {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: none !important;
+  object-fit: contain !important;
+}
+
+/* Desktop/laptop footer frame is deliberately independent from the general
+   store container setting. The global container remains free to size normal
+   page sections, while header/footer keep their own geometry. */
+@media (min-width: 1024px) {
+  #veloura-footer .veloura-footer-container {
+    width: 100% !important;
+    max-width: 1280px !important;
+    margin-inline: auto !important;
+    padding-inline: 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  #veloura-footer.veloura-footer-compact .veloura-footer-shell {
+    width: 100% !important;
+    max-width: 1280px !important;
+    margin-inline: auto !important;
+    box-sizing: border-box !important;
+  }
+}

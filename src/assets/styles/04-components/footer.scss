@@ -3657,7 +3657,9 @@ h3.veloura-footer-section-title[data-veloura-title-row="true"] {
   --veloura-footer-contact-radius: 999px;
   --veloura-footer-contact-gap: 12px;
   --vf-logo-width: var(--veloura-footer-logo-size, 180px);
-  --vf-logo-height: clamp(72px, calc(var(--vf-logo-width) * .46), 120px);
+  /* V155: the slider is the only logo-size authority. Keep this variable
+     uncapped for layout calculations; the media itself keeps its aspect ratio. */
+  --vf-logo-height: var(--vf-logo-width);
   --vf-desktop-gap: clamp(32px, 4vw, 72px);
   --vf-contact-height: 42px;
   --vf-contact-padding: 18px;
@@ -3826,17 +3828,17 @@ h3.veloura-footer-section-title[data-veloura-title-row="true"] {
   justify-content: center;
   width: min(var(--vf-logo-width), 100%);
   max-width: 100%;
-  height: var(--vf-logo-height);
+  height: auto;
   margin-bottom: 16px;
   overflow: visible;
 }
 
 .store-footer.veloura-footer-enabled .veloura-footer-logo__media {
   display: block;
-  width: auto;
+  width: 100%;
   height: auto;
   max-width: 100%;
-  max-height: 100%;
+  max-height: none;
   object-fit: contain;
 }
 
@@ -4311,7 +4313,9 @@ h3.veloura-footer-section-title[data-veloura-title-row="true"] {
   }
 
   .store-footer.veloura-footer-enabled .veloura-footer-logo {
-    width: min(var(--vf-logo-width), 76vw) !important;
+    width: min(var(--vf-logo-width), 100%) !important;
+    max-width: 100% !important;
+    height: auto !important;
     margin-inline: auto;
   }
 
@@ -4669,9 +4673,9 @@ h3.veloura-footer-section-title[data-veloura-title-row="true"] {
     justify-content: center !important;
     align-self: center !important;
 
-    width: min(var(--vf-logo-width), 260px) !important;
-    max-width: 260px !important;
-    height: var(--vf-logo-height) !important;
+    width: min(var(--vf-logo-width), 100%) !important;
+    max-width: 100% !important;
+    height: auto !important;
 
     padding: 0 !important;
     margin: 0 auto 18px !important;
@@ -4683,11 +4687,11 @@ h3.veloura-footer-section-title[data-veloura-title-row="true"] {
   .veloura-footer-logo__media {
     display: block !important;
 
-    width: auto !important;
+    width: 100% !important;
     height: auto !important;
 
     max-width: 100% !important;
-    max-height: 100% !important;
+    max-height: none !important;
 
     margin: auto !important;
     object-fit: contain !important;
