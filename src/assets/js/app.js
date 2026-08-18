@@ -1409,14 +1409,21 @@ isElementLoaded(selector){
 
       if (!hideTabsOnScroll) {
         tabsHidden = false;
-        if (tabs) {
-          tabs.hidden = false;
+      }
+
+      const shouldHideTabs = Boolean(tabs) && hideTabsOnScroll && tabsHidden;
+      if (tabs) {
+        tabs.hidden = false;
+        tabs.classList.toggle('veloura-home-tabs--hidden-by-scroll', shouldHideTabs);
+        if (shouldHideTabs) {
+          tabs.setAttribute('aria-hidden', 'true');
+        } else {
           tabs.removeAttribute('aria-hidden');
         }
       }
 
       stack.classList.toggle('veloura-hide-header-now', hideHeaderOnScroll && headerHidden);
-      stack.classList.toggle('veloura-hide-tabs-now', hideTabsOnScroll && tabsHidden);
+      stack.classList.toggle('veloura-hide-tabs-now', shouldHideTabs);
     };
 
     const update = () => {
