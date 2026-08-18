@@ -531,3 +531,30 @@ html body .veloura-header-tabs-stack.veloura-hide-header-now.veloura-header-tabs
    above remains untouched. Solid mode keeps the configured tabs background;
    glass mode continues to share the header glass material.
    ======================================================================== */
+
+/* ========================================================================
+   Veloura Header + Tabs V22 — restore the original 1px header/tabs separator
+
+   Draw the separator as its own layer so it cannot be swallowed by the
+   connected glass/solid surfaces. The color is intentionally the original
+   --veloura-v15-separator value; no opacity or tone changes are introduced.
+   ======================================================================== */
+html body .veloura-header-tabs-stack--has-tabs:not(.veloura-hide-header-now)
+  .veloura-home-tabs::before {
+  content: '' !important;
+  position: absolute !important;
+  inset-inline: 0 !important;
+  top: 0 !important;
+  width: 100% !important;
+  height: 1px !important;
+  background: var(--veloura-v15-separator) !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+}
+
+/* Avoid painting a stray divider when the header itself is hidden. */
+html body .veloura-header-tabs-stack.veloura-hide-header-now.veloura-header-tabs-stack--has-tabs
+  .veloura-home-tabs::before {
+  display: none !important;
+}
