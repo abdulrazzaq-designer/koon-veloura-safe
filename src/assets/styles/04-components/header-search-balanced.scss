@@ -85,7 +85,7 @@
   html body .store-header.veloura-top-enabled.veloura-header-balanced-search
     .veloura-header__tools > .veloura-header__actions {
     display: flex !important;
-    direction: ltr !important;
+    direction: inherit !important;
     align-items: center !important;
     align-self: center !important;
     justify-content: flex-start !important;
