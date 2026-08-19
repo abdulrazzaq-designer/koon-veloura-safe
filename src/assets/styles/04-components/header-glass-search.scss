@@ -4,20 +4,20 @@
    ======================================================================== */
 
 :root {
-  --veloura-v58-glass-bg: var(--veloura-glass-surface);
-  --veloura-v58-glass-bg-dark: var(--veloura-glass-surface);
-  --veloura-v58-glass-border: transparent;
-  --veloura-v58-glass-border-dark: transparent;
-  --veloura-v58-glass-filter: var(--veloura-glass-filter);
-  --veloura-v58-search-height: 36px;
-  --veloura-v58-edge-inset: clamp(16px, 1.35vw, 24px);
+  --veloura-glass-bg: var(--veloura-glass-surface);
+  --veloura-glass-bg-dark: var(--veloura-glass-surface);
+  --veloura-glass-border: transparent;
+  --veloura-glass-border-dark: transparent;
+  --veloura-glass-filter: var(--veloura-glass-filter);
+  --veloura-search-height: 36px;
+  --veloura-edge-inset: clamp(16px, 1.35vw, 24px);
 }
 
 html body .veloura-header-tabs-stack--blur {
-  --veloura-v15-glass-fallback: var(--veloura-glass-surface);
-  --veloura-v15-glass-dark-fallback: var(--veloura-glass-surface);
-  --veloura-v15-border: transparent;
-  --veloura-v15-filter: var(--veloura-glass-filter);
+  --veloura-glass-fallback: var(--veloura-glass-surface);
+  --veloura-glass-dark-fallback: var(--veloura-glass-surface);
+  --veloura-border: transparent;
+  --veloura-filter: var(--veloura-glass-filter);
 }
 
 html body .veloura-header-tabs-stack--blur
@@ -62,7 +62,7 @@ html body .veloura-search-surface > .veloura-search-field-icon {
 /* Solid search still uses the actual secondary site color. */
 html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
   .veloura-search-surface {
-  --veloura-v55-search-bg: var(--veloura-site-second-bg, #f4f5f7);
+  --veloura-search-bg: var(--veloura-site-second-bg, #f4f5f7);
   background: var(--veloura-site-second-bg, #f4f5f7) !important;
   background-color: var(--veloura-site-second-bg, #f4f5f7) !important;
   background-image: none !important;
@@ -74,7 +74,7 @@ html.dark body
 html body.dark
   .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
   .veloura-search-surface {
-  --veloura-v55-search-bg: var(--veloura-dark-secondary-bg, #010612);
+  --veloura-search-bg: var(--veloura-dark-secondary-bg, #010612);
   background: var(--veloura-dark-secondary-bg, #010612) !important;
   background-color: var(--veloura-dark-secondary-bg, #010612) !important;
 }
@@ -84,7 +84,7 @@ html body .veloura-header-tabs-stack--blur .veloura-search-surface,
 html body.veloura-glass-effect
   .veloura-header-tabs-stack
   .veloura-search-surface {
-  --veloura-v55-search-bg: var(--veloura-glass-surface);
+  --veloura-search-bg: var(--veloura-glass-surface);
   background:
     linear-gradient(
       to bottom,
@@ -117,9 +117,9 @@ html body salla-search.veloura-header-search-component [part~='input'],
 html body salla-search.veloura-header-search-component::part(input),
 html body salla-search.veloura-header-search-component::part(form),
 html body salla-search.veloura-header-search-component::part(container) {
-  min-height: var(--veloura-v58-search-height) !important;
-  height: var(--veloura-v58-search-height) !important;
-  max-height: var(--veloura-v58-search-height) !important;
+  min-height: var(--veloura-search-height) !important;
+  height: var(--veloura-search-height) !important;
+  max-height: var(--veloura-search-height) !important;
 }
 
 html body .veloura-search-surface
@@ -180,7 +180,7 @@ html body .veloura-search-surface
    Cart: use the same hit-box and vertical centering contract as peer icons.
    Covers both the custom slot and the hydrated Salla internal wrapper.
    ------------------------------------------------------------------------ */
-html body .store-header.veloura-top-enabled .veloura-header-side > *,
+html body .store-header.veloura-top-enabled .veloura-header__actions > *,
 html body .store-header.veloura-top-enabled .veloura-cart-summary {
   align-self: center !important;
 }
@@ -189,8 +189,8 @@ html body .store-header.veloura-top-enabled .veloura-cart-summary {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  height: var(--veloura-v55-icon-hit, 38px) !important;
-  min-height: var(--veloura-v55-icon-hit, 38px) !important;
+  height: var(--veloura-icon-hit, 38px) !important;
+  min-height: var(--veloura-icon-hit, 38px) !important;
   line-height: 1 !important;
   vertical-align: middle !important;
   transform: none !important;
@@ -219,14 +219,14 @@ html body .store-header.veloura-top-enabled .veloura-cart-summary .veloura-cart-
   html body .store-header.veloura-top-enabled .veloura-desktop-search-bar {
     width: auto !important;
     max-width: none !important;
-    margin-inline: var(--veloura-v58-edge-inset) !important;
+    margin-inline: var(--veloura-edge-inset) !important;
     box-sizing: border-box !important;
   }
 
   html body .veloura-header-tabs-stack .veloura-detached-search-shell {
     position: relative !important;
     z-index: 10 !important;
-    padding-inline: var(--veloura-v58-edge-inset) !important;
+    padding-inline: var(--veloura-edge-inset) !important;
     box-sizing: border-box !important;
   }
 
@@ -247,18 +247,18 @@ html body .store-header.veloura-top-enabled .veloura-cart-summary .veloura-cart-
 
   html body .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-main-menu-desktop .sub-menu {
     z-index: 3200 !important;
-    border-radius: var(--veloura-v15-radius, 24px) !important;
+    border-radius: var(--veloura-radius, 24px) !important;
   }
 
   html body .veloura-header-tabs-stack--blur
     .store-header.veloura-top-enabled.veloura-desktop-menu-links
     .veloura-main-menu-desktop .sub-menu {
-    background: var(--veloura-v58-glass-bg) !important;
-    background-color: var(--veloura-v58-glass-bg) !important;
+    background: var(--veloura-glass-bg) !important;
+    background-color: var(--veloura-glass-bg) !important;
     background-image: none !important;
-    border: 1px solid var(--veloura-v58-glass-border) !important;
-    -webkit-backdrop-filter: var(--veloura-v58-glass-filter) !important;
-    backdrop-filter: var(--veloura-v58-glass-filter) !important;
+    border: 1px solid var(--veloura-glass-border) !important;
+    -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
+    backdrop-filter: var(--veloura-glass-filter) !important;
     box-shadow: 0 16px 36px rgba(15, 23, 42, .10) !important;
   }
 
@@ -268,9 +268,9 @@ html body .store-header.veloura-top-enabled .veloura-cart-summary .veloura-cart-
   html body.dark .veloura-header-tabs-stack--blur
     .store-header.veloura-top-enabled.veloura-desktop-menu-links
     .veloura-main-menu-desktop .sub-menu {
-    background: var(--veloura-v58-glass-bg-dark) !important;
-    background-color: var(--veloura-v58-glass-bg-dark) !important;
-    border-color: var(--veloura-v58-glass-border-dark) !important;
+    background: var(--veloura-glass-bg-dark) !important;
+    background-color: var(--veloura-glass-bg-dark) !important;
+    border-color: var(--veloura-glass-border-dark) !important;
   }
 }
 

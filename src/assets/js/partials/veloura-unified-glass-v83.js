@@ -3,8 +3,8 @@
   'use strict';
 
   const VERSION = 'v83';
-  const STYLE_ID = 'veloura-v83-component-style';
-  const SEARCH_STYLE_ID = 'veloura-v83-search-style';
+  const STYLE_ID = 'veloura-component-style';
+  const SEARCH_STYLE_ID = 'veloura-search-style';
   const observedRoots = new WeakSet();
   const queuedHosts = new WeakSet();
 
@@ -41,14 +41,14 @@
   ].join(',');
 
   const searchCss = `
-    :host([data-veloura-v83-inline-search='true']) {
+    :host([data-veloura-inline-search='true']) {
       display: block !important;
       background: transparent !important;
       background-color: transparent !important;
       background-image: none !important;
-      color: var(--veloura-v83-primary, #111827) !important;
-      --color-text: var(--veloura-v83-primary, #111827) !important;
-      --color-muted: var(--veloura-v83-secondary, #64748b) !important;
+      color: var(--veloura-primary, #111827) !important;
+      --color-text: var(--veloura-primary, #111827) !important;
+      --color-muted: var(--veloura-secondary, #64748b) !important;
       --s-search-bg: transparent !important;
       --s-search-input-bg: transparent !important;
       --s-search-input-background: transparent !important;
@@ -56,7 +56,7 @@
       --search-background: transparent !important;
     }
 
-    :host([data-veloura-v83-inline-search='true']) :is(
+    :host([data-veloura-inline-search='true']) :is(
       form,
       input,
       button,
@@ -74,16 +74,16 @@
       background-image: none !important;
       border-color: transparent !important;
       box-shadow: none !important;
-      color: var(--veloura-v83-primary, #111827) !important;
+      color: var(--veloura-primary, #111827) !important;
     }
 
-    :host([data-veloura-v83-inline-search='true']) input {
+    :host([data-veloura-inline-search='true']) input {
       -webkit-text-fill-color: currentColor !important;
     }
 
     :host input::placeholder,
     :host .s-search-input::placeholder {
-      color: var(--veloura-v83-secondary, #64748b) !important;
+      color: var(--veloura-secondary, #64748b) !important;
       -webkit-text-fill-color: currentColor !important;
       opacity: .78 !important;
     }
@@ -96,19 +96,19 @@
       [part~='panel']
     ) {
       box-sizing: border-box !important;
-      background: var(--veloura-v83-surface, rgba(238,240,243,.64)) !important;
-      background-color: var(--veloura-v83-surface, rgba(238,240,243,.64)) !important;
+      background: var(--veloura-surface, rgba(238,240,243,.64)) !important;
+      background-color: var(--veloura-surface, rgba(238,240,243,.64)) !important;
       background-image: none !important;
-      border-top: 1px solid var(--veloura-v83-edge-top, rgba(100,116,139,.18)) !important;
-      border-bottom: 1px solid var(--veloura-v83-edge-bottom, rgba(100,116,139,.10)) !important;
+      border-top: 1px solid var(--veloura-edge-top, rgba(100,116,139,.18)) !important;
+      border-bottom: 1px solid var(--veloura-edge-bottom, rgba(100,116,139,.10)) !important;
       border-inline: 0 !important;
-      -webkit-backdrop-filter: var(--veloura-v83-filter, blur(22px) saturate(118%)) !important;
-      backdrop-filter: var(--veloura-v83-filter, blur(22px) saturate(118%)) !important;
-      box-shadow: 0 8px 24px var(--veloura-v83-shadow, rgba(15,23,42,.045)) !important;
-      color: var(--veloura-v83-primary, #111827) !important;
+      -webkit-backdrop-filter: var(--veloura-filter, blur(22px) saturate(118%)) !important;
+      backdrop-filter: var(--veloura-filter, blur(22px) saturate(118%)) !important;
+      box-shadow: 0 8px 24px var(--veloura-shadow, rgba(15,23,42,.045)) !important;
+      color: var(--veloura-primary, #111827) !important;
     }
 
-    :host([data-veloura-v83-inline-search='false']) :is(
+    :host([data-veloura-inline-search='false']) :is(
       form,
       .s-search-input,
       .s-search-container,
@@ -120,44 +120,44 @@
       [part~='wrapper']
     ) {
       box-sizing: border-box !important;
-      background: var(--veloura-v83-surface, rgba(238,240,243,.64)) !important;
-      background-color: var(--veloura-v83-surface, rgba(238,240,243,.64)) !important;
+      background: var(--veloura-surface, rgba(238,240,243,.64)) !important;
+      background-color: var(--veloura-surface, rgba(238,240,243,.64)) !important;
       background-image: none !important;
-      border-top: 1px solid var(--veloura-v83-edge-top, rgba(100,116,139,.18)) !important;
-      border-bottom: 1px solid var(--veloura-v83-edge-bottom, rgba(100,116,139,.10)) !important;
+      border-top: 1px solid var(--veloura-edge-top, rgba(100,116,139,.18)) !important;
+      border-bottom: 1px solid var(--veloura-edge-bottom, rgba(100,116,139,.10)) !important;
       border-inline: 0 !important;
-      -webkit-backdrop-filter: var(--veloura-v83-filter, blur(22px) saturate(118%)) !important;
-      backdrop-filter: var(--veloura-v83-filter, blur(22px) saturate(118%)) !important;
-      box-shadow: 0 8px 24px var(--veloura-v83-shadow, rgba(15,23,42,.045)) !important;
-      color: var(--veloura-v83-primary, #111827) !important;
+      -webkit-backdrop-filter: var(--veloura-filter, blur(22px) saturate(118%)) !important;
+      backdrop-filter: var(--veloura-filter, blur(22px) saturate(118%)) !important;
+      box-shadow: 0 8px 24px var(--veloura-shadow, rgba(15,23,42,.045)) !important;
+      color: var(--veloura-primary, #111827) !important;
     }
   `;
 
   const componentCss = `
-    :host([data-veloura-v83-dark='true']) {
-      color: var(--veloura-v83-primary, #fff) !important;
-      --color-text: var(--veloura-v83-primary, #fff) !important;
-      --color-muted: var(--veloura-v83-secondary, #ccc) !important;
-      --color-grey: var(--veloura-v83-secondary, #ccc) !important;
-      --color-grey-dark: var(--veloura-v83-primary, #fff) !important;
-      --color-grey-darker: var(--veloura-v83-primary, #fff) !important;
+    :host([data-veloura-dark='true']) {
+      color: var(--veloura-primary, #fff) !important;
+      --color-text: var(--veloura-primary, #fff) !important;
+      --color-muted: var(--veloura-secondary, #ccc) !important;
+      --color-grey: var(--veloura-secondary, #ccc) !important;
+      --color-grey-dark: var(--veloura-primary, #fff) !important;
+      --color-grey-darker: var(--veloura-primary, #fff) !important;
     }
 
-    :host([data-veloura-v83-glass='true']) [data-veloura-v83-panel='true'] {
+    :host([data-veloura-glass='true']) [data-veloura-panel='true'] {
       box-sizing: border-box !important;
-      background: var(--veloura-v83-surface, rgba(238,240,243,.64)) !important;
-      background-color: var(--veloura-v83-surface, rgba(238,240,243,.64)) !important;
+      background: var(--veloura-surface, rgba(238,240,243,.64)) !important;
+      background-color: var(--veloura-surface, rgba(238,240,243,.64)) !important;
       background-image: none !important;
-      border-top: 1px solid var(--veloura-v83-edge-top, rgba(100,116,139,.18)) !important;
-      border-bottom: 1px solid var(--veloura-v83-edge-bottom, rgba(100,116,139,.10)) !important;
+      border-top: 1px solid var(--veloura-edge-top, rgba(100,116,139,.18)) !important;
+      border-bottom: 1px solid var(--veloura-edge-bottom, rgba(100,116,139,.10)) !important;
       border-inline: 0 !important;
-      -webkit-backdrop-filter: var(--veloura-v83-filter, blur(22px) saturate(118%)) !important;
-      backdrop-filter: var(--veloura-v83-filter, blur(22px) saturate(118%)) !important;
-      color: var(--veloura-v83-primary, #111827) !important;
-      box-shadow: 0 8px 24px var(--veloura-v83-shadow, rgba(15,23,42,.045)) !important;
+      -webkit-backdrop-filter: var(--veloura-filter, blur(22px) saturate(118%)) !important;
+      backdrop-filter: var(--veloura-filter, blur(22px) saturate(118%)) !important;
+      color: var(--veloura-primary, #111827) !important;
+      box-shadow: 0 8px 24px var(--veloura-shadow, rgba(15,23,42,.045)) !important;
     }
 
-    :host([data-veloura-v83-glass='true']) :is(
+    :host([data-veloura-glass='true']) :is(
       .s-salla-modal-body,
       .s-modal-body,
       .s-modal-content,
@@ -175,7 +175,7 @@
       [part~='body'],
       [part~='panel'],
       [role='dialog']
-    ):not([data-veloura-v83-panel='true']) {
+    ):not([data-veloura-panel='true']) {
       background: transparent !important;
       background-color: transparent !important;
       background-image: none !important;
@@ -185,24 +185,24 @@
       backdrop-filter: none !important;
     }
 
-    :host([data-veloura-v83-dark='true']) :is(
+    :host([data-veloura-dark='true']) :is(
       h1, h2, h3, h4, h5, h6,
       .s-modal-title,
       .s-login-modal-title,
       .s-user-menu-title,
       [part~='title']
     ) {
-      color: var(--veloura-v83-primary, #fff) !important;
+      color: var(--veloura-primary, #fff) !important;
       -webkit-text-fill-color: currentColor !important;
     }
 
-    :host([data-veloura-v83-dark='true']) :is(
+    :host([data-veloura-dark='true']) :is(
       p, small, label,
       .text-gray-400, .text-gray-500, .text-gray-600,
       .text-muted,
       [part~='description']
     ) {
-      color: var(--veloura-v83-secondary, #ccc) !important;
+      color: var(--veloura-secondary, #ccc) !important;
       -webkit-text-fill-color: currentColor !important;
     }
   `;
@@ -261,8 +261,8 @@
     if (!host?.style) return;
 
     const dark = isDark();
-    host.setAttribute('data-veloura-v83-dark', dark ? 'true' : 'false');
-    host.setAttribute('data-veloura-v83-glass', glassEnabledFor(host) ? 'true' : 'false');
+    host.setAttribute('data-veloura-dark', dark ? 'true' : 'false');
+    host.setAttribute('data-veloura-glass', glassEnabledFor(host) ? 'true' : 'false');
 
     const primary = dark
       ? token('--veloura-dark-primary-text', '#ffffff')
@@ -271,14 +271,14 @@
       ? token('--veloura-dark-secondary-text', '#cccccc')
       : token('--color-grey', '#64748b');
 
-    setImportant(host, '--veloura-v83-primary', primary);
-    setImportant(host, '--veloura-v83-secondary', secondary);
-    setImportant(host, '--veloura-v83-surface', token('--veloura-v83-surface', dark ? '#010612' : 'rgba(238,240,243,.64)'));
-    setImportant(host, '--veloura-v83-solid', token('--veloura-v83-solid', dark ? '#010612' : '#eef0f3'));
-    setImportant(host, '--veloura-v83-edge-top', token('--veloura-v83-edge-top', dark ? 'rgba(255,255,255,.09)' : 'rgba(100,116,139,.18)'));
-    setImportant(host, '--veloura-v83-edge-bottom', token('--veloura-v83-edge-bottom', dark ? 'rgba(255,255,255,.045)' : 'rgba(100,116,139,.10)'));
-    setImportant(host, '--veloura-v83-filter', token('--veloura-v83-filter', 'blur(22px) saturate(118%)'));
-    setImportant(host, '--veloura-v83-shadow', token('--veloura-v83-shadow', dark ? 'rgba(0,0,0,.16)' : 'rgba(15,23,42,.045)'));
+    setImportant(host, '--veloura-primary', primary);
+    setImportant(host, '--veloura-secondary', secondary);
+    setImportant(host, '--veloura-surface', token('--veloura-surface', dark ? '#010612' : 'rgba(238,240,243,.64)'));
+    setImportant(host, '--veloura-solid', token('--veloura-solid', dark ? '#010612' : '#eef0f3'));
+    setImportant(host, '--veloura-edge-top', token('--veloura-edge-top', dark ? 'rgba(255,255,255,.09)' : 'rgba(100,116,139,.18)'));
+    setImportant(host, '--veloura-edge-bottom', token('--veloura-edge-bottom', dark ? 'rgba(255,255,255,.045)' : 'rgba(100,116,139,.10)'));
+    setImportant(host, '--veloura-filter', token('--veloura-filter', 'blur(22px) saturate(118%)'));
+    setImportant(host, '--veloura-shadow', token('--veloura-shadow', dark ? 'rgba(0,0,0,.16)' : 'rgba(15,23,42,.045)'));
   }
 
   function isInlineSearch(host) {
@@ -291,7 +291,7 @@
   function clearInlineSearchHost(host) {
     if (!isInlineSearch(host)) return;
 
-    host.setAttribute('data-veloura-v83-inline-search', 'true');
+    host.setAttribute('data-veloura-inline-search', 'true');
     [
       '--s-search-bg',
       '--s-search-input-bg',
@@ -308,7 +308,7 @@
 
   function paintSearchRoot(host, root) {
     const inline = isInlineSearch(host);
-    host.setAttribute('data-veloura-v83-inline-search', inline ? 'true' : 'false');
+    host.setAttribute('data-veloura-inline-search', inline ? 'true' : 'false');
 
     if (inline) {
       root.querySelectorAll(`
@@ -337,7 +337,7 @@
     if (!scope || typeof scope.querySelectorAll !== 'function') return;
 
     const panels = Array.from(scope.querySelectorAll(PANEL_SELECTOR));
-    panels.forEach((panel) => panel.removeAttribute('data-veloura-v83-panel'));
+    panels.forEach((panel) => panel.removeAttribute('data-veloura-panel'));
     if (!panels.length) return;
 
     const depth = (element) => {
@@ -353,7 +353,7 @@
     const maxDepth = Math.max(...panels.map(depth));
     panels
       .filter((panel) => depth(panel) === maxDepth)
-      .forEach((panel) => panel.setAttribute('data-veloura-v83-panel', 'true'));
+      .forEach((panel) => panel.setAttribute('data-veloura-panel', 'true'));
   }
 
   function observeRoot(root) {

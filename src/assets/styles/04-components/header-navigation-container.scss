@@ -83,7 +83,7 @@
     .store-header.veloura-top-enabled #mainnav,
   html body .veloura-header-tabs-stack--floating:not(.veloura-header-tabs-stack--has-tabs)
     .store-header.veloura-top-enabled #mainnav > .inner {
-    border-radius: var(--veloura-v15-radius, 24px) !important;
+    border-radius: var(--veloura-radius, 24px) !important;
   }
 
   html body .veloura-header-tabs-stack--floating.veloura-header-tabs-stack--has-tabs
@@ -92,7 +92,7 @@
     .store-header.veloura-top-enabled #mainnav,
   html body .veloura-header-tabs-stack--floating.veloura-header-tabs-stack--has-tabs
     .store-header.veloura-top-enabled #mainnav > .inner {
-    border-radius: var(--veloura-v15-radius, 24px) var(--veloura-v15-radius, 24px) 0 0 !important;
+    border-radius: var(--veloura-radius, 24px) var(--veloura-radius, 24px) 0 0 !important;
   }
 
   html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--floating):not(.veloura-header-tabs-stack--has-tabs)
@@ -101,7 +101,7 @@
     .store-header.veloura-top-enabled #mainnav,
   html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--floating):not(.veloura-header-tabs-stack--has-tabs)
     .store-header.veloura-top-enabled #mainnav > .inner {
-    border-radius: 0 0 var(--veloura-v15-radius, 24px) var(--veloura-v15-radius, 24px) !important;
+    border-radius: 0 0 var(--veloura-radius, 24px) var(--veloura-radius, 24px) !important;
   }
 
   html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--floating).veloura-header-tabs-stack--has-tabs

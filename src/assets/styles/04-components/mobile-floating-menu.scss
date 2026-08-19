@@ -396,7 +396,7 @@
   html.dark body.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-nav__surface,
   html body.dark.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-nav__surface {
     background: var(
-      --veloura-v86-glass-surface,
+      --veloura-glass-surface,
       color-mix(
         in srgb,
         color-mix(in srgb, var(--veloura-dark-secondary-bg, #001f33) 94%, white 6%) 60%,
@@ -404,7 +404,7 @@
       )
     ) !important;
     background-color: var(
-      --veloura-v86-glass-surface,
+      --veloura-glass-surface,
       color-mix(
         in srgb,
         color-mix(in srgb, var(--veloura-dark-secondary-bg, #001f33) 94%, white 6%) 60%,
@@ -412,16 +412,16 @@
       )
     ) !important;
 
-    border-top: 1px solid var(--veloura-v86-edge-top, rgba(255,255,255,.120)) !important;
-    border-bottom: 1px solid var(--veloura-v86-edge-bottom, rgba(255,255,255,.055)) !important;
+    border-top: 1px solid var(--veloura-edge-top, rgba(255,255,255,.120)) !important;
+    border-bottom: 1px solid var(--veloura-edge-bottom, rgba(255,255,255,.055)) !important;
     border-inline: 0 !important;
 
-    -webkit-backdrop-filter: var(--veloura-v86-filter, blur(24px) saturate(200%)) !important;
-    backdrop-filter: var(--veloura-v86-filter, blur(24px) saturate(200%)) !important;
+    -webkit-backdrop-filter: var(--veloura-filter, blur(24px) saturate(200%)) !important;
+    backdrop-filter: var(--veloura-filter, blur(24px) saturate(200%)) !important;
     filter: none !important;
 
     box-shadow:
-      0 10px 28px var(--veloura-v86-shadow, rgba(0,0,0,.27)),
+      0 10px 28px var(--veloura-shadow, rgba(0,0,0,.27)),
       inset 0 1px 0 rgba(255,255,255,.018) !important;
   }
 
@@ -462,7 +462,7 @@
   html.dark body.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-nav__surface,
   html body.dark.veloura-bottom-nav-enabled.veloura-bottom-nav-glass .veloura-bottom-nav__surface {
     background: var(
-      --veloura-v86-glass-surface,
+      --veloura-glass-surface,
       color-mix(
         in srgb,
         color-mix(in srgb, var(--veloura-dark-secondary-bg, #001f33) 94%, white 6%) 60%,
@@ -470,7 +470,7 @@
       )
     ) !important;
     background-color: var(
-      --veloura-v86-glass-surface,
+      --veloura-glass-surface,
       color-mix(
         in srgb,
         color-mix(in srgb, var(--veloura-dark-secondary-bg, #001f33) 94%, white 6%) 60%,

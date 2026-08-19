@@ -21,15 +21,15 @@ const STYLE = `
     --color-grey-lighter: transparent !important;
   }
 
-  :host([data-veloura-v73-inline='true']),
-  :host([data-veloura-v73-inline='true']) form,
-  :host([data-veloura-v73-inline='true']) input,
-  :host([data-veloura-v73-inline='true']) .s-search-input,
-  :host([data-veloura-v73-inline='true']) .s-search-wrapper,
-  :host([data-veloura-v73-inline='true']) .s-search-container,
-  :host([data-veloura-v73-inline='true']) [part~='input'],
-  :host([data-veloura-v73-inline='true']) [part~='form'],
-  :host([data-veloura-v73-inline='true']) [part~='container'] {
+  :host([data-veloura-inline='true']),
+  :host([data-veloura-inline='true']) form,
+  :host([data-veloura-inline='true']) input,
+  :host([data-veloura-inline='true']) .s-search-input,
+  :host([data-veloura-inline='true']) .s-search-wrapper,
+  :host([data-veloura-inline='true']) .s-search-container,
+  :host([data-veloura-inline='true']) [part~='input'],
+  :host([data-veloura-inline='true']) [part~='form'],
+  :host([data-veloura-inline='true']) [part~='container'] {
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
@@ -37,19 +37,19 @@ const STYLE = `
     box-shadow: none !important;
   }
 
-  :host([data-veloura-v73-dark='true']) {
+  :host([data-veloura-dark='true']) {
     color: var(--veloura-dark-primary-text, #ffffff) !important;
     --color-text: var(--veloura-dark-primary-text, #ffffff) !important;
     --color-muted: var(--veloura-dark-secondary-text, #b7c3cf) !important;
   }
 
-  :host([data-veloura-v73-dark='true']) input,
-  :host([data-veloura-v73-dark='true']) .s-search-input {
+  :host([data-veloura-dark='true']) input,
+  :host([data-veloura-dark='true']) .s-search-input {
     color: var(--veloura-dark-primary-text, #ffffff) !important;
   }
 
-  :host([data-veloura-v73-dark='true']) input::placeholder,
-  :host([data-veloura-v73-dark='true']) .s-search-input::placeholder {
+  :host([data-veloura-dark='true']) input::placeholder,
+  :host([data-veloura-dark='true']) .s-search-input::placeholder {
     color: color-mix(
       in srgb,
       var(--veloura-dark-secondary-text, #b7c3cf) 72%,
@@ -82,8 +82,8 @@ function setVariables(host) {
   const inline = inlineSearch(host);
   const dark = darkMode();
 
-  host.setAttribute('data-veloura-v73-inline', inline ? 'true' : 'false');
-  host.setAttribute('data-veloura-v73-dark', dark ? 'true' : 'false');
+  host.setAttribute('data-veloura-inline', inline ? 'true' : 'false');
+  host.setAttribute('data-veloura-dark', dark ? 'true' : 'false');
 
   const transparentNames = [
     '--s-search-input-bg',

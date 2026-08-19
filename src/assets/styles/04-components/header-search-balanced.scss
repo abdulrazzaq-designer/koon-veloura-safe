@@ -15,9 +15,9 @@
     direction: ltr !important;
     display: grid !important;
     grid-template-columns:
-      minmax(180px, var(--veloura-header-tools-width, 240px))
+      minmax(180px, var(--veloura-header-tools-width, 320px))
       auto
-      minmax(180px, var(--veloura-header-tools-width, 240px)) !important;
+      minmax(180px, var(--veloura-header-tools-width, 320px)) !important;
     grid-template-rows: auto auto !important;
     grid-template-areas: none !important;
     grid-auto-flow: row !important;
@@ -44,7 +44,7 @@
     width: 100% !important;
     min-width: 0 !important;
     max-width: none !important;
-    height: var(--veloura-v60-search-height, 36px) !important;
+    height: var(--veloura-search-height, 36px) !important;
     margin: 0 !important;
   }
 
@@ -65,7 +65,7 @@
 
   /* Right track: all visible header controls in one compact group. */
   html body .store-header.veloura-top-enabled.veloura-header-balanced-search
-    .veloura-header-grid > .veloura-header-tools {
+    .veloura-header-grid > .veloura-header__tools {
     grid-column: 3 !important;
     grid-row: 1 !important;
     display: flex !important;
@@ -74,7 +74,7 @@
     align-self: center !important;
     justify-content: flex-start !important;
     justify-self: stretch !important;
-    gap: clamp(5px, .55vw, 9px) !important;
+    gap: 10px !important;
     width: 100% !important;
     min-width: 0 !important;
     height: max-content !important;
@@ -83,14 +83,14 @@
   }
 
   html body .store-header.veloura-top-enabled.veloura-header-balanced-search
-    .veloura-header-tools > .veloura-header-side {
+    .veloura-header__tools > .veloura-header__actions {
     display: flex !important;
     direction: ltr !important;
     align-items: center !important;
     align-self: center !important;
     justify-content: flex-start !important;
     flex: 0 0 auto !important;
-    gap: clamp(5px, .55vw, 9px) !important;
+    gap: 10px !important;
     min-width: 0 !important;
     width: auto !important;
     height: max-content !important;
@@ -99,15 +99,15 @@
   }
 
   html body .store-header.veloura-top-enabled.veloura-header-balanced-search
-    .veloura-header-tools .veloura-header-icon,
+    .veloura-header__tools .veloura-header-icon,
   html body .store-header.veloura-top-enabled.veloura-header-balanced-search
-    .veloura-header-tools .veloura-cart-summary,
+    .veloura-header__tools .veloura-cart-summary,
   html body .store-header.veloura-top-enabled.veloura-header-balanced-search
-    .veloura-header-tools salla-cart-summary,
+    .veloura-header__tools salla-cart-summary,
   html body .store-header.veloura-top-enabled.veloura-header-balanced-search
-    .veloura-header-tools > *,
+    .veloura-header__tools > *,
   html body .store-header.veloura-top-enabled.veloura-header-balanced-search
-    .veloura-header-tools .veloura-header-side > * {
+    .veloura-header__tools .veloura-header__actions > * {
     align-self: center !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
@@ -144,9 +144,9 @@
   /* V55/V57 edge margins belong to split groups; remove them while both
      original groups are nested inside the unified right-side wrapper. */
   html body .store-header.veloura-top-enabled.veloura-header-balanced-search
-    .veloura-header-tools .veloura-header-left,
+    .veloura-header__tools .veloura-header-left,
   html body .store-header.veloura-top-enabled.veloura-header-balanced-search
-    .veloura-header-tools .veloura-header-right {
+    .veloura-header__tools .veloura-header-right {
     margin-left: 0 !important;
     margin-right: 0 !important;
   }

@@ -376,6 +376,7 @@
   {{ top_logo_no_center_laptop ? 'veloura-top-logo-no-center-laptop' : '' }}
   {{ full_width_desktop ? 'veloura-top-full-width-desktop' : '' }}
   {{ search_detached ? 'veloura-top-search-detached' : '' }}
+  {{ (not search_detached and desktop_search in ['bar', 'bar_sticky_icon']) ? 'veloura-header-balanced-search' : '' }}
   {{ hide_lang_desktop ? 'veloura-top-hide-lang-desktop' : '' }}
   {{ top_hide_on_scroll ? 'veloura-hide-top-on-scroll' : '' }}
 
@@ -386,7 +387,7 @@
   veloura-desktop-search-{{ desktop_search }}
   veloura-desktop-menu-{{ desktop_menu_mode }}
   "
-  data-veloura-header-v9="true"
+  data-veloura-header="true"
   data-veloura-floating="{{ top_floating ? 'true' : 'false' }}"
   data-veloura-compact="{{ top_compact_on_scroll ? 'true' : 'false' }}"
   data-veloura-blur="{{ top_blur ? 'true' : 'false' }}"
@@ -405,7 +406,8 @@
       <div class="veloura-header-container">
         <div class="veloura-header-grid">
 
-          <div class="veloura-header-side veloura-header-left">
+          <div class="veloura-header__tools">
+            <div class="veloura-header__actions">
             {% if localization_available and not hide_lang_desktop %}
               <button type="button" class="veloura-header-icon veloura-lang-desktop" data-veloura-localization-trigger aria-label="اللغة والعملة">
                 <i class="sicon-earth"></i>
@@ -434,9 +436,30 @@
               </button>
             {% endif %}
 
-            <button type="button" class="veloura-header-icon veloura-search-toggle veloura-search-toggle-left" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
-              <i class="sicon-search"></i>
-            </button>
+            {% if desktop_search not in ['bar', 'bar_sticky_icon'] %}
+              <button type="button" class="veloura-header-icon veloura-search-toggle" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
+                <i class="sicon-search"></i>
+              </button>
+            {% endif %}
+
+            {% if dark_enabled and dark_toggle_enabled and dark_pos == 'right' %}
+              <button type="button" class="veloura-header-icon veloura-dark-toggle" aria-label="تبديل الوضع الداكن">
+                <i class="sicon-moon veloura-dark-toggle__icon"></i>
+              </button>
+            {% endif %}
+
+            {% if show_mobile_lang and localization_available %}
+              <button type="button" class="veloura-header-icon veloura-lang-mobile" data-veloura-localization-trigger aria-label="اللغة والعملة">
+                <i class="sicon-earth"></i>
+              </button>
+            {% endif %}
+            </div>
+
+            <div class="veloura-header__menu">
+              <a class="veloura-header-icon veloura-menu-trigger-mobile mburger mburger--collapse" href="#mobile-menu" aria-label="فتح القائمة">
+                <i class="{{ top_menu_icon }}"></i>
+              </a>
+            </div>
           </div>
 
           <a class="navbar-brand veloura-header-logo" href="{{ store.url }}">
@@ -452,28 +475,6 @@
               <h2 class="sr-only">{{ store.name }}</h2>
             {% endif %}
           </a>
-
-          <div class="veloura-header-side veloura-header-right">
-            <button type="button" class="veloura-header-icon veloura-search-toggle veloura-search-toggle-right" onclick="salla.event.dispatch('search::open')" aria-label="بحث">
-              <i class="sicon-search"></i>
-            </button>
-
-            {% if dark_enabled and dark_toggle_enabled and dark_pos == 'right' %}
-              <button type="button" class="veloura-header-icon veloura-dark-toggle" aria-label="تبديل الوضع الداكن">
-                <i class="sicon-moon veloura-dark-toggle__icon"></i>
-              </button>
-            {% endif %}
-
-            {% if show_mobile_lang and localization_available %}
-              <button type="button" class="veloura-header-icon veloura-lang-mobile" data-veloura-localization-trigger aria-label="اللغة والعملة">
-                <i class="sicon-earth"></i>
-              </button>
-            {% endif %}
-
-            <a class="veloura-header-icon veloura-menu-trigger-mobile mburger mburger--collapse" href="#mobile-menu" aria-label="فتح القائمة">
-              <i class="{{ top_menu_icon }}"></i>
-            </a>
-          </div>
 
           <div class="veloura-menu-links-wrap" data-veloura-desktop-menu-links>
             <custom-main-menu></custom-main-menu>

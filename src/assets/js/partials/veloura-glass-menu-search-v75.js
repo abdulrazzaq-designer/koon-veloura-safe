@@ -94,15 +94,15 @@ const SEARCH_STYLE = `
     --search-background: transparent !important;
   }
 
-  :host([data-veloura-v75-inline='true']),
-  :host([data-veloura-v75-inline='true']) form,
-  :host([data-veloura-v75-inline='true']) input,
-  :host([data-veloura-v75-inline='true']) .s-search-input,
-  :host([data-veloura-v75-inline='true']) .s-search-container,
-  :host([data-veloura-v75-inline='true']) .s-search-wrapper,
-  :host([data-veloura-v75-inline='true']) [part~='input'],
-  :host([data-veloura-v75-inline='true']) [part~='form'],
-  :host([data-veloura-v75-inline='true']) [part~='container'] {
+  :host([data-veloura-inline='true']),
+  :host([data-veloura-inline='true']) form,
+  :host([data-veloura-inline='true']) input,
+  :host([data-veloura-inline='true']) .s-search-input,
+  :host([data-veloura-inline='true']) .s-search-container,
+  :host([data-veloura-inline='true']) .s-search-wrapper,
+  :host([data-veloura-inline='true']) [part~='input'],
+  :host([data-veloura-inline='true']) [part~='form'],
+  :host([data-veloura-inline='true']) [part~='container'] {
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
@@ -110,7 +110,7 @@ const SEARCH_STYLE = `
     box-shadow: none !important;
   }
 
-  :host([data-veloura-v75-dark='true']) {
+  :host([data-veloura-dark='true']) {
     --s-search-bg: var(--veloura-dark-secondary-bg, #010612) !important;
     --s-search-modal-bg: var(--veloura-dark-secondary-bg, #010612) !important;
     --s-modal-bg: var(--veloura-dark-secondary-bg, #010612) !important;
@@ -120,16 +120,16 @@ const SEARCH_STYLE = `
     color: var(--veloura-dark-primary-text, #ffffff) !important;
   }
 
-  :host([data-veloura-v75-dark='true'][data-veloura-v75-inline='false']) form,
-  :host([data-veloura-v75-dark='true'][data-veloura-v75-inline='false']) input,
-  :host([data-veloura-v75-dark='true'][data-veloura-v75-inline='false'])
+  :host([data-veloura-dark='true'][data-veloura-inline='false']) form,
+  :host([data-veloura-dark='true'][data-veloura-inline='false']) input,
+  :host([data-veloura-dark='true'][data-veloura-inline='false'])
     .s-search-input,
-  :host([data-veloura-v75-dark='true']) .s-search-results,
-  :host([data-veloura-v75-dark='true']) .s-search-results-wrapper,
-  :host([data-veloura-v75-dark='true']) .s-search-result,
-  :host([data-veloura-v75-dark='true']) .s-search-result-item,
-  :host([data-veloura-v75-dark='true']) [part~='results'],
-  :host([data-veloura-v75-dark='true']) [part~='panel'] {
+  :host([data-veloura-dark='true']) .s-search-results,
+  :host([data-veloura-dark='true']) .s-search-results-wrapper,
+  :host([data-veloura-dark='true']) .s-search-result,
+  :host([data-veloura-dark='true']) .s-search-result-item,
+  :host([data-veloura-dark='true']) [part~='results'],
+  :host([data-veloura-dark='true']) [part~='panel'] {
     background: var(--veloura-dark-secondary-bg, #010612) !important;
     background-color: var(--veloura-dark-secondary-bg, #010612) !important;
     color: var(--veloura-dark-primary-text, #ffffff) !important;
@@ -166,8 +166,8 @@ function paintSearch(host) {
   const secondary = cssValue('--veloura-dark-secondary-bg', '#010612');
   const primaryText = cssValue('--veloura-dark-primary-text', '#ffffff');
 
-  host.setAttribute('data-veloura-v75-dark', dark ? 'true' : 'false');
-  host.setAttribute('data-veloura-v75-inline', inline ? 'true' : 'false');
+  host.setAttribute('data-veloura-dark', dark ? 'true' : 'false');
+  host.setAttribute('data-veloura-inline', inline ? 'true' : 'false');
 
   if (dark) {
     [

@@ -21,66 +21,66 @@ html body {
   --veloura-header-glass-filter: blur(20px) saturate(200%);
 
   /* Compatibility aliases for older theme sections. */
-  --veloura-v86-glass-surface: var(--veloura-header-glass-background);
-  --veloura-v86-glass-solid: var(--veloura-header-glass-solid);
-  --veloura-v86-edge-top: var(--veloura-header-glass-edge-top);
-  --veloura-v86-edge-bottom: var(--veloura-header-glass-edge-bottom);
-  --veloura-v86-shadow: var(--veloura-header-glass-shadow);
-  --veloura-v86-overlay: rgba(15, 23, 42, .16);
-  --veloura-v86-control: rgba(255, 255, 255, .48);
-  --veloura-v86-primary-text: var(--color-text, #111827);
-  --veloura-v86-secondary-text: var(--color-grey, #64748b);
-  --veloura-v86-filter: var(--veloura-header-glass-filter);
+  --veloura-glass-surface: var(--veloura-header-glass-background);
+  --veloura-glass-solid: var(--veloura-header-glass-solid);
+  --veloura-edge-top: var(--veloura-header-glass-edge-top);
+  --veloura-edge-bottom: var(--veloura-header-glass-edge-bottom);
+  --veloura-shadow: var(--veloura-header-glass-shadow);
+  --veloura-overlay: rgba(15, 23, 42, .16);
+  --veloura-control: rgba(255, 255, 255, .48);
+  --veloura-primary-text: var(--color-text, #111827);
+  --veloura-secondary-text: var(--color-grey, #64748b);
+  --veloura-filter: var(--veloura-header-glass-filter);
 
   /* Redirect every older glass consumer to the same V86 contract. */
   --veloura-glass-source: #e6e8eb;
-  --veloura-glass-surface: var(--veloura-v86-glass-surface);
-  --veloura-glass-edge-top: var(--veloura-v86-edge-top);
-  --veloura-glass-edge-bottom: var(--veloura-v86-edge-bottom);
-  --veloura-glass-shadow: var(--veloura-v86-shadow);
-  --veloura-glass-filter: var(--veloura-v86-filter);
-  --veloura-global-glass-bg: var(--veloura-v86-glass-surface);
+  --veloura-glass-surface: var(--veloura-glass-surface);
+  --veloura-glass-edge-top: var(--veloura-edge-top);
+  --veloura-glass-edge-bottom: var(--veloura-edge-bottom);
+  --veloura-glass-shadow: var(--veloura-shadow);
+  --veloura-glass-filter: var(--veloura-filter);
+  --veloura-global-glass-bg: var(--veloura-glass-surface);
   --veloura-global-glass-layer: none;
-  --veloura-global-glass-edge-top: var(--veloura-v86-edge-top);
-  --veloura-global-glass-edge-bottom: var(--veloura-v86-edge-bottom);
-  --veloura-global-glass-shadow: var(--veloura-v86-shadow);
-  --veloura-global-glass-filter: var(--veloura-v86-filter);
-  --veloura-global-glass-overlay: var(--veloura-v86-overlay);
-  --veloura-global-glass-control: var(--veloura-v86-control);
+  --veloura-global-glass-edge-top: var(--veloura-edge-top);
+  --veloura-global-glass-edge-bottom: var(--veloura-edge-bottom);
+  --veloura-global-glass-shadow: var(--veloura-shadow);
+  --veloura-global-glass-filter: var(--veloura-filter);
+  --veloura-global-glass-overlay: var(--veloura-overlay);
+  --veloura-global-glass-control: var(--veloura-control);
 }
 
 html.dark,
 html.dark body,
 html body.dark {
   /* The configured dark secondary color is the exact opaque material — no whitening from transparency. */
-  --veloura-v86-dark-source: var(--veloura-dark-secondary-bg, #010612);
-  --veloura-header-glass-background: var(--veloura-v86-dark-source);
-  --veloura-header-glass-solid: var(--veloura-v86-dark-source);
-  --veloura-v86-glass-surface: var(--veloura-header-glass-background);
-  --veloura-v86-glass-solid: var(--veloura-header-glass-solid);
-  --veloura-v86-edge-top: rgba(255, 255, 255, .055);
-  --veloura-v86-edge-bottom: rgba(255, 255, 255, .022);
-  --veloura-v86-shadow: rgba(0, 0, 0, .18);
-  --veloura-v86-overlay: rgba(0, 0, 0, .30);
-  --veloura-v86-control: color-mix(
+  --veloura-dark-source: var(--veloura-dark-secondary-bg, #010612);
+  --veloura-header-glass-background: var(--veloura-dark-source);
+  --veloura-header-glass-solid: var(--veloura-dark-source);
+  --veloura-glass-surface: var(--veloura-header-glass-background);
+  --veloura-glass-solid: var(--veloura-header-glass-solid);
+  --veloura-edge-top: rgba(255, 255, 255, .055);
+  --veloura-edge-bottom: rgba(255, 255, 255, .022);
+  --veloura-shadow: rgba(0, 0, 0, .18);
+  --veloura-overlay: rgba(0, 0, 0, .30);
+  --veloura-control: color-mix(
     in srgb,
-    var(--veloura-v86-dark-source) 82%,
+    var(--veloura-dark-source) 82%,
     transparent
   );
-  --veloura-v86-primary-text: var(--veloura-dark-primary-text, #ffffff);
-  --veloura-v86-secondary-text: var(--veloura-dark-secondary-text, #cccccc);
+  --veloura-primary-text: var(--veloura-dark-primary-text, #ffffff);
+  --veloura-secondary-text: var(--veloura-dark-secondary-text, #cccccc);
 
-  --veloura-glass-source: var(--veloura-v86-dark-source);
-  --veloura-glass-surface: var(--veloura-v86-glass-surface);
-  --veloura-glass-edge-top: var(--veloura-v86-edge-top);
-  --veloura-glass-edge-bottom: var(--veloura-v86-edge-bottom);
-  --veloura-glass-shadow: var(--veloura-v86-shadow);
-  --veloura-global-glass-bg: var(--veloura-v86-glass-surface);
-  --veloura-global-glass-edge-top: var(--veloura-v86-edge-top);
-  --veloura-global-glass-edge-bottom: var(--veloura-v86-edge-bottom);
-  --veloura-global-glass-shadow: var(--veloura-v86-shadow);
-  --veloura-global-glass-overlay: var(--veloura-v86-overlay);
-  --veloura-global-glass-control: var(--veloura-v86-control);
+  --veloura-glass-source: var(--veloura-dark-source);
+  --veloura-glass-surface: var(--veloura-glass-surface);
+  --veloura-glass-edge-top: var(--veloura-edge-top);
+  --veloura-glass-edge-bottom: var(--veloura-edge-bottom);
+  --veloura-glass-shadow: var(--veloura-shadow);
+  --veloura-global-glass-bg: var(--veloura-glass-surface);
+  --veloura-global-glass-edge-top: var(--veloura-edge-top);
+  --veloura-global-glass-edge-bottom: var(--veloura-edge-bottom);
+  --veloura-global-glass-shadow: var(--veloura-shadow);
+  --veloura-global-glass-overlay: var(--veloura-overlay);
+  --veloura-global-glass-control: var(--veloura-control);
 }
 
 /* ------------------------------------------------------------------------
@@ -104,17 +104,17 @@ html body :is(
 html.veloura-side-cats-glass body .mm-ocd.mm-ocd--open .mm-ocd__content,
 html body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
   box-sizing: border-box !important;
-  background: var(--veloura-v86-glass-surface) !important;
-  background-color: var(--veloura-v86-glass-surface) !important;
+  background: var(--veloura-glass-surface) !important;
+  background-color: var(--veloura-glass-surface) !important;
   background-image: none !important;
-  border-top: 1px solid var(--veloura-v86-edge-top) !important;
-  border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
+  border-top: 1px solid var(--veloura-edge-top) !important;
+  border-bottom: 1px solid var(--veloura-edge-bottom) !important;
   border-inline-start: 0 !important;
   border-inline-end: 0 !important;
-  -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: var(--veloura-v86-filter) !important;
+  -webkit-backdrop-filter: var(--veloura-filter) !important;
+  backdrop-filter: var(--veloura-filter) !important;
   filter: none !important;
-  box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
+  box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 
 
@@ -127,17 +127,17 @@ html body.veloura-quick-view-overlay-blur
   .veloura-quick-view-modal
   .veloura-quick-view-modal__dialog {
   box-sizing: border-box !important;
-  background: var(--veloura-v86-glass-surface) !important;
-  background-color: var(--veloura-v86-glass-surface) !important;
+  background: var(--veloura-glass-surface) !important;
+  background-color: var(--veloura-glass-surface) !important;
   background-image: none !important;
-  border-top: 1px solid var(--veloura-v86-edge-top) !important;
-  border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
+  border-top: 1px solid var(--veloura-edge-top) !important;
+  border-bottom: 1px solid var(--veloura-edge-bottom) !important;
   border-inline-start: 0 !important;
   border-inline-end: 0 !important;
-  -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: var(--veloura-v86-filter) !important;
+  -webkit-backdrop-filter: var(--veloura-filter) !important;
+  backdrop-filter: var(--veloura-filter) !important;
   filter: none !important;
-  box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
+  box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 
 /* Product-page sticky bar receives glass only while its sticky mode is active. */
@@ -151,15 +151,15 @@ html body.veloura-quick-view-overlay-blur
   html body.veloura-glass-effect
     .veloura-product-page.veloura-product-mobile-sticky-enabled
     .sticky-product-bar.veloura-product-sticky-bar {
-    background: var(--veloura-v86-glass-surface) !important;
-    background-color: var(--veloura-v86-glass-surface) !important;
+    background: var(--veloura-glass-surface) !important;
+    background-color: var(--veloura-glass-surface) !important;
     background-image: none !important;
-    border-top: 1px solid var(--veloura-v86-edge-top) !important;
-    border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
+    border-top: 1px solid var(--veloura-edge-top) !important;
+    border-bottom: 1px solid var(--veloura-edge-bottom) !important;
     border-inline: 0 !important;
-    -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-    backdrop-filter: var(--veloura-v86-filter) !important;
-    box-shadow: 0 -8px 24px var(--veloura-v86-shadow) !important;
+    -webkit-backdrop-filter: var(--veloura-filter) !important;
+    backdrop-filter: var(--veloura-filter) !important;
+    box-shadow: 0 -8px 24px var(--veloura-shadow) !important;
   }
 }
 
@@ -205,10 +205,10 @@ html body .veloura-search-surface::after {
    The web-component host and exposed parts remain transparent.
    ------------------------------------------------------------------------ */
 html body .veloura-search-surface {
-  color: var(--veloura-v86-primary-text) !important;
+  color: var(--veloura-primary-text) !important;
   overflow: hidden;
-  --color-text: var(--veloura-v86-primary-text) !important;
-  --color-muted: var(--veloura-v86-secondary-text) !important;
+  --color-text: var(--veloura-primary-text) !important;
+  --color-muted: var(--veloura-secondary-text) !important;
   --s-search-bg: transparent !important;
   --s-search-input-bg: transparent !important;
   --s-search-input-background: transparent !important;
@@ -422,7 +422,7 @@ html body.veloura-glass-effect :is(
   .veloura-popup__overlay,
   .swal2-container.swal2-backdrop-show
 ) {
-  background: var(--veloura-v86-overlay) !important;
+  background: var(--veloura-overlay) !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
   filter: none !important;
@@ -535,15 +535,15 @@ html body.veloura-glass-effect :is(
   salla-modal,
   salla-sheet
 )::part(surface) {
-  background: var(--veloura-v86-glass-surface) !important;
-  background-color: var(--veloura-v86-glass-surface) !important;
+  background: var(--veloura-glass-surface) !important;
+  background-color: var(--veloura-glass-surface) !important;
   background-image: none !important;
-  border-top: 1px solid var(--veloura-v86-edge-top) !important;
-  border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
+  border-top: 1px solid var(--veloura-edge-top) !important;
+  border-bottom: 1px solid var(--veloura-edge-bottom) !important;
   border-inline: 0 !important;
-  -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: var(--veloura-v86-filter) !important;
-  box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
+  -webkit-backdrop-filter: var(--veloura-filter) !important;
+  backdrop-filter: var(--veloura-filter) !important;
+  box-shadow: 0 8px 24px var(--veloura-shadow) !important;
 }
 
 html body.veloura-glass-effect :is(
@@ -564,7 +564,7 @@ html body.veloura-glass-effect :is(
   salla-modal,
   salla-sheet
 )::part(backdrop) {
-  background: var(--veloura-v86-overlay) !important;
+  background: var(--veloura-overlay) !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
 }
@@ -572,7 +572,7 @@ html body.veloura-glass-effect :is(
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   :root,
   html body {
-    --veloura-v86-glass-surface: var(--veloura-v86-glass-solid);
+    --veloura-glass-surface: var(--veloura-glass-solid);
   }
 }
 
@@ -598,11 +598,11 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-s
   z-index: 0 !important;
   pointer-events: none !important;
   border-radius: inherit !important;
-  background: var(--veloura-v86-glass-surface) !important;
-  background-color: var(--veloura-v86-glass-surface) !important;
+  background: var(--veloura-glass-surface) !important;
+  background-color: var(--veloura-glass-surface) !important;
   background-image: none !important;
-  -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: var(--veloura-v86-filter) !important;
+  -webkit-backdrop-filter: var(--veloura-filter) !important;
+  backdrop-filter: var(--veloura-filter) !important;
   filter: none !important;
 }
 
@@ -642,17 +642,17 @@ html body.veloura-glass-effect
     z-index: 4200 !important;
 
     /* EXACTLY the same color and filter tokens as the visible header glass. */
-    background: var(--veloura-v86-glass-surface) !important;
-    background-color: var(--veloura-v86-glass-surface) !important;
+    background: var(--veloura-glass-surface) !important;
+    background-color: var(--veloura-glass-surface) !important;
     background-image: none !important;
-    -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-    backdrop-filter: var(--veloura-v86-filter) !important;
+    -webkit-backdrop-filter: var(--veloura-filter) !important;
+    backdrop-filter: var(--veloura-filter) !important;
     filter: none !important;
 
-    border-top: 1px solid var(--veloura-v86-edge-top) !important;
-    border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
+    border-top: 1px solid var(--veloura-edge-top) !important;
+    border-bottom: 1px solid var(--veloura-edge-bottom) !important;
     border-inline: 0 !important;
-    box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
+    box-shadow: 0 8px 24px var(--veloura-shadow) !important;
   }
 
   html body .veloura-header-tabs-stack--blur

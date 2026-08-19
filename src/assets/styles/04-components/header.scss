@@ -303,6 +303,8 @@ salla-menu[topnav]:not(.hydrated) {
   position: relative;
   z-index: 50;
   width: 100%;
+  max-width: 2280px;
+  margin-inline: auto;
   transition: transform .28s ease, box-shadow .28s ease;
 
   .main-nav-container {
@@ -345,14 +347,26 @@ salla-menu[topnav]:not(.hydrated) {
     gap: 16px;
   }
 
-  .veloura-header-left {
-    grid-area: left;
-    justify-content: flex-start;
+  .veloura-header__tools {
+    grid-area: right;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    direction: rtl;
   }
 
-  .veloura-header-right {
-    grid-area: right;
-    justify-content: flex-end;
+  .veloura-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .veloura-header__menu {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
   }
 
   .veloura-header-logo {
@@ -362,12 +376,20 @@ salla-menu[topnav]:not(.hydrated) {
     z-index: 2;
   }
 
-  .veloura-header-side {
+  .veloura-header__actions {
     direction: ltr;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
     min-width: 0;
+  }
+
+  .veloura-cart-summary {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px;
+    width: max-content;
+    white-space: nowrap;
   }
 
   .veloura-menu-links-wrap,
@@ -559,6 +581,14 @@ body.dark {
       grid-template-areas: "left logo right";
     }
 
+    .veloura-header__tools {
+      gap: 12px;
+    }
+
+    .veloura-header__actions {
+      gap: 10px;
+    }
+
     .veloura-menu-links-wrap,
     .veloura-desktop-search-bar,
     custom-main-menu,
@@ -575,31 +605,31 @@ body.dark {
   }
 
   .store-header.veloura-mobile-search-icon_right {
-    .veloura-search-toggle-left,
+    .veloura-search-toggle,
     .veloura-mobile-search-bar {
       display: none !important;
     }
 
-    .veloura-search-toggle-right {
+    .veloura-search-toggle {
       display: inline-flex !important;
     }
   }
 
   .store-header.veloura-mobile-search-icon_left {
-    .veloura-search-toggle-right,
+    .veloura-search-toggle,
     .veloura-mobile-search-bar {
       display: none !important;
     }
 
-    .veloura-search-toggle-left {
+    .veloura-search-toggle {
       display: inline-flex !important;
     }
   }
 
   .store-header.veloura-mobile-search-bar,
   .store-header.veloura-mobile-search-bar_sticky_icon {
-    .veloura-search-toggle-right,
-    .veloura-search-toggle-left {
+    .veloura-search-toggle,
+    .veloura-search-toggle {
       display: none !important;
     }
 
@@ -626,7 +656,7 @@ body.dark {
       display: none !important;
     }
 
-    .veloura-search-toggle-right {
+    .veloura-search-toggle {
       display: inline-flex !important;
     }
   }
@@ -707,30 +737,30 @@ body.dark {
 
   .store-header.veloura-desktop-search-icon_right {
     .veloura-desktop-search-bar,
-    .veloura-search-toggle-left {
+    .veloura-search-toggle {
       display: none !important;
     }
 
-    .veloura-search-toggle-right {
+    .veloura-search-toggle {
       display: inline-flex !important;
     }
   }
 
   .store-header.veloura-desktop-search-icon_left {
     .veloura-desktop-search-bar,
-    .veloura-search-toggle-right {
+    .veloura-search-toggle {
       display: none !important;
     }
 
-    .veloura-search-toggle-left {
+    .veloura-search-toggle {
       display: inline-flex !important;
     }
   }
 
   .store-header.veloura-desktop-search-bar,
   .store-header.veloura-desktop-search-bar_sticky_icon {
-    .veloura-search-toggle-right,
-    .veloura-search-toggle-left {
+    .veloura-search-toggle,
+    .veloura-search-toggle {
       display: none !important;
     }
 
@@ -759,7 +789,7 @@ body.dark {
       display: none !important;
     }
 
-    .veloura-search-toggle-right {
+    .veloura-search-toggle {
       display: inline-flex !important;
     }
   }
@@ -1595,34 +1625,34 @@ body.veloura-side-cats-glass .mm-ocd .mm-ocd__content {
   /* V136: نفس مادة الهيدر حرفيًا. متغيرات V86 هي المصدر النهائي
      للـ Light / Dark، مع fallback إلى عقد الزجاج العامة. */
   background: var(
-    --veloura-v86-glass-surface,
+    --veloura-glass-surface,
     var(--veloura-glass-surface)
   ) !important;
   background-color: var(
-    --veloura-v86-glass-surface,
+    --veloura-glass-surface,
     var(--veloura-glass-surface)
   ) !important;
   background-image: none !important;
   border-top: 1px solid var(
-    --veloura-v86-edge-top,
+    --veloura-edge-top,
     var(--veloura-glass-edge-top)
   ) !important;
   border-bottom: 1px solid var(
-    --veloura-v86-edge-bottom,
+    --veloura-edge-bottom,
     var(--veloura-glass-edge-bottom)
   ) !important;
   border-inline: 0 !important;
   -webkit-backdrop-filter: var(
-    --veloura-v86-filter,
+    --veloura-filter,
     var(--veloura-glass-filter)
   ) !important;
   backdrop-filter: var(
-    --veloura-v86-filter,
+    --veloura-filter,
     var(--veloura-glass-filter)
   ) !important;
   filter: none !important;
   box-shadow: 0 8px 24px var(
-    --veloura-v86-shadow,
+    --veloura-shadow,
     var(--veloura-glass-shadow)
   ) !important;
 }
@@ -1690,12 +1720,12 @@ body.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn :is(
   border-top: 1px solid color-mix(
     in srgb,
     var(--color-primary, #004956) 8%,
-    var(--veloura-v86-edge-top, rgba(100, 116, 139, .10))
+    var(--veloura-edge-top, rgba(100, 116, 139, .10))
   ) !important;
   border-bottom: 1px solid color-mix(
     in srgb,
     var(--color-primary, #004956) 5%,
-    var(--veloura-v86-edge-bottom, rgba(100, 116, 139, .045))
+    var(--veloura-edge-bottom, rgba(100, 116, 139, .045))
   ) !important;
   border-radius: var(--veloura-side-cats-menu-radius, 18px) !important;
   background: color-mix(
@@ -1730,12 +1760,12 @@ body.veloura-side-cats-glass .mm-ocd #mobile-menu.mm-spn .veloura-side-category-
   border-top-color: color-mix(
     in srgb,
     var(--color-primary, #004956) 8%,
-    var(--veloura-v86-edge-top, rgba(255, 255, 255, .055))
+    var(--veloura-edge-top, rgba(255, 255, 255, .055))
   ) !important;
   border-bottom-color: color-mix(
     in srgb,
     var(--color-primary, #004956) 5%,
-    var(--veloura-v86-edge-bottom, rgba(255, 255, 255, .022))
+    var(--veloura-edge-bottom, rgba(255, 255, 255, .022))
   ) !important;
 }
 
@@ -1838,11 +1868,11 @@ html.veloura-side-cats-compact .mm-ocd #mobile-menu.mm-spn .main-menu:last-child
 html.veloura-side-cats-compact.veloura-side-cats-glass .mm-ocd .mm-ocd__content {
   border-inline: 0 !important;
   border-top-color: var(
-    --veloura-v86-edge-top,
+    --veloura-edge-top,
     var(--veloura-glass-edge-top)
   ) !important;
   border-bottom-color: var(
-    --veloura-v86-edge-bottom,
+    --veloura-edge-bottom,
     var(--veloura-glass-edge-bottom)
   ) !important;
 }

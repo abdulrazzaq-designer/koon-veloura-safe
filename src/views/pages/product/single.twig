@@ -359,10 +359,10 @@
   .veloura-product-page
   .veloura-product-stock-radar.is-pulse
   .veloura-product-stock-radar__dot {
-    animation: veloura-v98-stock-pulse 1.55s ease-out infinite !important;
+    animation: veloura-stock-pulse 1.55s ease-out infinite !important;
   }
 
-  @keyframes veloura-v98-stock-pulse {
+  @keyframes veloura-stock-pulse {
     0% { box-shadow: 0 0 0 0 rgba(34,197,94,.58); }
     70% { box-shadow: 0 0 0 9px rgba(34,197,94,0); }
     100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
@@ -486,7 +486,7 @@
 {# VELOURA PRODUCT DATA V98 CRITICAL END #}
 
 <div
-  data-veloura-v50-recovered="true"
+  data-veloura-recovered="true"
   data-veloura-product-data-build="v98"
   data-v42-order-enabled="{{ vpp_details_order_enabled ? 'true' : 'false' }}"
   data-v96-stock-pulse="{{ vpp_show_stock_radar ? 'true' : 'false' }}"
@@ -499,8 +499,8 @@
   data-v42-order-options="{{ vpp_order_options }}"
   data-v42-order-quick="{{ vpp_order_quick }}"
   data-v42-order-payments="{{ vpp_order_payments }}"
-  data-veloura-v42-sticky="{{ vpp_mobile_sticky_cart ? 'true' : 'false' }}"
-     data-veloura-product-build="v100-native-related-recent" data-veloura-v37-stock-radar="{{ vpp_show_stock_radar ? 'pulse' : 'simple' }}" data-veloura-v37-images-zoom="{{ vpp_images_zoom ? 'true' : 'false' }}" data-veloura-quantity-style="{{ vpp_mobile_quantity_style }}" class="container veloura-product-page {{ vpp_enabled ? 'veloura-product-enabled' : '' }} {{ vpp_hide_breadcrumb ? 'veloura-product-hide-breadcrumb' : '' }} {{ vpp_hide_thumbnails ? 'veloura-product-hide-thumbs' : '' }} veloura-product-images-{{ vpp_images_height_mode }} {{ vpp_images_zoom ? 'veloura-product-zoom-enabled' : '' }} {{ vpp_enabled and vpp_hide_short_description ? 'veloura-product-desc-collapsed' : '' }} {{ vpp_mobile_sticky_cart ? 'veloura-product-mobile-sticky-enabled' : 'veloura-product-mobile-sticky-disabled' }} {{ vpp_mobile_sticky_price ? 'veloura-product-mobile-sticky-price' : '' }} veloura-product-qty-{{ vpp_mobile_quantity_style }} {{ vpp_mobile_buttons_compact ? 'veloura-product-buttons-compact' : '' }} {{ vpp_hide_discount_value ? 'veloura-product-hide-discount' : '' }} {{ vpp_hide_tags_visual_only ? 'veloura-product-tags-visual-hidden' : '' }}" style="--veloura-product-bg-inline: {{ vpp_basic_bg }}; --veloura-product-secondary-bg-inline: {{ vpp_second_bg }}; --veloura-product-dark-bg-inline: {{ vpp_dark_basic_bg }}; --veloura-product-dark-secondary-bg-inline: {{ vpp_dark_second_bg }}; --veloura-product-radius: {{ vpp_general_radius }};" >
+  data-veloura-sticky="{{ vpp_mobile_sticky_cart ? 'true' : 'false' }}"
+     data-veloura-product-build="v100-native-related-recent" data-veloura-stock-radar="{{ vpp_show_stock_radar ? 'pulse' : 'simple' }}" data-veloura-images-zoom="{{ vpp_images_zoom ? 'true' : 'false' }}" data-veloura-quantity-style="{{ vpp_mobile_quantity_style }}" class="container veloura-product-page {{ vpp_enabled ? 'veloura-product-enabled' : '' }} {{ vpp_hide_breadcrumb ? 'veloura-product-hide-breadcrumb' : '' }} {{ vpp_hide_thumbnails ? 'veloura-product-hide-thumbs' : '' }} veloura-product-images-{{ vpp_images_height_mode }} {{ vpp_images_zoom ? 'veloura-product-zoom-enabled' : '' }} {{ vpp_enabled and vpp_hide_short_description ? 'veloura-product-desc-collapsed' : '' }} {{ vpp_mobile_sticky_cart ? 'veloura-product-mobile-sticky-enabled' : 'veloura-product-mobile-sticky-disabled' }} {{ vpp_mobile_sticky_price ? 'veloura-product-mobile-sticky-price' : '' }} veloura-product-qty-{{ vpp_mobile_quantity_style }} {{ vpp_mobile_buttons_compact ? 'veloura-product-buttons-compact' : '' }} {{ vpp_hide_discount_value ? 'veloura-product-hide-discount' : '' }} {{ vpp_hide_tags_visual_only ? 'veloura-product-tags-visual-hidden' : '' }}" style="--veloura-product-bg-inline: {{ vpp_basic_bg }}; --veloura-product-secondary-bg-inline: {{ vpp_second_bg }}; --veloura-product-dark-bg-inline: {{ vpp_dark_basic_bg }}; --veloura-product-dark-secondary-bg-inline: {{ vpp_dark_second_bg }}; --veloura-product-radius: {{ vpp_general_radius }};" >
 
         {# add breadcumbs container in pages to make a space in case breadcrumbs is off #}
         {% if not (vpp_enabled and vpp_hide_breadcrumb) %}

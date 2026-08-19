@@ -23,7 +23,21 @@
 @import './03-elements/radio-images';
 
 @import './04-components/header';
+@import './04-components/header-tabs';
+@import './04-components/header-navigation-stability';
+@import './04-components/header-navigation-container';
+@import './04-components/header-glass-polish';
+@import './04-components/header-glass-search';
+@import './04-components/header-search';
+@import './04-components/header-submenu';
+@import './04-components/header-submenu-visibility';
+@import './04-components/header-search-balanced';
+@import './04-components/header-centering';
 @import './04-components/footer';
+@import './04-components/footer-final';
+@import './04-components/cart';
+@import './04-components/side-menu';
+@import './04-components/dark-light';
 @import './04-components/menus';
 @import './04-components/user-menu';
 @import './04-components/user-pages';
@@ -53,19 +67,6 @@
 @import 'lite-youtube-embed/src/lite-yt-embed.css';
 @import 'mmenu-light/dist/mmenu-light.css';
 
-@import './05-utilities/veloura-header-tabs-v18';
 @import './05-utilities/veloura-global-overlays';
-@import './05-utilities/veloura-cart-surfaces-v22';
 @import './05-utilities/veloura-cart-banners';
-@import './05-utilities/veloura-header-product-stability-v55';
-@import './05-utilities/veloura-header-container-menu-v56';
-@import './05-utilities/veloura-header-polish-glass-v57';
-@import './05-utilities/veloura-header-glass-search-cart-v58';
-@import './05-utilities/veloura-header-integrated-search-glass-v59';
-@import './05-utilities/veloura-header-order-search-submenu-v60';
-@import './05-utilities/veloura-header-search-visibility-secondary-submenu-v62';
-@import './05-utilities/veloura-header-balanced-inline-search-v63';
-@import './05-utilities/veloura-header-axis-centering-v64';
-@import './05-utilities/veloura-exact-dark-light-plus3-v86';
-
-@import './05-utilities/veloura-footer-final-v149';
+@import './04-components/header-glass';

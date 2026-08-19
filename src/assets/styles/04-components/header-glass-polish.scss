@@ -44,13 +44,13 @@ html body .veloura-search-surface salla-search.veloura-header-search-component::
    This contract covers connected and detached search bars equally. */
 html body .veloura-header-tabs-stack--blur .veloura-search-surface,
 html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface {
-  --veloura-v55-search-bg: transparent;
+  --veloura-search-bg: transparent;
   background:
     linear-gradient(145deg, rgba(255, 255, 255, .18), rgba(255, 255, 255, .035)),
     color-mix(in srgb, var(--veloura-site-second-bg, #f4f4f5) 46%, transparent) !important;
   background-color: color-mix(in srgb, var(--veloura-site-second-bg, #f4f4f5) 46%, transparent) !important;
   border: 1px solid color-mix(in srgb, var(--veloura-top-text, #1f2937) 16%, rgba(255, 255, 255, .38)) !important;
-  border-radius: var(--veloura-v55-search-radius, var(--veloura-v15-radius, 24px)) !important;
+  border-radius: var(--veloura-search-radius, var(--veloura-radius, 24px)) !important;
   -webkit-backdrop-filter: var(--veloura-global-glass-filter, blur(16px) saturate(145%)) !important;
   backdrop-filter: var(--veloura-global-glass-filter, blur(16px) saturate(145%)) !important;
   box-shadow:

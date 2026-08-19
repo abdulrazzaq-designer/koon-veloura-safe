@@ -186,8 +186,8 @@ html body.dark .store-header.veloura-top-enabled {
 
 html.dark body .store-header.veloura-top-enabled :where(
   .veloura-header-icon,
-  .veloura-header-side a,
-  .veloura-header-side button,
+  .veloura-header__actions a,
+  .veloura-header__actions button,
   .veloura-menu-links-wrap a,
   .veloura-cart-summary,
   .veloura-cart-custom-icon,
@@ -198,8 +198,8 @@ html.dark body .store-header.veloura-top-enabled :where(
 ),
 html body.dark .store-header.veloura-top-enabled :where(
   .veloura-header-icon,
-  .veloura-header-side a,
-  .veloura-header-side button,
+  .veloura-header__actions a,
+  .veloura-header__actions button,
   .veloura-menu-links-wrap a,
   .veloura-cart-summary,
   .veloura-cart-custom-icon,
@@ -1777,11 +1777,11 @@ html body.veloura-glass-effect .veloura-category-descendant.is-active {
       display: none !important;
     }
 
-    .veloura-search-toggle-left {
+    .veloura-search-toggle {
       display: none !important;
     }
 
-    .veloura-search-toggle-right {
+    .veloura-search-toggle {
       display: inline-flex !important;
     }
   }
@@ -1809,11 +1809,11 @@ html body.veloura-glass-effect .veloura-category-descendant.is-active {
       display: none !important;
     }
 
-    .veloura-search-toggle-left {
+    .veloura-search-toggle {
       display: none !important;
     }
 
-    .veloura-search-toggle-right {
+    .veloura-search-toggle {
       display: inline-flex !important;
     }
   }

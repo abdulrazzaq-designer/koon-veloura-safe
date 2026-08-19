@@ -1137,7 +1137,7 @@ class ProductCard extends HTMLElement {
                   product-id="${this.product.id}"
                   product-status="${this.effectiveStatus}"
                   product-type="${this.product.type}"
-                  data-veloura-v82-native-cart="true">
+                  data-veloura-native-cart="true">
                   ${this.product.status == 'sale' ? 
                       `<i class="text-base sicon-${ this.product.type == 'booking' ? 'calendar-time' : 'shopping-bag'}"></i>` : ``
                     }
@@ -1785,7 +1785,7 @@ if (!customElements.get('custom-salla-product-card')) {
           <span>${config.buttonText || 'عرض سريع'}</span>
         `;
       } else {
-        button.classList.add('is-icon-only', 'veloura-pc-native-quick', 'veloura-v36-glass-quick');
+        button.classList.add('is-icon-only', 'veloura-pc-native-quick', 'veloura-glass-quick');
         button.innerHTML = `<i class="${iconClass}" aria-hidden="true"></i>`;
       }
 

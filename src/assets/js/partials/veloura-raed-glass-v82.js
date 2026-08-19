@@ -5,9 +5,9 @@
 (() => {
   'use strict';
 
-  const STYLE_ID = 'veloura-v82-component-style';
-  const SEARCH_STYLE_ID = 'veloura-v82-search-style';
-  const CART_STYLE_ID = 'veloura-v82-cart-style';
+  const STYLE_ID = 'veloura-component-style';
+  const SEARCH_STYLE_ID = 'veloura-search-style';
+  const CART_STYLE_ID = 'veloura-cart-style';
   const observedRoots = new WeakSet();
 
   const COMPONENTS = [
@@ -24,25 +24,25 @@
   const SELECTOR = COMPONENTS.join(',');
 
   const searchCss = `
-    :host([data-veloura-v82-inline-search='true']) {
-      color: var(--veloura-v82-primary, #111827) !important;
-      --color-text: var(--veloura-v82-primary, #111827) !important;
-      --color-muted: var(--veloura-v82-secondary, #64748b) !important;
+    :host([data-veloura-inline-search='true']) {
+      color: var(--veloura-primary, #111827) !important;
+      --color-text: var(--veloura-primary, #111827) !important;
+      --color-muted: var(--veloura-secondary, #64748b) !important;
       --s-search-bg: transparent !important;
       --s-search-input-bg: transparent !important;
       --s-search-input-background: transparent !important;
       --search-background: transparent !important;
     }
 
-    :host([data-veloura-v82-inline-search='true']),
-    :host([data-veloura-v82-inline-search='true']) form,
-    :host([data-veloura-v82-inline-search='true']) input,
-    :host([data-veloura-v82-inline-search='true']) .s-search-input,
-    :host([data-veloura-v82-inline-search='true']) .s-search-container,
-    :host([data-veloura-v82-inline-search='true']) .s-search-wrapper,
-    :host([data-veloura-v82-inline-search='true']) [part~='input'],
-    :host([data-veloura-v82-inline-search='true']) [part~='form'],
-    :host([data-veloura-v82-inline-search='true']) [part~='container'] {
+    :host([data-veloura-inline-search='true']),
+    :host([data-veloura-inline-search='true']) form,
+    :host([data-veloura-inline-search='true']) input,
+    :host([data-veloura-inline-search='true']) .s-search-input,
+    :host([data-veloura-inline-search='true']) .s-search-container,
+    :host([data-veloura-inline-search='true']) .s-search-wrapper,
+    :host([data-veloura-inline-search='true']) [part~='input'],
+    :host([data-veloura-inline-search='true']) [part~='form'],
+    :host([data-veloura-inline-search='true']) [part~='container'] {
       background: transparent !important;
       background-color: transparent !important;
       background-image: none !important;
@@ -50,35 +50,35 @@
       box-shadow: none !important;
     }
 
-    :host([data-veloura-v82-inline-search='true']) input {
-      color: var(--veloura-v82-primary, #111827) !important;
+    :host([data-veloura-inline-search='true']) input {
+      color: var(--veloura-primary, #111827) !important;
       -webkit-text-fill-color: currentColor !important;
     }
 
-    :host([data-veloura-v82-inline-search='true']) input::placeholder {
-      color: var(--veloura-v82-secondary, #64748b) !important;
+    :host([data-veloura-inline-search='true']) input::placeholder {
+      color: var(--veloura-secondary, #64748b) !important;
       -webkit-text-fill-color: currentColor !important;
       opacity: .78 !important;
     }
 
-    :host([data-veloura-v82-inline-search='true']) :is(
+    :host([data-veloura-inline-search='true']) :is(
       button, i, svg, .s-search-icon, .sicon-search
     ) {
-      color: var(--veloura-v82-primary, #111827) !important;
+      color: var(--veloura-primary, #111827) !important;
     }
   `;
 
   const componentCss = `
-    :host([data-veloura-v82-dark='true']) {
-      color: var(--veloura-v82-primary, #fff) !important;
-      --color-text: var(--veloura-v82-primary, #fff) !important;
-      --color-muted: var(--veloura-v82-secondary, #ccc) !important;
-      --color-grey: var(--veloura-v82-secondary, #ccc) !important;
-      --color-grey-dark: var(--veloura-v82-primary, #fff) !important;
-      --color-grey-darker: var(--veloura-v82-primary, #fff) !important;
+    :host([data-veloura-dark='true']) {
+      color: var(--veloura-primary, #fff) !important;
+      --color-text: var(--veloura-primary, #fff) !important;
+      --color-muted: var(--veloura-secondary, #ccc) !important;
+      --color-grey: var(--veloura-secondary, #ccc) !important;
+      --color-grey-dark: var(--veloura-primary, #fff) !important;
+      --color-grey-darker: var(--veloura-primary, #fff) !important;
     }
 
-    :host([data-veloura-v82-glass='true']) :is(
+    :host([data-veloura-glass='true']) :is(
       .s-modal-wrapper,
       .s-modal-container,
       .s-modal-body,
@@ -95,36 +95,36 @@
       [part~='body'],
       [role='dialog']
     ) {
-      background: var(--veloura-v82-surface, rgba(248,249,250,.60)) !important;
-      background-color: var(--veloura-v82-surface, rgba(248,249,250,.60)) !important;
+      background: var(--veloura-surface, rgba(248,249,250,.60)) !important;
+      background-color: var(--veloura-surface, rgba(248,249,250,.60)) !important;
       background-image: none !important;
-      border-top: 1px solid var(--veloura-v82-edge-top, rgba(148,163,184,.16)) !important;
-      border-bottom: 1px solid var(--veloura-v82-edge-bottom, rgba(148,163,184,.08)) !important;
+      border-top: 1px solid var(--veloura-edge-top, rgba(148,163,184,.16)) !important;
+      border-bottom: 1px solid var(--veloura-edge-bottom, rgba(148,163,184,.08)) !important;
       border-inline: 0 !important;
-      -webkit-backdrop-filter: var(--veloura-v82-filter, blur(22px) saturate(118%)) !important;
-      backdrop-filter: var(--veloura-v82-filter, blur(22px) saturate(118%)) !important;
-      color: var(--veloura-v82-primary, #111827) !important;
-      box-shadow: 0 8px 24px var(--veloura-v82-shadow, rgba(15,23,42,.045)) !important;
+      -webkit-backdrop-filter: var(--veloura-filter, blur(22px) saturate(118%)) !important;
+      backdrop-filter: var(--veloura-filter, blur(22px) saturate(118%)) !important;
+      color: var(--veloura-primary, #111827) !important;
+      box-shadow: 0 8px 24px var(--veloura-shadow, rgba(15,23,42,.045)) !important;
     }
 
-    :host([data-veloura-v82-dark='true']) :is(
+    :host([data-veloura-dark='true']) :is(
       h1, h2, h3, h4, h5, h6,
       .s-modal-title,
       .s-login-modal-title,
       .s-user-menu-title,
       [part~='title']
     ) {
-      color: var(--veloura-v82-primary, #fff) !important;
+      color: var(--veloura-primary, #fff) !important;
       -webkit-text-fill-color: currentColor !important;
     }
 
-    :host([data-veloura-v82-dark='true']) :is(
+    :host([data-veloura-dark='true']) :is(
       p, small, label,
       .text-gray-400, .text-gray-500, .text-gray-600,
       .text-muted,
       [part~='description']
     ) {
-      color: var(--veloura-v82-secondary, #ccc) !important;
+      color: var(--veloura-secondary, #ccc) !important;
       -webkit-text-fill-color: currentColor !important;
     }
   `;
@@ -214,35 +214,35 @@
     if (!host?.style) return;
 
     const dark = isDark();
-    host.setAttribute('data-veloura-v82-dark', dark ? 'true' : 'false');
-    host.setAttribute('data-veloura-v82-glass', glassEnabled() ? 'true' : 'false');
+    host.setAttribute('data-veloura-dark', dark ? 'true' : 'false');
+    host.setAttribute('data-veloura-glass', glassEnabled() ? 'true' : 'false');
 
     host.style.setProperty(
-      '--veloura-v82-primary',
+      '--veloura-primary',
       dark
         ? rootValue('--veloura-dark-primary-text', '#ffffff')
         : rootValue('--color-text', '#111827')
     );
     host.style.setProperty(
-      '--veloura-v82-secondary',
+      '--veloura-secondary',
       dark
         ? rootValue('--veloura-dark-secondary-text', '#cccccc')
         : rootValue('--color-grey', '#64748b')
     );
     host.style.setProperty(
-      '--veloura-v82-surface',
-      rootValue('--veloura-v82-surface', dark ? '#010612' : 'rgba(248,249,250,.60)')
+      '--veloura-surface',
+      rootValue('--veloura-surface', dark ? '#010612' : 'rgba(248,249,250,.60)')
     );
     host.style.setProperty(
-      '--veloura-v82-edge-top',
-      rootValue('--veloura-v82-edge-top', dark ? 'rgba(255,255,255,.12)' : 'rgba(148,163,184,.16)')
+      '--veloura-edge-top',
+      rootValue('--veloura-edge-top', dark ? 'rgba(255,255,255,.12)' : 'rgba(148,163,184,.16)')
     );
     host.style.setProperty(
-      '--veloura-v82-edge-bottom',
-      rootValue('--veloura-v82-edge-bottom', dark ? 'rgba(255,255,255,.06)' : 'rgba(148,163,184,.08)')
+      '--veloura-edge-bottom',
+      rootValue('--veloura-edge-bottom', dark ? 'rgba(255,255,255,.06)' : 'rgba(148,163,184,.08)')
     );
-    host.style.setProperty('--veloura-v82-filter', rootValue('--veloura-v82-filter', 'blur(22px) saturate(118%)'));
-    host.style.setProperty('--veloura-v82-shadow', rootValue('--veloura-v82-shadow', 'rgba(15,23,42,.045)'));
+    host.style.setProperty('--veloura-filter', rootValue('--veloura-filter', 'blur(22px) saturate(118%)'));
+    host.style.setProperty('--veloura-shadow', rootValue('--veloura-shadow', 'rgba(15,23,42,.045)'));
   }
 
   function observeRoot(root) {
@@ -265,7 +265,7 @@
 
     if (host.matches('salla-search')) {
       const inline = Boolean(host.closest('.veloura-search-surface'));
-      host.setAttribute('data-veloura-v82-inline-search', inline ? 'true' : 'false');
+      host.setAttribute('data-veloura-inline-search', inline ? 'true' : 'false');
 
       if (inline) {
         [

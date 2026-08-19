@@ -30,9 +30,9 @@
   --veloura-glass-border: transparent;
   --veloura-glass-ring: transparent;
   --veloura-glass-highlight: var(--veloura-glass-edge-top);
-  --veloura-v15-glass-fallback: var(--veloura-glass-surface);
-  --veloura-v15-border: transparent;
-  --veloura-v15-filter: var(--veloura-glass-filter);
+  --veloura-glass-fallback: var(--veloura-glass-surface);
+  --veloura-border: transparent;
+  --veloura-filter: var(--veloura-glass-filter);
 }
 
 html.dark,
@@ -47,7 +47,7 @@ html body.dark {
   --veloura-glass-edge-top: rgba(255, 255, 255, .12);
   --veloura-glass-edge-bottom: rgba(255, 255, 255, .04);
   --veloura-glass-shadow: rgba(0, 0, 0, .22);
-  --veloura-v15-glass-dark-fallback: var(--veloura-glass-surface);
+  --veloura-glass-dark-fallback: var(--veloura-glass-surface);
 }
 
 .store-header.veloura-top-enabled.veloura-top-blur .main-nav-container,

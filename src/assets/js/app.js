@@ -719,10 +719,10 @@ const initVelouraAdaptiveHeaderLayout = (() => {
       width: 100% !important;
       max-width: none !important;
       min-width: 0 !important;
-      min-height: var(--veloura-v60-search-height, 36px) !important;
-      height: var(--veloura-v60-search-height, 36px) !important;
-      max-height: var(--veloura-v60-search-height, 36px) !important;
-      border-radius: var(--veloura-v55-search-radius, 24px) !important;
+      min-height: var(--veloura-search-height, 36px) !important;
+      height: var(--veloura-search-height, 36px) !important;
+      max-height: var(--veloura-search-height, 36px) !important;
+      border-radius: var(--veloura-search-radius, 24px) !important;
 
       /* Single-layer search:
          .veloura-search-surface in light DOM owns all glass paint. */
@@ -759,13 +759,13 @@ const initVelouraAdaptiveHeaderLayout = (() => {
     [part~="field"] {
       width: 100% !important;
       min-width: 0 !important;
-      min-height: var(--veloura-v60-search-height, 36px) !important;
-      height: var(--veloura-v60-search-height, 36px) !important;
-      max-height: var(--veloura-v60-search-height, 36px) !important;
+      min-height: var(--veloura-search-height, 36px) !important;
+      height: var(--veloura-search-height, 36px) !important;
+      max-height: var(--veloura-search-height, 36px) !important;
       box-sizing: border-box !important;
       border: 0 !important;
       border-color: transparent !important;
-      border-radius: var(--veloura-v55-search-radius, 24px) !important;
+      border-radius: var(--veloura-search-radius, 24px) !important;
 
       background: transparent !important;
       background-color: transparent !important;
@@ -796,7 +796,7 @@ const initVelouraAdaptiveHeaderLayout = (() => {
 
     .s-search-results,
     [part~="results"] {
-      border-radius: var(--veloura-v55-search-radius, 24px) !important;
+      border-radius: var(--veloura-search-radius, 24px) !important;
       overflow: hidden !important;
     }
   `;
@@ -3481,9 +3481,9 @@ document.addEventListener('DOMContentLoaded', () => {
         background-color:
           var(--veloura-quick-view-modal-bg, #ffffff) !important;
         border-top:
-          1px solid var(--veloura-v86-edge-top, rgba(100,116,139,.11)) !important;
+          1px solid var(--veloura-edge-top, rgba(100,116,139,.11)) !important;
         border-bottom:
-          1px solid var(--veloura-v86-edge-bottom, rgba(100,116,139,.05)) !important;
+          1px solid var(--veloura-edge-bottom, rgba(100,116,139,.05)) !important;
         border-inline: 0 !important;
         -webkit-backdrop-filter:
           blur(24px) saturate(200%) !important;
@@ -3541,9 +3541,9 @@ document.addEventListener('DOMContentLoaded', () => {
         color:
           var(--veloura-dark-primary-text, #ffffff) !important;
         border-top:
-          1px solid var(--veloura-v86-edge-top, rgba(255,255,255,.12)) !important;
+          1px solid var(--veloura-edge-top, rgba(255,255,255,.12)) !important;
         border-bottom:
-          1px solid var(--veloura-v86-edge-bottom, rgba(255,255,255,.055)) !important;
+          1px solid var(--veloura-edge-bottom, rgba(255,255,255,.055)) !important;
         border-inline: 0 !important;
         -webkit-backdrop-filter:
           blur(24px) saturate(200%) !important;
@@ -4234,251 +4234,52 @@ document.addEventListener('DOMContentLoaded', () => initVelouraCartBanners());
 
 document.addEventListener('DOMContentLoaded', () => initVelouraCartBanners());
 
-/* VELOURA V63 BALANCED INLINE SEARCH LAYOUT START */
-const initVelouraBalancedInlineSearchV63 = (() => {
-  let activeContext = null;
-  let scheduledFrame = 0;
+/* Semantic desktop search sizing: CSS owns layout, JS only measures visible tools. */
+const initVelouraInlineSearchSizing = (() => {
+  let frame = 0;
 
-  const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-
-  const isDesktop = () => window.matchMedia('(min-width: 1024px)').matches;
-
-  const shouldUseBalancedLayout = (stack, header) => {
-    if (!stack || !header || !isDesktop()) return false;
-
-    const detached =
-      header.classList.contains('veloura-top-search-detached') ||
-      stack.classList.contains('veloura-header-tabs-stack--search-detached');
-
-    if (detached) return false;
-
-    if (header.classList.contains('veloura-desktop-search-bar')) return true;
-
-    return (
-      header.classList.contains('veloura-desktop-search-bar_sticky_icon') &&
-      !header.classList.contains('veloura-top-scrolled')
-    );
-  };
-
-  const restoreContext = () => {
-    if (!activeContext) return;
-
-    const {
-      header,
-      grid,
-      left,
-      right,
-      leftMarker,
-      rightMarker,
-      unified,
-      resizeObserver,
-      mutationObserver,
-    } = activeContext;
-
-    resizeObserver?.disconnect();
-    mutationObserver?.disconnect();
-
-    if (leftMarker?.parentNode && left) {
-      leftMarker.parentNode.insertBefore(left, leftMarker.nextSibling);
-    }
-
-    if (rightMarker?.parentNode && right) {
-      rightMarker.parentNode.insertBefore(right, rightMarker.nextSibling);
-    }
-
-    unified?.remove();
-    leftMarker?.remove();
-    rightMarker?.remove();
-
-    header?.classList.remove('veloura-header-balanced-search');
-    grid?.style.removeProperty('--veloura-header-tools-width');
-    grid?.style.removeProperty('--veloura-header-layout-gap');
-
-    activeContext = null;
-  };
-
-  const measure = () => {
-    if (!activeContext) return;
-
-    const { grid, logo, unified } = activeContext;
-    if (!grid?.isConnected || !logo?.isConnected || !unified?.isConnected) {
-      restoreContext();
-      scheduleSync();
-      return;
-    }
-
-    const gridWidth = grid.clientWidth;
-    const logoWidth = Math.ceil(logo.getBoundingClientRect().width);
-    const mainGap = clamp(Math.round(gridWidth * 0.012), 12, 20);
-
-    // Measure each visible header control. The two historical side wrappers
-
-    // are layout-transparent in CSS, so they must not be measured as boxes.
+  const update = () => {
+    frame = 0;
+    const header = document.querySelector('.store-header.veloura-top-enabled');
+    const grid = header?.querySelector('.veloura-header-grid');
+    const tools = grid?.querySelector(':scope > .veloura-header__tools');
+    if (!header || !grid || !tools || window.matchMedia('(max-width: 1023px)').matches) return;
 
     const visibleControls = Array.from(
-
-      unified.querySelectorAll(':scope > .veloura-header-side > *')
-
+      tools.querySelectorAll(':scope > .veloura-header__actions > *, :scope > .veloura-header__menu > *')
     ).filter((node) => {
-
       const rect = node.getBoundingClientRect();
-
       const style = window.getComputedStyle(node);
-
-      return style.display !== 'none'
-
-        && style.visibility !== 'hidden'
-
-        && rect.width > 0.5;
-
+      return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0.5;
     });
-
-    const unifiedStyle = window.getComputedStyle(unified);
-
-    const toolGap = parseFloat(unifiedStyle.columnGap || unifiedStyle.gap || '10') || 10;
-
-    const iconContentWidth = visibleControls.reduce((total, node) => {
-
-      return total + Math.ceil(node.getBoundingClientRect().width);
-
-    }, 0) + Math.max(0, visibleControls.length - 1) * toolGap;
-
-
-    const desiredSide = clamp(Math.ceil(iconContentWidth), 220, 420);
-    const availableSide = Math.floor((gridWidth - logoWidth - (mainGap * 2)) / 2);
-    const sideWidth = Math.max(180, Math.min(desiredSide, availableSide));
-
-    grid.style.setProperty('--veloura-header-tools-width', `${sideWidth}px`);
-    grid.style.setProperty('--veloura-header-layout-gap', `${mainGap}px`);
+    const gap = parseFloat(window.getComputedStyle(tools).gap) || 12;
+    const width = visibleControls.reduce((total, node) => total + Math.ceil(node.getBoundingClientRect().width), 0)
+      + Math.max(0, visibleControls.length - 1) * gap;
+    grid.style.setProperty('--veloura-header-tools-width', `${Math.max(180, Math.min(width, 420))}px`);
   };
 
-  const activate = (stack, header, grid) => {
-    if (activeContext?.header === header) {
-      measure();
-      return;
-    }
-
-    restoreContext();
-
-    const left = grid.querySelector(':scope > .veloura-header-left');
-    const right = grid.querySelector(':scope > .veloura-header-right');
-    const logo = grid.querySelector(':scope > .veloura-header-logo');
-    const search = grid.querySelector(':scope > .veloura-desktop-search-bar');
-
-    if (!left || !right || !logo || !search) return;
-
-    const leftMarker = document.createComment('veloura-v63-left-origin');
-    const rightMarker = document.createComment('veloura-v63-right-origin');
-    left.parentNode.insertBefore(leftMarker, left);
-    right.parentNode.insertBefore(rightMarker, right);
-
-    const unified = document.createElement('div');
-    unified.className = 'veloura-header-tools';
-    unified.setAttribute('data-veloura-header-tools', 'true');
-    unified.setAttribute('aria-label', 'أدوات الهيدر');
-
-    /* The existing right-side controls remain first visually, followed by
-       the controls that were previously on the opposite side. Nodes are
-       moved, never cloned, so cart/login/localization behavior is preserved. */
-    unified.append(right, left);
-    grid.appendChild(unified);
-    header.classList.add('veloura-header-balanced-search');
-
-    const resizeObserver = typeof ResizeObserver === 'function'
-      ? new ResizeObserver(() => {
-          if (scheduledFrame) cancelAnimationFrame(scheduledFrame);
-          scheduledFrame = requestAnimationFrame(() => {
-            scheduledFrame = 0;
-            measure();
-          });
-        })
-      : null;
-
-    resizeObserver?.observe(grid);
-    resizeObserver?.observe(logo);
-    resizeObserver?.observe(unified);
-
-    const mutationObserver = typeof MutationObserver === 'function'
-      ? new MutationObserver(measure)
-      : null;
-    mutationObserver?.observe(unified, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['class', 'hidden', 'style'],
-    });
-
-    activeContext = {
-      stack,
-      header,
-      grid,
-      left,
-      right,
-      logo,
-      search,
-      leftMarker,
-      rightMarker,
-      unified,
-      resizeObserver,
-      mutationObserver,
-    };
-
-    requestAnimationFrame(measure);
-    document.fonts?.ready?.then(measure).catch(() => {});
+  const schedule = () => {
+    if (frame) cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(update);
   };
-
-  const sync = () => {
-    const stack = document.querySelector('[data-veloura-header-tabs-stack]');
-    const header = stack?.querySelector('.store-header.veloura-top-enabled');
-    const grid = header?.querySelector('.veloura-header-grid');
-
-    if (!stack || !header || !grid || !shouldUseBalancedLayout(stack, header)) {
-      restoreContext();
-      return;
-    }
-
-    activate(stack, header, grid);
-  };
-
-  function scheduleSync() {
-    if (scheduledFrame) cancelAnimationFrame(scheduledFrame);
-    scheduledFrame = requestAnimationFrame(() => {
-      scheduledFrame = 0;
-      sync();
-    });
-  }
 
   const start = () => {
-    scheduleSync();
-
-    window.addEventListener('resize', scheduleSync, { passive: true });
-    window.addEventListener('orientationchange', scheduleSync, { passive: true });
-    document.addEventListener('veloura:header:layout', scheduleSync);
-    document.addEventListener('veloura:header:position', scheduleSync);
-    document.addEventListener('veloura:menu:ready', scheduleSync);
-
-    const stack = document.querySelector('[data-veloura-header-tabs-stack]');
-    const header = stack?.querySelector('.store-header.veloura-top-enabled');
-
-    if (header && typeof MutationObserver === 'function') {
-      const classObserver = new MutationObserver(scheduleSync);
-      classObserver.observe(header, {
-        attributes: true,
-        attributeFilter: ['class'],
-      });
-    }
+    schedule();
+    window.addEventListener('resize', schedule, { passive: true });
+    window.addEventListener('orientationchange', schedule, { passive: true });
+    document.addEventListener('veloura:menu:ready', schedule);
+    document.fonts?.ready?.then(schedule).catch(() => {});
   };
 
   return start;
 })();
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initVelouraBalancedInlineSearchV63, { once: true });
+  document.addEventListener('DOMContentLoaded', initVelouraInlineSearchSizing, { once: true });
 } else {
-  initVelouraBalancedInlineSearchV63();
+  initVelouraInlineSearchSizing();
 }
-document.addEventListener('theme::ready', initVelouraBalancedInlineSearchV63);
-/* VELOURA V63 BALANCED INLINE SEARCH LAYOUT END */
+document.addEventListener('theme::ready', initVelouraInlineSearchSizing);
 
 /* ========================================================================
    Veloura Bottom Nav Search V13 + native Login

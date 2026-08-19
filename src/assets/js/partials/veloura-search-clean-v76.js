@@ -20,15 +20,15 @@ const SHADOW_STYLE = `
     --search-background: transparent !important;
   }
 
-  :host([data-veloura-v76-inline='true']),
-  :host([data-veloura-v76-inline='true']) form,
-  :host([data-veloura-v76-inline='true']) input,
-  :host([data-veloura-v76-inline='true']) .s-search-input,
-  :host([data-veloura-v76-inline='true']) .s-search-container,
-  :host([data-veloura-v76-inline='true']) .s-search-wrapper,
-  :host([data-veloura-v76-inline='true']) [part~='input'],
-  :host([data-veloura-v76-inline='true']) [part~='form'],
-  :host([data-veloura-v76-inline='true']) [part~='container'] {
+  :host([data-veloura-inline='true']),
+  :host([data-veloura-inline='true']) form,
+  :host([data-veloura-inline='true']) input,
+  :host([data-veloura-inline='true']) .s-search-input,
+  :host([data-veloura-inline='true']) .s-search-container,
+  :host([data-veloura-inline='true']) .s-search-wrapper,
+  :host([data-veloura-inline='true']) [part~='input'],
+  :host([data-veloura-inline='true']) [part~='form'],
+  :host([data-veloura-inline='true']) [part~='container'] {
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
@@ -36,31 +36,31 @@ const SHADOW_STYLE = `
     box-shadow: none !important;
   }
 
-  :host([data-veloura-v76-dark='true']) {
+  :host([data-veloura-dark='true']) {
     --color-text: var(--veloura-dark-primary-text, #ffffff) !important;
     --color-muted: var(--veloura-dark-secondary-text, #d7e0e8) !important;
     color: var(--veloura-dark-primary-text, #ffffff) !important;
     color-scheme: dark;
   }
 
-  :host([data-veloura-v76-inline='false']) form,
-  :host([data-veloura-v76-inline='false']) input,
-  :host([data-veloura-v76-inline='false']) .s-search-input,
-  :host([data-veloura-v76-inline='false']) [part~='input'],
-  :host([data-veloura-v76-inline='false']) [part~='form'] {
-    background: var(--veloura-v76-search-color) !important;
-    background-color: var(--veloura-v76-search-color) !important;
-    color: var(--veloura-v76-search-text) !important;
+  :host([data-veloura-inline='false']) form,
+  :host([data-veloura-inline='false']) input,
+  :host([data-veloura-inline='false']) .s-search-input,
+  :host([data-veloura-inline='false']) [part~='input'],
+  :host([data-veloura-inline='false']) [part~='form'] {
+    background: var(--veloura-search-color) !important;
+    background-color: var(--veloura-search-color) !important;
+    color: var(--veloura-search-text) !important;
     border-color: transparent !important;
     box-shadow: none !important;
   }
 
-  :host([data-veloura-v76-dark='true']) .s-search-results,
-  :host([data-veloura-v76-dark='true']) .s-search-results-wrapper,
-  :host([data-veloura-v76-dark='true']) .s-search-result,
-  :host([data-veloura-v76-dark='true']) .s-search-result-item,
-  :host([data-veloura-v76-dark='true']) [part~='results'],
-  :host([data-veloura-v76-dark='true']) [part~='panel'] {
+  :host([data-veloura-dark='true']) .s-search-results,
+  :host([data-veloura-dark='true']) .s-search-results-wrapper,
+  :host([data-veloura-dark='true']) .s-search-result,
+  :host([data-veloura-dark='true']) .s-search-result-item,
+  :host([data-veloura-dark='true']) [part~='results'],
+  :host([data-veloura-dark='true']) [part~='panel'] {
     background: var(--veloura-dark-secondary-bg, #010612) !important;
     background-color: var(--veloura-dark-secondary-bg, #010612) !important;
     color: var(--veloura-dark-primary-text, #ffffff) !important;
@@ -69,7 +69,7 @@ const SHADOW_STYLE = `
 
   input::placeholder,
   .s-search-input::placeholder {
-    color: var(--veloura-v76-search-muted) !important;
+    color: var(--veloura-search-muted) !important;
     opacity: 1 !important;
   }
 `;
@@ -136,12 +136,12 @@ function paint(host) {
     ? computedVariable('--veloura-dark-secondary-text', '#d7e0e8')
     : '#64748b';
 
-  host.setAttribute('data-veloura-v76-dark', dark ? 'true' : 'false');
-  host.setAttribute('data-veloura-v76-inline', inline ? 'true' : 'false');
+  host.setAttribute('data-veloura-dark', dark ? 'true' : 'false');
+  host.setAttribute('data-veloura-inline', inline ? 'true' : 'false');
 
-  setImportant(host, '--veloura-v76-search-color', secondary);
-  setImportant(host, '--veloura-v76-search-text', text);
-  setImportant(host, '--veloura-v76-search-muted', muted);
+  setImportant(host, '--veloura-search-color', secondary);
+  setImportant(host, '--veloura-search-text', text);
+  setImportant(host, '--veloura-search-muted', muted);
 
   if (inline) {
     [

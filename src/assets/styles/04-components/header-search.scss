@@ -20,15 +20,15 @@
    ------------------------------------------------------------------------ */
 html body .veloura-header-tabs-stack--blur,
 html body.veloura-glass-effect .veloura-header-tabs-stack {
-  --veloura-v58-glass-bg: var(--veloura-header-glass-background);
-  --veloura-v58-glass-bg-dark: var(--veloura-header-glass-background-dark);
-  --veloura-v58-glass-border: var(--veloura-header-glass-border);
-  --veloura-v58-glass-border-dark: var(--veloura-header-glass-border-dark);
-  --veloura-v58-glass-filter: var(--veloura-header-glass-filter);
-  --veloura-v15-glass-fallback: var(--veloura-header-glass-background);
-  --veloura-v15-glass-dark-fallback: var(--veloura-header-glass-background-dark);
-  --veloura-v15-border: var(--veloura-header-glass-border);
-  --veloura-v15-filter: var(--veloura-header-glass-filter);
+  --veloura-glass-bg: var(--veloura-header-glass-background);
+  --veloura-glass-bg-dark: var(--veloura-header-glass-background-dark);
+  --veloura-glass-border: var(--veloura-header-glass-border);
+  --veloura-glass-border-dark: var(--veloura-header-glass-border-dark);
+  --veloura-glass-filter: var(--veloura-header-glass-filter);
+  --veloura-glass-fallback: var(--veloura-header-glass-background);
+  --veloura-glass-dark-fallback: var(--veloura-header-glass-background-dark);
+  --veloura-border: var(--veloura-header-glass-border);
+  --veloura-filter: var(--veloura-header-glass-filter);
 }
 
 html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
@@ -191,7 +191,7 @@ html body .veloura-search-surface salla-search.veloura-header-search-component::
     background: var(--veloura-header-glass-background) !important;
     background-color: var(--veloura-header-glass-background) !important;
     border: 1px solid var(--veloura-header-glass-border) !important;
-    border-radius: var(--veloura-v15-radius, 24px) !important;
+    border-radius: var(--veloura-radius, 24px) !important;
     -webkit-backdrop-filter: var(--veloura-header-glass-filter) !important;
     backdrop-filter: var(--veloura-header-glass-filter) !important;
     box-shadow:

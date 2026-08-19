@@ -15,109 +15,109 @@ const scheduledHosts = new WeakSet();
 
 const SEARCH_STYLE = `
   :host {
-    --veloura-v72-light-control: rgba(238, 244, 249, .72);
-    --veloura-v72-dark-control: color-mix(
+    --veloura-light-control: rgba(238, 244, 249, .72);
+    --veloura-dark-control: color-mix(
       in srgb,
       var(--veloura-dark-glass-tint, #18181b) 34%,
       #1e2a38 66%
     );
-    --veloura-v72-control-bg: var(--veloura-v72-light-control);
-    --veloura-v72-control-text: #1f2937;
-    --veloura-v72-control-muted: rgba(71, 85, 105, .72);
-    --veloura-v72-top: rgba(255, 255, 255, .78);
-    --veloura-v72-bottom: rgba(15, 23, 42, .11);
-    --veloura-v72-shadow: rgba(15, 23, 42, .08);
-    color: var(--veloura-v72-control-text) !important;
+    --veloura-control-bg: var(--veloura-light-control);
+    --veloura-control-text: #1f2937;
+    --veloura-control-muted: rgba(71, 85, 105, .72);
+    --veloura-top: rgba(255, 255, 255, .78);
+    --veloura-bottom: rgba(15, 23, 42, .11);
+    --veloura-shadow: rgba(15, 23, 42, .08);
+    color: var(--veloura-control-text) !important;
   }
 
-  :host([data-veloura-v72-theme='dark']) {
-    --veloura-v72-control-bg: color-mix(
+  :host([data-veloura-theme='dark']) {
+    --veloura-control-bg: color-mix(
       in srgb,
-      var(--veloura-v72-dark-control) 84%,
+      var(--veloura-dark-control) 84%,
       transparent
     );
-    --veloura-v72-control-text: var(
+    --veloura-control-text: var(
       --veloura-dark-primary-text,
       #ffffff
     );
-    --veloura-v72-control-muted: color-mix(
+    --veloura-control-muted: color-mix(
       in srgb,
       var(--veloura-dark-secondary-text, #b7c3cf) 72%,
       transparent
     );
-    --veloura-v72-top: rgba(255, 255, 255, .17);
-    --veloura-v72-bottom: rgba(2, 8, 15, .34);
-    --veloura-v72-shadow: rgba(0, 0, 0, .25);
+    --veloura-top: rgba(255, 255, 255, .17);
+    --veloura-bottom: rgba(2, 8, 15, .34);
+    --veloura-shadow: rgba(0, 0, 0, .25);
     color-scheme: dark;
   }
 
-  :host([data-veloura-v72-context='inline']) form,
-  :host([data-veloura-v72-context='inline']) input,
-  :host([data-veloura-v72-context='inline']) .s-search-input,
-  :host([data-veloura-v72-context='inline']) .s-search-wrapper,
-  :host([data-veloura-v72-context='inline']) .s-search-container,
-  :host([data-veloura-v72-context='inline']) [part~='input'],
-  :host([data-veloura-v72-context='inline']) [part~='form'],
-  :host([data-veloura-v72-context='inline']) [part~='container'] {
+  :host([data-veloura-context='inline']) form,
+  :host([data-veloura-context='inline']) input,
+  :host([data-veloura-context='inline']) .s-search-input,
+  :host([data-veloura-context='inline']) .s-search-wrapper,
+  :host([data-veloura-context='inline']) .s-search-container,
+  :host([data-veloura-context='inline']) [part~='input'],
+  :host([data-veloura-context='inline']) [part~='form'],
+  :host([data-veloura-context='inline']) [part~='container'] {
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
     border-color: transparent !important;
     box-shadow: none !important;
-    color: var(--veloura-v72-control-text) !important;
+    color: var(--veloura-control-text) !important;
   }
 
-  :host([data-veloura-v72-context='modal']) form,
-  :host([data-veloura-v72-context='modal']) input,
-  :host([data-veloura-v72-context='modal']) .s-search-input,
-  :host([data-veloura-v72-context='modal']) [part~='input'],
-  :host([data-veloura-v72-context='modal']) [part~='form'] {
+  :host([data-veloura-context='modal']) form,
+  :host([data-veloura-context='modal']) input,
+  :host([data-veloura-context='modal']) .s-search-input,
+  :host([data-veloura-context='modal']) [part~='input'],
+  :host([data-veloura-context='modal']) [part~='form'] {
     background:
       linear-gradient(
         180deg,
         rgba(255, 255, 255, .045),
         rgba(0, 0, 0, .018)
       ),
-      var(--veloura-v72-control-bg) !important;
-    background-color: var(--veloura-v72-control-bg) !important;
-    border-top: 1px solid var(--veloura-v72-top) !important;
-    border-bottom: 1px solid var(--veloura-v72-bottom) !important;
+      var(--veloura-control-bg) !important;
+    background-color: var(--veloura-control-bg) !important;
+    border-top: 1px solid var(--veloura-top) !important;
+    border-bottom: 1px solid var(--veloura-bottom) !important;
     border-inline: 1px solid rgba(255, 255, 255, .045) !important;
     box-shadow:
       inset 0 1px 0 color-mix(
         in srgb,
-        var(--veloura-v72-top) 54%,
+        var(--veloura-top) 54%,
         transparent
       ),
       inset 0 -1px 0 color-mix(
         in srgb,
-        var(--veloura-v72-bottom) 52%,
+        var(--veloura-bottom) 52%,
         transparent
       ),
-      0 8px 28px var(--veloura-v72-shadow) !important;
+      0 8px 28px var(--veloura-shadow) !important;
     -webkit-backdrop-filter:
       blur(20px) saturate(128%) brightness(101%) !important;
     backdrop-filter:
       blur(20px) saturate(128%) brightness(101%) !important;
-    color: var(--veloura-v72-control-text) !important;
+    color: var(--veloura-control-text) !important;
   }
 
-  :host([data-veloura-v72-theme='dark']) .s-search-modal,
-  :host([data-veloura-v72-theme='dark']) .s-search-results,
-  :host([data-veloura-v72-theme='dark']) .s-search-results-wrapper,
-  :host([data-veloura-v72-theme='dark']) .s-search-result,
-  :host([data-veloura-v72-theme='dark']) .s-search-result-item,
-  :host([data-veloura-v72-theme='dark']) [part~='panel'],
-  :host([data-veloura-v72-theme='dark']) [part~='results'] {
+  :host([data-veloura-theme='dark']) .s-search-modal,
+  :host([data-veloura-theme='dark']) .s-search-results,
+  :host([data-veloura-theme='dark']) .s-search-results-wrapper,
+  :host([data-veloura-theme='dark']) .s-search-result,
+  :host([data-veloura-theme='dark']) .s-search-result-item,
+  :host([data-veloura-theme='dark']) [part~='panel'],
+  :host([data-veloura-theme='dark']) [part~='results'] {
     background: var(--veloura-dark-secondary-bg, #101820) !important;
     background-color: var(--veloura-dark-secondary-bg, #101820) !important;
-    color: var(--veloura-v72-control-text) !important;
+    color: var(--veloura-control-text) !important;
     border-color: transparent !important;
   }
 
   input::placeholder,
   .s-search-input::placeholder {
-    color: var(--veloura-v72-control-muted) !important;
+    color: var(--veloura-control-muted) !important;
     opacity: 1 !important;
   }
 `;
@@ -145,8 +145,8 @@ function syncHostVariables(host) {
   const dark = isDark();
   const context = isInline(host) ? 'inline' : 'modal';
 
-  host.setAttribute('data-veloura-v72-theme', dark ? 'dark' : 'light');
-  host.setAttribute('data-veloura-v72-context', context);
+  host.setAttribute('data-veloura-theme', dark ? 'dark' : 'light');
+  host.setAttribute('data-veloura-context', context);
 
   const darkBase =
     'color-mix(in srgb, var(--veloura-dark-glass-tint, #18181b) 34%, #1e2a38 66%)';

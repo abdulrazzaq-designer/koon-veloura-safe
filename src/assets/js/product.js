@@ -35,13 +35,13 @@ class Product extends BasePage {
         document.documentElement.classList.add('veloura-is-product-page');
         document.body.classList.add('veloura-is-product-page');
 
-        const rawSticky = page.getAttribute('data-veloura-v42-sticky');
+        const rawSticky = page.getAttribute('data-veloura-sticky');
         const stickyEnabled =
             rawSticky === 'true' ||
             (rawSticky !== 'false' && page.classList.contains('veloura-product-mobile-sticky-enabled'));
 
-        document.body.classList.toggle('veloura-v42-sticky-enabled', stickyEnabled);
-        document.body.classList.toggle('veloura-v42-sticky-disabled', !stickyEnabled);
+        document.body.classList.toggle('veloura-sticky-enabled', stickyEnabled);
+        document.body.classList.toggle('veloura-sticky-disabled', !stickyEnabled);
         document.body.classList.toggle('veloura-product-sticky-active', stickyEnabled);
 
         if (!stickyEnabled) {
@@ -551,8 +551,8 @@ class Product extends BasePage {
         slider.dataset.velouraV42ThumbsReady = '1';
         slider.dataset.velouraThumbsReady = '1';
         nativeThumbs.hidden = false;
-        nativeThumbs.classList.remove('veloura-v41-native-thumbs');
-        nativeThumbs.classList.add('veloura-v42-native-thumbs', 'veloura-v48-scrollable-thumbs');
+        nativeThumbs.classList.remove('veloura-native-thumbs');
+        nativeThumbs.classList.add('veloura-native-thumbs', 'veloura-scrollable-thumbs');
 
         slider.removeAttribute('vertical-thumbs');
         slider.removeAttribute('thumbs-position');

@@ -39,10 +39,10 @@ html body .veloura-header-tabs-stack--search-detached
 }
 
 html body .veloura-header-tabs-stack .veloura-search-surface {
-  --veloura-v55-search-bg: var(--veloura-site-second-bg, #f4f5f7);
-  --veloura-v55-search-border: transparent;
-  --veloura-v55-search-shadow: none;
-  --veloura-v60-search-inner-bg: transparent;
+  --veloura-search-bg: var(--veloura-site-second-bg, #f4f5f7);
+  --veloura-search-border: transparent;
+  --veloura-search-shadow: none;
+  --veloura-search-inner-bg: transparent;
   --s-search-input-bg: transparent;
   --search-input-bg: transparent;
 
@@ -50,13 +50,13 @@ html body .veloura-header-tabs-stack .veloura-search-surface {
   background-color: var(--veloura-site-second-bg, #f4f5f7) !important;
   border: 0 !important;
   border-radius:
-    var(--veloura-v55-search-radius, var(--veloura-v15-radius, 24px)) !important;
+    var(--veloura-search-radius, var(--veloura-radius, 24px)) !important;
   box-shadow: none !important;
 }
 
 html.dark body .veloura-header-tabs-stack .veloura-search-surface,
 html body.dark .veloura-header-tabs-stack .veloura-search-surface {
-  --veloura-v55-search-bg: var(--veloura-dark-secondary-bg, #010612);
+  --veloura-search-bg: var(--veloura-dark-secondary-bg, #010612);
   background: var(--veloura-dark-secondary-bg, #010612) !important;
   background-color: var(--veloura-dark-secondary-bg, #010612) !important;
   color: var(--veloura-dark-primary-text, #ffffff) !important;
@@ -66,7 +66,7 @@ html body .veloura-header-tabs-stack--blur .veloura-search-surface,
 html body.veloura-glass-effect
   .veloura-header-tabs-stack
   .veloura-search-surface {
-  --veloura-v55-search-bg: var(--veloura-glass-surface);
+  --veloura-search-bg: var(--veloura-glass-surface);
 
   background:
     linear-gradient(
@@ -137,7 +137,7 @@ html body .veloura-header-tabs-stack .veloura-search-surface
     background-color: var(--veloura-site-second-bg, #f8fafc) !important;
     background-image: none !important;
     border: 0 !important;
-    border-radius: var(--veloura-v15-radius, 24px) !important;
+    border-radius: var(--veloura-radius, 24px) !important;
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
     box-shadow: 0 14px 34px rgba(15, 23, 42, .12) !important;

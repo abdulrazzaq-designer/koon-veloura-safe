@@ -8,32 +8,32 @@
    ======================================================================== */
 
 html body .veloura-header-tabs-stack {
-  --veloura-v55-header-row-height: clamp(62px, 5.25vw, 72px);
-  --veloura-v55-header-row-height-compact: 50px;
-  --veloura-v55-icon-hit: 34px;
-  --veloura-v55-icon-gap: clamp(3px, .42vw, 7px);
-  --veloura-v55-logo-width: clamp(112px, 13vw, 218px);
-  --veloura-v55-search-radius: var(--veloura-v15-radius, 24px);
-  --veloura-v55-search-solid-bg: var(--veloura-site-second-bg, #f4f4f5);
-  --veloura-v55-search-bg: var(--veloura-v55-search-solid-bg);
-  --veloura-v55-search-border: color-mix(in srgb, var(--veloura-top-text, #1f2937) 13%, transparent);
-  --veloura-v55-search-shadow: 0 8px 24px rgba(15, 23, 42, .055);
+  --veloura-header-row-height: clamp(62px, 5.25vw, 72px);
+  --veloura-header-row-height-compact: 50px;
+  --veloura-icon-hit: 34px;
+  --veloura-icon-gap: clamp(3px, .42vw, 7px);
+  --veloura-logo-width: clamp(112px, 13vw, 218px);
+  --veloura-search-radius: var(--veloura-radius, 24px);
+  --veloura-search-solid-bg: var(--veloura-site-second-bg, #f4f4f5);
+  --veloura-search-bg: var(--veloura-search-solid-bg);
+  --veloura-search-border: color-mix(in srgb, var(--veloura-top-text, #1f2937) 13%, transparent);
+  --veloura-search-shadow: 0 8px 24px rgba(15, 23, 42, .055);
 }
 
 html body .veloura-header-tabs-stack--radius-sharp {
-  --veloura-v55-search-radius: 0px;
+  --veloura-search-radius: 0px;
 }
 
 html body .veloura-header-tabs-stack--radius-soft {
-  --veloura-v55-search-radius: 14px;
+  --veloura-search-radius: 14px;
 }
 
 html body .veloura-header-tabs-stack--radius-medium {
-  --veloura-v55-search-radius: 24px;
+  --veloura-search-radius: 24px;
 }
 
 html body .veloura-header-tabs-stack--radius-large {
-  --veloura-v55-search-radius: 38px;
+  --veloura-search-radius: 38px;
 }
 
 /* The top surface follows its actual content height. This is the part that
@@ -56,7 +56,7 @@ html body .veloura-header-tabs-stack .store-header.veloura-top-enabled #mainnav 
 html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-grid {
   width: 100% !important;
   min-width: 0 !important;
-  min-height: var(--veloura-v55-header-row-height) !important;
+  min-height: var(--veloura-header-row-height) !important;
   padding-block: 7px !important;
   column-gap: clamp(4px, .55vw, 10px) !important;
   row-gap: 4px !important;
@@ -65,13 +65,13 @@ html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-
   transition: min-height .16s ease, padding .16s ease, row-gap .16s ease !important;
 }
 
-html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-side {
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header__actions {
   display: flex !important;
   min-width: 0 !important;
   width: max-content !important;
   max-width: 100% !important;
   align-items: center !important;
-  gap: var(--veloura-v55-icon-gap) !important;
+  gap: var(--veloura-icon-gap) !important;
   white-space: nowrap !important;
   overflow: visible !important;
   z-index: 3 !important;
@@ -90,7 +90,7 @@ html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-
 html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-logo {
   grid-area: logo !important;
   min-width: 0 !important;
-  max-width: var(--veloura-v55-logo-width) !important;
+  max-width: var(--veloura-logo-width) !important;
   justify-self: center !important;
   z-index: 2 !important;
 }
@@ -106,13 +106,13 @@ html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .navbar-b
 html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-icon,
 html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-search-toggle,
 html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-cart-summary {
-  flex: 0 0 var(--veloura-v55-icon-hit) !important;
-  width: var(--veloura-v55-icon-hit) !important;
-  min-width: var(--veloura-v55-icon-hit) !important;
-  max-width: var(--veloura-v55-icon-hit) !important;
-  height: var(--veloura-v55-icon-hit) !important;
-  min-height: var(--veloura-v55-icon-hit) !important;
-  max-height: var(--veloura-v55-icon-hit) !important;
+  flex: 0 0 var(--veloura-icon-hit) !important;
+  width: var(--veloura-icon-hit) !important;
+  min-width: var(--veloura-icon-hit) !important;
+  max-width: var(--veloura-icon-hit) !important;
+  height: var(--veloura-icon-hit) !important;
+  min-height: var(--veloura-icon-hit) !important;
+  max-height: var(--veloura-icon-hit) !important;
   padding: 0 !important;
   margin: 0 !important;
   box-sizing: border-box !important;
@@ -257,9 +257,9 @@ html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-
 /* Preserve icon groups and hide the cart amount on constrained laptops. */
 @media (min-width: 1024px) and (max-width: 1180px) {
   html body .veloura-header-tabs-stack {
-    --veloura-v55-icon-hit: 32px;
-    --veloura-v55-icon-gap: 3px;
-    --veloura-v55-logo-width: clamp(105px, 12vw, 168px);
+    --veloura-icon-hit: 32px;
+    --veloura-icon-gap: 3px;
+    --veloura-logo-width: clamp(105px, 12vw, 168px);
   }
 
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-cart-summary .s-cart-summary-total,
@@ -273,9 +273,9 @@ html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-
    only when the real rendered controls need them. No hard-coded icon count.
    ------------------------------------------------------------------------ */
 html body .store-header.veloura-top-enabled.veloura-header-layout-tight {
-  --veloura-v55-icon-hit: 30px;
-  --veloura-v55-icon-gap: 2px;
-  --veloura-v55-logo-width: clamp(92px, 11vw, 150px);
+  --veloura-icon-hit: 30px;
+  --veloura-icon-gap: 2px;
+  --veloura-logo-width: clamp(92px, 11vw, 150px);
 }
 
 html body .store-header.veloura-top-enabled.veloura-header-layout-tight .veloura-cart-summary .s-cart-summary-total,
@@ -363,7 +363,7 @@ html body salla-search.veloura-header-search-component {
   width: 100% !important;
   max-width: none !important;
   min-width: 0 !important;
-  border-radius: var(--veloura-v55-search-radius) !important;
+  border-radius: var(--veloura-search-radius) !important;
   box-sizing: border-box !important;
 }
 
@@ -371,10 +371,10 @@ html body salla-search.veloura-header-search-component {
   display: block !important;
   overflow: visible !important;
   background: transparent !important;
-  --s-search-input-bg: var(--veloura-v55-search-bg);
-  --search-input-bg: var(--veloura-v55-search-bg);
-  --s-search-border-radius: var(--veloura-v55-search-radius);
-  --search-border-radius: var(--veloura-v55-search-radius);
+  --s-search-input-bg: var(--veloura-search-bg);
+  --search-input-bg: var(--veloura-search-bg);
+  --s-search-border-radius: var(--veloura-search-radius);
+  --search-border-radius: var(--veloura-search-radius);
 }
 
 html body salla-search.veloura-header-search-component .s-search-input,
@@ -385,18 +385,18 @@ html body salla-search.veloura-header-search-component::part(form),
 html body salla-search.veloura-header-search-component::part(container) {
   width: 100% !important;
   min-height: 42px !important;
-  border: 1px solid var(--veloura-v55-search-border) !important;
-  border-radius: var(--veloura-v55-search-radius) !important;
-  background: var(--veloura-v55-search-bg) !important;
-  background-color: var(--veloura-v55-search-bg) !important;
+  border: 1px solid var(--veloura-search-border) !important;
+  border-radius: var(--veloura-search-radius) !important;
+  background: var(--veloura-search-bg) !important;
+  background-color: var(--veloura-search-bg) !important;
   color: var(--veloura-top-text, currentColor) !important;
-  box-shadow: var(--veloura-v55-search-shadow) !important;
+  box-shadow: var(--veloura-search-shadow) !important;
   box-sizing: border-box !important;
 }
 
 html body salla-search.veloura-header-search-component .s-search-results,
 html body salla-search.veloura-header-search-component::part(results) {
-  border-radius: var(--veloura-v55-search-radius) !important;
+  border-radius: var(--veloura-search-radius) !important;
   overflow: hidden !important;
 }
 
@@ -404,10 +404,10 @@ html body salla-search.veloura-header-search-component::part(results) {
    color into a glass layer. Detached search receives the same effect. */
 html body .veloura-header-tabs-stack--blur,
 html body.veloura-glass-effect .veloura-header-tabs-stack {
-  --veloura-v55-search-bg: var(--veloura-v55-search-solid-bg);
-  --veloura-v55-search-bg: color-mix(in srgb, var(--veloura-v55-search-solid-bg) 72%, transparent);
-  --veloura-v55-search-border: color-mix(in srgb, var(--veloura-top-text, #1f2937) 16%, transparent);
-  --veloura-v55-search-shadow: 0 10px 30px rgba(15, 23, 42, .08), inset 0 1px 0 rgba(255, 255, 255, .24);
+  --veloura-search-bg: var(--veloura-search-solid-bg);
+  --veloura-search-bg: color-mix(in srgb, var(--veloura-search-solid-bg) 72%, transparent);
+  --veloura-search-border: color-mix(in srgb, var(--veloura-top-text, #1f2937) 16%, transparent);
+  --veloura-search-shadow: 0 10px 30px rgba(15, 23, 42, .08), inset 0 1px 0 rgba(255, 255, 255, .24);
 }
 
 html body .veloura-header-tabs-stack--blur salla-search.veloura-header-search-component .s-search-input,
@@ -429,13 +429,13 @@ html body.veloura-glass-effect salla-search.veloura-header-search-component::par
    Categories remain usable; sticky search-bar mode still becomes an icon.
    ------------------------------------------------------------------------ */
 html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-tabs-stack--compact-enabled {
-  --veloura-v55-icon-hit: 30px;
-  --veloura-v55-icon-gap: 2px;
-  --veloura-v55-logo-width: clamp(92px, 10.5vw, 160px);
+  --veloura-icon-hit: 30px;
+  --veloura-icon-gap: 2px;
+  --veloura-logo-width: clamp(92px, 10.5vw, 160px);
 }
 
 html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-tabs-stack--compact-enabled .store-header.veloura-top-compact-on-scroll .veloura-header-grid {
-  min-height: var(--veloura-v55-header-row-height-compact) !important;
+  min-height: var(--veloura-header-row-height-compact) !important;
   padding-block: 3px !important;
   row-gap: 1px !important;
 }
@@ -463,11 +463,11 @@ html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-ta
    ------------------------------------------------------------------------ */
 @media (max-width: 1023px) {
   html body .veloura-header-tabs-stack {
-    --veloura-v55-header-row-height: 58px;
-    --veloura-v55-header-row-height-compact: 46px;
-    --veloura-v55-icon-hit: 31px;
-    --veloura-v55-icon-gap: 2px;
-    --veloura-v55-logo-width: clamp(82px, 25vw, 132px);
+    --veloura-header-row-height: 58px;
+    --veloura-header-row-height-compact: 46px;
+    --veloura-icon-hit: 31px;
+    --veloura-icon-gap: 2px;
+    --veloura-logo-width: clamp(82px, 25vw, 132px);
   }
 
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-grid {
@@ -475,7 +475,7 @@ html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-ta
     grid-template-areas:
       'left logo right'
       'search search search' !important;
-    min-height: var(--veloura-v55-header-row-height) !important;
+    min-height: var(--veloura-header-row-height) !important;
     padding-block: 5px !important;
     padding-inline: clamp(7px, 2.5vw, 14px) !important;
     column-gap: 4px !important;
@@ -507,15 +507,15 @@ html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-ta
   }
 
   html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-tabs-stack--compact-enabled .store-header.veloura-top-compact-on-scroll .veloura-header-grid {
-    min-height: var(--veloura-v55-header-row-height-compact) !important;
+    min-height: var(--veloura-header-row-height-compact) !important;
     padding-block: 2px !important;
   }
 }
 
 @media (max-width: 390px) {
   html body .veloura-header-tabs-stack {
-    --veloura-v55-icon-hit: 29px;
-    --veloura-v55-logo-width: clamp(76px, 28vw, 105px);
+    --veloura-icon-hit: 29px;
+    --veloura-logo-width: clamp(76px, 28vw, 105px);
   }
 }
 
