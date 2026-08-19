@@ -1,5 +1,5 @@
 /* ========================================================================
-   Veloura V55 — adaptive header, category links, search surface and
+   Adaptive header, category links, search surface and
    product-card action stability.
 
    This file is imported last on purpose. It forms one final responsive
@@ -11,7 +11,7 @@ html body .veloura-header-tabs-stack {
   --veloura-header-row-height: clamp(62px, 5.25vw, 72px);
   --veloura-header-row-height-compact: 50px;
   --veloura-icon-hit: 34px;
-  --veloura-icon-gap: clamp(3px, .42vw, 7px);
+  --veloura-icon-gap: 10px;
   --veloura-logo-width: clamp(112px, 13vw, 218px);
   --veloura-search-radius: var(--veloura-radius, 24px);
   --veloura-search-solid-bg: var(--veloura-site-second-bg, #f4f4f5);
@@ -105,7 +105,7 @@ html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .navbar-b
 
 html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-icon,
 html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-search-toggle,
-html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-cart-summary {
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-cart-summary.veloura-cart-hide-total {
   flex: 0 0 var(--veloura-icon-hit) !important;
   width: var(--veloura-icon-hit) !important;
   min-width: var(--veloura-icon-hit) !important;
@@ -118,11 +118,52 @@ html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-
   box-sizing: border-box !important;
 }
 
-/* Cart text is allowed on wide desktops only. It is an expendable element,
-   unlike the actual cart icon, and therefore is the first thing compressed. */
-html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-cart-summary .s-cart-summary-wrapper,
-html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-cart-summary .s-cart-summary-content {
-  min-width: 0 !important;
+/* Cart total is a compound control. When enabled it owns its real width;
+   icon-only mode still uses the standard icon hit-box. */
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled
+  .veloura-cart-summary.veloura-cart-total-visible {
+  display: inline-flex !important;
+  align-items: center !important;
+  flex: 0 0 auto !important;
+  width: max-content !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  overflow: visible !important;
+  white-space: nowrap !important;
+}
+
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled
+  .veloura-cart-summary.veloura-cart-total-visible
+  :is(.s-cart-summary-wrapper, .s-cart-summary-content),
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled
+  .veloura-cart-summary.veloura-cart-total-visible::part(wrapper),
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled
+  .veloura-cart-summary.veloura-cart-total-visible::part(button) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 7px !important;
+  width: max-content !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  overflow: visible !important;
+  white-space: nowrap !important;
+}
+
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled
+  .veloura-cart-summary.veloura-cart-total-visible .s-cart-summary-total {
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 4px !important;
+  width: max-content !important;
+  min-width: max-content !important;
+  white-space: nowrap !important;
+  word-spacing: 3px !important;
+}
+
+html body .veloura-header-tabs-stack .store-header.veloura-top-enabled
+  .veloura-cart-summary.veloura-cart-total-visible .s-cart-summary-total .sicon-sar {
+  margin-inline-start: 4px !important;
 }
 
 /* ------------------------------------------------------------------------
@@ -258,13 +299,8 @@ html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-
 @media (min-width: 1024px) and (max-width: 1180px) {
   html body .veloura-header-tabs-stack {
     --veloura-icon-hit: 32px;
-    --veloura-icon-gap: 3px;
+    --veloura-icon-gap: 10px;
     --veloura-logo-width: clamp(105px, 12vw, 168px);
-  }
-
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-cart-summary .s-cart-summary-total,
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-cart-summary [data-cart-total] {
-    display: none !important;
   }
 }
 
@@ -274,14 +310,10 @@ html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-
    ------------------------------------------------------------------------ */
 html body .store-header.veloura-top-enabled.veloura-header-layout-tight {
   --veloura-icon-hit: 30px;
-  --veloura-icon-gap: 2px;
+  --veloura-icon-gap: 10px;
   --veloura-logo-width: clamp(92px, 11vw, 150px);
 }
 
-html body .store-header.veloura-top-enabled.veloura-header-layout-tight .veloura-cart-summary .s-cart-summary-total,
-html body .store-header.veloura-top-enabled.veloura-header-layout-tight .veloura-cart-summary [data-cart-total] {
-  display: none !important;
-}
 
 html body .store-header.veloura-top-enabled.veloura-header-layout-two-tier .veloura-header-grid {
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
@@ -430,7 +462,7 @@ html body.veloura-glass-effect salla-search.veloura-header-search-component::par
    ------------------------------------------------------------------------ */
 html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-tabs-stack--compact-enabled {
   --veloura-icon-hit: 30px;
-  --veloura-icon-gap: 2px;
+  --veloura-icon-gap: 10px;
   --veloura-logo-width: clamp(92px, 10.5vw, 160px);
 }
 
@@ -466,7 +498,7 @@ html body .veloura-header-tabs-stack.veloura-stack-is-scrolled.veloura-header-ta
     --veloura-header-row-height: 58px;
     --veloura-header-row-height-compact: 46px;
     --veloura-icon-hit: 31px;
-    --veloura-icon-gap: 2px;
+    --veloura-icon-gap: 10px;
     --veloura-logo-width: clamp(82px, 25vw, 132px);
   }
 

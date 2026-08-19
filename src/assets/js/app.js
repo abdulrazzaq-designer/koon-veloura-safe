@@ -4245,16 +4245,20 @@ const initVelouraInlineSearchSizing = (() => {
     const tools = grid?.querySelector(':scope > .veloura-header__tools');
     if (!header || !grid || !tools || window.matchMedia('(max-width: 1023px)').matches) return;
 
-    const visibleControls = Array.from(
-      tools.querySelectorAll(':scope > .veloura-header__actions > *, :scope > .veloura-header__menu > *')
-    ).filter((node) => {
+    const actions = tools.querySelector(':scope > .veloura-header__actions');
+    const menu = tools.querySelector(':scope > .veloura-header__menu');
+    const isVisible = (node) => {
+      if (!node) return false;
       const rect = node.getBoundingClientRect();
       const style = window.getComputedStyle(node);
       return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0.5;
-    });
-    const gap = parseFloat(window.getComputedStyle(tools).gap) || 12;
-    const width = visibleControls.reduce((total, node) => total + Math.ceil(node.getBoundingClientRect().width), 0)
-      + Math.max(0, visibleControls.length - 1) * gap;
+    };
+
+    const actionsWidth = isVisible(actions) ? Math.ceil(actions.getBoundingClientRect().width) : 0;
+    const menuWidth = isVisible(menu) ? Math.ceil(menu.getBoundingClientRect().width) : 0;
+    const toolsGap = parseFloat(window.getComputedStyle(tools).columnGap || window.getComputedStyle(tools).gap) || 12;
+    const width = actionsWidth + menuWidth + (actionsWidth && menuWidth ? toolsGap : 0);
+
     grid.style.setProperty('--veloura-header-tools-width', `${Math.max(180, Math.min(width, 420))}px`);
   };
 

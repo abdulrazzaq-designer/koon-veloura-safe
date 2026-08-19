@@ -188,12 +188,22 @@ html body .store-header.veloura-top-enabled .veloura-cart-summary {
 html body .store-header.veloura-top-enabled .veloura-cart-summary {
   display: inline-flex !important;
   align-items: center !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
   height: var(--veloura-icon-hit, 38px) !important;
   min-height: var(--veloura-icon-hit, 38px) !important;
   line-height: 1 !important;
   vertical-align: middle !important;
   transform: none !important;
+}
+
+html body .store-header.veloura-top-enabled
+  .veloura-cart-summary.veloura-cart-total-visible {
+  width: max-content !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  flex: 0 0 auto !important;
+  overflow: visible !important;
+  white-space: nowrap !important;
 }
 
 html body .store-header.veloura-top-enabled .veloura-cart-summary .s-cart-summary-wrapper,

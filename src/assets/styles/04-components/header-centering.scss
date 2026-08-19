@@ -1,17 +1,16 @@
 /* ========================================================================
-   Veloura V64 — fixed desktop header axes.
+   Desktop header axes.
 
    Rectangular search inside the header:
      physical left  = compact search
      exact center   = logo
-     physical right = every header icon (V63 unified wrapper)
+     physical right = the complete header tools group
 
    Detached search or icon-only search:
      physical left/right icon groups remain natural and the logo is forced
      to the mathematical center, regardless of the laptop de-centering flag.
 
-   This file intentionally loads after V63 and uses a higher-specificity
-   contract than V60 so older explicit grid-column rules cannot win.
+   This file is the final desktop alignment contract for the header.
    ======================================================================== */
 
 @media (min-width: 1024px) {
@@ -131,7 +130,7 @@
     direction: rtl !important;
     align-items: center !important;
     align-self: center !important;
-    justify-content: flex-end !important;
+    justify-content: flex-start !important;
     justify-self: end !important;
     gap: 10px !important;
     width: clamp(240px, var(--veloura-header-tools-width, 320px), 340px) !important;
@@ -149,7 +148,7 @@
     display: flex !important;
     align-items: center !important;
     align-self: center !important;
-    justify-content: flex-end !important;
+    justify-content: flex-start !important;
     flex: 0 0 auto !important;
     width: auto !important;
     min-width: 0 !important;
@@ -452,49 +451,91 @@
 }
 
 /* ==========================================================================
-   Header tools alignment
-   All visible controls participate in one row with one 10px spacing rhythm.
-   In RTL, flex-start is the physical right edge.
+   Header tools — two logical groups
+   Parent gap separates Menu from Actions; Actions owns the 10px icon rhythm.
    ========================================================================== */
 @media (min-width: 1024px) {
   html body .store-header.veloura-top-enabled.veloura-header-balanced-search
     .veloura-header-grid > .veloura-header__tools {
-    direction: rtl !important;
+    display: flex !important;
+    align-items: center !important;
     justify-content: flex-start !important;
     justify-self: stretch !important;
-    align-items: center !important;
-    gap: 10px !important;
-    column-gap: 10px !important;
+    gap: 12px !important;
+    column-gap: 12px !important;
     row-gap: 0 !important;
     width: 100% !important;
     min-width: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
+    flex-wrap: nowrap !important;
+  }
+
+  html[dir="rtl"] body .store-header.veloura-top-enabled.veloura-header-balanced-search
+    .veloura-header-grid > .veloura-header__tools,
+  [dir="rtl"] body .store-header.veloura-top-enabled.veloura-header-balanced-search
+    .veloura-header-grid > .veloura-header__tools {
+    direction: rtl !important;
+  }
+
+  html[dir="ltr"] body .store-header.veloura-top-enabled.veloura-header-balanced-search
+    .veloura-header-grid > .veloura-header__tools,
+  [dir="ltr"] body .store-header.veloura-top-enabled.veloura-header-balanced-search
+    .veloura-header-grid > .veloura-header__tools {
+    direction: ltr !important;
+  }
+
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search
+    .veloura-header__tools > .veloura-header__menu {
+    display: inline-flex !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Navigation links already expose the categories, so the desktop hamburger
+     is redundant in this mode. Mobile keeps its native trigger. */
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-header__tools > .veloura-header__menu {
+    display: none !important;
   }
 
   html body .store-header.veloura-top-enabled.veloura-header-balanced-search
     .veloura-header__tools > .veloura-header__actions {
-    display: contents !important;
-  }
-
-  html body .store-header.veloura-top-enabled.veloura-header-balanced-search
-    .veloura-header__tools > .veloura-header__actions > * {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
     flex: 0 0 auto !important;
+    gap: 10px !important;
+    column-gap: 10px !important;
+    row-gap: 0 !important;
+    width: max-content !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-wrap: nowrap !important;
+  }
+
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search
+    .veloura-header__actions > * {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
     align-self: center !important;
-    margin: 0 !important;
   }
 
   html body .store-header.veloura-top-enabled.veloura-header-balanced-search
-    .veloura-header__tools .veloura-header-icon {
-    flex: 0 0 var(--veloura-header-icon-hit-area, 38px) !important;
-    width: var(--veloura-header-icon-hit-area, 38px) !important;
-    min-width: var(--veloura-header-icon-hit-area, 38px) !important;
-    height: var(--veloura-header-icon-hit-area, 38px) !important;
+    .veloura-header__actions .veloura-header-icon {
+    flex: 0 0 var(--veloura-icon-hit, 38px) !important;
+    width: var(--veloura-icon-hit, 38px) !important;
+    min-width: var(--veloura-icon-hit, 38px) !important;
+    height: var(--veloura-icon-hit, 38px) !important;
     margin: 0 !important;
   }
 
-  html body .store-header.veloura-top-enabled.veloura-header-balanced-search
-    .veloura-header__tools salla-cart-summary {
+  html body .store-header.veloura-top-enabled
+    salla-cart-summary.veloura-cart-total-visible {
+    display: inline-flex !important;
     flex: 0 0 auto !important;
     width: max-content !important;
     min-width: max-content !important;
@@ -504,9 +545,31 @@
     white-space: nowrap !important;
   }
 
-  html body .store-header.veloura-top-enabled.veloura-header-balanced-search
-    .veloura-header__tools salla-cart-summary.veloura-cart-hide-total {
-    width: var(--veloura-header-icon-hit-area, 38px) !important;
-    min-width: var(--veloura-header-icon-hit-area, 38px) !important;
+  html body .store-header.veloura-top-enabled
+    salla-cart-summary.veloura-cart-total-visible
+    :is(.s-cart-summary-wrapper, .s-cart-summary-content),
+  html body .store-header.veloura-top-enabled
+    salla-cart-summary.veloura-cart-total-visible::part(wrapper),
+  html body .store-header.veloura-top-enabled
+    salla-cart-summary.veloura-cart-total-visible::part(button) {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: max-content !important;
+    min-width: max-content !important;
+    max-width: none !important;
+    gap: 7px !important;
+    overflow: visible !important;
+    white-space: nowrap !important;
+  }
+
+  html body .store-header.veloura-top-enabled
+    salla-cart-summary.veloura-cart-total-visible .s-cart-summary-total {
+    display: inline-flex !important;
+    align-items: baseline !important;
+    gap: 4px !important;
+    min-width: max-content !important;
+    white-space: nowrap !important;
+    word-spacing: 3px !important;
   }
 }
