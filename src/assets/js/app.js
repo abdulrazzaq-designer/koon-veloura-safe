@@ -680,13 +680,15 @@ const initVelouraHeaderControls = (() => {
         return;
       }
 
-      modal.shadowRoot?.querySelector('button, [role="button"], [part~="trigger"]')?.click();
+      modal.shadowRoot
+        ?.querySelector('button, [role="button"], [part~="trigger"]')
+        ?.click();
     } catch (error) {
       salla.logger?.error?.('veloura-header::localization-open', error);
     }
   };
 
-  const currencyLabel = header => {
+  const getCurrencyLabel = header => {
     const configured = [
       salla.config?.get?.('currency.symbol'),
       salla.config?.get?.('store.currency.symbol'),
@@ -696,28 +698,60 @@ const initVelouraHeaderControls = (() => {
     if (configured) return configured.trim();
 
     const total = header?.querySelector('.s-cart-summary-total')?.textContent || '';
-    const extracted = total.replace(/[0-9٠-٩۰-۹.,،٫٬\s]/g, '').trim();
+    const extracted = total
+      .replace(/[0-9٠-٩۰-۹.,،٫٬\s]/g, '')
+      .trim();
+
     return extracted || 'د.إ';
   };
 
-  const languageLabel = () => {
+  const getLanguageLabel = () => {
     const code = (document.documentElement.lang || 'ar').toLowerCase();
     if (code.startsWith('ar')) return 'العربية';
     if (code.startsWith('en')) return 'English';
     return code.toUpperCase();
   };
 
+  const ensureLocalizationPill = (header, trigger) => {
+    let language = trigger.querySelector('[data-veloura-language-label]');
+    let divider = trigger.querySelector('.veloura-localization-pill__divider');
+    let currency = trigger.querySelector('[data-veloura-currency-label]');
+
+    if (!language || !divider || !currency) {
+      trigger.replaceChildren();
+
+      language = document.createElement('span');
+      language.className = 'veloura-localization-pill__language';
+      language.dataset.velouraLanguageLabel = '';
+
+      divider = document.createElement('span');
+      divider.className = 'veloura-localization-pill__divider';
+      divider.setAttribute('aria-hidden', 'true');
+
+      currency = document.createElement('span');
+      currency.className = 'veloura-localization-pill__currency';
+      currency.dataset.velouraCurrencyLabel = '';
+
+      trigger.append(language, divider, currency);
+    }
+
+    trigger.classList.add('veloura-localization-pill');
+    language.textContent = getLanguageLabel();
+    currency.textContent = getCurrencyLabel(header);
+  };
+
   const sync = () => {
     frame = 0;
-    document.querySelectorAll('.store-header.veloura-top-enabled').forEach(header => {
-      const trigger = header.querySelector('.veloura-lang-desktop[data-veloura-localization-trigger]');
-      if (!trigger) return;
 
-      const language = trigger.querySelector('[data-veloura-language-label]');
-      const currency = trigger.querySelector('[data-veloura-currency-label]');
-      if (language) language.textContent = languageLabel();
-      if (currency) currency.textContent = currencyLabel(header);
-    });
+    document
+      .querySelectorAll('.store-header.veloura-top-enabled')
+      .forEach(header => {
+        header
+          .querySelectorAll(
+            '.veloura-lang-desktop[data-veloura-localization-trigger]'
+          )
+          .forEach(trigger => ensureLocalizationPill(header, trigger));
+      });
   };
 
   const schedule = () => {
@@ -727,33 +761,53 @@ const initVelouraHeaderControls = (() => {
 
   const observe = () => {
     if (observer || typeof MutationObserver !== 'function') return;
+
     observer = new MutationObserver(mutations => {
-      if (mutations.some(mutation => {
-        const element = mutation.target instanceof Element ? mutation.target : mutation.target?.parentElement;
-        return mutation.type === 'characterData' || Boolean(element?.closest?.('salla-cart-summary, .store-header'));
-      })) schedule();
+      const relevant = mutations.some(mutation => {
+        const target = mutation.target instanceof Element
+          ? mutation.target
+          : mutation.target?.parentElement;
+
+        return (
+          mutation.type === 'characterData' ||
+          Boolean(target?.closest?.('salla-cart-summary, .store-header'))
+        );
+      });
+
+      if (relevant) schedule();
     });
-    observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+      characterData: true
+    });
   };
 
   return () => {
     schedule();
     observe();
 
-    if (!eventsBound) {
-      eventsBound = true;
-      document.addEventListener('theme::ready', schedule);
-      window.addEventListener('resize', schedule, { passive: true });
-      document.addEventListener('click', event => {
-        const trigger = event.target.closest('[data-veloura-localization-trigger]');
-        if (!trigger) return;
-        event.preventDefault();
-        event.stopPropagation();
-        openLocalization(trigger);
-      }, true);
-    }
+    if (eventsBound) return;
+    eventsBound = true;
+
+    document.addEventListener('theme::ready', schedule);
+    window.addEventListener('resize', schedule, { passive: true });
+
+    document.addEventListener('click', event => {
+      const trigger = event.target.closest('[data-veloura-localization-trigger]');
+      if (!trigger) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      openLocalization(trigger);
+    }, true);
+
+    try {
+      salla.cart?.event?.onUpdated?.(schedule);
+    } catch (_) {}
   };
-})()
+})();
 
 /* ========================================================================
    Veloura V55 adaptive header controller
@@ -4303,13 +4357,27 @@ const initVelouraInlineSearchSizing = (() => {
       if (!node) return false;
       const rect = node.getBoundingClientRect();
       const style = window.getComputedStyle(node);
-      return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0.5;
+      return style.display !== 'none'
+        && style.visibility !== 'hidden'
+        && rect.width > 0.5;
     };
+
     const toolsGap = parseFloat(window.getComputedStyle(tools).gap) || 12;
-    const actionsWidth = isVisible(actions) ? Math.ceil(actions.getBoundingClientRect().width) : 0;
-    const menuWidth = isVisible(menu) ? Math.ceil(menu.getBoundingClientRect().width) : 0;
-    const width = actionsWidth + menuWidth + (actionsWidth && menuWidth ? toolsGap : 0);
-    grid.style.setProperty('--veloura-header-tools-width', `${Math.max(180, Math.min(width, 420))}px`);
+    const actionsWidth = isVisible(actions)
+      ? Math.ceil(actions.getBoundingClientRect().width)
+      : 0;
+    const menuWidth = isVisible(menu)
+      ? Math.ceil(menu.getBoundingClientRect().width)
+      : 0;
+
+    const width = actionsWidth
+      + menuWidth
+      + (actionsWidth && menuWidth ? toolsGap : 0);
+
+    grid.style.setProperty(
+      '--veloura-header-tools-width',
+      `${Math.max(180, Math.min(width, 420))}px`
+    );
   };
 
   const schedule = () => {

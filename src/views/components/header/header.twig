@@ -408,13 +408,10 @@
 
           <div class="veloura-header__tools">
             <div class="veloura-header__actions">
-            {% if localization_available and not hide_lang_desktop %}
-              <button type="button" class="veloura-header-icon veloura-lang-desktop" data-veloura-localization-trigger aria-label="اللغة والعملة">
-                <span class="veloura-localization-pill__language" data-veloura-language-label>{{ language.code == 'ar' ? 'العربية' : 'English' }}</span>
-                <span class="veloura-localization-pill__divider" aria-hidden="true"></span>
-                <span class="veloura-localization-pill__currency" data-veloura-currency-label></span>
-              </button>
-            {% endif %}
+            {# Desktop RTL visual order: account → cart → language/currency. #}
+            <button type="button" class="veloura-header-icon veloura-login-btn" onclick="salla.event.dispatch('login::open')" aria-label="تسجيل الدخول">
+              <i class="{{ top_login_icon }}"></i>
+            </button>
 
             <salla-cart-summary class="veloura-header__cart veloura-cart-summary {{ hide_cart_total_mobile ? 'veloura-cart-hide-total veloura-cart-icon-only-mobile' : 'veloura-cart-total-visible' }}">
               <span slot="icon" class="veloura-cart-custom-icon">
@@ -422,9 +419,13 @@
               </span>
             </salla-cart-summary>
 
-            <button type="button" class="veloura-header-icon veloura-login-btn" onclick="salla.event.dispatch('login::open')" aria-label="تسجيل الدخول">
-              <i class="{{ top_login_icon }}"></i>
-            </button>
+            {% if localization_available and not hide_lang_desktop %}
+              <button type="button" class="veloura-header-icon veloura-lang-desktop veloura-localization-pill" data-veloura-localization-trigger aria-label="اللغة والعملة">
+                <span class="veloura-localization-pill__language" data-veloura-language-label>{{ language.code == 'ar' ? 'العربية' : 'English' }}</span>
+                <span class="veloura-localization-pill__divider" aria-hidden="true"></span>
+                <span class="veloura-localization-pill__currency" data-veloura-currency-label></span>
+              </button>
+            {% endif %}
 
             {% if show_wishlist %}
               <a class="veloura-header-icon veloura-wishlist-btn" href="{{ store.url }}/wishlist" aria-label="المفضلة">
