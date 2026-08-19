@@ -407,18 +407,12 @@
         <div class="veloura-header-grid">
 
           <div class="veloura-header__tools">
-            {# Menu owns the logical edge of the tools group: right in RTL,
-               left in LTR. Actions keep their own independent spacing. #}
-            <div class="veloura-header__menu">
-              <a class="veloura-header-icon veloura-menu-trigger-mobile mburger mburger--collapse" href="#mobile-menu" aria-label="فتح القائمة">
-                <i class="{{ top_menu_icon }}"></i>
-              </a>
-            </div>
-
             <div class="veloura-header__actions">
             {% if localization_available and not hide_lang_desktop %}
               <button type="button" class="veloura-header-icon veloura-lang-desktop" data-veloura-localization-trigger aria-label="اللغة والعملة">
-                <i class="sicon-earth"></i>
+                <span class="veloura-localization-pill__language" data-veloura-language-label>{{ language.code == 'ar' ? 'العربية' : 'English' }}</span>
+                <span class="veloura-localization-pill__divider" aria-hidden="true"></span>
+                <span class="veloura-localization-pill__currency" data-veloura-currency-label></span>
               </button>
             {% endif %}
 
@@ -461,6 +455,12 @@
                 <i class="sicon-earth"></i>
               </button>
             {% endif %}
+            </div>
+
+            <div class="veloura-header__menu">
+              <a class="veloura-header-icon veloura-menu-trigger-mobile mburger mburger--collapse" href="#mobile-menu" aria-label="فتح القائمة">
+                <i class="{{ top_menu_icon }}"></i>
+              </a>
             </div>
           </div>
 

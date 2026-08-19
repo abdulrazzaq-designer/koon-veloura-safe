@@ -659,6 +659,8 @@ const initVelouraGlobalGlass = (() => {
    ======================================================================== */
 const initVelouraHeaderControls = (() => {
   let eventsBound = false;
+  let observer = null;
+  let frame = 0;
 
   const openLocalization = async trigger => {
     const modal = document.querySelector('salla-localization-modal');
@@ -678,30 +680,80 @@ const initVelouraHeaderControls = (() => {
         return;
       }
 
-      const nativeTrigger = modal.shadowRoot?.querySelector(
-        'button, [role="button"], [part~="trigger"]'
-      );
-
-      nativeTrigger?.click();
+      modal.shadowRoot?.querySelector('button, [role="button"], [part~="trigger"]')?.click();
     } catch (error) {
       salla.logger?.error?.('veloura-header::localization-open', error);
     }
   };
 
-  return () => {
-    if (eventsBound) return;
-    eventsBound = true;
+  const currencyLabel = header => {
+    const configured = [
+      salla.config?.get?.('currency.symbol'),
+      salla.config?.get?.('store.currency.symbol'),
+      salla.config?.get?.('currency')
+    ].find(value => typeof value === 'string' && value.trim());
 
-    document.addEventListener('click', event => {
-      const trigger = event.target.closest('[data-veloura-localization-trigger]');
+    if (configured) return configured.trim();
+
+    const total = header?.querySelector('.s-cart-summary-total')?.textContent || '';
+    const extracted = total.replace(/[0-9٠-٩۰-۹.,،٫٬\s]/g, '').trim();
+    return extracted || 'د.إ';
+  };
+
+  const languageLabel = () => {
+    const code = (document.documentElement.lang || 'ar').toLowerCase();
+    if (code.startsWith('ar')) return 'العربية';
+    if (code.startsWith('en')) return 'English';
+    return code.toUpperCase();
+  };
+
+  const sync = () => {
+    frame = 0;
+    document.querySelectorAll('.store-header.veloura-top-enabled').forEach(header => {
+      const trigger = header.querySelector('.veloura-lang-desktop[data-veloura-localization-trigger]');
       if (!trigger) return;
 
-      event.preventDefault();
-      event.stopPropagation();
-      openLocalization(trigger);
-    }, true);
+      const language = trigger.querySelector('[data-veloura-language-label]');
+      const currency = trigger.querySelector('[data-veloura-currency-label]');
+      if (language) language.textContent = languageLabel();
+      if (currency) currency.textContent = currencyLabel(header);
+    });
   };
-})();
+
+  const schedule = () => {
+    if (frame) cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(sync);
+  };
+
+  const observe = () => {
+    if (observer || typeof MutationObserver !== 'function') return;
+    observer = new MutationObserver(mutations => {
+      if (mutations.some(mutation => {
+        const element = mutation.target instanceof Element ? mutation.target : mutation.target?.parentElement;
+        return mutation.type === 'characterData' || Boolean(element?.closest?.('salla-cart-summary, .store-header'));
+      })) schedule();
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+  };
+
+  return () => {
+    schedule();
+    observe();
+
+    if (!eventsBound) {
+      eventsBound = true;
+      document.addEventListener('theme::ready', schedule);
+      window.addEventListener('resize', schedule, { passive: true });
+      document.addEventListener('click', event => {
+        const trigger = event.target.closest('[data-veloura-localization-trigger]');
+        if (!trigger) return;
+        event.preventDefault();
+        event.stopPropagation();
+        openLocalization(trigger);
+      }, true);
+    }
+  };
+})()
 
 /* ========================================================================
    Veloura V55 adaptive header controller
@@ -4247,18 +4299,16 @@ const initVelouraInlineSearchSizing = (() => {
 
     const actions = tools.querySelector(':scope > .veloura-header__actions');
     const menu = tools.querySelector(':scope > .veloura-header__menu');
-    const isVisible = (node) => {
+    const isVisible = node => {
       if (!node) return false;
       const rect = node.getBoundingClientRect();
       const style = window.getComputedStyle(node);
       return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0.5;
     };
-
+    const toolsGap = parseFloat(window.getComputedStyle(tools).gap) || 12;
     const actionsWidth = isVisible(actions) ? Math.ceil(actions.getBoundingClientRect().width) : 0;
     const menuWidth = isVisible(menu) ? Math.ceil(menu.getBoundingClientRect().width) : 0;
-    const toolsGap = parseFloat(window.getComputedStyle(tools).columnGap || window.getComputedStyle(tools).gap) || 12;
     const width = actionsWidth + menuWidth + (actionsWidth && menuWidth ? toolsGap : 0);
-
     grid.style.setProperty('--veloura-header-tools-width', `${Math.max(180, Math.min(width, 420))}px`);
   };
 
