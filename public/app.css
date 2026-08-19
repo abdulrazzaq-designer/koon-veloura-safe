@@ -33464,9 +33464,9 @@ body.veloura-side-cats-glass .mm-ocd .mm-ocd__content {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom, var(--veloura-glass-edge-bottom)) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter, var(--veloura-glass-filter)) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter, var(--veloura-glass-filter)) !important;
   filter: none !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
@@ -51088,9 +51088,9 @@ body.veloura-quick-view-position-wishlist-icon .veloura-quick-view-btn.is-icon-o
     border-bottom: 1px solid var(--veloura-v86-edge-bottom, rgba(255, 255, 255, 0.055)) !important;
     border-left: 0 !important;
     border-right: 0 !important;
-    -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
     -webkit-backdrop-filter: var(--veloura-v86-filter, blur(24px) saturate(200%)) !important;
-    backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+    backdrop-filter: blur(20px) saturate(200%) !important;
     backdrop-filter: var(--veloura-v86-filter, blur(24px) saturate(200%)) !important;
     filter: none !important;
     box-shadow: 0 10px 28px rgba(15, 23, 42, .055), inset 0 1px 0 rgba(255, 255, 255, 0.018) !important;
@@ -52999,9 +52999,9 @@ html body.veloura-glass-effect .veloura-category-children[data-veloura-header-ma
   border-bottom-color: var(--vcat-header-border-bottom-color, var(--veloura-glass-edge-bottom)) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--vcat-header-backdrop-filter, var(--veloura-glass-filter)) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--vcat-header-backdrop-filter, var(--veloura-glass-filter)) !important;
   box-shadow: 0 8px 26px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 26px var(--veloura-glass-shadow) !important;
@@ -53022,9 +53022,9 @@ html body.veloura-glass-effect .veloura-category-children:not([data-veloura-head
   border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-glass-filter) !important;
   box-shadow: 0 8px 26px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 26px var(--veloura-glass-shadow) !important;
@@ -53255,9 +53255,9 @@ body.veloura-general-enabled.veloura-glass-effect .veloura-glass {
   border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-glass-filter) !important;
   box-shadow: inset 0 1px 0 rgba(100, 116, 139, .10), inset 0 -1px 0 rgba(100, 116, 139, .045), 0 8px 26px rgba(15, 23, 42, .055) !important;
   box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top), inset 0 -1px 0 var(--veloura-glass-edge-bottom), 0 8px 26px var(--veloura-glass-shadow) !important;
@@ -53861,6 +53861,17 @@ html body .veloura-header-tabs-stack.veloura-hide-header-now.veloura-header-tabs
     z-index: 4200 !important;
   }
 }
+/* Desktop dropdowns always paint above the connected tabs. */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack__surface > .store-header {
+    position: relative !important;
+    z-index: 20 !important;
+  }
+  html body .veloura-header-tabs-stack__surface > .veloura-home-tabs {
+    position: relative !important;
+    z-index: 1 !important;
+  }
+}
 /* ========================================================================
    Veloura V79 — unified overlay glass
 
@@ -53915,9 +53926,9 @@ html body.veloura-glass-effect .auth-modal .modal-content {
   border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-glass-filter) !important;
   filter: none !important;
   box-shadow: inset 0 1px 0 rgba(100, 116, 139, .10), inset 0 -1px 0 rgba(100, 116, 139, .045), 0 10px 32px rgba(15, 23, 42, .055) !important;
@@ -53980,9 +53991,9 @@ html body.veloura-glass-effect salla-modal::part(panel) {
   border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-glass-filter) !important;
   box-shadow: inset 0 1px 0 rgba(100, 116, 139, .10), inset 0 -1px 0 rgba(100, 116, 139, .045), 0 10px 32px rgba(15, 23, 42, .055) !important;
   box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top), inset 0 -1px 0 var(--veloura-glass-edge-bottom), 0 10px 32px var(--veloura-glass-shadow) !important;
@@ -54060,9 +54071,9 @@ html body.veloura-glass-effect .veloura-popup__close {
     border-bottom: 0 !important;
     border-left: 0 !important;
     border-right: 0 !important;
-    -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
     -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
-    backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+    backdrop-filter: blur(20px) saturate(200%) !important;
     backdrop-filter: var(--veloura-glass-filter) !important;
     box-shadow: inset 0 1px 0 rgba(100, 116, 139, .10) !important;
     box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top) !important;
@@ -54723,9 +54734,9 @@ html body.veloura-glass-effect salla-search.veloura-header-search-component inpu
 html body.veloura-glass-effect salla-search.veloura-header-search-component [part~=input],
 html body.veloura-glass-effect salla-search.veloura-header-search-component::part(input),
 html body.veloura-glass-effect salla-search.veloura-header-search-component::part(form) {
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-global-glass-filter, blur(14px) saturate(135%)) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-global-glass-filter, blur(14px) saturate(135%)) !important;
 }
 /* ------------------------------------------------------------------------
@@ -55071,9 +55082,9 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surfac
   border: 1px solid rgba(180, 184, 188, 0.479) !important;
   border-radius: 24px !important;
   border-radius: var(--veloura-v55-search-radius, var(--veloura-v15-radius, 24px)) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-global-glass-filter, blur(16px) saturate(145%)) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-global-glass-filter, blur(16px) saturate(145%)) !important;
   box-shadow: 0 10px 28px rgba(15, 23, 42, 0.075), inset 0 1px 0 rgba(255, 255, 255, 0.28) !important;
 }
@@ -55274,9 +55285,9 @@ html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface {
   border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-glass-filter) !important;
   box-shadow: inset 0 1px 0 rgba(100, 116, 139, .10), inset 0 -1px 0 rgba(100, 116, 139, .045), 0 8px 26px rgba(15, 23, 42, .055) !important;
   box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top), inset 0 -1px 0 var(--veloura-glass-edge-bottom), 0 8px 26px var(--veloura-glass-shadow) !important;
@@ -55319,9 +55330,9 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surfac
   border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-glass-filter) !important;
   box-shadow: inset 0 1px 0 rgba(100, 116, 139, .10), inset 0 -1px 0 rgba(100, 116, 139, .045), 0 8px 26px rgba(15, 23, 42, .055) !important;
   box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top), inset 0 -1px 0 var(--veloura-glass-edge-bottom), 0 8px 26px var(--veloura-glass-shadow) !important;
@@ -55459,9 +55470,9 @@ html body .store-header.veloura-top-enabled .veloura-cart-summary .veloura-cart-
     background-image: none !important;
     border: 1px solid transparent !important;
     border: 1px solid var(--veloura-v58-glass-border) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
     -webkit-backdrop-filter: var(--veloura-v58-glass-filter) !important;
-    backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+    backdrop-filter: blur(20px) saturate(200%) !important;
     backdrop-filter: var(--veloura-v58-glass-filter) !important;
     box-shadow: 0 16px 36px rgba(15, 23, 42, 0.1) !important;
   }
@@ -55497,51 +55508,43 @@ html body .store-header.veloura-top-enabled .veloura-cart-summary .veloura-cart-
    its connected/detached search surfaces, and desktop category dropdowns.
    ======================================================================== */
 :root {
-  /* Neutral silver: equal RGB balance removes the blue cast while keeping a
-     visible distinction from a white page. The alpha remains translucent. */
-  --veloura-v59-glass-bg: rgba(232, 233, 235, .60);
-  --veloura-v59-glass-bg-dark: rgba(31, 32, 36, .68);
-  --veloura-v59-glass-border: rgba(255, 255, 255, .42);
-  --veloura-v59-glass-border-dark: rgba(255, 255, 255, .14);
-  --veloura-v59-glass-filter: blur(22px) saturate(118%);
-  /* A slightly denser copy is necessary for nested menus because a submenu
-     lives inside an already-filtered header backdrop root. It still remains
-     translucent, but no longer reads as a plain transparent rectangle. */
-  --veloura-v59-dropdown-bg: rgba(238, 239, 241, .80);
-  --veloura-v59-dropdown-bg-dark: rgba(39, 40, 44, .82);
-  --veloura-v59-dropdown-filter: blur(26px) saturate(120%);
-  --veloura-v59-search-height: 36px;
+  --veloura-header-glass-background: rgba(230, 232, 235, .69);
+  --veloura-header-glass-background-dark: var(--veloura-dark-secondary-bg, #010612);
+  --veloura-header-glass-border: rgba(255, 255, 255, .42);
+  --veloura-header-glass-border-dark: rgba(255, 255, 255, .14);
+  --veloura-header-glass-filter: blur(20px) saturate(200%);
+  --veloura-header-search-height: 36px;
 }
 /* ------------------------------------------------------------------------
    One neutral glass contract for the header and search.
    ------------------------------------------------------------------------ */
 html body .veloura-header-tabs-stack--blur,
 html body.veloura-glass-effect .veloura-header-tabs-stack {
-  --veloura-v58-glass-bg: var(--veloura-v59-glass-bg);
-  --veloura-v58-glass-bg-dark: var(--veloura-v59-glass-bg-dark);
-  --veloura-v58-glass-border: var(--veloura-v59-glass-border);
-  --veloura-v58-glass-border-dark: var(--veloura-v59-glass-border-dark);
-  --veloura-v58-glass-filter: var(--veloura-v59-glass-filter);
-  --veloura-v15-glass-fallback: var(--veloura-v59-glass-bg);
-  --veloura-v15-glass-dark-fallback: var(--veloura-v59-glass-bg-dark);
-  --veloura-v15-border: var(--veloura-v59-glass-border);
-  --veloura-v15-filter: var(--veloura-v59-glass-filter);
+  --veloura-v58-glass-bg: var(--veloura-header-glass-background);
+  --veloura-v58-glass-bg-dark: var(--veloura-header-glass-background-dark);
+  --veloura-v58-glass-border: var(--veloura-header-glass-border);
+  --veloura-v58-glass-border-dark: var(--veloura-header-glass-border-dark);
+  --veloura-v58-glass-filter: var(--veloura-header-glass-filter);
+  --veloura-v15-glass-fallback: var(--veloura-header-glass-background);
+  --veloura-v15-glass-dark-fallback: var(--veloura-header-glass-background-dark);
+  --veloura-v15-border: var(--veloura-header-glass-border);
+  --veloura-v15-filter: var(--veloura-header-glass-filter);
 }
 html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
 html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface,
 html body .veloura-header-tabs-stack--blur .veloura-search-surface,
 html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface {
-  background: rgba(232, 233, 235, .60) !important;
-  background: var(--veloura-v59-glass-bg) !important;
-  background-color: rgba(232, 233, 235, .60) !important;
-  background-color: var(--veloura-v59-glass-bg) !important;
+  background: rgba(230, 232, 235, .69) !important;
+  background: var(--veloura-header-glass-background) !important;
+  background-color: rgba(230, 232, 235, .69) !important;
+  background-color: var(--veloura-header-glass-background) !important;
   background-image: none !important;
   border-color: rgba(255, 255, 255, .42) !important;
-  border-color: var(--veloura-v59-glass-border) !important;
-  -webkit-backdrop-filter: blur(22px) saturate(118%) !important;
-  -webkit-backdrop-filter: var(--veloura-v59-glass-filter) !important;
-  backdrop-filter: blur(22px) saturate(118%) !important;
-  backdrop-filter: var(--veloura-v59-glass-filter) !important;
+  border-color: var(--veloura-header-glass-border) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+  -webkit-backdrop-filter: var(--veloura-header-glass-filter) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
+  backdrop-filter: var(--veloura-header-glass-filter) !important;
 }
 html.dark body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
 html body.dark .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
@@ -55551,12 +55554,12 @@ html.dark body .veloura-header-tabs-stack--blur .veloura-search-surface,
 html body.dark .veloura-header-tabs-stack--blur .veloura-search-surface,
 html.dark body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface,
 html body.dark.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface {
-  background: rgba(31, 32, 36, .68) !important;
-  background: var(--veloura-v59-glass-bg-dark) !important;
-  background-color: rgba(31, 32, 36, .68) !important;
-  background-color: var(--veloura-v59-glass-bg-dark) !important;
+  background: #010612 !important;
+  background: var(--veloura-header-glass-background-dark) !important;
+  background-color: #010612 !important;
+  background-color: var(--veloura-header-glass-background-dark) !important;
   border-color: rgba(255, 255, 255, .14) !important;
-  border-color: var(--veloura-v59-glass-border-dark) !important;
+  border-color: var(--veloura-header-glass-border-dark) !important;
 }
 /* The hydrated Salla layers stay transparent so the search cannot introduce
    a second shade on top of the exact header glass color. */
@@ -55589,11 +55592,11 @@ html body .veloura-search-surface salla-search.veloura-header-search-component::
 html body .veloura-search-surface salla-search.veloura-header-search-component::part(form),
 html body .veloura-search-surface salla-search.veloura-header-search-component::part(container) {
   min-height: 36px !important;
-  min-height: var(--veloura-v59-search-height) !important;
+  min-height: var(--veloura-header-search-height) !important;
   height: 36px !important;
-  height: var(--veloura-v59-search-height) !important;
+  height: var(--veloura-header-search-height) !important;
   max-height: 36px !important;
-  max-height: var(--veloura-v59-search-height) !important;
+  max-height: var(--veloura-header-search-height) !important;
 }
 /* ------------------------------------------------------------------------
    Desktop connected mode.
@@ -55666,18 +55669,18 @@ html body .veloura-search-surface salla-search.veloura-header-search-component::
   html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-main-menu-desktop .sub-menu,
   html body .veloura-header-tabs-stack--blur .store-header.veloura-top-enabled.veloura-desktop-menu-links .main-menu .sub-menu,
   html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-desktop-menu-links .main-menu .sub-menu {
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.055)), rgba(238, 239, 241, .80) !important;
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.055)), var(--veloura-v59-dropdown-bg) !important;
-    background-color: rgba(238, 239, 241, .80) !important;
-    background-color: var(--veloura-v59-dropdown-bg) !important;
+    background: rgba(230, 232, 235, .69) !important;
+    background: var(--veloura-header-glass-background) !important;
+    background-color: rgba(230, 232, 235, .69) !important;
+    background-color: var(--veloura-header-glass-background) !important;
     border: 1px solid rgba(255, 255, 255, .42) !important;
-    border: 1px solid var(--veloura-v59-glass-border) !important;
+    border: 1px solid var(--veloura-header-glass-border) !important;
     border-radius: 24px !important;
     border-radius: var(--veloura-v15-radius, 24px) !important;
-    -webkit-backdrop-filter: blur(26px) saturate(120%) !important;
-    -webkit-backdrop-filter: var(--veloura-v59-dropdown-filter) !important;
-    backdrop-filter: blur(26px) saturate(120%) !important;
-    backdrop-filter: var(--veloura-v59-dropdown-filter) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+    -webkit-backdrop-filter: var(--veloura-header-glass-filter) !important;
+    backdrop-filter: blur(20px) saturate(200%) !important;
+    backdrop-filter: var(--veloura-header-glass-filter) !important;
     box-shadow: 0 18px 42px rgba(15, 23, 42, 0.13), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
   }
   html body .veloura-header-tabs-stack--blur .store-header.veloura-top-enabled.veloura-desktop-menu-links .sub-menu > li,
@@ -55691,12 +55694,12 @@ html body .veloura-search-surface salla-search.veloura-header-search-component::
   html body.dark .veloura-header-tabs-stack--blur .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-main-menu-desktop .sub-menu,
   html.dark body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-main-menu-desktop .sub-menu,
   html body.dark.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-main-menu-desktop .sub-menu {
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.018)), rgba(39, 40, 44, .82) !important;
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.018)), var(--veloura-v59-dropdown-bg-dark) !important;
-    background-color: rgba(39, 40, 44, .82) !important;
-    background-color: var(--veloura-v59-dropdown-bg-dark) !important;
+    background: #010612 !important;
+    background: var(--veloura-header-glass-background-dark) !important;
+    background-color: #010612 !important;
+    background-color: var(--veloura-header-glass-background-dark) !important;
     border-color: rgba(255, 255, 255, .14) !important;
-    border-color: var(--veloura-v59-glass-border-dark) !important;
+    border-color: var(--veloura-header-glass-border-dark) !important;
   }
   /* Keep root dropdowns close to their category after compacting the menu
      row, while preserving the transparent hover bridge from V57. */
@@ -55723,29 +55726,20 @@ html body .veloura-search-surface salla-search.veloura-header-search-component::
    of named areas so older header rules cannot move the search or logo.
    ======================================================================== */
 :root {
-  --veloura-v60-glass-bg: rgba(242, 242, 244, .70);
-  --veloura-v60-glass-bg-search: rgba(242, 242, 244, .40);
-  --veloura-v60-glass-bg-dark: rgba(33, 34, 38, .72);
-  --veloura-v60-glass-border: rgba(255, 255, 255, .52);
-  --veloura-v60-glass-border-dark: rgba(255, 255, 255, .15);
-  --veloura-v60-glass-filter: blur(22px) saturate(104%) contrast(99%);
-  --veloura-v60-dropdown-bg: rgba(244, 244, 246, .82);
-  --veloura-v60-dropdown-bg-dark: rgba(39, 40, 44, .86);
-  --veloura-v60-dropdown-filter: blur(30px) saturate(96%) contrast(100%);
-  --veloura-v60-search-height: 36px;
+  --veloura-header-search-height: 36px;
 }
 /* One visual material for the outer header and every search presentation. */
 html body .veloura-header-tabs-stack--blur,
 html body.veloura-glass-effect .veloura-header-tabs-stack {
-  --veloura-v58-glass-bg: var(--veloura-v60-glass-bg);
-  --veloura-v58-glass-bg-dark: var(--veloura-v60-glass-bg-dark);
-  --veloura-v58-glass-border: var(--veloura-v60-glass-border);
-  --veloura-v58-glass-border-dark: var(--veloura-v60-glass-border-dark);
-  --veloura-v58-glass-filter: var(--veloura-v60-glass-filter);
-  --veloura-v15-glass-fallback: var(--veloura-v60-glass-bg);
-  --veloura-v15-glass-dark-fallback: var(--veloura-v60-glass-bg-dark);
-  --veloura-v15-border: var(--veloura-v60-glass-border);
-  --veloura-v15-filter: var(--veloura-v60-glass-filter);
+  --veloura-v58-glass-bg: var(--veloura-header-glass-background);
+  --veloura-v58-glass-bg-dark: var(--veloura-header-glass-background-dark);
+  --veloura-v58-glass-border: var(--veloura-header-glass-border);
+  --veloura-v58-glass-border-dark: var(--veloura-header-glass-border-dark);
+  --veloura-v58-glass-filter: var(--veloura-header-glass-filter);
+  --veloura-v15-glass-fallback: var(--veloura-header-glass-background);
+  --veloura-v15-glass-dark-fallback: var(--veloura-header-glass-background-dark);
+  --veloura-v15-border: var(--veloura-header-glass-border);
+  --veloura-v15-filter: var(--veloura-header-glass-filter);
   --veloura-v55-search-bg: transparent;
   --veloura-v55-search-border: transparent;
   --veloura-v55-search-shadow: none;
@@ -55755,17 +55749,17 @@ html body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
 html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-stack__surface,
 html body .veloura-header-tabs-stack--blur .veloura-search-surface,
 html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface {
-  background: rgba(242, 242, 244, .70) !important;
-  background: var(--veloura-v60-glass-bg) !important;
-  background-color: rgba(242, 242, 244, .40) !important;
-  background-color: var(--veloura-v60-glass-bg-search) !important;
-  background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.018)) !important;
-  border-color: rgba(255, 255, 255, .52) !important;
-  border-color: var(--veloura-v60-glass-border) !important;
-  -webkit-backdrop-filter: blur(22px) saturate(104%) contrast(99%) !important;
-  -webkit-backdrop-filter: var(--veloura-v60-glass-filter) !important;
-  backdrop-filter: blur(22px) saturate(104%) contrast(99%) !important;
-  backdrop-filter: var(--veloura-v60-glass-filter) !important;
+  background: rgba(230, 232, 235, .69) !important;
+  background: var(--veloura-header-glass-background) !important;
+  background-color: rgba(230, 232, 235, .69) !important;
+  background-color: var(--veloura-header-glass-background) !important;
+  background-image: none !important;
+  border-color: rgba(255, 255, 255, .42) !important;
+  border-color: var(--veloura-header-glass-border) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+  -webkit-backdrop-filter: var(--veloura-header-glass-filter) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
+  backdrop-filter: var(--veloura-header-glass-filter) !important;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
 }
 html.dark body .veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surface,
@@ -55776,12 +55770,12 @@ html.dark body .veloura-header-tabs-stack--blur .veloura-search-surface,
 html body.dark .veloura-header-tabs-stack--blur .veloura-search-surface,
 html.dark body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface,
 html body.dark.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surface {
-  background: rgba(33, 34, 38, .72) !important;
-  background: var(--veloura-v60-glass-bg-dark) !important;
-  background-color: rgba(33, 34, 38, .72) !important;
-  background-color: var(--veloura-v60-glass-bg-dark) !important;
-  border-color: rgba(255, 255, 255, .15) !important;
-  border-color: var(--veloura-v60-glass-border-dark) !important;
+  background: #010612 !important;
+  background: var(--veloura-header-glass-background-dark) !important;
+  background-color: #010612 !important;
+  background-color: var(--veloura-header-glass-background-dark) !important;
+  border-color: rgba(255, 255, 255, .14) !important;
+  border-color: var(--veloura-header-glass-border-dark) !important;
 }
 /* The wrapper owns the material. Every hydrated Salla search layer stays
    transparent, including the elements inside the component shadow root. */
@@ -55798,11 +55792,11 @@ html body .veloura-search-surface salla-search.veloura-header-search-component::
 html body .veloura-search-surface salla-search.veloura-header-search-component::part(form),
 html body .veloura-search-surface salla-search.veloura-header-search-component::part(container) {
   min-height: 36px !important;
-  min-height: var(--veloura-v60-search-height) !important;
+  min-height: var(--veloura-header-search-height) !important;
   height: 36px !important;
-  height: var(--veloura-v60-search-height) !important;
+  height: var(--veloura-header-search-height) !important;
   max-height: 36px !important;
-  max-height: var(--veloura-v60-search-height) !important;
+  max-height: var(--veloura-header-search-height) !important;
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
@@ -55866,7 +55860,7 @@ html body .veloura-search-surface salla-search.veloura-header-search-component {
     min-width: 0 !important;
     max-width: none !important;
     height: 36px !important;
-    height: var(--veloura-v60-search-height) !important;
+    height: var(--veloura-header-search-height) !important;
     margin: 0 !important;
   }
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled:not(.veloura-top-search-detached).veloura-desktop-search-bar .veloura-header-logo,
@@ -55941,19 +55935,19 @@ html body .veloura-search-surface salla-search.veloura-header-search-component {
   html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-desktop-menu-links .sub-menu {
     isolation: isolate !important;
     z-index: 5000 !important;
-    background: rgba(244, 244, 246, .82) !important;
-    background: var(--veloura-v60-dropdown-bg) !important;
-    background-color: rgba(244, 244, 246, .82) !important;
-    background-color: var(--veloura-v60-dropdown-bg) !important;
-    background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.035)) !important;
-    border: 1px solid rgba(255, 255, 255, .52) !important;
-    border: 1px solid var(--veloura-v60-glass-border) !important;
+    background: rgba(230, 232, 235, .69) !important;
+    background: var(--veloura-header-glass-background) !important;
+    background-color: rgba(230, 232, 235, .69) !important;
+    background-color: var(--veloura-header-glass-background) !important;
+    background-image: none !important;
+    border: 1px solid rgba(255, 255, 255, .42) !important;
+    border: 1px solid var(--veloura-header-glass-border) !important;
     border-radius: 24px !important;
     border-radius: var(--veloura-v15-radius, 24px) !important;
-    -webkit-backdrop-filter: blur(30px) saturate(96%) contrast(100%) !important;
-    -webkit-backdrop-filter: var(--veloura-v60-dropdown-filter) !important;
-    backdrop-filter: blur(30px) saturate(96%) contrast(100%) !important;
-    backdrop-filter: var(--veloura-v60-dropdown-filter) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+    -webkit-backdrop-filter: var(--veloura-header-glass-filter) !important;
+    backdrop-filter: blur(20px) saturate(200%) !important;
+    backdrop-filter: var(--veloura-header-glass-filter) !important;
     box-shadow: 0 18px 42px rgba(15, 23, 42, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.34) !important;
   }
   html body .veloura-header-tabs-stack--blur .store-header.veloura-top-enabled.veloura-desktop-menu-links .sub-menu > ul,
@@ -55971,15 +55965,15 @@ html body .veloura-search-surface salla-search.veloura-header-search-component {
   html body.dark .veloura-header-tabs-stack--blur .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-submenu-surface,
   html.dark body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-submenu-surface,
   html body.dark.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-submenu-surface {
-    background: rgba(39, 40, 44, .86) !important;
-    background: var(--veloura-v60-dropdown-bg-dark) !important;
-    background-color: rgba(39, 40, 44, .86) !important;
-    background-color: var(--veloura-v60-dropdown-bg-dark) !important;
-    border-color: rgba(255, 255, 255, .15) !important;
-    border-color: var(--veloura-v60-glass-border-dark) !important;
+    background: #010612 !important;
+    background: var(--veloura-header-glass-background-dark) !important;
+    background-color: #010612 !important;
+    background-color: var(--veloura-header-glass-background-dark) !important;
+    border-color: rgba(255, 255, 255, .14) !important;
+    border-color: var(--veloura-header-glass-border-dark) !important;
   }
   html body .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop > li.root-level > .sub-menu {
-    top: calc(100% + 5px) !important;
+    top: 100% !important;
   }
   /* Keep the detached search below dropdowns when that mode is selected. */
   html body .veloura-header-tabs-stack .veloura-detached-search-shell {
@@ -56001,6 +55995,17 @@ html body .veloura-search-surface salla-search.veloura-header-search-component {
   html body .veloura-header-tabs-stack--blur .store-header.veloura-top-enabled.veloura-desktop-menu-links .sub-menu {
     background: rgba(244, 244, 246, 0.97) !important;
     background-color: rgba(244, 244, 246, 0.97) !important;
+  }
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap {
+    position: relative !important;
+    z-index: 120 !important;
+    overflow: visible !important;
+  }
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop > li.root-level:not(.mega-menu) {
+    position: relative !important;
+  }
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop > li.root-level.mega-menu {
+    position: static !important;
   }
 }
 /* ========================================================================
@@ -56075,9 +56080,9 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-search-surfac
   border-bottom: 1px solid var(--veloura-glass-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-glass-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-glass-filter) !important;
   box-shadow: inset 0 1px 0 rgba(100, 116, 139, .10), inset 0 -1px 0 rgba(100, 116, 139, .045), 0 8px 26px rgba(15, 23, 42, .055) !important;
   box-shadow: inset 0 1px 0 var(--veloura-glass-edge-top), inset 0 -1px 0 var(--veloura-glass-edge-bottom), 0 8px 26px var(--veloura-glass-shadow) !important;
@@ -56143,11 +56148,11 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
      existing centered-logo layout remains in control.
    ======================================================================== */
 @media (min-width: 1024px) {
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-header-grid {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-grid {
     direction: ltr !important;
     display: grid !important;
     grid-template-columns: minmax(180px, 240px) auto minmax(180px, 240px) !important;
-    grid-template-columns: minmax(180px, var(--veloura-v63-side-width, 240px)) auto minmax(180px, var(--veloura-v63-side-width, 240px)) !important;
+    grid-template-columns: minmax(180px, var(--veloura-header-tools-width, 240px)) auto minmax(180px, var(--veloura-header-tools-width, 240px)) !important;
     grid-template-rows: auto auto !important;
     grid-template-areas: none !important;
     grid-auto-flow: row !important;
@@ -56155,11 +56160,11 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     align-content: center !important;
     justify-items: stretch !important;
     grid-column-gap: 16px !important;
-    grid-column-gap: var(--veloura-v63-main-gap, 16px) !important;
+    grid-column-gap: var(--veloura-header-layout-gap, 16px) !important;
     -moz-column-gap: 16px !important;
          column-gap: 16px !important;
-    -moz-column-gap: var(--veloura-v63-main-gap, 16px) !important;
-         column-gap: var(--veloura-v63-main-gap, 16px) !important;
+    -moz-column-gap: var(--veloura-header-layout-gap, 16px) !important;
+         column-gap: var(--veloura-header-layout-gap, 16px) !important;
     grid-row-gap: 2px !important;
     row-gap: 2px !important;
     min-height: 0 !important;
@@ -56167,7 +56172,7 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     padding-bottom: 2px !important;
   }
   /* Left track: the connected rectangular search. */
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-header-grid > .veloura-desktop-search-bar {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-grid > .veloura-desktop-search-bar {
     grid-area: auto !important;
     grid-column: 1 !important;
     grid-row: 1 !important;
@@ -56183,7 +56188,7 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     margin: 0 !important;
   }
   /* True mathematical center, because both side tracks have equal width. */
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-header-grid > .veloura-header-logo {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-grid > .veloura-header-logo {
     grid-area: auto !important;
     grid-column: 2 !important;
     grid-row: 1 !important;
@@ -56196,7 +56201,7 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     transform: none !important;
   }
   /* Right track: all visible header controls in one compact group. */
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-header-grid > .veloura-v63-unified-icons {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-grid > .veloura-header-tools {
     grid-column: 3 !important;
     grid-row: 1 !important;
     display: flex !important;
@@ -56213,7 +56218,7 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     margin: 0 !important;
     padding: 0 !important;
   }
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons > .veloura-header-side {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools > .veloura-header-side {
     display: flex !important;
     direction: ltr !important;
     align-items: center !important;
@@ -56228,18 +56233,18 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     margin: 0 !important;
     padding: 0 !important;
   }
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons .veloura-header-icon,
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons .veloura-cart-summary,
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons salla-cart-summary,
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons > *,
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons .veloura-header-side > * {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools .veloura-header-icon,
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools .veloura-cart-summary,
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools salla-cart-summary,
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools > *,
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools .veloura-header-side > * {
     align-self: center !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
     transform: none !important;
   }
   /* Categories remain a centered second row under the complete first row. */
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-header-grid > .veloura-menu-links-wrap {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-grid > .veloura-menu-links-wrap {
     grid-area: auto !important;
     grid-column: 1/-1 !important;
     grid-row: 2 !important;
@@ -56253,17 +56258,17 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     margin: 0 !important;
     padding: 0 !important;
   }
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-menu-links-wrap custom-main-menu,
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-menu-links-wrap .veloura-main-menu-desktop,
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-menu-links-wrap .main-menu {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-menu-links-wrap custom-main-menu,
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-menu-links-wrap .veloura-main-menu-desktop,
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-menu-links-wrap .main-menu {
     margin-left: auto !important;
     margin-right: auto !important;
     justify-content: center !important;
   }
   /* V55/V57 edge margins belong to split groups; remove them while both
      original groups are nested inside the unified right-side wrapper. */
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons .veloura-header-left,
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons .veloura-header-right {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools .veloura-header-left,
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools .veloura-header-right {
     margin-left: 0 !important;
     margin-right: 0 !important;
   }
@@ -56287,8 +56292,8 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
   /* ----------------------------------------------------------------------
      CONNECTED RECTANGULAR SEARCH
      ---------------------------------------------------------------------- */
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar .veloura-header-grid,
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled) .veloura-header-grid {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached).veloura-desktop-search-bar .veloura-header-grid,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled) .veloura-header-grid {
     direction: ltr !important;
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
@@ -56308,8 +56313,8 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     padding-bottom: 2px !important;
   }
   /* Search: fixed/compact width on the physical left, never a full track. */
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar .veloura-header-grid > .veloura-desktop-search-bar,
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled) .veloura-header-grid > .veloura-desktop-search-bar {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached).veloura-desktop-search-bar .veloura-header-grid > .veloura-desktop-search-bar,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled) .veloura-header-grid > .veloura-desktop-search-bar {
     grid-area: auto !important;
     grid-column: 1 !important;
     grid-row: 1 !important;
@@ -56318,7 +56323,7 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     align-self: center !important;
     justify-self: start !important;
     width: max(240px, min(320px, 340px)) !important;
-    width: max(240px, min(var(--veloura-v63-side-width, 320px), 340px)) !important;
+    width: max(240px, min(var(--veloura-header-tools-width, 320px), 340px)) !important;
     min-width: 0 !important;
     max-width: 100% !important;
     height: 36px !important;
@@ -56327,11 +56332,11 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     padding: 0 !important;
     transform: none !important;
   }
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached) .veloura-header-grid > .veloura-desktop-search-bar salla-search.veloura-header-search-component,
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached) .veloura-header-grid > .veloura-desktop-search-bar .s-search-container,
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached) .veloura-header-grid > .veloura-desktop-search-bar .s-search-wrapper,
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached) .veloura-header-grid > .veloura-desktop-search-bar .s-search-input,
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached) .veloura-header-grid > .veloura-desktop-search-bar input {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached) .veloura-header-grid > .veloura-desktop-search-bar salla-search.veloura-header-search-component,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached) .veloura-header-grid > .veloura-desktop-search-bar .s-search-container,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached) .veloura-header-grid > .veloura-desktop-search-bar .s-search-wrapper,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached) .veloura-header-grid > .veloura-desktop-search-bar .s-search-input,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached) .veloura-header-grid > .veloura-desktop-search-bar input {
     align-self: center !important;
     height: 36px !important;
     height: var(--veloura-v60-search-height, 36px) !important;
@@ -56342,8 +56347,8 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     margin: 0 !important;
   }
   /* Logo: an independent center column and a guaranteed vertical axis. */
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar .veloura-header-grid > .veloura-header-logo,
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled) .veloura-header-grid > .veloura-header-logo {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached).veloura-desktop-search-bar .veloura-header-grid > .veloura-header-logo,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled) .veloura-header-grid > .veloura-header-logo {
     grid-area: auto !important;
     grid-column: 2 !important;
     grid-row: 1 !important;
@@ -56363,8 +56368,8 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     transform: none !important;
   }
   /* All controls: physical right, away from the centered logo. */
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar .veloura-header-grid > .veloura-v63-unified-icons,
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled) .veloura-header-grid > .veloura-v63-unified-icons {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached).veloura-desktop-search-bar .veloura-header-grid > .veloura-header-tools,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled) .veloura-header-grid > .veloura-header-tools {
     grid-area: auto !important;
     grid-column: 3 !important;
     grid-row: 1 !important;
@@ -56376,7 +56381,7 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     justify-self: end !important;
     gap: max(5px, min(0.5vw, 9px)) !important;
     width: max(240px, min(320px, 340px)) !important;
-    width: max(240px, min(var(--veloura-v63-side-width, 320px), 340px)) !important;
+    width: max(240px, min(var(--veloura-header-tools-width, 320px), 340px)) !important;
     min-width: 0 !important;
     max-width: 100% !important;
     min-height: 40px !important;
@@ -56384,7 +56389,7 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     padding: 0 !important;
     transform: none !important;
   }
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons > .veloura-header-side {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools > .veloura-header-side {
     display: flex !important;
     align-items: center !important;
     align-self: center !important;
@@ -56398,10 +56403,10 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     padding: 0 !important;
     transform: none !important;
   }
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons .veloura-header-icon,
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons .veloura-cart-summary,
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons salla-cart-summary,
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons .veloura-cart-custom-icon {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools .veloura-header-icon,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools .veloura-cart-summary,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools salla-cart-summary,
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools .veloura-cart-custom-icon {
     display: inline-flex !important;
     align-items: center !important;
     align-self: center !important;
@@ -56412,7 +56417,7 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     vertical-align: middle !important;
   }
   /* Categories: complete-width row, centered independently of row one. */
-  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-header-grid > .veloura-menu-links-wrap {
+  html body .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-grid > .veloura-menu-links-wrap {
     grid-area: auto !important;
     grid-column: 1/-1 !important;
     grid-row: 2 !important;
@@ -56514,7 +56519,7 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
    storefront container. This intentionally lives in the existing V64 file.
    ========================================================================== */
 @media (min-width: 1024px) {
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-header-container {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-container {
     width: 100% !important;
     max-width: 1280px !important;
     max-width: var(--veloura-home-container-width, var(--veloura-global-container, 1280px)) !important;
@@ -56526,7 +56531,7 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     padding-right: var(--veloura-home-container-padding, var(--veloura-global-spacing, 32px)) !important;
     box-sizing: border-box !important;
   }
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-header-grid {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-grid {
     width: 100% !important;
     max-width: none !important;
     margin-left: 0 !important;
@@ -56537,19 +56542,19 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
   }
   /* Search and the right-side tools use the same width measured by the
      existing JS, but each remains inside the inner storefront container. */
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar .veloura-header-grid > .veloura-desktop-search-bar,
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled) .veloura-header-grid > .veloura-desktop-search-bar,
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar .veloura-header-grid > .veloura-v63-unified-icons,
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled) .veloura-header-grid > .veloura-v63-unified-icons {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached).veloura-desktop-search-bar .veloura-header-grid > .veloura-desktop-search-bar,
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled) .veloura-header-grid > .veloura-desktop-search-bar,
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached).veloura-desktop-search-bar .veloura-header-grid > .veloura-header-tools,
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled) .veloura-header-grid > .veloura-header-tools {
     width: 220px !important;
-    width: var(--veloura-v63-side-width, 220px) !important;
+    width: var(--veloura-header-tools-width, 220px) !important;
     min-width: 0 !important;
     max-width: 100% !important;
   }
   /* V64 used to bring the legacy search buttons back. When the rectangular
      field is visible, there must be no second search icon in the tools group. */
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar .veloura-v63-unified-icons .veloura-search-toggle,
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled) .veloura-v63-unified-icons .veloura-search-toggle {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached).veloura-desktop-search-bar .veloura-header-tools .veloura-search-toggle,
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached).veloura-desktop-search-bar_sticky_icon:not(.veloura-top-scrolled) .veloura-header-tools .veloura-search-toggle {
     display: none !important;
     width: 0 !important;
     min-width: 0 !important;
@@ -56560,25 +56565,25 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     pointer-events: none !important;
   }
   /* One predictable rhythm for every independent header control. */
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons,
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons > .veloura-header-side {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools,
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools > .veloura-header-side {
     gap: 10px !important;
     -moz-column-gap: 10px !important;
          column-gap: 10px !important;
     row-gap: 0 !important;
     flex-wrap: nowrap !important;
   }
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons > .veloura-header-side {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools > .veloura-header-side {
     margin: 0 !important;
     padding: 0 !important;
   }
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons > .veloura-header-side > * {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools > .veloura-header-side > * {
     flex: 0 0 auto !important;
     margin: 0 !important;
   }
   /* Reserve a proper hit-box for normal icons so large glyphs/counters cannot
      visually collapse into the neighboring control. */
-  html body .store-header.veloura-top-enabled.veloura-v63-balanced-inline-search .veloura-v63-unified-icons .veloura-header-icon {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools .veloura-header-icon {
     flex: 0 0 38px !important;
     flex: 0 0 var(--veloura-v55-icon-hit, 38px) !important;
     width: 38px !important;
@@ -56615,6 +56620,63 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
     white-space: nowrap !important;
   }
 }
+/* ==========================================================================
+   Header tools alignment
+   All visible controls participate in one row with one 10px spacing rhythm.
+   In RTL, flex-start is the physical right edge.
+   ========================================================================== */
+@media (min-width: 1024px) {
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-grid > .veloura-header-tools {
+    direction: rtl !important;
+    justify-content: flex-start !important;
+    justify-self: stretch !important;
+    align-items: center !important;
+    gap: 10px !important;
+    -moz-column-gap: 10px !important;
+         column-gap: 10px !important;
+    row-gap: 0 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools > .veloura-header-side {
+    display: contents !important;
+  }
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools > .veloura-header-side > * {
+    flex: 0 0 auto !important;
+    align-self: center !important;
+    margin: 0 !important;
+  }
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools .veloura-header-icon {
+    flex: 0 0 38px !important;
+    flex: 0 0 var(--veloura-header-icon-hit-area, 38px) !important;
+    width: 38px !important;
+    width: var(--veloura-header-icon-hit-area, 38px) !important;
+    min-width: 38px !important;
+    min-width: var(--veloura-header-icon-hit-area, 38px) !important;
+    height: 38px !important;
+    height: var(--veloura-header-icon-hit-area, 38px) !important;
+    margin: 0 !important;
+  }
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools salla-cart-summary {
+    flex: 0 0 auto !important;
+    width: -moz-max-content !important;
+    width: max-content !important;
+    min-width: -moz-max-content !important;
+    min-width: max-content !important;
+    max-width: none !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    white-space: nowrap !important;
+  }
+  html body .store-header.veloura-top-enabled.veloura-header-balanced-search .veloura-header-tools salla-cart-summary.veloura-cart-hide-total {
+    width: 38px !important;
+    width: var(--veloura-header-icon-hit-area, 38px) !important;
+    min-width: 38px !important;
+    min-width: var(--veloura-header-icon-hit-area, 38px) !important;
+  }
+}
 /* ========================================================================
    Veloura V86 — exact dark secondary + light glass +3%
 
@@ -56628,17 +56690,24 @@ html body .veloura-header-tabs-stack .veloura-search-surface salla-search.velour
    ======================================================================== */
 :root,
 html body {
-  /* Neutral light glass: silver enough to separate from white, still translucent. */
-  --veloura-v86-glass-surface: rgba(230, 232, 235, .69);
-  --veloura-v86-glass-solid: #e6e8eb;
-  --veloura-v86-edge-top: rgba(100, 116, 139, .10);
-  --veloura-v86-edge-bottom: rgba(100, 116, 139, .045);
-  --veloura-v86-shadow: rgba(15, 23, 42, .055);
+  /* Canonical header glass material. */
+  --veloura-header-glass-background: rgba(230, 232, 235, .69);
+  --veloura-header-glass-solid: #e6e8eb;
+  --veloura-header-glass-edge-top: rgba(100, 116, 139, .10);
+  --veloura-header-glass-edge-bottom: rgba(100, 116, 139, .045);
+  --veloura-header-glass-shadow: rgba(15, 23, 42, .055);
+  --veloura-header-glass-filter: blur(20px) saturate(200%);
+  /* Compatibility aliases for older theme sections. */
+  --veloura-v86-glass-surface: var(--veloura-header-glass-background);
+  --veloura-v86-glass-solid: var(--veloura-header-glass-solid);
+  --veloura-v86-edge-top: var(--veloura-header-glass-edge-top);
+  --veloura-v86-edge-bottom: var(--veloura-header-glass-edge-bottom);
+  --veloura-v86-shadow: var(--veloura-header-glass-shadow);
   --veloura-v86-overlay: rgba(15, 23, 42, .16);
   --veloura-v86-control: rgba(255, 255, 255, .48);
   --veloura-v86-primary-text: var(--color-text, #111827);
   --veloura-v86-secondary-text: var(--color-grey, #64748b);
-  --veloura-v86-filter: blur(20px) saturate(124%) brightness(101%);
+  --veloura-v86-filter: var(--veloura-header-glass-filter);
   /* Redirect every older glass consumer to the same V86 contract. */
   --veloura-glass-source: #e6e8eb;
   --veloura-glass-surface: var(--veloura-v86-glass-surface);
@@ -56660,8 +56729,10 @@ html.dark body,
 html body.dark {
   /* The configured dark secondary color is the exact opaque material — no whitening from transparency. */
   --veloura-v86-dark-source: var(--veloura-dark-secondary-bg, #010612);
-  --veloura-v86-glass-surface: var(--veloura-v86-dark-source);
-  --veloura-v86-glass-solid: var(--veloura-v86-dark-source);
+  --veloura-header-glass-background: var(--veloura-v86-dark-source);
+  --veloura-header-glass-solid: var(--veloura-v86-dark-source);
+  --veloura-v86-glass-surface: var(--veloura-header-glass-background);
+  --veloura-v86-glass-solid: var(--veloura-header-glass-solid);
   --veloura-v86-edge-top: rgba(255, 255, 255, .055);
   --veloura-v86-edge-bottom: rgba(255, 255, 255, .022);
   --veloura-v86-shadow: rgba(0, 0, 0, .18);
@@ -56702,9 +56773,9 @@ html body :is(.veloura-header-tabs-stack--blur .veloura-header-tabs-stack__surfa
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   filter: none !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
@@ -56723,9 +56794,9 @@ html body :is(.veloura-popup .veloura-popup__box:not(.does-not-exist)) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   filter: none !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
@@ -56744,9 +56815,9 @@ html body :is(.swal2-container .swal2-popup:not(.swal2-toast)) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   filter: none !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
@@ -56765,9 +56836,9 @@ html body :is(.s-modal .s-salla-modal-body:not(.does-not-exist)) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   filter: none !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
@@ -56786,9 +56857,9 @@ html body :is(.s-modal .s-modal-body:not(.does-not-exist)) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   filter: none !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
@@ -56807,9 +56878,9 @@ html body :is(.s-modal .s-modal-content:not(.does-not-exist)) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   filter: none !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
@@ -56835,9 +56906,9 @@ html body.veloura-side-cats-glass .mm-ocd.mm-ocd--open .mm-ocd__content {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   filter: none !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
@@ -56858,9 +56929,9 @@ html body.veloura-quick-view-overlay-blur .veloura-quick-view-modal .veloura-qui
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   filter: none !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
@@ -56882,9 +56953,9 @@ html body.veloura-quick-view-overlay-blur .veloura-quick-view-modal .veloura-qui
     border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
     border-left: 0 !important;
     border-right: 0 !important;
-    -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
     -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-    backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+    backdrop-filter: blur(20px) saturate(200%) !important;
     backdrop-filter: var(--veloura-v86-filter) !important;
     box-shadow: 0 -8px 24px rgba(15, 23, 42, .055) !important;
     box-shadow: 0 -8px 24px var(--veloura-v86-shadow) !important;
@@ -57463,9 +57534,9 @@ html body.veloura-glass-effect salla-login-modal::part(body) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57482,9 +57553,9 @@ html body.veloura-glass-effect salla-localization-modal::part(body) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57501,9 +57572,9 @@ html body.veloura-glass-effect salla-user-menu::part(body) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57520,9 +57591,9 @@ html body.veloura-glass-effect salla-scopes::part(body) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57539,9 +57610,9 @@ html body.veloura-glass-effect salla-offer-modal::part(body) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57558,9 +57629,9 @@ html body.veloura-glass-effect salla-modal::part(body) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57577,9 +57648,9 @@ html body.veloura-glass-effect salla-sheet::part(body) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57596,9 +57667,9 @@ html body.veloura-glass-effect salla-login-modal::part(content) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57615,9 +57686,9 @@ html body.veloura-glass-effect salla-localization-modal::part(content) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57634,9 +57705,9 @@ html body.veloura-glass-effect salla-user-menu::part(content) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57653,9 +57724,9 @@ html body.veloura-glass-effect salla-scopes::part(content) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57672,9 +57743,9 @@ html body.veloura-glass-effect salla-offer-modal::part(content) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57691,9 +57762,9 @@ html body.veloura-glass-effect salla-modal::part(content) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57710,9 +57781,9 @@ html body.veloura-glass-effect salla-sheet::part(content) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57729,9 +57800,9 @@ html body.veloura-glass-effect salla-login-modal::part(panel) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57748,9 +57819,9 @@ html body.veloura-glass-effect salla-localization-modal::part(panel) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57767,9 +57838,9 @@ html body.veloura-glass-effect salla-user-menu::part(panel) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57786,9 +57857,9 @@ html body.veloura-glass-effect salla-scopes::part(panel) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57805,9 +57876,9 @@ html body.veloura-glass-effect salla-offer-modal::part(panel) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57824,9 +57895,9 @@ html body.veloura-glass-effect salla-modal::part(panel) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57843,9 +57914,9 @@ html body.veloura-glass-effect salla-sheet::part(panel) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57862,9 +57933,9 @@ html body.veloura-glass-effect salla-login-modal::part(surface) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57881,9 +57952,9 @@ html body.veloura-glass-effect salla-localization-modal::part(surface) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57900,9 +57971,9 @@ html body.veloura-glass-effect salla-user-menu::part(surface) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57919,9 +57990,9 @@ html body.veloura-glass-effect salla-scopes::part(surface) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57938,9 +58009,9 @@ html body.veloura-glass-effect salla-offer-modal::part(surface) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57957,9 +58028,9 @@ html body.veloura-glass-effect salla-modal::part(surface) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -57976,9 +58047,9 @@ html body.veloura-glass-effect salla-sheet::part(surface) {
   border-bottom: 1px solid var(--veloura-v86-edge-bottom) !important;
   border-left: 0 !important;
   border-right: 0 !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   box-shadow: 0 8px 24px rgba(15, 23, 42, .055) !important;
   box-shadow: 0 8px 24px var(--veloura-v86-shadow) !important;
@@ -58102,9 +58173,9 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-s
   background-color: rgba(230, 232, 235, .69) !important;
   background-color: var(--veloura-v86-glass-surface) !important;
   background-image: none !important;
-  -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
   -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-  backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+  backdrop-filter: blur(20px) saturate(200%) !important;
   backdrop-filter: var(--veloura-v86-filter) !important;
   filter: none !important;
 }
@@ -58129,9 +58200,9 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-s
     background-color: rgba(230, 232, 235, .69) !important;
     background-color: var(--veloura-v86-glass-surface) !important;
     background-image: none !important;
-    -webkit-backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
     -webkit-backdrop-filter: var(--veloura-v86-filter) !important;
-    backdrop-filter: blur(20px) saturate(124%) brightness(101%) !important;
+    backdrop-filter: blur(20px) saturate(200%) !important;
     backdrop-filter: var(--veloura-v86-filter) !important;
     filter: none !important;
     border-top: 1px solid rgba(100, 116, 139, .10) !important;
@@ -58150,6 +58221,35 @@ html body.veloura-glass-effect .veloura-header-tabs-stack .veloura-header-tabs-s
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
+  }
+}
+/* ==========================================================================
+   Desktop category dropdown = exact same glass material as the header.
+   One visible paint layer only; no denser dropdown background or extra gradient.
+   ========================================================================== */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack--blur .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop .veloura-submenu-surface, html body .veloura-header-tabs-stack--blur .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop .sub-menu, html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop .veloura-submenu-surface, html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop .sub-menu {
+    background: rgba(230, 232, 235, .69) !important;
+    background: var(--veloura-header-glass-background) !important;
+    background-color: rgba(230, 232, 235, .69) !important;
+    background-color: var(--veloura-header-glass-background) !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: blur(20px) saturate(200%) !important;
+    -webkit-backdrop-filter: var(--veloura-header-glass-filter) !important;
+    backdrop-filter: blur(20px) saturate(200%) !important;
+    backdrop-filter: var(--veloura-header-glass-filter) !important;
+    filter: none !important;
+    border-color: rgba(100, 116, 139, .10) !important;
+    border-color: var(--veloura-header-glass-edge-top) !important;
+    box-shadow: none !important;
+    z-index: 5000 !important;
+  }
+  html body .veloura-header-tabs-stack--blur .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop .veloura-submenu-surface ul, html body .veloura-header-tabs-stack--blur .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop .veloura-submenu-surface li, html body .veloura-header-tabs-stack--blur .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop .veloura-submenu-surface a, html body .veloura-header-tabs-stack--blur .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop .sub-menu ul, html body .veloura-header-tabs-stack--blur .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop .sub-menu li, html body .veloura-header-tabs-stack--blur .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop .sub-menu a, html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop .veloura-submenu-surface ul, html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop .veloura-submenu-surface li, html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop .veloura-submenu-surface a, html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop .sub-menu ul, html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop .sub-menu li, html body.veloura-glass-effect .veloura-header-tabs-stack .store-header.veloura-top-enabled.veloura-desktop-menu-links .veloura-menu-links-wrap .veloura-main-menu-desktop .sub-menu a {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
   }
 }
 /* ========================================================================== 
