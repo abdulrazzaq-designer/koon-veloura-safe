@@ -512,84 +512,96 @@
 }
 
 /* ==========================================================================
-   Header controls — final replacement contract
+   Header runtime compatibility
+   Supports both the current semantic header markup and the older Salla preview
+   markup that may still be served during theme preview.
    ========================================================================== */
 @media (min-width: 1024px) {
-  html body .store-header.veloura-top-enabled .veloura-header__tools {
+  html body .store-header.veloura-top-enabled
+    :is(.veloura-header__tools, .veloura-v63-unified-icons) {
     display: flex !important;
-    direction: rtl !important;
     align-items: center !important;
     justify-content: flex-start !important;
+    direction: rtl !important;
     gap: 12px !important;
     column-gap: 12px !important;
     row-gap: 0 !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
+    flex-wrap: nowrap !important;
+    width: max-content !important;
+    min-width: max-content !important;
+    max-width: none !important;
     margin: 0 !important;
     padding: 0 !important;
     overflow: visible !important;
-    flex-wrap: nowrap !important;
   }
 
-  html[dir="ltr"] body .store-header.veloura-top-enabled .veloura-header__tools {
+  html[dir='ltr'] body .store-header.veloura-top-enabled
+    :is(.veloura-header__tools, .veloura-v63-unified-icons) {
     direction: ltr !important;
   }
 
-  html body .store-header.veloura-top-enabled .veloura-header__actions {
+  html body .store-header.veloura-top-enabled
+    :is(
+      .veloura-header__actions,
+      .veloura-header-left,
+      .veloura-header__menu,
+      .veloura-header-right
+    ) {
     display: flex !important;
-    direction: inherit !important;
     align-items: center !important;
     justify-content: flex-start !important;
+    direction: inherit !important;
     gap: 10px !important;
     column-gap: 10px !important;
     row-gap: 0 !important;
+    flex: 0 0 auto !important;
     width: max-content !important;
     min-width: 0 !important;
     max-width: none !important;
-    flex: 0 0 auto !important;
     margin: 0 !important;
     padding: 0 !important;
     overflow: visible !important;
-    flex-wrap: nowrap !important;
   }
 
-  html body .store-header.veloura-top-enabled .veloura-header__actions > * {
+  html body .store-header.veloura-top-enabled
+    :is(.veloura-header__actions, .veloura-header-left) > * {
     flex-shrink: 0 !important;
     margin: 0 !important;
   }
 
-  html body .store-header.veloura-top-enabled .veloura-header__menu {
-    display: inline-flex !important;
-    align-items: center !important;
-    flex: 0 0 auto !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links :is(
-    .veloura-header__menu,
+  html body .store-header.veloura-top-enabled.veloura-header--desktop-navigation-visible
     .veloura-menu-trigger-mobile,
-    a.mburger[href="#mobile-menu"]
-  ) {
+  html body .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-menu-trigger-mobile {
     display: none !important;
   }
 
-  html body .store-header.veloura-top-enabled.veloura-header-balanced-search:not(.veloura-top-search-detached)
+  html body .store-header.veloura-top-enabled.veloura-header--rect-search-visible
     .veloura-search-toggle {
     display: none !important;
+  }
+
+  html body .store-header.veloura-top-enabled
+    :is(.veloura-header__menu, .veloura-header-right).veloura-header__menu--empty {
+    display: none !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   html body .store-header.veloura-top-enabled
     salla-cart-summary.veloura-cart-total-visible {
     display: inline-flex !important;
     align-items: center !important;
+    flex: 0 0 auto !important;
+    flex-basis: auto !important;
     width: max-content !important;
     min-width: max-content !important;
     max-width: none !important;
     height: auto !important;
-    flex: 0 0 auto !important;
-    flex-basis: auto !important;
+    min-height: var(--veloura-icon-hit, 34px) !important;
+    max-height: none !important;
     overflow: visible !important;
     white-space: nowrap !important;
     margin: 0 !important;
@@ -597,32 +609,29 @@
   }
 
   html body .store-header.veloura-top-enabled
-    salla-cart-summary.veloura-cart-total-visible
-    .s-cart-summary-wrapper {
+    salla-cart-summary.veloura-cart-total-visible .s-cart-summary-wrapper {
     display: inline-flex !important;
-    direction: rtl !important;
     align-items: center !important;
-    justify-content: flex-start !important;
+    direction: rtl !important;
     gap: 8px !important;
     width: max-content !important;
     min-width: max-content !important;
     max-width: none !important;
-    height: auto !important;
     overflow: visible !important;
     white-space: nowrap !important;
     margin: 0 !important;
     padding: 0 !important;
   }
 
-  html[dir="ltr"] body .store-header.veloura-top-enabled
-    salla-cart-summary.veloura-cart-total-visible
-    .s-cart-summary-wrapper {
+  html[dir='ltr'] body .store-header.veloura-top-enabled
+    salla-cart-summary.veloura-cart-total-visible .s-cart-summary-wrapper {
     direction: ltr !important;
   }
 
   html body .store-header.veloura-top-enabled
-    salla-cart-summary.veloura-cart-total-visible
-    :is(.s-cart-summary-content, .s-cart-summary-total) {
+    salla-cart-summary.veloura-cart-total-visible .s-cart-summary-content,
+  html body .store-header.veloura-top-enabled
+    salla-cart-summary.veloura-cart-total-visible .s-cart-summary-total {
     display: inline-flex !important;
     align-items: center !important;
     width: max-content !important;
@@ -634,26 +643,28 @@
   }
 
   html body .store-header.veloura-top-enabled
-    .veloura-lang-desktop[data-veloura-localization-trigger] {
+    .veloura-lang-desktop.veloura-localization-pill {
     display: inline-flex !important;
-    direction: rtl !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 9px !important;
+    flex: 0 0 auto !important;
     width: max-content !important;
     min-width: max-content !important;
     max-width: none !important;
-    height: 38px !important;
-    flex: 0 0 auto !important;
-    padding: 0 12px !important;
+    height: var(--veloura-icon-hit, 34px) !important;
+    min-height: var(--veloura-icon-hit, 34px) !important;
+    padding-inline: 11px !important;
+    padding-block: 0 !important;
     margin: 0 !important;
-    color: #fff !important;
-    background: rgba(0, 0, 0, .18) !important;
     border: 1px solid rgba(255, 255, 255, .14) !important;
-    border-radius: var(
-      --veloura-header-surface-radius,
-      var(--veloura-radius, 24px)
-    ) !important;
+    border-radius:
+      var(
+        --veloura-header-surface-radius,
+        var(--veloura-radius, 14px)
+      ) !important;
+    background: rgba(15, 23, 42, .22) !important;
+    color: #fff !important;
     -webkit-backdrop-filter: blur(10px) saturate(120%) !important;
     backdrop-filter: blur(10px) saturate(120%) !important;
     box-shadow: none !important;
@@ -662,32 +673,22 @@
   }
 
   html body .store-header.veloura-top-enabled
-    .veloura-lang-desktop :is(
-      .veloura-localization-pill__language,
-      .veloura-localization-pill__currency
-    ) {
+    .veloura-localization-pill__language,
+  html body .store-header.veloura-top-enabled
+    .veloura-localization-pill__currency {
     display: inline-flex !important;
     align-items: center !important;
     color: inherit !important;
     white-space: nowrap !important;
-    font: inherit !important;
   }
 
   html body .store-header.veloura-top-enabled
-    .veloura-lang-desktop .veloura-localization-pill__divider {
+    .veloura-localization-pill__divider {
     display: block !important;
     width: 1px !important;
     min-width: 1px !important;
     height: 15px !important;
-    flex: 0 0 1px !important;
     background: rgba(255, 255, 255, .45) !important;
-  }
-
-  html.dark body .store-header.veloura-top-enabled
-    .veloura-lang-desktop[data-veloura-localization-trigger],
-  html body.dark .store-header.veloura-top-enabled
-    .veloura-lang-desktop[data-veloura-localization-trigger] {
-    background: rgba(255, 255, 255, .12) !important;
-    color: #fff !important;
+    flex: 0 0 1px !important;
   }
 }
