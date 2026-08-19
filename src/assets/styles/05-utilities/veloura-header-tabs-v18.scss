@@ -592,3 +592,16 @@ html body .veloura-header-tabs-stack.veloura-hide-header-now.veloura-header-tabs
     z-index: 4200 !important;
   }
 }
+
+/* Desktop dropdowns always paint above the connected tabs. */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack__surface > .store-header {
+    position: relative !important;
+    z-index: 20 !important;
+  }
+
+  html body .veloura-header-tabs-stack__surface > .veloura-home-tabs {
+    position: relative !important;
+    z-index: 1 !important;
+  }
+}

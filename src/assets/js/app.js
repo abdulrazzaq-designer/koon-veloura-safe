@@ -4290,9 +4290,9 @@ const initVelouraBalancedInlineSearchV63 = (() => {
     leftMarker?.remove();
     rightMarker?.remove();
 
-    header?.classList.remove('veloura-v63-balanced-inline-search');
-    grid?.style.removeProperty('--veloura-v63-side-width');
-    grid?.style.removeProperty('--veloura-v63-main-gap');
+    header?.classList.remove('veloura-header-balanced-search');
+    grid?.style.removeProperty('--veloura-header-tools-width');
+    grid?.style.removeProperty('--veloura-header-layout-gap');
 
     activeContext = null;
   };
@@ -4311,27 +4311,45 @@ const initVelouraBalancedInlineSearchV63 = (() => {
     const logoWidth = Math.ceil(logo.getBoundingClientRect().width);
     const mainGap = clamp(Math.round(gridWidth * 0.012), 12, 20);
 
-    // Measure the REAL visible controls, not the unified wrapper itself.
-    // V64 gives the wrapper a width derived from --veloura-v63-side-width;
-    // measuring that wrapper created a feedback loop and made the search wider
-    // than the icons. Hidden search toggles naturally report zero width here.
-    const visibleSides = Array.from(unified.children).filter((node) => {
+    // Measure each visible header control. The two historical side wrappers
+
+    // are layout-transparent in CSS, so they must not be measured as boxes.
+
+    const visibleControls = Array.from(
+
+      unified.querySelectorAll(':scope > .veloura-header-side > *')
+
+    ).filter((node) => {
+
       const rect = node.getBoundingClientRect();
+
       const style = window.getComputedStyle(node);
-      return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0.5;
+
+      return style.display !== 'none'
+
+        && style.visibility !== 'hidden'
+
+        && rect.width > 0.5;
+
     });
+
     const unifiedStyle = window.getComputedStyle(unified);
-    const sideGap = parseFloat(unifiedStyle.columnGap || unifiedStyle.gap || '0') || 0;
-    const iconContentWidth = visibleSides.reduce((total, node) => {
+
+    const toolGap = parseFloat(unifiedStyle.columnGap || unifiedStyle.gap || '10') || 10;
+
+    const iconContentWidth = visibleControls.reduce((total, node) => {
+
       return total + Math.ceil(node.getBoundingClientRect().width);
-    }, 0) + Math.max(0, visibleSides.length - 1) * sideGap;
+
+    }, 0) + Math.max(0, visibleControls.length - 1) * toolGap;
+
 
     const desiredSide = clamp(Math.ceil(iconContentWidth), 220, 420);
     const availableSide = Math.floor((gridWidth - logoWidth - (mainGap * 2)) / 2);
     const sideWidth = Math.max(180, Math.min(desiredSide, availableSide));
 
-    grid.style.setProperty('--veloura-v63-side-width', `${sideWidth}px`);
-    grid.style.setProperty('--veloura-v63-main-gap', `${mainGap}px`);
+    grid.style.setProperty('--veloura-header-tools-width', `${sideWidth}px`);
+    grid.style.setProperty('--veloura-header-layout-gap', `${mainGap}px`);
   };
 
   const activate = (stack, header, grid) => {
@@ -4355,8 +4373,8 @@ const initVelouraBalancedInlineSearchV63 = (() => {
     right.parentNode.insertBefore(rightMarker, right);
 
     const unified = document.createElement('div');
-    unified.className = 'veloura-v63-unified-icons';
-    unified.setAttribute('data-veloura-v63-unified-icons', 'true');
+    unified.className = 'veloura-header-tools';
+    unified.setAttribute('data-veloura-header-tools', 'true');
     unified.setAttribute('aria-label', 'أدوات الهيدر');
 
     /* The existing right-side controls remain first visually, followed by
@@ -4364,7 +4382,7 @@ const initVelouraBalancedInlineSearchV63 = (() => {
        moved, never cloned, so cart/login/localization behavior is preserved. */
     unified.append(right, left);
     grid.appendChild(unified);
-    header.classList.add('veloura-v63-balanced-inline-search');
+    header.classList.add('veloura-header-balanced-search');
 
     const resizeObserver = typeof ResizeObserver === 'function'
       ? new ResizeObserver(() => {

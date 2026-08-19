@@ -12,17 +12,25 @@
 
 :root,
 html body {
-  /* Neutral light glass: silver enough to separate from white, still translucent. */
-  --veloura-v86-glass-surface: rgba(230, 232, 235, .69);
-  --veloura-v86-glass-solid: #e6e8eb;
-  --veloura-v86-edge-top: rgba(100, 116, 139, .10);
-  --veloura-v86-edge-bottom: rgba(100, 116, 139, .045);
-  --veloura-v86-shadow: rgba(15, 23, 42, .055);
+  /* Canonical header glass material. */
+  --veloura-header-glass-background: rgba(230, 232, 235, .69);
+  --veloura-header-glass-solid: #e6e8eb;
+  --veloura-header-glass-edge-top: rgba(100, 116, 139, .10);
+  --veloura-header-glass-edge-bottom: rgba(100, 116, 139, .045);
+  --veloura-header-glass-shadow: rgba(15, 23, 42, .055);
+  --veloura-header-glass-filter: blur(20px) saturate(200%);
+
+  /* Compatibility aliases for older theme sections. */
+  --veloura-v86-glass-surface: var(--veloura-header-glass-background);
+  --veloura-v86-glass-solid: var(--veloura-header-glass-solid);
+  --veloura-v86-edge-top: var(--veloura-header-glass-edge-top);
+  --veloura-v86-edge-bottom: var(--veloura-header-glass-edge-bottom);
+  --veloura-v86-shadow: var(--veloura-header-glass-shadow);
   --veloura-v86-overlay: rgba(15, 23, 42, .16);
   --veloura-v86-control: rgba(255, 255, 255, .48);
   --veloura-v86-primary-text: var(--color-text, #111827);
   --veloura-v86-secondary-text: var(--color-grey, #64748b);
-  --veloura-v86-filter: blur(20px) saturate(124%) brightness(101%);
+  --veloura-v86-filter: var(--veloura-header-glass-filter);
 
   /* Redirect every older glass consumer to the same V86 contract. */
   --veloura-glass-source: #e6e8eb;
@@ -46,8 +54,10 @@ html.dark body,
 html body.dark {
   /* The configured dark secondary color is the exact opaque material — no whitening from transparency. */
   --veloura-v86-dark-source: var(--veloura-dark-secondary-bg, #010612);
-  --veloura-v86-glass-surface: var(--veloura-v86-dark-source);
-  --veloura-v86-glass-solid: var(--veloura-v86-dark-source);
+  --veloura-header-glass-background: var(--veloura-v86-dark-source);
+  --veloura-header-glass-solid: var(--veloura-v86-dark-source);
+  --veloura-v86-glass-surface: var(--veloura-header-glass-background);
+  --veloura-v86-glass-solid: var(--veloura-header-glass-solid);
   --veloura-v86-edge-top: rgba(255, 255, 255, .055);
   --veloura-v86-edge-bottom: rgba(255, 255, 255, .022);
   --veloura-v86-shadow: rgba(0, 0, 0, .18);
@@ -656,5 +666,47 @@ html body.veloura-glass-effect
     background: transparent !important;
     background-color: transparent !important;
     background-image: none !important;
+  }
+}
+
+/* ==========================================================================
+   Desktop category dropdown = exact same glass material as the header.
+   One visible paint layer only; no denser dropdown background or extra gradient.
+   ========================================================================== */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack--blur
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-menu-links-wrap .veloura-main-menu-desktop
+    :is(.veloura-submenu-surface, .sub-menu),
+  html body.veloura-glass-effect .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-menu-links-wrap .veloura-main-menu-desktop
+    :is(.veloura-submenu-surface, .sub-menu) {
+    background: var(--veloura-header-glass-background) !important;
+    background-color: var(--veloura-header-glass-background) !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: var(--veloura-header-glass-filter) !important;
+    backdrop-filter: var(--veloura-header-glass-filter) !important;
+    filter: none !important;
+    border-color: var(--veloura-header-glass-edge-top) !important;
+    box-shadow: none !important;
+    z-index: 5000 !important;
+  }
+
+  html body .veloura-header-tabs-stack--blur
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-menu-links-wrap .veloura-main-menu-desktop
+    :is(.veloura-submenu-surface, .sub-menu)
+    :is(ul, li, a),
+  html body.veloura-glass-effect .veloura-header-tabs-stack
+    .store-header.veloura-top-enabled.veloura-desktop-menu-links
+    .veloura-menu-links-wrap .veloura-main-menu-desktop
+    :is(.veloura-submenu-surface, .sub-menu)
+    :is(ul, li, a) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
   }
 }
