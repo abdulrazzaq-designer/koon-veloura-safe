@@ -868,9 +868,9 @@ h3.veloura-footer-section-title[data-veloura-title-row="true"]
 @media (min-width: 1024px) {
   #veloura-footer.veloura-footer-compact .veloura-footer-shell {
     width: 100% !important;
-    max-width: 1280px !important;
-    padding-left: 10px !important;
-    padding-right: 10px !important;
+    max-width: var(--veloura-global-container, 1280px) !important;
+    padding-left: var(--veloura-global-spacing, 10px) !important;
+    padding-right: var(--veloura-global-spacing, 10px) !important;
     margin-right: auto !important;
     margin-left: auto !important;
   }
@@ -915,15 +915,15 @@ h3.veloura-footer-section-title[data-veloura-title-row="true"]
 @media (min-width: 1024px) {
   #veloura-footer .veloura-footer-container {
     width: 100% !important;
-    max-width: 1280px !important;
+    max-width: var(--veloura-global-container, 1280px) !important;
     margin-inline: auto !important;
-    padding-inline: 10px !important;
+    padding-inline: var(--veloura-global-spacing, 10px) !important;
     box-sizing: border-box !important;
   }
 
   #veloura-footer.veloura-footer-compact .veloura-footer-shell {
     width: 100% !important;
-    max-width: 1280px !important;
+    max-width: var(--veloura-global-container, 1280px) !important;
     margin-inline: auto !important;
     box-sizing: border-box !important;
   }

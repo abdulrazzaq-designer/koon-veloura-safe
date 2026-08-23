@@ -193,11 +193,11 @@ html body .veloura-search-surface salla-search.veloura-header-search-component .
   /* V55 inherited both container padding and grid padding on mobile. Keep a
      single compact inset so the icon groups sit closer to the header edges. */
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-container {
-    padding-inline: 0 !important;
+    padding-inline: var(--veloura-global-spacing, 15px) !important;
   }
 
   html body .veloura-header-tabs-stack .store-header.veloura-top-enabled .veloura-header-grid {
-    padding-inline: 8px !important;
+    padding-inline: 0 !important;
   }
 
   html body .veloura-header-tabs-stack .veloura-detached-search-shell {
