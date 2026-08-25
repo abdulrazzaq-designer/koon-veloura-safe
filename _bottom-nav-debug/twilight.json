@@ -19,6 +19,7 @@
     "component-parallax-background",
     "component-testimonials",
     "component-square-photos",
+    "component-pro-images",
     "component-store-features",
     "component-youtube",
     "menu-images",
@@ -1476,22 +1477,6 @@
       ]
     },
     {
-      "id": "veloura_dark_footer_bg_image_2026",
-      "type": "string",
-      "format": "image",
-      "label": "صورة خلفية القسم السفلي في الوضع الداكن",
-      "description": "إذا رفعت صورة هنا تُستخدم في الوضع الداكن بدل صورة خلفية القسم السفلي العادية.",
-      "icon": "sicon-image",
-      "required": false,
-      "conditions": [
-        {
-          "id": "veloura_dark_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "id": "veloura_dark_side_menu_bg_2026",
       "type": "string",
       "format": "color",
@@ -1567,14 +1552,13 @@
           "operation": "=",
           "value": true
         }
-      ],
-      "description": "يتحكم بسطح بطاقة المنتج في الوضع الداكن. اختر معه لون نص مناسب إذا كانت الخلفية فاتحة أو داكنة."
+      ]
     },
     {
       "id": "veloura_dark_product_card_text_2026",
       "type": "string",
       "format": "color",
-      "label": "لون نص بطاقة المنتج في الوضع الداكن",
+      "label": "لون النص في بطاقة المنتج في الوضع الداكن",
       "value": "#ffffff",
       "conditions": [
         {
@@ -1582,8 +1566,7 @@
           "operation": "=",
           "value": true
         }
-      ],
-      "description": "لون النص الأساسي داخل بطاقة المنتج في الوضع الداكن، ويعمل مع لون خلفية البطاقة حتى تحافظ على تباين واضح."
+      ]
     },
     {
       "id": "veloura_dark_product_card_border_2026",
@@ -2045,8 +2028,8 @@
     {
       "type": "boolean",
       "icon": "sicon-toggle-off",
-      "label": "إخفاء سعر/مجموع السلة من الهيدر",
-      "description": "عند إلغاء التفعيل يظهر مجموع السلة يسار أيقونة السلة ويأخذ مساحته الطبيعية داخل مجموعة أدوات الهيدر.",
+      "label": "إخفاء سعر/مجموع السلة من القسم العلوي (الهيدر)",
+      "description": "إخفاء السعر من أيقونة السلة وإظهار الأيقونة فقط في الجوال",
       "id": "veloura_top_hide_cart_total_mobile_2026",
       "format": "switch",
       "required": false,
@@ -2662,18 +2645,39 @@
       ]
     },
     {
-      "id": "veloura_footer_logo_adjust_2026",
-      "type": "number",
-      "format": "slider",
-      "label": "تكبير شعار القسم السفلي",
-      "description": "زيادة دقيقة فوق الحجم الأساسي 80px. من 0 إلى 60px بخطوة 2px.",
-      "inputType": "range",
-      "icon": "sicon-resize",
-      "value": "20",
+      "id": "veloura_footer_logo_size_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "حجم شعار القسم السفلي",
+      "icon": "sicon-list",
+      "source": "Manual",
       "required": false,
-      "step": "2",
-      "minimum": "0",
-      "maximum": "60",
+      "value": "medium",
+      "default": "medium",
+      "selected": [
+        {
+          "label": "متوسط",
+          "value": "medium",
+          "key": "veloura-footer-logo-medium-2026"
+        }
+      ],
+      "options": [
+        {
+          "label": "صغير",
+          "value": "small",
+          "key": "veloura-footer-logo-small-2026"
+        },
+        {
+          "label": "متوسط",
+          "value": "medium",
+          "key": "veloura-footer-logo-medium-2026"
+        },
+        {
+          "label": "كبير",
+          "value": "large",
+          "key": "veloura-footer-logo-large-2026"
+        }
+      ],
       "conditions": [
         {
           "id": "veloura_footer_enabled_2026",
@@ -2692,44 +2696,6 @@
       "type": "string",
       "format": "image",
       "label": "صورة خلفية القسم السفلي",
-      "conditions": [
-        {
-          "id": "veloura_footer_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_footer_bg_image_fit_2026",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "طريقة عرض صورة خلفية القسم السفلي",
-      "description": "تطبق على صورة الخلفية في الوضع الفاتح وعلى صورة الوضع الداكن.",
-      "icon": "sicon-image",
-      "source": "Manual",
-      "required": false,
-      "value": "cover",
-      "default": "cover",
-      "selected": [
-        {
-          "label": "تغطية المساحة (Cover)",
-          "value": "cover",
-          "key": "veloura-footer-bg-fit-cover-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "تغطية المساحة (Cover)",
-          "value": "cover",
-          "key": "veloura-footer-bg-fit-cover-2026"
-        },
-        {
-          "label": "إظهار الصورة كاملة (Contain)",
-          "value": "contain",
-          "key": "veloura-footer-bg-fit-contain-2026"
-        }
-      ],
       "conditions": [
         {
           "id": "veloura_footer_enabled_2026",
@@ -2884,11 +2850,26 @@
       ]
     },
     {
+      "id": "veloura_footer_link_color_2026",
+      "type": "string",
+      "format": "color",
+      "inputType": "color",
+      "label": "لون الروابط والقيم",
+      "value": "#334155",
+      "conditions": [
+        {
+          "id": "veloura_footer_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "id": "veloura_footer_icon_bg_color_2026",
       "type": "string",
       "format": "color",
       "inputType": "color",
-      "label": "لون خلفية أزرار التواصل والسوشيال",
+      "label": "لون خلفية الأيقونات",
       "value": "#ffffff",
       "conditions": [
         {
@@ -2896,15 +2877,14 @@
           "operation": "=",
           "value": true
         }
-      ],
-      "description": "يطبّق على وسائل الاتصال والسوشيال سواء كانت مدمجة أو منفصلة."
+      ]
     },
     {
       "id": "veloura_footer_icon_color_2026",
       "type": "string",
       "format": "color",
       "inputType": "color",
-      "label": "لون الأيقونات والنصوص",
+      "label": "لون أيقونات التواصل والسوشيال",
       "value": "#26265c",
       "conditions": [
         {
@@ -2912,15 +2892,14 @@
           "operation": "=",
           "value": true
         }
-      ],
-      "description": "لون الأيقونة والنص معاً في وسائل الاتصال والسوشيال، في وضعي الأيقونات فقط أو الأيقونة مع النص."
+      ]
     },
     {
       "id": "veloura_footer_contact_border_color_2026",
       "type": "string",
       "format": "color",
       "inputType": "color",
-      "label": "لون إطار أزرار التواصل والسوشيال",
+      "label": "لون إطار أزرار التواصل",
       "value": "#26265c",
       "conditions": [
         {
@@ -2928,8 +2907,7 @@
           "operation": "=",
           "value": true
         }
-      ],
-      "description": "يطبّق على وسائل الاتصال والسوشيال سواء كانت مدمجة أو منفصلة."
+      ]
     },
     {
       "type": "static",
@@ -3059,19 +3037,37 @@
           "operation": "=",
           "value": true
         }
-      ],
-      "description": "في الوضع العادي تؤثر الحواف على الزاويتين العلويتين فقط، وعند تفعيل تصغير القسم السفلي تؤثر على الزوايا الأربع."
+      ]
     },
     {
-      "id": "veloura_footer_compact_2026",
-      "type": "boolean",
-      "format": "switch",
-      "label": "تصغير القسم السفلي وإدخاله داخل حاوية المتجر",
-      "description": "يجمع جسم الفوتر والشريط السفلي داخل بطاقة واحدة بعرض حاوية المتجر، وتُطبق الحواف على الزوايا الأربع.",
-      "icon": "sicon-layout-grid",
+      "id": "veloura_footer_columns_desktop_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "أعمدة الفوتر في اللابتوب",
+      "icon": "sicon-list",
+      "source": "Manual",
       "required": false,
-      "value": false,
-      "selected": false,
+      "value": "4",
+      "default": "4",
+      "selected": [
+        {
+          "label": "4 أعمدة",
+          "value": "4",
+          "key": "veloura-footer-columns-4-2026"
+        }
+      ],
+      "options": [
+        {
+          "label": "3 أعمدة",
+          "value": "3",
+          "key": "veloura-footer-columns-3-2026"
+        },
+        {
+          "label": "4 أعمدة",
+          "value": "4",
+          "key": "veloura-footer-columns-4-2026"
+        }
+      ],
       "conditions": [
         {
           "id": "veloura_footer_enabled_2026",
@@ -3187,7 +3183,7 @@
       "id": "veloura_footer_contact_display_2026",
       "type": "items",
       "format": "dropdown-list",
-      "label": "شكل وسائل الاتصال والسوشيال",
+      "label": "شكل وسائل الاتصال والسوشيال عند الدمج",
       "icon": "sicon-list",
       "source": "Manual",
       "required": false,
@@ -3218,8 +3214,7 @@
           "operation": "=",
           "value": true
         }
-      ],
-      "description": "يتحكم بالشكل في الحالتين: عند دمج السوشيال مع وسائل الاتصال أو عند إبقائها منفصلة أسفل وصف المتجر."
+      ]
     },
     {
       "type": "boolean",
@@ -3243,7 +3238,7 @@
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "label": "دمج السوشيال مع وسائل الاتصال",
-      "description": "عند التفعيل تظهر السوشيال مع الهاتف والإيميل. عند الإغلاق تظهر السوشيال أسفل وصف المتجر، وتبقى بنفس الشكل والألوان المختارة.",
+      "description": "عند التفعيل تظهر السوشيال مع الهاتف والإيميل وبنفس الشكل المختار. عند الإغلاق تبقى السوشيال تحت معلومات المتجر كأيقونات فقط.",
       "id": "veloura_footer_merge_social_with_contacts_2026",
       "format": "switch",
       "required": false,
@@ -3439,7 +3434,7 @@
       "type": "number",
       "format": "slider",
       "label": "المسافة بين التصنيفات في القائمة الجانبية",
-      "description": "توزّع القيمة بالتساوي كمسافة داخلية أعلى وأسفل كل تصنيف، بدون ارتفاع ثابت للعنصر",
+      "description": "تحكم بالمسافة بين عناصر التصنيفات داخل القائمة",
       "inputType": "range",
       "icon": "sicon-resize",
       "value": "14",
@@ -3456,15 +3451,18 @@
       ]
     },
     {
-      "id": "veloura_side_categories_compact_2026",
-      "type": "boolean",
-      "format": "switch",
-      "label": "تصغير القائمة وجعلها عائمة",
-      "description": "عند التفعيل تصبح القائمة بعيدة عن أعلى وأسفل وحافة الشاشة، وتُطبق الحواف على الزوايا الأربع",
-      "icon": "sicon-layout-grid",
-      "value": false,
-      "selected": false,
+      "id": "veloura_side_cat_item_h_2026",
+      "type": "number",
+      "format": "slider",
+      "label": "ارتفاع عنصر التصنيف في القائمة الجانبية",
+      "description": "تحكم بارتفاع كل تصنيف داخل القائمة الجانبية",
+      "inputType": "range",
+      "icon": "sicon-resize",
+      "value": "56",
       "required": false,
+      "step": "1",
+      "minimum": "1",
+      "maximum": "120",
       "conditions": [
         {
           "id": "veloura_side_categories_enabled_2026",
@@ -3880,52 +3878,6 @@
       ]
     },
     {
-      "id": "veloura_side_categories_badges_2026",
-      "type": "collection",
-      "format": "collection",
-      "label": "عبارات بجانب التصنيفات",
-      "description": "اختر تصنيفًا أو أكثر واكتب عبارة قصيرة تظهر بجانب الاسم وقبل سهم الفرعيات، مثل: جديد أو حصري",
-      "icon": "sicon-tag",
-      "required": false,
-      "minLength": 0,
-      "maxLength": 20,
-      "fields": [
-        {
-          "id": "veloura_badge_categories",
-          "type": "items",
-          "format": "dropdown-list",
-          "icon": "sicon-folder",
-          "label": "التصنيف",
-          "description": "اختر تصنيفًا أو أكثر لتظهر بجانبه العبارة",
-          "value": [],
-          "required": true,
-          "source": "categories",
-          "searchable": true,
-          "multiselect": true,
-          "multiple": true,
-          "autocomplete": true,
-          "multichoice": true
-        },
-        {
-          "id": "veloura_badge_text",
-          "type": "string",
-          "format": "text",
-          "label": "العبارة",
-          "placeholder": "مثال: جديد",
-          "value": "",
-          "required": true,
-          "maxLength": 24
-        }
-      ],
-      "conditions": [
-        {
-          "id": "veloura_side_categories_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "id": "veloura_side_categories_custom_links_2026",
       "type": "collection",
       "format": "collection",
@@ -3996,8 +3948,7 @@
       "wide": true,
       "required": false,
       "value": false,
-      "selected": false,
-      "description": ""
+      "selected": false
     },
     {
       "type": "static",
@@ -4019,42 +3970,6 @@
       "label": "إظهار مسار التنقل في صفحة التصنيفات",
       "description": "عند التفعيل يظهر مسار الصفحة أعلى صفحة التصنيف",
       "id": "veloura_category_show_breadcrumb_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true,
-      "conditions": [
-        {
-          "id": "veloura_category_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-pin",
-      "label": "تثبيت التصنيفات الفرعية أثناء التمرير",
-      "description": "عند التفعيل يبقى شريط التصنيفات الفرعية ثابتًا أثناء النزول، ويتم وضعه تلقائيًا أسفل الهيدر والبحث دون أن يغطيه الهيدر.",
-      "id": "veloura_category_children_sticky_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true,
-      "conditions": [
-        {
-          "id": "veloura_category_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "type": "boolean",
-      "icon": "sicon-layout-grid",
-      "label": "إظهار خيار «الكل» مع التبديل داخل الصفحة",
-      "description": "التبديل بين التصنيفات الفرعية يتم داخل نفس الصفحة بدون انتقال. فعّل هذا الخيار لإظهار «الكل» للرجوع إلى منتجات التصنيف الرئيسي.",
-      "id": "veloura_category_inline_switch_2026",
       "format": "switch",
       "required": false,
       "value": true,
@@ -4326,7 +4241,7 @@
       "type": "number",
       "format": "slider",
       "inputType": "range",
-      "label": "عدد الصور للصف الواحد في الجوال",
+      "label": "عدد الصور للصف الواحد في الجوال2",
       "description": null,
       "labelHTML": null,
       "icon": "sicon-list",
@@ -4606,14 +4521,13 @@
       "wide": true,
       "required": false,
       "value": false,
-      "selected": false,
-      "description": ""
+      "selected": false
     },
     {
       "type": "collection",
       "format": "collection",
       "icon": "sicon-image",
-      "label": "بنرات التصنيفات المرتبطة11111",
+      "label": "بنرات التصنيفات المرتبطة",
       "description": "ارفع بنر واختر تصنيف أو أكثر ليظهر البنر في صفحات هذه التصنيفات. الحقول اختيارية؛ العنصر الناقص لا يظهر فقط.",
       "id": "veloura_cat_banner_map_2026",
       "value": [],
@@ -4956,23 +4870,101 @@
       "type": "boolean",
       "format": "switch",
       "id": "veloura_cart_surfaces_enabled_2026",
-      "label": "تنسيق عناصر السلة — داخلي",
-      "description": "إعداد داخلي يبقي تنسيق ألوان وحواف السلة العامة فعالًا دائمًا.",
+      "label": "تفعيل تخصيص خلفية وحواف عناصر السلة",
+      "description": "عند التفعيل يمكنك اختيار لون خلفية وحواف بطاقات المنتجات وملخص الطلب داخل صفحة السلة. عند التعطيل يبقى تصميم السلة الأساسي كما هو.",
       "icon": "sicon-paint-brush",
       "wide": true,
       "required": false,
-      "value": true,
-      "selected": true,
+      "value": false,
+      "selected": false,
       "conditions": [
         {
-          "id": "veloura_cart_surfaces_border_enabled_2026",
+          "id": "veloura_cart_banners_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_cart_surfaces_bg_color_2026",
+      "type": "string",
+      "format": "color",
+      "label": "لون خلفية عناصر السلة",
+      "description": "يطبق اللون على بطاقة المنتج وصناديق الشحن والهدايا وملخص الطلب فقط.",
+      "icon": "sicon-palette",
+      "value": "#f3f4f6",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_cart_surfaces_enabled_2026",
           "operation": "=",
           "value": true
         },
         {
-          "id": "veloura_cart_surfaces_border_enabled_2026",
+          "id": "veloura_cart_banners_enabled_2026",
           "operation": "=",
-          "value": false
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_cart_surfaces_radius_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "حواف عناصر السلة",
+      "description": "اختر درجة تدوير حواف بطاقات المنتجات وملخص الطلب.",
+      "icon": "sicon-border-radius",
+      "source": "Manual",
+      "required": true,
+      "selected": [
+        {
+          "label": "ناعمة",
+          "value": "medium",
+          "key": "veloura-cart-surfaces-radius-medium-2026"
+        },
+        {
+          "id": "veloura_cart_banners_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "options": [
+        {
+          "label": "حادة",
+          "value": "sharp",
+          "key": "veloura-cart-surfaces-radius-sharp-2026"
+        },
+        {
+          "label": "خفيفة",
+          "value": "soft",
+          "key": "veloura-cart-surfaces-radius-soft-2026"
+        },
+        {
+          "label": "ناعمة",
+          "value": "medium",
+          "key": "veloura-cart-surfaces-radius-medium-2026"
+        },
+        {
+          "label": "ناعمة جدًا",
+          "value": "large",
+          "key": "veloura-cart-surfaces-radius-large-2026"
+        },
+        {
+          "label": "دائرية",
+          "value": "round",
+          "key": "veloura-cart-surfaces-radius-round-2026"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "veloura_cart_surfaces_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_cart_banners_enabled_2026",
+          "operation": "=",
+          "value": true
         }
       ]
     },
@@ -4980,13 +4972,18 @@
       "type": "boolean",
       "format": "switch",
       "id": "veloura_cart_surfaces_border_enabled_2026",
-      "label": "إظهار إطار حول عناصر السلة",
-      "description": "يتحكم فقط بإظهار أو إخفاء الإطار الخارجي لعناصر السلة. ألوان السلة والحواف العامة تبقى مرتبطة بإعدادات Veloura الأساسية.",
+      "label": "إظهار إطار خفيف حول العناصر",
+      "description": "يفيد عندما يكون لون العناصر قريبًا من لون خلفية المتجر.",
       "icon": "sicon-border-all",
       "required": false,
       "value": false,
       "selected": false,
       "conditions": [
+        {
+          "id": "veloura_cart_surfaces_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
         {
           "id": "veloura_cart_banners_enabled_2026",
           "operation": "=",
@@ -5004,7 +5001,35 @@
       "required": false,
       "conditions": [
         {
+          "id": "veloura_cart_surfaces_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
           "id": "veloura_cart_surfaces_border_enabled_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_cart_banners_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "format": "switch",
+      "id": "veloura_cart_surfaces_shadow_enabled_2026",
+      "label": "إظهار ظل خفيف حول العناصر",
+      "description": "يضيف ظلًا محايدًا وخفيفًا دون تغيير لون العناصر.",
+      "icon": "sicon-magic",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_cart_surfaces_enabled_2026",
           "operation": "=",
           "value": true
         },
@@ -5722,6 +5747,27 @@
       ]
     },
     {
+      "id": "veloura_pc_actions_gap_2026",
+      "type": "number",
+      "format": "slider",
+      "label": "المسافة بين زر المفضلة والعرض السريع",
+      "description": "يظهر تأثيرها عندما تكون الأزرار بجانب بعض",
+      "inputType": "range",
+      "icon": "sicon-pin",
+      "value": "10",
+      "required": false,
+      "step": "1",
+      "minimum": "0",
+      "maximum": "30",
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "type": "boolean",
       "icon": "sicon-toggle-off",
       "label": "تفعيل زر العرض السريع في بطاقة المنتج",
@@ -5755,11 +5801,6 @@
           "id": "veloura_quick_view_enabled_2026",
           "operation": "=",
           "value": true
-        },
-        {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "below_add_to_cart"
         }
       ]
     },
@@ -5800,106 +5841,6 @@
           "id": "veloura_quick_view_enabled_2026",
           "operation": "=",
           "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_pc_actions_gap_2026",
-      "type": "number",
-      "format": "slider",
-      "label": "المسافة بين أيقونة المفضلة والعرض السريع",
-      "description": "يظهر فقط عندما يكون العرض السريع كأيقونة بجانب المفضلة والمفضلة ظاهرة.",
-      "inputType": "range",
-      "icon": "sicon-pin",
-      "value": "10",
-      "required": false,
-      "step": "1",
-      "minimum": "0",
-      "maximum": "30",
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "wishlist_icon"
-        },
-        {
-          "id": "veloura_pc_hide_wish_2026",
-          "operation": "=",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": "veloura_quick_view_under_cart_margin_x_2026",
-      "type": "number",
-      "format": "slider",
-      "label": "المسافة يمين ويسار زر العرض السريع",
-      "description": "المسافة الفعلية من حافتي بطاقة المنتج إلى زر العرض السريع. 0 يعني أن زر العرض السريع يلتصق بحافتي البطاقة حتى لو كان المحتوى الداخلي عليه Padding.",
-      "inputType": "range",
-      "icon": "sicon-pin",
-      "value": "0",
-      "default": "0",
-      "required": false,
-      "step": "1",
-      "minimum": "0",
-      "maximum": "100",
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "below_add_to_cart"
-        }
-      ]
-    },
-    {
-      "id": "veloura_quick_view_under_cart_margin_bottom_2026",
-      "type": "number",
-      "format": "slider",
-      "label": "المسافة أسفل زر العرض السريع",
-      "description": "تتحكم بالمسافة بين زر العرض السريع والحافة السفلية لبطاقة المنتج.",
-      "inputType": "range",
-      "icon": "sicon-pin",
-      "value": "10",
-      "default": "10",
-      "required": false,
-      "step": "1",
-      "minimum": "0",
-      "maximum": "100",
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_enabled_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "below_add_to_cart"
         }
       ]
     },
@@ -5945,11 +5886,6 @@
           "id": "veloura_quick_view_enabled_2026",
           "operation": "=",
           "value": true
-        },
-        {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "below_add_to_cart"
         }
       ]
     },
@@ -5969,11 +5905,6 @@
           "id": "veloura_quick_view_enabled_2026",
           "operation": "=",
           "value": true
-        },
-        {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "below_add_to_cart"
         }
       ]
     },
@@ -6055,11 +5986,6 @@
           "id": "veloura_quick_view_enabled_2026",
           "operation": "=",
           "value": true
-        },
-        {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "below_add_to_cart"
         }
       ]
     },
@@ -6083,11 +6009,6 @@
           "id": "veloura_quick_view_enabled_2026",
           "operation": "=",
           "value": true
-        },
-        {
-          "id": "veloura_quick_view_button_position_2026",
-          "operation": "=",
-          "value": "below_add_to_cart"
         }
       ]
     },
@@ -6138,6 +6059,11 @@
           "id": "veloura_quick_view_enabled_2026",
           "operation": "=",
           "value": true
+        },
+        {
+          "id": "veloura_quick_view_show_icon_2026",
+          "operation": "=",
+          "value": true
         }
       ]
     },
@@ -6164,31 +6090,8 @@
       "id": "veloura_quick_view_modal_bg_color_2026",
       "type": "string",
       "format": "color",
-      "label": "لون خلفية نافذة العرض السريع في الوضع الفاتح",
+      "label": "لون خلفية نافذة العرض السريع",
       "value": "#ffffff",
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ],
-      "description": "في الوضع الداكن تستخدم النافذة اللون الثانوي الداكن تلقائيًا. وعند تفعيل الزجاج تصبح نفس الألوان شفافة وبلورية."
-    },
-    {
-      "id": "veloura_quick_view_modal_text_color_2026",
-      "type": "string",
-      "format": "color",
-      "label": "لون نص نافذة العرض السريع في الوضع الفاتح",
-      "description": "يؤثر على الوضع الفاتح فقط. في الوضع الداكن تستخدم النافذة لون النص الأساسي المحدد ضمن إعدادات الوضع الداكن.",
-      "icon": "sicon-paint-bucket",
-      "value": "#111827",
-      "required": false,
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
@@ -6203,16 +6106,11 @@
       ]
     },
     {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "تفعيل الوضع الزجاجي لنافذة العرض السريع",
-      "description": "يجعل نافذة العرض السريع زجاجية بشكل مستقل، بدون الحاجة لتفعيل خيار الزجاج العام.",
-      "id": "veloura_quick_view_overlay_blur_2026",
-      "format": "switch",
-      "required": false,
-      "value": true,
-      "selected": true,
-      "default": true,
+      "id": "veloura_quick_view_modal_text_color_2026",
+      "type": "string",
+      "format": "color",
+      "label": "لون نص نافذة العرض السريع",
+      "value": "#111827",
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
@@ -6277,49 +6175,6 @@
       ]
     },
     {
-      "id": "veloura_quick_view_image_fit_2026",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "طريقة عرض صورة العرض السريع",
-      "description": "احتواء يعرض الصورة كاملة، وتعبئة تملأ مساحة الصورة وقد تقص جزءًا منها.",
-      "icon": "sicon-image",
-      "source": "Manual",
-      "required": true,
-      "value": "contain",
-      "default": "contain",
-      "selected": [
-        {
-          "label": "احتواء الصورة",
-          "value": "contain",
-          "key": "veloura-qv-image-fit-contain-2026"
-        }
-      ],
-      "options": [
-        {
-          "label": "احتواء الصورة",
-          "value": "contain",
-          "key": "veloura-qv-image-fit-contain-2026"
-        },
-        {
-          "label": "تعبئة المساحة",
-          "value": "cover",
-          "key": "veloura-qv-image-fit-cover-2026"
-        }
-      ],
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_quick_view_enabled_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
       "id": "veloura_quick_view_animation_2026",
       "type": "items",
       "format": "dropdown-list",
@@ -6351,6 +6206,29 @@
           "key": "veloura-quick-view-animation-slide-up-2026"
         }
       ],
+      "conditions": [
+        {
+          "id": "veloura_product_card_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_quick_view_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "icon": "sicon-toggle-off",
+      "label": "تفعيل الوضع الزجاجي",
+      "description": "عند التفعيل تصبح نافذة العرض السريع بلورية بنفس خامة زجاج الهيدر، بدون تغبيش خلفية الصفحة.",
+      "id": "veloura_quick_view_overlay_blur_2026",
+      "format": "switch",
+      "required": false,
+      "value": true,
+      "selected": true,
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
@@ -6658,85 +6536,11 @@
       ]
     },
     {
-      "type": "boolean",
-      "icon": "sicon-toggle-off",
-      "label": "إخفاء أيقونة زر أضف للسلة",
-      "description": "يخفي الأيقونة فقط مع إبقاء زر أضف للسلة ونصه يعملان بشكل طبيعي.",
-      "id": "veloura_product_card_hide_cart_icon_2026",
-      "format": "switch",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_product_card_cart_icon_2026",
-      "type": "items",
-      "format": "dropdown-list",
-      "label": "أيقونة زر أضف للسلة",
-      "description": "اختر أيقونة زر أضف للسلة. يعمل بنفس أسلوب اختيار أيقونات الهيدر والعرض السريع.",
-      "icon": "sicon-shopping-bag",
-      "source": "Manual",
-      "required": true,
-      "selected": [
-        {
-          "label": "حقيبة تسوق",
-          "value": "sicon-shopping-bag",
-          "key": "veloura-product-card-cart-icon-shopping-bag"
-        }
-      ],
-      "options": [
-        {
-          "label": "حقيبة تسوق",
-          "value": "sicon-shopping-bag",
-          "key": "veloura-product-card-cart-icon-shopping-bag"
-        },
-        {
-          "label": "عربة تسوق",
-          "value": "sicon-luggage-cart",
-          "key": "veloura-product-card-cart-icon-luggage-cart"
-        },
-        {
-          "label": "صندوق",
-          "value": "sicon-box",
-          "key": "veloura-product-card-cart-icon-box"
-        },
-        {
-          "label": "طرد",
-          "value": "sicon-packed-box",
-          "key": "veloura-product-card-cart-icon-packed-box"
-        },
-        {
-          "label": "هدية",
-          "value": "sicon-gift",
-          "key": "veloura-product-card-cart-icon-gift"
-        }
-      ],
-      "conditions": [
-        {
-          "id": "veloura_product_card_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_card_hide_cart_icon_2026",
-          "operation": "=",
-          "value": false
-        }
-      ]
-    },
-    {
       "id": "veloura_product_card_button_margin_x_2026",
       "type": "number",
       "format": "slider",
-      "label": "المسافة يمين ويسار زر أضف للسلة",
-      "description": "المسافة الفعلية من حافتي بطاقة المنتج إلى زر أضف للسلة. زر العرض السريع له سلايدر مستقل عندما يكون أسفل زر أضف للسلة.",
+      "label": "المسافة يمين ويسار زري البطاقة",
+      "description": "المسافة النهائية من حافة بطاقة المنتج لكلا الزرين معاً. البداية 10px، و0 يعني التصاق الزرين بحافتي البطاقة فعلياً.",
       "inputType": "range",
       "icon": "sicon-pin",
       "value": "10",
@@ -6754,19 +6558,19 @@
       ]
     },
     {
-      "id": "veloura_quick_view_under_cart_gap_2026",
+      "id": "veloura_product_card_button_margin_bottom_2026",
       "type": "number",
       "format": "slider",
-      "label": "المسافة أسفل زر أضف للسلة",
-      "description": "يبقى هذا الخيار ظاهرًا دائمًا ويتحكم بالمسافة أسفل زر أضف للسلة. إذا كان العرض السريع أسفل زر السلة تصبح هذه المسافة هي الفراغ بين الزرين.",
+      "label": "المسافة أسفل مجموعة أزرار البطاقة",
+      "description": "يحرك إضافة السلة والعرض السريع ككتلة واحدة بالنسبة إلى الحافة السفلية فقط. المسافة بين السعر وإضافة السلة وبين الزرين ثابتة ومتساوية ولا تتأثر بهذا السلايدر. البداية 10px، و0 يعني التصاق آخر زر بأسفل البطاقة.",
       "inputType": "range",
       "icon": "sicon-pin",
-      "value": "8",
-      "default": "8",
+      "value": "10",
+      "default": "10",
       "required": false,
       "step": "1",
       "minimum": "0",
-      "maximum": "60",
+      "maximum": "100",
       "conditions": [
         {
           "id": "veloura_product_card_panel_open_2026",
@@ -7267,7 +7071,7 @@
       "type": "static",
       "format": "title",
       "id": "veloura_product_page_subtitle_marketing_2026",
-      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>التفاعل داخل صفحة المنتج</span></div>",
+      "value": "<div style=\"padding:10px 14px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;text-align:right;font-weight:800;border:1px solid rgba(251,146,60,.40);border-right:4px solid #fb923c;box-shadow:inset 0 0 0 1px rgba(100,116,139,.10);display:flex;align-items:center;gap:10px;justify-content:flex-start\"><span style=\"width:28px;height:28px;border-radius:9999px;background:linear-gradient(90deg,rgba(251,146,60,.20),rgba(251,146,60,.10));color:inherit;display:inline-flex;align-items:center;justify-content:center;font-size:14px;flex:0 0 auto\">◆</span><span>العروض والتفاعل داخل صفحة المنتج</span></div>",
       "variant": "h6",
       "conditions": [
         {
@@ -7276,6 +7080,86 @@
           "value": true
         }
       ]
+    },
+    {
+      "type": "boolean",
+      "icon": "sicon-toggle-off",
+      "label": "تفعيل كود خصم داخل صفحة المنتج",
+      "id": "veloura_product_coupon_enabled_2026",
+      "format": "switch",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "description": "عند التفعيل وكتابة كود فعلي يظهر صندوق الخصم داخل تفاصيل المنتج فوق الوصف مباشرة، ويمكن للعميل نسخه."
+    },
+    {
+      "id": "veloura_product_coupon_title_2026",
+      "type": "string",
+      "format": "text",
+      "label": "عنوان كود الخصم",
+      "value": "خصم إضافي 10%",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_coupon_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_product_coupon_subtitle_2026",
+      "type": "string",
+      "format": "text",
+      "label": "عنوان فرعي لكود الخصم",
+      "value": "انسخ الكود واحصل على خصم إضافي عند الدفع",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_coupon_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_product_coupon_code_2026",
+      "type": "string",
+      "format": "text",
+      "label": "كود الخصم",
+      "value": "",
+      "required": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_coupon_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ],
+      "placeholder": "اكتب الكود الفعلي، مثال: VEL10",
+      "description": "لا تكتب كلمة مثال. أنشئ الكود نفسه ضمن كوبونات المتجر، ثم اكتبه هنا ليظهر فوق وصف المنتج."
     },
     {
       "type": "boolean",
@@ -7545,6 +7429,89 @@
           "label": "الترتيب 3",
           "value": "3",
           "key": "veloura-v42-order-3-2026"
+        }
+      ],
+      "options": [
+        {
+          "label": "الترتيب 1",
+          "value": "1",
+          "key": "veloura-v42-order-1-2026"
+        },
+        {
+          "label": "الترتيب 2",
+          "value": "2",
+          "key": "veloura-v42-order-2-2026"
+        },
+        {
+          "label": "الترتيب 3",
+          "value": "3",
+          "key": "veloura-v42-order-3-2026"
+        },
+        {
+          "label": "الترتيب 4",
+          "value": "4",
+          "key": "veloura-v42-order-4-2026"
+        },
+        {
+          "label": "الترتيب 5",
+          "value": "5",
+          "key": "veloura-v42-order-5-2026"
+        },
+        {
+          "label": "الترتيب 6",
+          "value": "6",
+          "key": "veloura-v42-order-6-2026"
+        },
+        {
+          "label": "الترتيب 7",
+          "value": "7",
+          "key": "veloura-v42-order-7-2026"
+        },
+        {
+          "label": "الترتيب 8",
+          "value": "8",
+          "key": "veloura-v42-order-8-2026"
+        },
+        {
+          "label": "الترتيب 9",
+          "value": "9",
+          "key": "veloura-v42-order-9-2026"
+        },
+        {
+          "label": "الترتيب 10",
+          "value": "10",
+          "key": "veloura-v42-order-10-2026"
+        }
+      ],
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_product_details_order_enabled_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_product_order_coupon_2026",
+      "type": "items",
+      "format": "dropdown-list",
+      "label": "ترتيب كود الخصم",
+      "description": "اختر موضع هذا العنصر. عند تكرار رقمين يحافظ الثيم على التسلسل الأصلي بينهما بدون إخفاء أي عنصر.",
+      "icon": "sicon-list",
+      "source": "Manual",
+      "required": false,
+      "value": "4",
+      "default": "4",
+      "selected": [
+        {
+          "label": "الترتيب 4",
+          "value": "4",
+          "key": "veloura-v42-order-4-2026"
         }
       ],
       "options": [
@@ -8225,6 +8192,211 @@
       ]
     },
     {
+      "id": "veloura_related_mobile_columns",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
+      "label": "عدد المنتجات في الجوال",
+      "description": null,
+      "labelHTML": null,
+      "icon": "sicon-pin",
+      "value": "2",
+      "required": false,
+      "step": "1",
+      "minimum": "1",
+      "maximum": "3",
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_related_desktop_columns",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
+      "label": "عدد المنتجات في الكمبيوتر",
+      "description": null,
+      "labelHTML": null,
+      "icon": "sicon-pin",
+      "value": "4",
+      "required": false,
+      "step": "1",
+      "minimum": "1",
+      "maximum": "6",
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_related_hide_arrows_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "إخفاء أسهم التنقل في منتجات قد تعجبك",
+      "description": "يخفي سهمي السابق والتالي مع بقاء السحب باللمس أو الماوس.",
+      "value": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_related_center_title_2026",
+      "type": "boolean",
+      "format": "switch",
+      "label": "توسيط عنوان منتجات قد تعجبك",
+      "description": "يوسّط عنوان القسم دون تغيير محاذاة بطاقات المنتجات.",
+      "value": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_recently_viewed_hide_2026",
+      "type": "boolean",
+      "format": "switch",
+      "icon": "sicon-toggle-off",
+      "label": "إخفاء قسم شاهدتها مؤخرًا",
+      "description": "يخفي عنوان وبطاقات قسم شاهدتها مؤخرًا من صفحة المنتج.",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_recently_viewed_customize_2026",
+      "type": "boolean",
+      "format": "switch",
+      "icon": "sicon-settings",
+      "label": "تخصيص قسم شاهدتها مؤخرًا",
+      "description": "عند التفعيل تظهر خيارات عدد الأعمدة في الجوال والكمبيوتر وتوسيط عنوان القسم.",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_recently_viewed_hide_2026",
+          "operation": "=",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "veloura_recently_viewed_mobile_columns_2026",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
+      "label": "عدد منتجات شاهدتها مؤخرًا في الجوال",
+      "description": "يظهر ويعمل عند تفعيل تخصيص قسم شاهدتها مؤخرًا.",
+      "icon": "sicon-pin",
+      "value": "2",
+      "required": false,
+      "step": "1",
+      "minimum": "1",
+      "maximum": "3",
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_recently_viewed_hide_2026",
+          "operation": "=",
+          "value": false
+        },
+        {
+          "id": "veloura_recently_viewed_customize_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_recently_viewed_desktop_columns_2026",
+      "type": "number",
+      "format": "slider",
+      "inputType": "range",
+      "label": "عدد منتجات شاهدتها مؤخرًا في الكمبيوتر",
+      "description": "يظهر ويعمل عند تفعيل تخصيص قسم شاهدتها مؤخرًا.",
+      "icon": "sicon-pin",
+      "value": "4",
+      "required": false,
+      "step": "1",
+      "minimum": "1",
+      "maximum": "6",
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_recently_viewed_hide_2026",
+          "operation": "=",
+          "value": false
+        },
+        {
+          "id": "veloura_recently_viewed_customize_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "veloura_recently_viewed_center_title_2026",
+      "type": "boolean",
+      "format": "switch",
+      "icon": "sicon-align-center",
+      "label": "توسيط عنوان شاهدتها مؤخرًا",
+      "description": "يظهر ويعمل عند تفعيل تخصيص قسم شاهدتها مؤخرًا.",
+      "required": false,
+      "value": false,
+      "selected": false,
+      "conditions": [
+        {
+          "id": "veloura_product_page_panel_open_2026",
+          "operation": "=",
+          "value": true
+        },
+        {
+          "id": "veloura_recently_viewed_hide_2026",
+          "operation": "=",
+          "value": false
+        },
+        {
+          "id": "veloura_recently_viewed_customize_2026",
+          "operation": "=",
+          "value": true
+        }
+      ]
+    },
+    {
       "id": "veloura_product_custom_related_source_2026",
       "type": "items",
       "format": "dropdown-list",
@@ -8344,231 +8516,6 @@
       "selected": [],
       "options": [],
       "maxLength": 10
-    },
-    {
-      "id": "veloura_related_mobile_columns",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
-      "label": "عدد المنتجات في الجوال",
-      "description": null,
-      "labelHTML": null,
-      "icon": "sicon-pin",
-      "value": "2",
-      "required": false,
-      "step": "1",
-      "minimum": "1",
-      "maximum": "3",
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_hide_liked_products_2026",
-          "operation": "=",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": "veloura_related_desktop_columns",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
-      "label": "عدد المنتجات في الكمبيوتر",
-      "description": null,
-      "labelHTML": null,
-      "icon": "sicon-pin",
-      "value": "4",
-      "required": false,
-      "step": "1",
-      "minimum": "1",
-      "maximum": "6",
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_hide_liked_products_2026",
-          "operation": "=",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": "veloura_related_hide_arrows_2026",
-      "type": "boolean",
-      "format": "switch",
-      "label": "إخفاء أسهم التنقل في منتجات قد تعجبك",
-      "description": "يخفي سهمي السابق والتالي مع بقاء السحب باللمس أو الماوس.",
-      "value": false,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_hide_liked_products_2026",
-          "operation": "=",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": "veloura_related_center_title_2026",
-      "type": "boolean",
-      "format": "switch",
-      "label": "توسيط عنوان منتجات قد تعجبك",
-      "description": "يوسّط عنوان القسم دون تغيير محاذاة بطاقات المنتجات.",
-      "value": false,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_product_hide_liked_products_2026",
-          "operation": "=",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": "veloura_recently_viewed_hide_2026",
-      "type": "boolean",
-      "format": "switch",
-      "icon": "sicon-toggle-off",
-      "label": "إخفاء قسم شاهدتها مؤخرًا",
-      "description": "يخفي قسم «شاهدتها مؤخرًا» كاملًا من صفحة المنتج.",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_recently_viewed_customize_2026",
-      "type": "boolean",
-      "format": "switch",
-      "icon": "sicon-settings",
-      "label": "تخصيص قسم شاهدتها مؤخرًا",
-      "description": "عند التفعيل تعمل إعدادات عدد الأعمدة وتوسيط عنوان قسم «شاهدتها مؤخرًا» في الجوال والكمبيوتر.",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_recently_viewed_hide_2026",
-          "operation": "=",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": "veloura_recently_viewed_mobile_columns_2026",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
-      "label": "عدد منتجات شاهدتها مؤخرًا في الجوال",
-      "description": "يظهر ويعمل عند تفعيل تخصيص قسم شاهدتها مؤخرًا.",
-      "icon": "sicon-pin",
-      "value": "2",
-      "required": false,
-      "step": "1",
-      "minimum": "1",
-      "maximum": "3",
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_recently_viewed_hide_2026",
-          "operation": "=",
-          "value": false
-        },
-        {
-          "id": "veloura_recently_viewed_customize_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_recently_viewed_desktop_columns_2026",
-      "type": "number",
-      "format": "slider",
-      "inputType": "range",
-      "label": "عدد منتجات شاهدتها مؤخرًا في الكمبيوتر",
-      "description": "يظهر ويعمل عند تفعيل تخصيص قسم شاهدتها مؤخرًا.",
-      "icon": "sicon-pin",
-      "value": "4",
-      "required": false,
-      "step": "1",
-      "minimum": "1",
-      "maximum": "6",
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_recently_viewed_hide_2026",
-          "operation": "=",
-          "value": false
-        },
-        {
-          "id": "veloura_recently_viewed_customize_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
-    },
-    {
-      "id": "veloura_recently_viewed_center_title_2026",
-      "type": "boolean",
-      "format": "switch",
-      "icon": "sicon-align-center",
-      "label": "توسيط عنوان شاهدتها مؤخرًا",
-      "description": "يظهر ويعمل عند تفعيل تخصيص قسم شاهدتها مؤخرًا.",
-      "required": false,
-      "value": false,
-      "selected": false,
-      "conditions": [
-        {
-          "id": "veloura_product_page_panel_open_2026",
-          "operation": "=",
-          "value": true
-        },
-        {
-          "id": "veloura_recently_viewed_hide_2026",
-          "operation": "=",
-          "value": false
-        },
-        {
-          "id": "veloura_recently_viewed_customize_2026",
-          "operation": "=",
-          "value": true
-        }
-      ]
     },
     {
       "type": "static",
@@ -16399,7 +16346,7 @@
           "id": "veloura_steps_hide",
           "type": "boolean",
           "format": "switch",
-          "label": "إخفاء هذا العنصر أو القسم بالكامل11111",
+          "label": "إخفاء هذا العنصر أو القسم بالكامل",
           "icon": "sicon-eye-off",
           "value": false,
           "selected": false,
