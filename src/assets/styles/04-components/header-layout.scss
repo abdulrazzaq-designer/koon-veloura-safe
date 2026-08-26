@@ -1190,3 +1190,69 @@ html body .veloura-search-surface salla-search.veloura-header-search-component .
     flex: 0 0 1px !important;
   }
 }
+/* --------------------------------------------------------------------
+   5. Full-width desktop: surface spans the viewport, content does not
+   -----------------------------------------------------------------
+   When the merchant enables full-width desktop, only the header SURFACE
+   (background, border, blur) should reach the screen edges. Every actual
+   control — icons, logo, categories and the detached search field — must
+   stay inside the same storefront container the rest of the page uses, so
+   the icon cluster lines up with the content below it instead of drifting
+   out to the viewport edge.
+
+   Earlier layers set `max-width: none` on .veloura-header-container in this
+   mode, which removed the ceiling from the content as well as the surface.
+   This section restores the container ceiling on the content wrapper only.
+   -------------------------------------------------------------------- */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack--full-width-desktop
+    .store-header.veloura-top-enabled .veloura-header-container {
+    width: 100% !important;
+    max-width: var(--veloura-global-container, 1280px) !important;
+    margin-inline: auto !important;
+    padding-inline: var(--veloura-global-spacing, 12px) !important;
+    box-sizing: border-box !important;
+  }
+
+  /* The detached search field is a sibling of the header surface, so it
+     needs the same ceiling to stay on the icons' vertical edge line. */
+  html body .veloura-header-tabs-stack--full-width-desktop
+    .veloura-detached-search-shell,
+  html body .veloura-header-tabs-stack--full-width-desktop
+    .veloura-detached-search {
+    width: 100% !important;
+    max-width: var(--veloura-global-container, 1280px) !important;
+    margin-inline: auto !important;
+    padding-inline: var(--veloura-global-spacing, 12px) !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* --------------------------------------------------------------------
+   6. Search field separation (non-glass mode)
+   -----------------------------------------------------------------
+   Outside the blur/glass treatment the search surface had no background
+   and no edges at all, so it dissolved into the header. This gives it a
+   light silver hairline on the top and bottom edges only — enough to read
+   as a distinct field without turning it into a heavy boxed control.
+   The sides stay open so the field still reads as part of the header bar.
+   -------------------------------------------------------------------- */
+html body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
+  .veloura-search-surface:not(.veloura-glass),
+html body:not(.veloura-glass-effect) .veloura-header-tabs-stack
+  .veloura-search-surface:not(.veloura-glass) {
+  border-top: 1px solid var(--veloura-search-edge, rgba(148, 163, 184, .32)) !important;
+  border-bottom: 1px solid var(--veloura-search-edge, rgba(148, 163, 184, .32)) !important;
+  border-inline: 0 !important;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, .04) !important;
+}
+
+/* Dark mode keeps the same idea with an edge that reads on a dark bar. */
+html.dark body .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
+  .veloura-search-surface:not(.veloura-glass),
+html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
+  .veloura-search-surface:not(.veloura-glass) {
+  border-top-color: rgba(255, 255, 255, .22) !important;
+  border-bottom-color: rgba(255, 255, 255, .22) !important;
+  box-shadow: none !important;
+}
