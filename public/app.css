@@ -35926,6 +35926,16 @@ html body .veloura-search-surface salla-search.veloura-header-search-component::
     background-color: rgba(238, 239, 241, 0.97) !important;
   }
 }
+/* =========================================================
+   Search separation from header background
+   ========================================================= */
+html body .veloura-header-search-component,
+html body salla-search.veloura-header-search-component,
+html body .veloura-desktop-search-bar {
+  border-top: 1px solid rgba(180, 190, 205, 0.45) !important;
+  border-bottom: 1px solid rgba(180, 190, 205, 0.45) !important;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.04) !important;
+}
 /* ========================================================================
    Veloura V60 — deterministic connected-search order, true vertical
    centering, neutral silver glass, and a guaranteed frosted submenu layer.
@@ -37437,6 +37447,24 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur) 
   border-top-color: rgba(255, 255, 255, 0.22) !important;
   border-bottom-color: rgba(255, 255, 255, 0.22) !important;
   box-shadow: none !important;
+}
+/* =========================================================
+   Veloura Header spacing polish
+   ========================================================= */
+@media (min-width: 1024px) {
+  html body .veloura-header-tabs-stack {
+    padding-left: max(18px, min(2vw, 34px)) !important;
+    padding-right: max(18px, min(2vw, 34px)) !important;
+  }
+  html body .veloura-header-grid {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+  }
+  html body .store-header.veloura-top-enabled {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+  }
 }
 .store-footer{
     position: relative;

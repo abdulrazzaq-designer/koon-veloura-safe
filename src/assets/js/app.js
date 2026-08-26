@@ -2295,45 +2295,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   function applyCategoryBadges(menu, settings) {
-    if (!menu) return;
+  if (!menu) return;
 
-    menu.querySelectorAll('.veloura-side-category-badge').forEach(function (badge) {
+  menu.querySelectorAll('.veloura-side-category-badge')
+    .forEach(function (badge) {
       badge.remove();
     });
-
-    var badges = normalizeCollection(settings.categoryBadges);
-    if (!badges.length) return;
-
-    var links = menu.querySelectorAll(
-      'li.veloura-mobile-menu-item > a, li.veloura-mobile-menu-item > span'
-    );
-
-    badges.forEach(function (item) {
-      if (!item) return;
-
-      var text = normalizeText(
-        item.veloura_badge_text ||
-        item.badge_text ||
-        item.text ||
-        item.label ||
-        item.title
-      );
-      var categoryTokens = getItemCategoryTokens(item);
-
-      if (!text || !categoryTokens.length) return;
-
-      links.forEach(function (link) {
-        if (link.querySelector('.veloura-side-category-badge')) return;
-        if (!isSameCategory(link, categoryTokens)) return;
-
-        var badge = document.createElement('span');
-        badge.className = 'veloura-side-category-badge';
-        badge.textContent = text;
-        badge.setAttribute('aria-hidden', 'true');
-        link.appendChild(badge);
-      });
-    });
-  }
+}
 
   function appendCustomLinks(menu, settings) {
     var list = getMainList(menu);
