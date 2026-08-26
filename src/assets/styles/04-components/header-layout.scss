@@ -1256,3 +1256,25 @@ html body.dark .veloura-header-tabs-stack:not(.veloura-header-tabs-stack--blur)
   border-bottom-color: rgba(255, 255, 255, .22) !important;
   box-shadow: none !important;
 }
+
+/* =========================================================
+   Veloura Header spacing polish
+   ========================================================= */
+
+@media (min-width: 1024px) {
+
+  html body .veloura-header-tabs-stack {
+    padding-inline: clamp(18px, 2vw, 34px) !important;
+  }
+
+  html body .veloura-header-grid {
+    margin-inline: auto !important;
+    width: 100% !important;
+  }
+
+  html body .store-header.veloura-top-enabled {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+  }
+
+}

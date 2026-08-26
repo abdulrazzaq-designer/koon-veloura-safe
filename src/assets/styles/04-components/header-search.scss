@@ -254,3 +254,20 @@ html body .veloura-search-surface salla-search.veloura-header-search-component::
     background-color: rgba(238, 239, 241, .97) !important;
   }
 }
+
+
+/* =========================================================
+   Search separation from header background
+   ========================================================= */
+
+html body .veloura-header-search-component,
+html body salla-search.veloura-header-search-component,
+html body .veloura-desktop-search-bar {
+
+  border-top: 1px solid rgba(180, 190, 205, .45) !important;
+  border-bottom: 1px solid rgba(180, 190, 205, .45) !important;
+
+  box-shadow:
+    0 1px 5px rgba(0,0,0,.04) !important;
+
+}
