@@ -4337,6 +4337,11 @@ const initVelouraHeaderRuntimeCompatibility = (() => {
     const grid = header?.querySelector('.veloura-header-grid');
     if (!header || !grid) return;
 
+    /* Localization is independent from the header tools structure.
+       Render it before any tools lookup so the desktop language/currency
+       control cannot fail silently when the tools wrapper is unavailable. */
+    renderLocalizationPill(header);
+
     const tools = grid.querySelector(':scope > .veloura-header__tools')
       || grid.querySelector(':scope > .veloura-v63-unified-icons');
 
@@ -4364,8 +4369,6 @@ const initVelouraHeaderRuntimeCompatibility = (() => {
       'veloura-header--rect-search-visible',
       rectangularSearchVisible
     );
-
-    renderLocalizationPill(header);
 
     if (desktop) {
       reorderActions(actions);
